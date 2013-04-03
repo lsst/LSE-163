@@ -1,0 +1,156 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Thu, 21 Mar 2013 08:58:03 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2LFw2gV005360
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Thu, 21 Mar 2013 08:58:02 -0700
+Received: from mail-ve0-f169.google.com (mail-ve0-f169.google.com [209.85.128.169])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2LFw1aX009758
+	for <mjuric@majuric.org>; Thu, 21 Mar 2013 11:58:01 -0400
+Received: by mail-ve0-f169.google.com with SMTP id 15so2599892vea.28
+        for <mjuric@majuric.org>; Thu, 21 Mar 2013 08:58:01 -0700 (PDT)
+X-Received: by 10.52.22.74 with SMTP id b10mr12093495vdf.96.1363881481477;
+        Thu, 21 Mar 2013 08:58:01 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp59745vem;
+        Thu, 21 Mar 2013 08:58:00 -0700 (PDT)
+X-Received: by 10.60.133.75 with SMTP id pa11mr6996866oeb.70.1363881478814;
+        Thu, 21 Mar 2013 08:57:58 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id d5si5964485oed.57.2013.03.21.08.57.57
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 21 Mar 2013 08:57:58 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of JKantor@lsst.org) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of JKantor@lsst.org) smtp.mail=JKantor@lsst.org
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2LFvs5f009384
+	for <mjuric-lsst@majuric.org>; Thu, 21 Mar 2013 11:57:57 -0400
+Received: from dhcp-24-159.tuc.noao.edu ([140.252.24.159]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 21 Mar 2013 08:57:54 -0700
+Content-Type: multipart/alternative; boundary="Apple-Mail=_67561A43-5EA1-43EF-8BA9-B83E4166CEC0"
+Mime-Version: 1.0 (Mac OS X Mail 6.3 \(1503\))
+Subject: Re: Level 1 data products writeup (draft #1)
+From: Jeffrey P Kantor <jkantor@lsst.org>
+In-Reply-To: <514A7757.3080409@lsst.org>
+Date: Thu, 21 Mar 2013 08:49:22 -0700
+Cc: Jacek Becla <becla@slac.stanford.edu>,
+        Gregory Dubois-Felsmann <gpdf@slac.stanford.edu>,
+        Kian-Tat Lim <ktl@slac.stanford.edu>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Andy Becker <acbecker@gmail.com>, Tim Axelrod <taxelrod@gmail.com>
+Message-Id: <A42BB045-DF0B-42D3-A8E2-4D89D4170549@lsst.org>
+References: <5147F046.8090004@lsst.org> <1ECE17AD-F819-46DD-865A-EFC3C03E6B33@lsst.org> <514A7757.3080409@lsst.org>
+To: Mario Juric <mjuric@lsst.org>
+X-Mailer: Apple Mail (2.1503)
+X-OriginalArrivalTime: 21 Mar 2013 15:57:54.0663 (UTC) FILETIME=[D95FD770:01CE264C]
+
+
+--Apple-Mail=_67561A43-5EA1-43EF-8BA9-B83E4166CEC0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=windows-1252
+
+Hi Mario,
+
+I guess I don't see a big difference between AstroObject, DIAObject, and =
+SSObject in this sense, but I defer to your judgement, since I'm no =
+astronomer.  Anyway, excellent document!
+
+Jeff
+
+On Mar 20, 2013, at 7:58 PM, Mario Juric <mjuric@lsst.org> wrote:
+
+> On 3/20/13 10:21 , Jeffrey Kantor wrote:
+>> Hi Mario,
+>>=20
+>> It is very good and will be a valuable document.  My comments below.
+>> Thanks!
+>>=20
+>> Overall:
+>>=20
+>> I'd go ahead and use AstroObject where you have Object, we'll be =
+using
+>> that term in the other models, might as well introduce it now.  It is
+>> more important where it might be confused with Object in the software
+>> engineering sense, but even in this context, it let's us reserve
+>> "object" for more generic sense of the word.
+>>=20
+>=20
+> I fear the opposite: your average reader (astronomer) will get
+> horrendously confused if we begin using our local UML-ish terminology.
+
+
+--Apple-Mail=_67561A43-5EA1-43EF-8BA9-B83E4166CEC0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=windows-1252
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html =
+charset=3Dwindows-1252"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">Hi =
+Mario,<div><br></div><div>I guess I don't see a big difference between =
+AstroObject, DIAObject, and SSObject in this sense, but I defer to your =
+judgement, since I'm no astronomer. &nbsp;Anyway, excellent =
+document!</div><div><br></div><div>Jeff</div><div><br><div><div>On Mar =
+20, 2013, at 7:58 PM, Mario Juric &lt;<a =
+href=3D"mailto:mjuric@lsst.org">mjuric@lsst.org</a>&gt; wrote:</div><br =
+class=3D"Apple-interchange-newline"><blockquote type=3D"cite"><span =
+style=3D"font-family: Helvetica; font-size: medium; font-style: normal; =
+font-variant: normal; font-weight: normal; letter-spacing: normal; =
+line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: =
+0px; text-transform: none; white-space: normal; widows: 2; word-spacing: =
+0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+display: inline !important; float: none; ">On 3/20/13 10:21 , Jeffrey =
+Kantor wrote:</span><br style=3D"font-family: Helvetica; font-size: =
+medium; font-style: normal; font-variant: normal; font-weight: normal; =
+letter-spacing: normal; line-height: normal; orphans: 2; text-align: =
+-webkit-auto; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: 2; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; "><blockquote type=3D"cite" =
+style=3D"font-family: Helvetica; font-size: medium; font-style: normal; =
+font-variant: normal; font-weight: normal; letter-spacing: normal; =
+line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: =
+0px; text-transform: none; white-space: normal; widows: 2; word-spacing: =
+0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+">Hi Mario,<br><br>It is very good and will be a valuable document. =
+&nbsp;My comments below.<br>Thanks!<br><br>Overall:<br><br>I'd go ahead =
+and use AstroObject where you have Object, we'll be using<br>that term =
+in the other models, might as well introduce it now. &nbsp;It is<br>more =
+important where it might be confused with Object in the =
+software<br>engineering sense, but even in this context, it let's us =
+reserve<br>"object" for more generic sense of the =
+word.<br><br></blockquote><br style=3D"font-family: Helvetica; =
+font-size: medium; font-style: normal; font-variant: normal; =
+font-weight: normal; letter-spacing: normal; line-height: normal; =
+orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; "><span =
+style=3D"font-family: Helvetica; font-size: medium; font-style: normal; =
+font-variant: normal; font-weight: normal; letter-spacing: normal; =
+line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: =
+0px; text-transform: none; white-space: normal; widows: 2; word-spacing: =
+0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+display: inline !important; float: none; ">I fear the opposite: your =
+average reader (astronomer) will get</span><br style=3D"font-family: =
+Helvetica; font-size: medium; font-style: normal; font-variant: normal; =
+font-weight: normal; letter-spacing: normal; line-height: normal; =
+orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: 2; word-spacing: 0px; =
+-webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; "><span =
+style=3D"font-family: Helvetica; font-size: medium; font-style: normal; =
+font-variant: normal; font-weight: normal; letter-spacing: normal; =
+line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: =
+0px; text-transform: none; white-space: normal; widows: 2; word-spacing: =
+0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+display: inline !important; float: none; ">horrendously confused if we =
+begin using our local UML-ish =
+terminology.</span></blockquote></div><br></div></body></html>=
+
+--Apple-Mail=_67561A43-5EA1-43EF-8BA9-B83E4166CEC0--

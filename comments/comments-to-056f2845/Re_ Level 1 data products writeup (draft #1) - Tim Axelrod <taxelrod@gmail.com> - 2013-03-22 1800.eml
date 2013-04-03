@@ -1,0 +1,299 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Fri, 22 Mar 2013 18:00:19 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2N10CTj007032
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Fri, 22 Mar 2013 18:00:13 -0700
+Received: from mail-ve0-f178.google.com (mail-ve0-f178.google.com [209.85.128.178])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2N10CO5009440
+	for <mjuric@majuric.org>; Fri, 22 Mar 2013 21:00:12 -0400
+Received: by mail-ve0-f178.google.com with SMTP id db10so3789173veb.9
+        for <mjuric@majuric.org>; Fri, 22 Mar 2013 18:00:12 -0700 (PDT)
+X-Received: by 10.52.20.177 with SMTP id o17mr4415336vde.17.1364000412047;
+        Fri, 22 Mar 2013 18:00:12 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp104211vem;
+        Fri, 22 Mar 2013 18:00:10 -0700 (PDT)
+X-Received: by 10.60.165.72 with SMTP id yw8mr3874771oeb.7.1364000406618;
+        Fri, 22 Mar 2013 18:00:06 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id s3si3513432oea.54.2013.03.22.18.00.05
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 22 Mar 2013 18:00:06 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of taxelrod@gmail.com) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of taxelrod@gmail.com) smtp.mail=taxelrod@gmail.com;
+       dkim=pass header.i=@gmail.com
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2N105DV007355
+	for <mjuric-lsst@majuric.org>; Fri, 22 Mar 2013 21:00:05 -0400
+Received: from mail-ia0-f177.google.com ([209.85.210.177]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 22 Mar 2013 18:00:04 -0700
+Received: by mail-ia0-f177.google.com with SMTP id w33so962821iag.36
+        for <multiple recipients>; Fri, 22 Mar 2013 18:00:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:x-received:in-reply-to:references:date:message-id
+         :subject:from:to:cc:content-type;
+        bh=Go7+SwYaJqlBp7EyzUM7pkq6fnOEMDgAl+TGpGADGKk=;
+        b=VQ7u7eZZaWSOg/XHtiYgxhsAd8rw0bounnyih6WiiCOHZfhUDQOh68n/1o8W7t5Z+0
+         0jfrI1FaS0FtOo/X8JVU0uLh7vPKyIjNM1DSj1m7sJEQhBARmXk68JW4F5fAOtnpDA7R
+         qRyPn7ove8YmfR9GJGO8Q1xGcAVaEvdgZ9/uqWJqHUjydYuInSzWRIIv0rS8JBoXAJmD
+         kD+gSTQ50kE+pTU/Ts5rFMGtimXoLHMqfDHA+OYk9NSB//9TxaUcs8BM6mwEJtRSarUB
+         HpdMvIin24yLrzZISzDbj9l3MeEht86tgLXr1tb7D7d+S/14S3Hp+SjpQ67cm7qy7uYL
+         B8/g==
+MIME-Version: 1.0
+X-Received: by 10.50.33.177 with SMTP id s17mr6077877igi.45.1364000403899;
+ Fri, 22 Mar 2013 18:00:03 -0700 (PDT)
+Received: by 10.64.126.33 with HTTP; Fri, 22 Mar 2013 18:00:03 -0700 (PDT)
+In-Reply-To: <5147F046.8090004@lsst.org>
+References: <5147F046.8090004@lsst.org>
+Date: Fri, 22 Mar 2013 18:00:03 -0700
+Message-ID: <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+From: Tim Axelrod <taxelrod@gmail.com>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Jacek Becla <becla@slac.stanford.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Kian-Tat Lim <ktl@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@lsst.org>
+Content-Type: multipart/alternative; boundary=f46d04447e058c780c04d88d17d5
+X-OriginalArrivalTime: 23 Mar 2013 01:00:04.0613 (UTC) FILETIME=[C1260B50:01CE2761]
+
+--f46d04447e058c780c04d88d17d5
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hi Mario,
+
+Read it on the plane back from Chicago.  It's good to see some new
+thinking!
+
+I have a few comments.  I haven't read everyone else's comments yet - so
+apologies for any duplications (and, of course, contradictions...)
+
+Tim
+
+p. 4 "DIASources detected on visits taken at diff erent times are
+associated to DIAObjects."  It would be good to say a bit more about the
+association algorithm in the non Solar System case.
+
+p.5 "are analyzed for potential pairs, forming tracks".   If you want to
+adhere to the vocabulary used within MOPS, these would be "tracklets"
+
+p. 6  I'm not completely convinced of the rationale for matching
+DIASource-to-DIAObject, but not DIASource-to-Object.   There is a poor
+man's DIAObject-to-Object match in the DIAObject table, so doesn't that
+couple the up-to-date DB with the DR DB just as tightly?  And in terms of
+the poor man's match, I think having N possible matches is fine, but I
+think it's silly not to pick a "best guess" one, with an algorithm that is
+known. That is the first thing everyone will want to do, so why not do it
+for them?
+
+p. 8  There is already a standard unit for flux that is used very widely in
+astronomy and physics - the Jansky.   I think it is extremely
+counterproductive to invent our own!   Will we define our own units for
+angles and time?!
+
+p.9  Your footnote on the trailed source model brought to mind one of the
+costs of combining snaps at a very early stage of the processing:  one has
+a 180 deg ambiguity in the  direction of trails that have substantial
+length.   MOPS could use this information productively.
+
+p. 10  Where in the processing are you thinking those extinction terms in
+DIASource will be calculated?   The information we have at that point will
+allow us to get a rough extinction measure, but I'm not sure we can
+separate it into gray and non-gray usefully.
+
+p. 14, Section 2.6.  I'm pretty convinced that the postage stamps should be
+sent with the alerts.  If not, there will just be a flood of requests for
+them, because brokers will likely do that automatically.
+
+p. 13  I'm not sure why we're including MOIDs.   I'm guessing this came
+from the solar system collab, but it does puzzle me.  Seems like
+determining them could be a significant computational task, given the
+number of objects we'll have.   It would be good to say why they're there.
+
+p. 17  Section 2.9.   I like the idea of having completely disjoint sets of
+ID's!   I'd argue, though, that we want some kind of map of ID->IAUName for
+each DR, where the IAUName would strive to be a fixed name attached to an
+astrophysical object,   I of course recognize this map can't be perfect,
+and so will everyone else.   But I still claim it would be very useful for
+astronomers.
+
+
+
+
+
+On Mon, Mar 18, 2013 at 9:57 PM, Mario Juric <mjuric@lsst.org> wrote:
+
+> Dear DM crowd (and Zeljko),
+>         Attached to this e-mail you'll find the first draft of a writeup on
+> Level 1 processing and data products. I'm asking for your initial round
+> of comments, preferably by this Friday. Over the weekend, I'll
+> incorporate any commends I receive and would aim to send it for round #2
+> of comments to the Science Council and the Science Collaboration chairs.
+> By the end of the month I (optimistically) hope to have ready part #2 of
+> that document, that deals with Level 2. We're aiming for an external
+> review in late May.
+>
+>         The document is intended to capture at a detailed yet readable and
+> understandable level how we plan to generate L1 products, when, what
+> they will consist of, and how they will be distributed. Our DB team will
+> use it to derive the details of database and schema design, the science
+> teams will use it to verify that LSST plans capture science
+> requirements, and it will be used to populate the UML model to enable
+> requirements tracking and software design consistency checks. It will
+> also be the primary document we will give to our data products
+> reviewers, and it's not inconceivable that we may turn it into a
+> companion to the "Overview Paper".
+>
+>         Please comment on technical feasibility, scientific completeness,
+> clarity, style, etc. At this point, the document is a statement on what
+> I would *like* to be done, not necessarily what we actually *can* do
+> given the resources. There are still many TBDs and TODOs in the text --
+> your thoughts on those would be appreciated. There are some new ideas
+> (e.g., "trailed source model"). There are also some things that were
+> left out wrt. the previous baseline (http://ls.st/wxv) -- please point
+> out those that I should have kept.
+>
+> PS: In case you need it, TeX sources are available at http://ls.st/r7z
+> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+> PPPS: I owe many of you replies to e-mails; I'll do that tomorrow while
+> on the way to FNAL for DES review. I've been largely ignoring e-mail
+> today in order to finish this document.
+>
+> Cheers,
+> --
+> Mario Juric,
+> Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+> Web   :  http://www.cfa.harvard.edu/~mjuric/
+> Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key
+>
+
+--f46d04447e058c780c04d88d17d5
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi Mario,<div><br></div><div>Read it on the plane back from Chicago. =A0It&=
+#39;s good to see some new thinking! =A0</div><div><br></div><div>I have a =
+few comments. =A0I haven&#39;t read everyone else&#39;s comments yet - so a=
+pologies for any duplications (and, of course, contradictions...)</div>
+<div><br></div><div>Tim</div><div><br></div><div>p. 4 &quot;DIASources dete=
+cted on visits taken at diff=0Berent times are associated to DIAObjects.&qu=
+ot; =A0It would be good to say a bit more about the association algorithm i=
+n the non Solar System case.</div>
+<div><br></div><div>p.5 &quot;are analyzed for potential pairs, forming tra=
+cks&quot;. =A0 If you want to adhere to the vocabulary used within MOPS, th=
+ese would be &quot;tracklets&quot;</div><div><br></div><div>p. 6 =A0I&#39;m=
+ not completely convinced of the rationale for matching DIASource-to-DIAObj=
+ect, but not DIASource-to-Object. =A0 There is a poor man&#39;s DIAObject-t=
+o-Object match in the DIAObject table, so doesn&#39;t that couple the up-to=
+-date DB with the DR DB just as tightly? =A0And in terms of the poor man&#3=
+9;s match, I think having N possible matches is fine, but I think it&#39;s =
+silly not to pick a &quot;best guess&quot; one, with an algorithm that is k=
+nown. That is the first thing everyone will want to do, so why not do it fo=
+r them?</div>
+<div><br></div><div>p. 8 =A0There is already a standard unit for flux that =
+is used very widely in astronomy and physics - the Jansky. =A0 I think it i=
+s extremely counterproductive to invent our own! =A0 Will we define our own=
+ units for angles and time?!</div>
+<div><br></div><div>p.9 =A0Your footnote on the trailed source model brough=
+t to mind one of the costs of combining snaps at a very early stage of the =
+processing: =A0one has a 180 deg ambiguity in the =A0direction of trails th=
+at have substantial length. =A0 MOPS could use this information productivel=
+y.</div>
+<div><br></div><div>p. 10 =A0Where in the processing are you thinking those=
+ extinction terms in DIASource will be calculated? =A0 The information we h=
+ave at that point will allow us to get a rough extinction measure, but I&#3=
+9;m not sure we can separate it into gray and non-gray usefully.</div>
+<div><br></div><div>p. 14, Section 2.6. =A0I&#39;m pretty convinced that th=
+e postage stamps should be sent with the alerts. =A0If not, there will just=
+ be a flood of requests for them, because brokers will likely do that autom=
+atically.</div>
+<div><br></div><div>p. 13 =A0I&#39;m not sure why we&#39;re including MOIDs=
+. =A0 I&#39;m guessing this came from the solar system collab, but it does =
+puzzle me. =A0Seems like determining them could be a significant computatio=
+nal task, given the number of objects we&#39;ll have. =A0 It would be good =
+to say why they&#39;re there.</div>
+<div><br></div><div>p. 17 =A0Section 2.9. =A0 I like the idea of having com=
+pletely disjoint sets of ID&#39;s! =A0 I&#39;d argue, though, that we want =
+some kind of map of ID-&gt;IAUName for each DR, where the IAUName would str=
+ive to be a fixed name attached to an astrophysical object, =A0 I of course=
+ recognize this map can&#39;t be perfect, and so will everyone else. =A0 Bu=
+t I still claim it would be very useful for astronomers.</div>
+<div><br></div><div><br></div><div><br></div><div><br><br><div class=3D"gma=
+il_quote">On Mon, Mar 18, 2013 at 9:57 PM, Mario Juric <span dir=3D"ltr">&l=
+t;<a href=3D"mailto:mjuric@lsst.org" target=3D"_blank">mjuric@lsst.org</a>&=
+gt;</span> wrote:<br>
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex">Dear DM crowd (and Zeljko),<br>
+=A0 =A0 =A0 =A0 Attached to this e-mail you&#39;ll find the first draft of =
+a writeup on<br>
+Level 1 processing and data products. I&#39;m asking for your initial round=
+<br>
+of comments, preferably by this Friday. Over the weekend, I&#39;ll<br>
+incorporate any commends I receive and would aim to send it for round #2<br=
+>
+of comments to the Science Council and the Science Collaboration chairs.<br=
+>
+By the end of the month I (optimistically) hope to have ready part #2 of<br=
+>
+that document, that deals with Level 2. We&#39;re aiming for an external<br=
+>
+review in late May.<br>
+<br>
+=A0 =A0 =A0 =A0 The document is intended to capture at a detailed yet reada=
+ble and<br>
+understandable level how we plan to generate L1 products, when, what<br>
+they will consist of, and how they will be distributed. Our DB team will<br=
+>
+use it to derive the details of database and schema design, the science<br>
+teams will use it to verify that LSST plans capture science<br>
+requirements, and it will be used to populate the UML model to enable<br>
+requirements tracking and software design consistency checks. It will<br>
+also be the primary document we will give to our data products<br>
+reviewers, and it&#39;s not inconceivable that we may turn it into a<br>
+companion to the &quot;Overview Paper&quot;.<br>
+<br>
+=A0 =A0 =A0 =A0 Please comment on technical feasibility, scientific complet=
+eness,<br>
+clarity, style, etc. At this point, the document is a statement on what<br>
+I would *like* to be done, not necessarily what we actually *can* do<br>
+given the resources. There are still many TBDs and TODOs in the text --<br>
+your thoughts on those would be appreciated. There are some new ideas<br>
+(e.g., &quot;trailed source model&quot;). There are also some things that w=
+ere<br>
+left out wrt. the previous baseline (<a href=3D"http://ls.st/wxv" target=3D=
+"_blank">http://ls.st/wxv</a>) -- please point<br>
+out those that I should have kept.<br>
+<br>
+PS: In case you need it, TeX sources are available at <a href=3D"http://ls.=
+st/r7z" target=3D"_blank">http://ls.st/r7z</a><br>
+PPS: The document has *not* been spell-checked. Ignore any such mistakes.<b=
+r>
+PPPS: I owe many of you replies to e-mails; I&#39;ll do that tomorrow while=
+<br>
+on the way to FNAL for DES review. I&#39;ve been largely ignoring e-mail<br=
+>
+today in order to finish this document.<br>
+<br>
+Cheers,<br>
+<span class=3D"HOEnZb"><font color=3D"#888888">--<br>
+Mario Juric,<br>
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope<br>
+Web =A0 : =A0<a href=3D"http://www.cfa.harvard.edu/~mjuric/" target=3D"_bla=
+nk">http://www.cfa.harvard.edu/~mjuric/</a><br>
+Phone : =A0<a href=3D"tel:%2B1%20617%20744%209003" value=3D"+16177449003">+=
+1 617 744 9003</a> =A0 =A0 =A0 PGP: ~mjuric/crypto/public.key<br>
+</font></span></blockquote></div><br></div>
+
+--f46d04447e058c780c04d88d17d5--

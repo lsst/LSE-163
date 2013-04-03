@@ -1,0 +1,153 @@
+Message-ID: <514DDB0B.4070106@lsst.org>
+Date: Sat, 23 Mar 2013 11:40:43 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Tim Axelrod <taxelrod@gmail.com>
+CC: Jacek Becla <becla@slac.stanford.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Kian-Tat Lim <ktl@slac.stanford.edu>, Jeffrey Kantor <JKantor@lsst.org>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Andy Becker <acbecker@gmail.com>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Tim Axelrod <taxelrod@lsst.org>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com>
+In-Reply-To: <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/22/13 20:00 , Tim Axelrod wrote:
+> Hi Mario,
+> 
+> Read it on the plane back from Chicago.  It's good to see some new
+> thinking!  
+> 
+> I have a few comments.  I haven't read everyone else's comments yet - so
+> apologies for any duplications (and, of course, contradictions...)
+> 
+> Tim
+> 
+> p. 4 "DIASources detected on visits taken at different times are
+> associated to DIAObjects."  It would be good to say a bit more about the
+> association algorithm in the non Solar System case.
+> 
+
+Will do. What I had in mind was just simple positional association that
+takes errors into account, for both cases. I.e.:
+
+* Predict positions+error ellipses of both stars and asteroids at time
+of observation. In case of stars, use proper motion + paralax, in case
+of SSObjects, the Keplerian orbit. This gives the "instance catalog"
+
+* For all detected SSObjects, given their (Gaussian) error ellipses,
+find the most likely associated source in the instance catalog.
+
+> p.5 "are analyzed for potential pairs, forming tracks".   If you want to
+> adhere to the vocabulary used within MOPS, these would be "tracklets"
+> 
+
+Yep, that was just a mistake.
+
+> p. 6  I'm not completely convinced of the rationale for matching
+> DIASource-to-DIAObject, but not DIASource-to-Object.   There is a poor
+> man's DIAObject-to-Object match in the DIAObject table, so doesn't that
+> couple the up-to-date DB with the DR DB just as tightly?  And in terms
+> of the poor man's match, I think having N possible matches is fine, but
+> I think it's silly not to pick a "best guess" one, with an algorithm
+> that is known. That is the first thing everyone will want to do, so why
+> not do it for them?
+
+Re. the matching, if we do both DIASource->DIAObject and
+DIASource->Object, I'm worried that will lead to confusion as to which
+one to use. Also, while I could think of use cases that required the
+DIASource-DIAObject link, I couldn't come up with any that would need a
+direct DIASource-Object association and that cannot (or should not) be
+done via DIASource->DIAObject->Object lookup.
+
+Re. picking a "best guess", I imagined they'd be sorted on
+nearbyObjectDist so the first one is in some sense the most likely. I'll
+clarify the text. We could go beyond that and compute the most likely
+one taking positional errors into account. Should we?
+
+> 
+> p. 8  There is already a standard unit for flux that is used very widely
+> in astronomy and physics - the Jansky.   I think it is extremely
+> counterproductive to invent our own!   Will we define our own units for
+> angles and time?!
+> 
+
+Zeljko has also commented on this one; I'm happy to multiply maggies by
+the appropriate factor if there's consensus that the fluxes of absolute
+standards are now sufficiently well known to do so.
+
+> p.9  Your footnote on the trailed source model brought to mind one of
+> the costs of combining snaps at a very early stage of the processing:
+>  one has a 180 deg ambiguity in the  direction of trails that have
+> substantial length.   MOPS could use this information productively.
+> 
+
+Ahh good point; I *have* thought about it, but I forgot to add that to
+the text/tables.
+
+The proposal is that for trails whose length is higher than some
+threshold, we go back to the individual snaps and try to measure
+direction of motion. We could "mini-multifit" an extended trail model
+with speed as an added parameter, and all other parameters (length,
+angle) fixed.
+
+> p. 10  Where in the processing are you thinking those extinction terms
+> in DIASource will be calculated?   The information we have at that point
+> will allow us to get a rough extinction measure, but I'm not sure we can
+> separate it into gray and non-gray usefully.
+> 
+
+Honestly, I just carried these over from the previous baseline w/o a
+clear idea how they'd be computed. The feedback was uniformly against
+keeping them.
+
+> p. 14, Section 2.6.  I'm pretty convinced that the postage stamps should
+> be sent with the alerts.  If not, there will just be a flood of requests
+> for them, because brokers will likely do that automatically.
+> 
+
+That was my sense as well, but I wanted to hear from Jacek and K-T first.
+
+> p. 13  I'm not sure why we're including MOIDs.   I'm guessing this came
+> from the solar system collab, but it does puzzle me.  Seems like
+> determining them could be a significant computational task, given the
+> number of objects we'll have.   It would be good to say why they're there.
+> 
+
+MOID, if I understand it correctly, is the distance of closest approach
+of two ellipses that share a focus (in 3D). While there's no analytic
+solution, there are numeric algorithms that don't look too scary (once
+you penetrate the notation). Eg.
+http://www.mathnet.or.kr/mathnet/kms_tex/986160.pdf.
+
+> p. 17  Section 2.9.   I like the idea of having completely disjoint sets
+> of ID's!   I'd argue, though, that we want some kind of map of
+> ID->IAUName for each DR, where the IAUName would strive to be a fixed
+> name attached to an astrophysical object,   I of course recognize this
+> map can't be perfect, and so will everyone else.   But I still claim it
+> would be very useful for astronomers.
+> 
+
+There will be a a 1:1 map between our object IDs and IAU naming
+conventions (e.g., LSSTDR5 JHHMMSS.ss+DDMMSS.s, though I'd prefer to
+promote sanity by using decimal instead of sexagesimal system). We can
+provide a UDF that does the formatting. But this will still change IDs
+from DR to DR.
+
+As for matching objects between releases, and then providing unique
+names to those matches, I'm hoping that someone in the SCs who strongly
+feels about it will come to us with a proposed algorithm :).
+
+Thanks, these were very useful!!,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

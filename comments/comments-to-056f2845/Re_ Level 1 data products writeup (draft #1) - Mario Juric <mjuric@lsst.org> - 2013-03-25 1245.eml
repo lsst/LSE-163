@@ -1,0 +1,54 @@
+Message-ID: <5150A955.5050103@lsst.org>
+Date: Mon, 25 Mar 2013 12:45:25 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Kian-Tat Lim <ktl@slac.stanford.edu>
+CC: Tim Axelrod <taxelrod@gmail.com>, 
+ Jacek Becla <becla@slac.stanford.edu>,
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>, 
+ Jeffrey Kantor <JKantor@lsst.org>,
+ Zeljko Ivezic <ivezic@astro.washington.edu>, 
+ Andy Becker <acbecker@gmail.com>,
+ Robert Lupton the Good <rhl@astro.princeton.edu>, 
+ Tim Axelrod <taxelrod@lsst.org>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com> <514DDB0B.4070106@lsst.org> <20130325172551.GF16425@sccs-ktlim.slac.stanford.edu>
+In-Reply-To: <20130325172551.GF16425@sccs-ktlim.slac.stanford.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/25/13 10:25 , Kian-Tat Lim wrote:
+> Mario,
+> 
+>>> p.9  Your footnote on the trailed source model brought to mind one of
+>>> the costs of combining snaps at a very early stage of the processing:
+>>>  one has a 180 deg ambiguity in the  direction of trails that have
+>>> substantial length.   MOPS could use this information productively.
+>>
+>> Ahh good point; I *have* thought about it, but I forgot to add that to
+>> the text/tables.
+>>
+>> The proposal is that for trails whose length is higher than some
+>> threshold, we go back to the individual snaps and try to measure
+>> direction of motion. We could "mini-multifit" an extended trail model
+>> with speed as an added parameter, and all other parameters (length,
+>> angle) fixed.
+> 
+> 	Hmm.  This means that we can't throw away the snaps once we're
+> finished combining them.  This is a memory hit.  On the other hand, we
+> do have the memory per core projected to grow (slowly) throughout, so
+> this shouldn't be too much of a problem.
+> 
+
+We may need to detect (potential) trails on snaps anyway, so they aren't
+removed as cosmic rays or artifacts. If we do that, we'd only keep the
+pixels within their footprints for subsequent processing.
+
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

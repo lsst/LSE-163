@@ -1,0 +1,132 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 13:38:39 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2KKccIF015398
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 13:38:39 -0700
+Received: from mail-vb0-f49.google.com (mail-vb0-f49.google.com [209.85.212.49])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KKcbjs027740
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 16:38:38 -0400
+Received: by mail-vb0-f49.google.com with SMTP id s24so1395693vbi.22
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 13:38:37 -0700 (PDT)
+X-Received: by 10.220.225.200 with SMTP id it8mr9842156vcb.39.1363811917633;
+        Wed, 20 Mar 2013 13:38:37 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp27207vem;
+        Wed, 20 Mar 2013 13:38:36 -0700 (PDT)
+X-Received: by 10.50.7.231 with SMTP id m7mr2339576iga.0.1363811916124;
+        Wed, 20 Mar 2013 13:38:36 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id 5si5006240igp.22.2013.03.20.13.38.35
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 13:38:36 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of becla@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of becla@slac.stanford.edu) smtp.mail=becla@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KKcYXe026561
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 16:38:34 -0400
+Received: from nospam3.slac.stanford.edu ([134.79.109.10]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 13:38:33 -0700
+Received: from exch-hub2.win.slac.stanford.edu (exch-hub2.slac.stanford.edu [134.79.164.112])
+	by nospam3.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2KKcRIG002399
+	(version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+	Wed, 20 Mar 2013 13:38:27 -0700
+	(envelope-from becla@slac.stanford.edu)
+Received: from EXCH-CLIENT1.win.slac.stanford.edu (2002:864f:6c8d::864f:6c8d)
+ by exch-hub2.win.slac.stanford.edu (2002:864f:a470::864f:a470) with Microsoft
+ SMTP Server (TLS) id 8.3.298.1; Wed, 20 Mar 2013 13:38:27 -0700
+Received: from [134.79.230.242] (134.79.230.242) by email.slac.stanford.edu
+ (134.79.108.141) with Microsoft SMTP Server (TLS) id 8.3.298.1; Wed, 20 Mar
+ 2013 13:38:26 -0700
+Message-ID: <514A1E46.2060902@SLAC.Stanford.EDU>
+Date: Wed, 20 Mar 2013 13:38:30 -0700
+From: Jacek Becla <becla@slac.stanford.edu>
+Organization: SLAC National Accelerator Laboratory
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130308 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+CC: "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        "Lim, Kian-Tat"
+	<ktl@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic
+	<ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        "Robert
+ Lupton the Good" <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <514938A1.9060305@SLAC.Stanford.EDU> <51494C9C.9000304@lsst.org>
+In-Reply-To: <51494C9C.9000304@lsst.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 20 Mar 2013 20:38:33.0945 (UTC) FILETIME=[E3F49C90:01CE25AA]
+
+Mario
+
+> OK. The current baseline schema *has* such denormalized fields, that's
+> why I asked.
+>
+> I'll stick to just listing the non-redundant columns in this document,
+> and will count on you and K-T to denormalize as needed to meet the query
+> response time requirements (once we converge).
+
+Sounds good! The way I see it: the science-oriented document
+like the one you started putting together covers the
+needs without going into any denormalization-type
+optimizations. We do have the reasonable amount of
+optimizations built into the baseline schema, it is
+important from sizing perspective. So yes, the db team
+will deal with denormalizing.
+
+
+>> 6) all columns that represent errors - our standard naming
+>> convention is "Sigma".
+>>
+>
+> Yes, this is a trial balloon to see if there's a strong resistance to
+> changing it. But upon further consideration, I think the suffix should
+> really be "Stdev".
+
+I'll just note that:
+a) we used to have "Err", but people didn't like it,
+    and preferred "Sigma"
+b) switching is easy these days, because we maintain
+    schema in ascii file and have a script to update EA.
+    It was much more painful in the past.
+
+
+> Will do, though I think I'll keep the original example just as a
+> reminder that that is probably the maximum level of additional query
+> complexity that we should aim for. I've recently heard *many* complaints
+> about how queries against the DES database are horrendously complicated
+> to write (too many JOINs), and pleas that we don't do the same.
+
+Well, we don't do the same yet, I think we will once we
+start squeezing more out of our database (to get max speed
+and reproducibility) but hopefully we will be able to
+hide a lot of the ugliness behind qserv.
+
+
+>> 8) page 16. When we replace the up-to-date with the latest
+>> one produced by DR, should we be worrying about killing
+>> reproducibility? Perhaps we have to keep the up-to-date
+>> that we are replacing? - we would have to run it through
+>> spreadsheets to see how much it'd cost.
+>>
+>
+> Yes, we'll need to keep the older versions of up-to-date databases, just
+> as we keep the older DRs.
+
+Then we need to think about issues like what stays on disk.
+This can get expensive rather quickly
+
+Thanks,
+Jacek
+

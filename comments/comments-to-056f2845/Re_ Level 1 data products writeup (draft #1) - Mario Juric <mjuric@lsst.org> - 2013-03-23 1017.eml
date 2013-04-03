@@ -1,0 +1,246 @@
+Message-ID: <514DE3B7.8010109@lsst.org>
+Date: Sat, 23 Mar 2013 12:17:43 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Kian-Tat Lim <ktl@slac.stanford.edu>
+CC: Jacek Becla <becla@slac.stanford.edu>, 
+ "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Andy Becker <acbecker@gmail.com>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <514938A1.9060305@SLAC.Stanford.EDU> <51494C9C.9000304@lsst.org> <20130320172906.GA17256@sccs-ktlim.slac.stanford.edu> <514A8144.4060901@lsst.org> <20130321040612.GA22608@sccs-ktlim.slac.stanford.edu>
+In-Reply-To: <20130321040612.GA22608@sccs-ktlim.slac.stanford.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/20/13 23:06 , Kian-Tat Lim wrote:
+> Mario,
+> 
+>>> What happens if multiple DIAObjects associate to the DIASource?
+>>
+>> Can't happen. We associate a DIASource to only a single DIAObject.
+> 
+> So what's the algorithm for choosing?  Shortest distance, and random if
+> two are the same?
+> 
+
+See the recent reply to Tim, with an addendum that the algorithm will
+have to take care to assign just the best-matched DIASource to a
+DIAObject (even if implemented serially across the entire focal plane,
+this is a concern).
+
+>>> How much information is needed for the update?
+>>
+>> Let's see:
+>> * mean position
+>> * proper motion and parallax (if we choose to fit these)
+>> * mean flux (for that band)
+>> * period and other light-curve characteristics
+>> * nearby objects from DR
+>>
+>> Basically, that's more/less the entire record. To compute it, we may
+>> need all DIASources.
+>>
+>>> Can it be done incrementally?
+>>
+>> Possibly. Depends of the chosen algorithms. It would certainly be
+>> desirable to be able to do so, but I'm not sure if we'll be able to
+>> guarantee it.
+>>
+>> I don't think any of these should be especially computationally
+>> intensive. Most are relatively straight-forward statistics or fits.
+> 
+> The problem is organizing the data so that we can recompute all of these
+> rapidly after association.  We were going to have a special binary dump
+> of the (DIA)Object table to do assoc.  Now we'll either have to query
+> for DIASources (slow) or dump them, too (large).  Bandwidth requirements
+> will increase a lot.
+> 
+
+Once I incorporate all of the comments, we'll need to compute just how
+bad is it.
+
+>>> Can two very close DIASources match to the same DIAObject?  Does it matter
+>>> which one comes first?
+>>
+>> No and probably yes.
+>>
+>> My intuition is that this shouldn't happen often with real astrophysical
+>> objects, but if we have lots of false positives, they may contaminate
+>> the DIAObjects.
+> 
+> How will we prevent multiple DIASources matching to a DIAObject?
+> Determining that another DIASource in the same visit has already matched
+> will be somewhat difficult (especially if at the edge of a
+> parallelization boundary).
+> 
+
+We'll need to figure it out. But it's a generic problem -- no matter
+what we associate with, this will be an issue. Fortunately, we have a
+few smart people at SLAC thinking about these issues ;-).
+
+>>> Where/when does prediction of SSObject location occur?
+>>> Does prediction of fast-moving non-SSObject locations occur?
+>>
+>> Both occur when we build the "instance catalog".
+> 
+> This isn't mentioned anywhere, is it? 
+
+True -- I'll add some text about the instance catalog.
+
+> This catalog is itself a problem,
+> as it needs to be computed for every visit.  I think it may have to be
+> done virtually -- we match with a larger radius to the recorded (mean)
+> RA/dec and then correct using the proper motion to filter the multiple
+> matches to the best one. 
+
+I was imagining one would so something like:
+
+* select all DIAObjects in the field of view, plus some small margin
+(the expected motions are _tiny_, we're talking at most ~tens of pixels).
+
+* compute the expected position -- the proper motion is trivially
+linear; the parallax is a bit more complicated (ellipse), but will be
+negligible for a large majority of all objects. This could (actually,
+*should*) just be an UDF.
+
+This would need to be computed for ~20M objects per field (I got that
+number by dividing 40B objects / 20,000 deg * 10 deg/field), but, again,
+a large majority of those objects would be static (galaxies, distant
+stars). So maybe ~5M that actually move and need the proper motion
+correction, and no more than a ~few hundred thousand (this is just a
+guess!) that are close enough for parallax to matter.
+
+> On the other hand, we may have enough prep
+> time per visit while the camera is doing its job to predict locations
+> for all in-view SSObjects and DIAObjects.
+> 
+
+This should be easy.
+
+>> I've given up on this idea -- a DIASource should be associated to either
+>> a DIAObject or an SSObject.
+> 
+> Which one takes priority?
+> 
+
+Whichever one is a better match (see the description of the algorithm in
+the reply to Tim).
+
+>> Good point. Should we use ccdVisitId?
+> 
+> Probably that would be better.
+> 
+
+Will do.
+
+>>> What about extended variables (comets, asteroid outgassing, light echoes,
+>>> lensed variables)?
+>>
+>> I think it's beyond our scope (the characterization vs. classification
+>> mantra).
+> 
+> This is not about classification.  It's about what measurements we're
+> making.  If we're not characterizing well enough for someone else to do
+> the classification, we'll hear about it.
+> 
+
+I agree. But it needs to be show that the use-cases above a) demand
+extra measurements, and b) are general enough to warrant being included
+in Level 2.
+
+>>> Aren't proper motions necessary for correct association of fast movers?
+>>
+>> They are, but an alternative stance is that that is not time-critical
+>> science and can be done off of DRP data where we will fit the proper
+>> motions.
+>>
+>> I think we should fit it on difference images, since *probably* it's not
+>> that expensive (I'm tempted to claim it's just a linear fit, but
+>> parallax terms don't quite make it so for nearby stars).
+> 
+> But fast movers can be variable/transient as well, and maybe trigger
+> follow-up, no?
+> 
+
+That's OK, isn't it?
+
+I worry more that we'll mistake a fast mover for a subtraction artifact
+(it will look like a dipole).
+
+> 
+>>> How many past DIASources for the DIAObject should be sent?  I think all
+>>> (now that I read p. 15, not sure about precovery data)
+>>
+>> I'd say just the current one. The idea is that the DIAObject will
+>> contain enough information to allow for classification, plus the brokers
+>> will likely have a local copy of our DR+u-t-d databases to provide more
+>> sophisticated filtering.
+>>
+>> That said, if we can afford sending out all DIASources with each alert,
+>> we should consider it.
+> 
+> Hmm.  Not sure that the brokers can maintain a useful-enough copy of the
+> DR+u-t-d databases just based on the alerts.  And any ad hoc replication
+> system is bound to get out of sync and cause problems.
+> 
+> It looks like you're requiring us to have all the DIASources anyway to
+> update the DIAObject, so we might as well send them.
+> 
+
+This would likely be an optimal solution, assuming we have the bandwidth.
+
+>>> 9 months of new DIASources may not match well with reprocessed DIAObjects
+>>
+>> They will get matched to whatever DIAObjects are there, and those that
+>> have no match will create new ones. It's exactly the same procedure that
+>> would happen if we magically had the reprocessed DR database ready in a
+>> day so that no catch-up was needed.
+> 
+> OIC.  We use the detections/measurements but not the ids from the
+> replayed DIASources.  Yes, that's OK.
+> 
+> There's another issue, though: which template?  The reprocessed
+> DIAObjects may have used a newer/better template than the replayed ones.
+> Pixel-level reprocessing could use the same template as the reprocessed.
+> 
+
+Agreed -- maintaining this consistency is a driver for pixel-level
+reprocessing, though in practice I don't think it's that much of a
+problem (unless we've really screwed up the templates in the prior DR
+and want to switch ASAP).
+
+>>> New releases of u-t-d DB may also have new columns
+>>
+>> So you're worried that we couldn't simply replay the new DIASources
+>> because of that? Good point.
+> 
+> No, I wasn't, but that is an issue, too.
+> 
+
+I'm starting to think that this is a real reason why we'd just simply
+want to pixel-reprocess the updates.
+
+>> Do we have enough computing to catch up on pixel-level? I think that
+>> would roughly ~double the diffim processing budget for DR1/DR2, becoming
+>> progressively easier with every subsequent release.
+> 
+> It's not in the model now, but we probably have enough.
+> 
+
+I'll make it the "new proposed baseline", and if it turns out we don't
+have enough, we can fall back on catalog-level replay and figure out a
+workaround for when new columns are added.
+
+Thanks!,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

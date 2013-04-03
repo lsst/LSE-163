@@ -1,0 +1,77 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 14:04:20 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2KL4J2Y018713
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 14:04:20 -0700
+Received: from mail-ve0-f180.google.com (mail-ve0-f180.google.com [209.85.128.180])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KL4Jod011539
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 17:04:19 -0400
+Received: by mail-ve0-f180.google.com with SMTP id jz10so954851veb.11
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 14:04:19 -0700 (PDT)
+X-Received: by 10.52.24.114 with SMTP id t18mr8416018vdf.62.1363813459284;
+        Wed, 20 Mar 2013 14:04:19 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp27875vem;
+        Wed, 20 Mar 2013 14:04:18 -0700 (PDT)
+X-Received: by 10.42.203.68 with SMTP id fh4mr14512866icb.36.1363813457550;
+        Wed, 20 Mar 2013 14:04:17 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id uy6si5052614icb.82.2013.03.20.14.04.17
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 14:04:17 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KL4Gnf011459
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 17:04:16 -0400
+Received: from nospam1.slac.stanford.edu ([134.79.18.81]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 14:04:15 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam1.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2KL47rQ029070
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 20 Mar 2013 14:04:08 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id AF4931F7BD; Wed, 20 Mar 2013 14:04:07 -0700 (PDT)
+Date: Wed, 20 Mar 2013 14:04:07 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Jacek Becla <becla@slac.stanford.edu>
+Cc: Mario Juric <mjuric@lsst.org>,
+        "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+Message-ID: <20130320210407.GS17256@sccs-ktlim.slac.stanford.edu>
+References: <5147F046.8090004@lsst.org>
+ <514938A1.9060305@SLAC.Stanford.EDU>
+ <51494C9C.9000304@lsst.org>
+ <514A1E46.2060902@SLAC.Stanford.EDU>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <514A1E46.2060902@SLAC.Stanford.EDU>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 20 Mar 2013 21:04:16.0042 (UTC) FILETIME=[7B1DF0A0:01CE25AE]
+
+> >Yes, we'll need to keep the older versions of up-to-date databases, just
+> >as we keep the older DRs.
+> 
+> Then we need to think about issues like what stays on disk.
+> This can get expensive rather quickly
+
+	Yes, keeping DIAObject updates is not too bad, but keeping 10 or
+11 releases of the entire up-to-date database is (around) 5X the
+storage.  Still, it's just some disk space...
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu

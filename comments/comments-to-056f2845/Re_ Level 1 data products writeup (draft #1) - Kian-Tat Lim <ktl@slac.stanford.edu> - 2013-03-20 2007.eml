@@ -1,0 +1,84 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 20:08:07 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2L385gZ000893
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 20:08:06 -0700
+Received: from mail-ve0-f173.google.com (mail-ve0-f173.google.com [209.85.128.173])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2L385AA023957
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 23:08:05 -0400
+Received: by mail-ve0-f173.google.com with SMTP id oz10so2087714veb.32
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 20:08:05 -0700 (PDT)
+X-Received: by 10.58.233.210 with SMTP id ty18mr11179369vec.46.1363835285004;
+        Wed, 20 Mar 2013 20:08:05 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp36954vem;
+        Wed, 20 Mar 2013 20:08:04 -0700 (PDT)
+X-Received: by 10.60.60.196 with SMTP id j4mr1455712oer.39.1363835282783;
+        Wed, 20 Mar 2013 20:08:02 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id e2si4145671obb.24.2013.03.20.20.08.01
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 20:08:02 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2L380UD023684
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 23:08:01 -0400
+Received: from nospam1.slac.stanford.edu ([134.79.18.81]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 20:07:58 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam1.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2L37n5d028635
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 20 Mar 2013 20:07:49 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id 871321F7BD; Wed, 20 Mar 2013 20:07:49 -0700 (PDT)
+Date: Wed, 20 Mar 2013 20:07:49 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Jacek Becla <becla@slac.stanford.edu>,
+        "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+Message-ID: <20130321030749.GC21841@sccs-ktlim.slac.stanford.edu>
+References: <5147F046.8090004@lsst.org>
+ <514938A1.9060305@SLAC.Stanford.EDU>
+ <51494C9C.9000304@lsst.org>
+ <514A1E46.2060902@SLAC.Stanford.EDU>
+ <20130320210407.GS17256@sccs-ktlim.slac.stanford.edu>
+ <514A250F.3000206@lsst.org>
+ <20130320211045.GV17256@sccs-ktlim.slac.stanford.edu>
+ <514A72AB.5070400@lsst.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <514A72AB.5070400@lsst.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 21 Mar 2013 03:07:58.0364 (UTC) FILETIME=[4A3C05C0:01CE25E1]
+
+Mario,
+
+> Re. DR databases -- when you say "roll off to tape", that means that
+> (for example), once DR3 is out, DR1 won't be query-able any more (but
+> still available as a bulk download)? (sorry, I know I should know these
+> things).
+
+	Sort of.  LDM-141 (storage estimates) dbData sheet F121:I134
+shows that we only keep DR1, the latest DR (N), and DR N-1 on disk at
+any given time.  Retrieving database data from tape is not currently a
+documented external interface.  "Bulk download" of a database is not a
+very well-defined interface, either.
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu

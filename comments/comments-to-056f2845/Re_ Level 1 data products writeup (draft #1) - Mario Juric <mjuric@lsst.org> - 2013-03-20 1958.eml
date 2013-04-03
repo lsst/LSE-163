@@ -1,0 +1,155 @@
+Message-ID: <514A7757.3080409@lsst.org>
+Date: Wed, 20 Mar 2013 21:58:31 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Jeffrey Kantor <jkantor@lsst.org>
+CC: Jacek Becla <becla@slac.stanford.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Kian-Tat Lim <ktl@slac.stanford.edu>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Robert Lupton the Good <rhl@astro.princeton.edu>, 
+ Andy Becker <acbecker@gmail.com>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <1ECE17AD-F819-46DD-865A-EFC3C03E6B33@lsst.org>
+In-Reply-To: <1ECE17AD-F819-46DD-865A-EFC3C03E6B33@lsst.org>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+
+On 3/20/13 10:21 , Jeffrey Kantor wrote:
+> Hi Mario,
+> 
+> It is very good and will be a valuable document.  My comments below.
+>  Thanks!
+> 
+> Overall:
+> 
+> I'd go ahead and use AstroObject where you have Object, we'll be using
+> that term in the other models, might as well introduce it now.  It is
+> more important where it might be confused with Object in the software
+> engineering sense, but even in this context, it let's us reserve
+> "object" for more generic sense of the word.
+> 
+
+I fear the opposite: your average reader (astronomer) will get
+horrendously confused if we begin using our local UML-ish terminology.
+
+> pp. 2, sec 1.1:
+> 
+> I found myself having to be careful distinguishing between DIAObject and
+> Object while reading.  It's a bit of a catch-22 in having to describe
+> Level 1 and Level 2 separately when introducing both.  I think it would
+> help people reading later in sections 2.1, 2.2 if this introductory
+> section at least list the Level 1 and Level 2 data products that you
+> describe in detail later.  It should be clear right up front that these
+> are different things.  I realize there is a "document flow" issue, but
+> it feels that you can do this at a summary level first, then go into
+> Level 1 and Level 2 in detail as you have now. Also, you introduce the
+> two types of image analyses in the reverse numerical order to the
+> "Level" of their data products.  Here is my suggestion for a revised 1.1:
+> 
+...[snip]...
+>
+
+Thanks! I'll incorporate these.
+
+
+> 
+> pp. 4 section 2.1 and in general:
+> 
+> I would recommend avoiding mentioning specific Pipelines (e.g.
+> Association Pipeline) and in the same sense as our use cases, just talk
+> about "processing" i.e. association processing.  This is because, over
+> time, our notion of what processing occurs in what pipelines has
+> evolved, and may evolve again.  This would make the document insensitive
+> to such changes.
+> 
+
+Agreed.
+
+> pp. 4, section 2.2:
+> 
+> Avoid use of "snaps" or define.
+> 
+
+I'll define.
+
+> Use of "up-to-date database" needs forward reference to section 2.4 for
+> definition.
+> 
+
+Agreed. I should probably add a glossary at the end.
+
+> pp. 5, section 2.2:
+> 
+> Define "Data Release database"
+> 
+
+Will do, somewhere in the introduction.
+
+> #8 uses "payload" and "packet" to mean the same thing
+> 
+
+I need to clarify these.
+
+> pp. 8, section 2.5 and subsections:
+> 
+> This enumeration of all fields works for up-date-database where there
+> aren't many columns.  When you get to (Astro)Object table it has so many
+> columns this may be unwieldy in a document.  Consider moving to appendix.
+> 
+
+I'd prefer to keep it there, since it kind of is the core of the
+document. That's what I want the readers to comment on -- is everything
+that's supposed to be in that table really there.
+
+There's an option of switching the table into landscape mode, which may
+help.
+
+> I assume notes regarding what was removed, added, will be suppressed in
+> document to Science Collaborations.
+> 
+
+Eventually yes, but I'd prefer not to right now, at least while it's
+being distributed only to a limited subset of the SCs (the collab. chairs).
+
+It's very valuable to keep and show our evolution of thinking about the
+database, and the rationale for keeping/removing columns.
+
+> pp. 15, footnote 24
+> 
+> I believe this was requested for a 30 day buffer by Chris Smith a while back
+> 
+
+Yes, I recall us planning to keep the last ~30 days of images (calexps)
+cached on disk -- someone who knows the sizing model please confirm.
+
+If that's the case, then it's not a problem.
+
+> 
+> pp. 17, section 2.9
+> 
+> I believe EPO asked for a "matching service" to match IDs from one DR to
+> another at the last AHM, but we declined to provide it, leaving them to
+> do so.  You or K-T may recall more details.
+> 
+
+Depending on how complicated one wants to make it, it can be very simple
+(e.g., just provide a positional match within some matching radius), or
+very complicated (use proper motions, colors, morphology, uncertanties,
+the whole kitchen sink, to try to come up with as correct linkage as
+possible).
+
+The simple positional match is relatively straightforward and should be
+easy to provide. I wouldn't want to promise anything beyond that. And
+I'm not touching the discussion about whether or how to assign IAU
+identifiers with a 64 gigaparsec pole :).
+
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

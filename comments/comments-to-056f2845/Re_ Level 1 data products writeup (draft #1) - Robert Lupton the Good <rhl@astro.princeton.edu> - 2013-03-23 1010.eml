@@ -1,0 +1,92 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Sun, 24 Mar 2013 03:35:37 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2OAZR8K009592
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Sun, 24 Mar 2013 03:35:35 -0700
+Received: from mail-vc0-f172.google.com (mail-vc0-f172.google.com [209.85.220.172])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2OAZPkg022286
+	for <mjuric@majuric.org>; Sun, 24 Mar 2013 06:35:25 -0400
+Received: by mail-vc0-f172.google.com with SMTP id hr11so4127965vcb.17
+        for <mjuric@majuric.org>; Sun, 24 Mar 2013 03:35:25 -0700 (PDT)
+X-Received: by 10.52.27.138 with SMTP id t10mr8924604vdg.59.1364121325428;
+        Sun, 24 Mar 2013 03:35:25 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp3116vem;
+        Sun, 24 Mar 2013 03:35:24 -0700 (PDT)
+X-Received: by 10.60.171.167 with SMTP id av7mr7371348oec.77.1364121324012;
+        Sun, 24 Mar 2013 03:35:24 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id ni10si7080563obc.37.2013.03.24.03.35.23
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Sun, 24 Mar 2013 03:35:23 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of rhl@astro.princeton.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of rhl@astro.princeton.edu) smtp.mail=rhl@astro.princeton.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2OAZM8k022215
+	for <mjuric-lsst@majuric.org>; Sun, 24 Mar 2013 06:35:22 -0400
+Received: from mail.astro.princeton.edu ([128.112.24.221]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 24 Mar 2013 03:35:21 -0700
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.astro.princeton.edu (Postfix) with ESMTP id BE57A1BC009BC;
+	Sun, 24 Mar 2013 06:35:20 -0400 (EDT)
+X-Virus-Scanned: amavisd-new at astro.princeton.edu
+Received: from mail.astro.princeton.edu ([127.0.0.1])
+	by localhost (kay.astro.princeton.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id kPjKIat2GpiA; Sun, 24 Mar 2013 06:35:19 -0400 (EDT)
+X-Submitted: to mail.astro.princeton.edu (using TLSv1 with cipher AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: rhl)
+	 with ESMTP;
+	Sun, 24 Mar 2013 06:35:19 -0400 (EDT)
+Subject: Re: Level 1 data products writeup (draft #1)
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+From: Robert Lupton the Good <rhl@astro.princeton.edu>
+In-Reply-To: <AC1F8509-78FA-4B0B-A6D1-3606D0013461@astro.washington.edu>
+Date: Sat, 23 Mar 2013 13:10:42 -0400
+Cc: Tim Axelrod <taxelrod@gmail.com>, Mario Juric <mjuric@lsst.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BE47D5A2-0C68-4F92-A7C8-F6722D775D79@astro.princeton.edu>
+References: <5147F046.8090004@lsst.org> <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com> <AC1F8509-78FA-4B0B-A6D1-3606D0013461@astro.washington.edu>
+To: Zeljko Ivezic <ivezic@astro.washington.edu>
+X-Mailer: Apple Mail (2.1283)
+X-OriginalArrivalTime: 24 Mar 2013 10:35:21.0549 (UTC) FILETIME=[49423FD0:01CE287B]
+
+>> p. 8  There is already a standard unit for flux that is used very =
+widely in astronomy and physics - the Jansky. =20
+>=20
+> I haven't fully digested this document yet, nor comments by others, =
+but here I fully
+> agree with Tim. Maggies are the result of not believing in absolute =
+calibration.=20
+> Luptitudes are the result of being unable to carry negative fluxes. =
+Both are=20
+> obsolete by now in my opinion. I hope Robert agrees?=20
+
+As you well know, the choice of Maggies v. Jy depends on how well you =
+think we know the calibration.  If you think that the Maggies are on an =
+absolute scale, then yes, we should use Jy instead (for an assumed SED, =
+presumably the same flat choice as for AB mags).  If you don't think =
+that we know how to do the transformation reliably, we should Maggies as =
+the flux unit, and quote our current best estimate of the correction to =
+Jy.  Our zero points will also have errors of course, so the values in =
+Maggies will also be subject to change, but I think separating the two =
+problems makes sense.
+
+asinh mags solve a different problem.  If you want to use a cut like (g =
+- r) to represent a flux ratio you need to use a logarithmic scale.  If =
+it's still true that databases cannot optimise queries involving ratios, =
+then we may want to use magnitudes in the DB.  If we do, I think an =
+asinh magnitude is still a good idea as negative fluxes are a reality.  =
+You should have a UDF to return a linear unit, of course.
+
+Sorry.
+						R
+

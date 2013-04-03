@@ -1,0 +1,41 @@
+Message-ID: <514A250F.3000206@lsst.org>
+Date: Wed, 20 Mar 2013 16:07:27 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Kian-Tat Lim <ktl@slac.stanford.edu>
+CC: Jacek Becla <becla@slac.stanford.edu>, 
+ "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Andy Becker <acbecker@gmail.com>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <514938A1.9060305@SLAC.Stanford.EDU> <51494C9C.9000304@lsst.org> <514A1E46.2060902@SLAC.Stanford.EDU> <20130320210407.GS17256@sccs-ktlim.slac.stanford.edu>
+In-Reply-To: <20130320210407.GS17256@sccs-ktlim.slac.stanford.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/20/13 16:04 , Kian-Tat Lim wrote:
+>>> Yes, we'll need to keep the older versions of up-to-date databases, just
+>>> as we keep the older DRs.
+>>
+>> Then we need to think about issues like what stays on disk.
+>> This can get expensive rather quickly
+> 
+> 	Yes, keeping DIAObject updates is not too bad, but keeping 10 or
+> 11 releases of the entire up-to-date database is (around) 5X the
+> storage.  Still, it's just some disk space...
+> 
+
+Note that the DIAObject/DIASource/SSObject/etc. tables are also a part
+of the DR, so only the extra ~1 year of updates are unique.
+
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

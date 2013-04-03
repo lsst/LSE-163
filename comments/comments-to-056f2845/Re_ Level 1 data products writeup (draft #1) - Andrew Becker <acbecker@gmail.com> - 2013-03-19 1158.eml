@@ -1,0 +1,312 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Tue, 19 Mar 2013 11:58:50 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2JIwmBx008154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Tue, 19 Mar 2013 11:58:49 -0700
+Received: from mail-vb0-f44.google.com (mail-vb0-f44.google.com [209.85.212.44])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2JIwmJM009536
+	for <mjuric@majuric.org>; Tue, 19 Mar 2013 14:58:48 -0400
+Received: by mail-vb0-f44.google.com with SMTP id fr13so560566vbb.3
+        for <mjuric@majuric.org>; Tue, 19 Mar 2013 11:58:48 -0700 (PDT)
+X-Received: by 10.52.24.114 with SMTP id t18mr3369363vdf.62.1363719528034;
+        Tue, 19 Mar 2013 11:58:48 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp67508vem;
+        Tue, 19 Mar 2013 11:58:46 -0700 (PDT)
+X-Received: by 10.50.195.134 with SMTP id ie6mr2735950igc.6.1363719526303;
+        Tue, 19 Mar 2013 11:58:46 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id y1si2423232igb.12.2013.03.19.11.58.45
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 19 Mar 2013 11:58:46 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of acbecker@gmail.com) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of acbecker@gmail.com) smtp.mail=acbecker@gmail.com;
+       dkim=pass header.i=@gmail.com
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2JIwjZb009388
+	for <mjuric-lsst@majuric.org>; Tue, 19 Mar 2013 14:58:45 -0400
+Received: from mail-da0-f44.google.com ([209.85.210.44]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 19 Mar 2013 11:58:44 -0700
+Received: by mail-da0-f44.google.com with SMTP id z20so481636dae.31
+        for <mjuric@lsst.org>; Tue, 19 Mar 2013 11:58:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:subject
+         :references:in-reply-to:content-type;
+        bh=Dab0YDFjp7Kkw6k6S3O6ha6ptMARBcU3nJi13wT6HQI=;
+        b=vCt7rUv8lAOrqXBtNbQpSaRYEWnmaLsKbO5SbPNaxI9y2wIGqq5+PvbH6TMypwc/+u
+         ObNc1QQWyPIZHBiSCEEN/GTwqUSBGk3Q50HDXCGbk11isIy/vHLbbF/E6mUsxH9NIrgR
+         CwQ0x1do1nsntyrLPmI8ARrWZfNft+jhb51E4h84kIu1Dl6unYkpwgAINg5lCBUR0QUh
+         LCnRd77mYe469aikkUiFc8fJRC9YNBtKC+vMtPeWoxfExvPJd7P244WuVN4CapOpqyke
+         GxfnBfRBY4sKDCr37kKZ4135fj08kWksjQTgrgnZI7MAhbEit+9hlTElCyD82LBqvCCN
+         i1qw==
+X-Received: by 10.68.52.69 with SMTP id r5mr4619479pbo.145.1363719523970;
+        Tue, 19 Mar 2013 11:58:43 -0700 (PDT)
+Received: from darkstar.astro.washington.edu (darkstar.astro.washington.edu. [128.208.190.119])
+        by mx.google.com with ESMTPS id fc8sm13660644pad.21.2013.03.19.11.58.42
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Tue, 19 Mar 2013 11:58:43 -0700 (PDT)
+Message-ID: <5148B561.3020602@gmail.com>
+Date: Tue, 19 Mar 2013 11:58:41 -0700
+From: Andrew Becker <acbecker@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org>
+In-Reply-To: <5147F046.8090004@lsst.org>
+Content-Type: multipart/alternative;
+ boundary="------------030105090105020105000003"
+X-OriginalArrivalTime: 19 Mar 2013 18:58:44.0607 (UTC) FILETIME=[C79E68F0:01CE24D3]
+
+This is a multi-part message in MIME format.
+--------------030105090105020105000003
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi Mario - My comments are:
+
+  * I would remove the "if at all" from the coupling of up-to-date database to data release 
+database. People will truly want/need this, so we might as well do it.
+
+* DiaSource table will not necessarily have sky, as the difference images have no sky.
+
+  * SNR = of detection, or of (Psf) measurement?
+
+* remove trailWidth. I don't see why we don't forward model a line convolved withthe Psf. Should 
+write a paper on that...
+
+  * There is value in extendednessof DiaSources (in particular, for recognizing comets)
+
+  * Shouldn't H,G beper-filterfor SSObject?  No point in taking our observations to V-band...
+
+  * Define the process of arriving at the "limited number" of DiaSources that have precovery forced 
+phot. E.g. they are new.
+
+  * I presume that we will make new templates during Data Release productions. This will yield an 
+entirely new set of difference images. Also, do we plan on doing amp- or sensor-level diffim in 
+nightly processing? If amp-level, specifify that the data release diffims will be different in that 
+they will likely be sensor-level.
+
+
+Andy
+
+
+
+On 03/18/13 21:57, Mario Juric wrote:
+> Dear DM crowd (and Zeljko),
+> 	Attached to this e-mail you'll find the first draft of a writeup on
+> Level 1 processing and data products. I'm asking for your initial round
+> of comments, preferably by this Friday. Over the weekend, I'll
+> incorporate any commends I receive and would aim to send it for round #2
+> of comments to the Science Council and the Science Collaboration chairs.
+> By the end of the month I (optimistically) hope to have ready part #2 of
+> that document, that deals with Level 2. We're aiming for an external
+> review in late May.
+>
+> 	The document is intended to capture at a detailed yet readable and
+> understandable level how we plan to generate L1 products, when, what
+> they will consist of, and how they will be distributed. Our DB team will
+> use it to derive the details of database and schema design, the science
+> teams will use it to verify that LSST plans capture science
+> requirements, and it will be used to populate the UML model to enable
+> requirements tracking and software design consistency checks. It will
+> also be the primary document we will give to our data products
+> reviewers, and it's not inconceivable that we may turn it into a
+> companion to the "Overview Paper".
+>
+> 	Please comment on technical feasibility, scientific completeness,
+> clarity, style, etc. At this point, the document is a statement on what
+> I would *like* to be done, not necessarily what we actually *can* do
+> given the resources. There are still many TBDs and TODOs in the text --
+> your thoughts on those would be appreciated. There are some new ideas
+> (e.g., "trailed source model"). There are also some things that were
+> left out wrt. the previous baseline (http://ls.st/wxv) -- please point
+> out those that I should have kept.
+>
+> PS: In case you need it, TeX sources are available at http://ls.st/r7z
+> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+> PPPS: I owe many of you replies to e-mails; I'll do that tomorrow while
+> on the way to FNAL for DES review. I've been largely ignoring e-mail
+> today in order to finish this document.
+>
+> Cheers,
+
+
+--------------030105090105020105000003
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    <font size="+1"><tt>Hi Mario - My comments are:<br>
+        <br>
+        <font size="+1">&nbsp;* I would remove the "if at all" from the <font
+            size="+1">coup<font size="+1">ling of up-to-date database to
+              <font size="+1">data release database.&nbsp; <font size="+1">People
+                  will truly want/need this, so we might as well do it.<br>
+                  <font size="+1"><br>
+                    <font size="+1">&nbsp;<font size="+1">* DiaSource table
+                        will not necessarily have sky, <font size="+1">as
+                          t</font>he difference images have no sky<font
+                          size="+1">.&nbsp; <font size="+1"><font size="+1"></font></font><br>
+                          <br>
+                          <font size="+1">&nbsp;* <font size="+1">SNR = of
+                              detection, or of (Psf) measurement?<br>
+                              <font size="+1">&nbsp;<br>
+                                <font size="+1">&nbsp;<font size="+1">*
+                                    remove <font size="+1">trailWidth.&nbsp;
+                                      I don't see why we don't forward
+                                      model a line <font size="+1">convolved
+                                        with<font size="+1"> the Psf.&nbsp;
+                                          Shou<font size="+1">ld</font>
+                                          write a p<font size="+1">aper
+                                            on that...<br>
+                                            <br>
+                                            <font size="+1">&nbsp;* There is
+                                              value in extendedn<font
+                                                size="+1">ess<font
+                                                  size="+1"> of DiaSo<font
+                                                    size="+1">urces (in
+                                                    particular, for
+                                                    recognizing comets)<br>
+                                                    <br>
+                                                    <font size="+1">&nbsp;*
+                                                      Shouldn't <font
+                                                        size="+1">H,<font
+                                                          size="+1">G <font
+                                                          size="+1">be<font
+                                                          size="+1">
+                                                          per-filter<font
+                                                          size="+1"> for
+                                                          SSObject?&nbsp; N<font
+                                                          size="+1">o
+                                                          point i<font
+                                                          size="+1">n
+                                                          takin<font
+                                                          size="+1">g
+                                                          our
+                                                          observations
+                                                          to V-<font
+                                                          size="+1">band...<br>
+                                                          <br>
+                                                          <font
+                                                          size="+1">&nbsp;*
+                                                          Define the
+                                                          process of
+                                                          arriving at <font
+                                                          size="+1">the
+                                                          </font>"limited
+                                                          number" of D<font
+                                                          size="+1">iaSources
+                                                          that have pre<font
+                                                          size="+1">covery
+                                                          forced phot.</font></font></font>&nbsp;
+                                                          E.g. they are
+                                                          new.<br>
+                                                          <br>
+                                                          <font
+                                                          size="+1">&nbsp;* I
+                                                          presume that
+                                                          we will make
+                                                          new t<font
+                                                          size="+1">emplates
+                                                          during Data
+                                                          Release pro<font
+                                                          size="+1">ductions.&nbsp;
+                                                          This will
+                                                          yield <font
+                                                          size="+1">an e<font
+                                                          size="+1">ntirely</font>
+                                                          new set of
+                                                          difference
+                                                          images</font></font></font>.&nbsp;
+                                                          Also, do we
+                                                          plan on doing
+                                                          amp- or <font
+                                                          size="+1">sensor-level
+                                                          diffim in
+                                                          nightly
+                                                          processing?&nbsp;&nbsp;
+                                                          If amp-level,
+                                                          specifi<font
+                                                          size="+1">fy
+                                                          that the data
+                                                          release
+                                                          diffims will
+                                                          be different
+                                                          in <font
+                                                          size="+1">that
+                                                          t<font
+                                                          size="+1">hey
+                                                          will <font
+                                                          size="+1">likely
+                                                          be
+                                                          sensor-level.<br>
+                                                          <br>
+                                                          <font
+                                                          size="+1"><br>
+                                                          <font
+                                                          size="+1">Andy<br>
+                                                          <br>
+                                                          <br>
+                                                          </font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font></font><br>
+        </font></tt></font>
+    <div class="moz-cite-prefix">On 03/18/13 21:57, Mario Juric wrote:<br>
+    </div>
+    <blockquote cite="mid:5147F046.8090004@lsst.org" type="cite">
+      <pre wrap="">Dear DM crowd (and Zeljko),
+	Attached to this e-mail you'll find the first draft of a writeup on
+Level 1 processing and data products. I'm asking for your initial round
+of comments, preferably by this Friday. Over the weekend, I'll
+incorporate any commends I receive and would aim to send it for round #2
+of comments to the Science Council and the Science Collaboration chairs.
+By the end of the month I (optimistically) hope to have ready part #2 of
+that document, that deals with Level 2. We're aiming for an external
+review in late May.
+
+	The document is intended to capture at a detailed yet readable and
+understandable level how we plan to generate L1 products, when, what
+they will consist of, and how they will be distributed. Our DB team will
+use it to derive the details of database and schema design, the science
+teams will use it to verify that LSST plans capture science
+requirements, and it will be used to populate the UML model to enable
+requirements tracking and software design consistency checks. It will
+also be the primary document we will give to our data products
+reviewers, and it's not inconceivable that we may turn it into a
+companion to the "Overview Paper".
+
+	Please comment on technical feasibility, scientific completeness,
+clarity, style, etc. At this point, the document is a statement on what
+I would *like* to be done, not necessarily what we actually *can* do
+given the resources. There are still many TBDs and TODOs in the text --
+your thoughts on those would be appreciated. There are some new ideas
+(e.g., "trailed source model"). There are also some things that were
+left out wrt. the previous baseline (<a class="moz-txt-link-freetext" href="http://ls.st/wxv">http://ls.st/wxv</a>) -- please point
+out those that I should have kept.
+
+PS: In case you need it, TeX sources are available at <a class="moz-txt-link-freetext" href="http://ls.st/r7z">http://ls.st/r7z</a>
+PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+PPPS: I owe many of you replies to e-mails; I'll do that tomorrow while
+on the way to FNAL for DES review. I've been largely ignoring e-mail
+today in order to finish this document.
+
+Cheers,
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------030105090105020105000003--

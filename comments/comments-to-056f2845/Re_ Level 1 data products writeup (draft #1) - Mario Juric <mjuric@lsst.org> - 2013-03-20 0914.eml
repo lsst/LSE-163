@@ -1,0 +1,137 @@
+Message-ID: <5149E064.9060008@lsst.org>
+Date: Wed, 20 Mar 2013 11:14:28 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Jeffrey Kantor <jkantor@lsst.org>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <1ECE17AD-F819-46DD-865A-EFC3C03E6B33@lsst.org>
+In-Reply-To: <1ECE17AD-F819-46DD-865A-EFC3C03E6B33@lsst.org>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+
+On 3/20/13 10:21 , Jeffrey Kantor wrote:
+> Hi Mario,
+> 
+> It is very good and will be a valuable document.  My comments below.
+
+Hi Jeff,
+	When I reply to these, is it OK o CC it to everyone? I'm trying to keep
+everyone informed to avoid repetition.
+
+- M.
+
+>  Thanks!
+> 
+> Overall:
+> 
+> I'd go ahead and use AstroObject where you have Object, we'll be using
+> that term in the other models, might as well introduce it now.  It is
+> more important where it might be confused with Object in the software
+> engineering sense, but even in this context, it let's us reserve
+> "object" for more generic sense of the word.
+> 
+> pp. 2, sec 1.1:
+> 
+> I found myself having to be careful distinguishing between DIAObject and
+> Object while reading.  It's a bit of a catch-22 in having to describe
+> Level 1 and Level 2 separately when introducing both.  I think it would
+> help people reading later in sections 2.1, 2.2 if this introductory
+> section at least list the Level 1 and Level 2 data products that you
+> describe in detail later.  It should be clear right up front that these
+> are different things.  I realize there is a "document flow" issue, but
+> it feels that you can do this at a summary level first, then go into
+> Level 1 and Level 2 in detail as you have now. Also, you introduce the
+> two types of image analyses in the reverse numerical order to the
+> "Level" of their data products.  Here is my suggestion for a revised 1.1:
+> 
+> 1.1 Level 1 and 2 Data Products
+> 
+> LSST Data Management will perform two, somewhat overlapping in
+> scientific intent, types of image analyses:
+> 
+>  1.
+> 
+>     Analysis of difference images, with the goal of detecting and
+>     characterizing astrophysical phenomena revealed by their
+>     time-dependent nature.  This is done on a nightly or daily basis and
+>     produces Level 1 data products: DIASource, DIAObject, SSObject,
+>     Transient Alert.  The detection of supernovae superimposed on bright
+>     extended galaxies is an example of this analysis.
+> 
+>  2.
+> 
+>     Analysis of science images, with the goal of detecting and
+>     characterizing astrophysical objects.  This is done on an annual
+>     basis and produces Level 2 data products: Source, Object, Data
+>     Release.  Characterization of faint galaxies on deep co-adds is an
+>     example of this analysis.
+> 
+>     The two types of analysis have different requirements on timeliness.
+>     Changes in flux or position of objects may need to be immediately
+>     followed up, lest interesting information may be lost. Thus, the
+>     primary results of analysis of difference images – “transient
+>     alerts” – belong to “Level 1” data products and generally need to be
+>     broadcast within 60 seconds of shutter close. The analysis of
+>     science images is less time sensitive, and will be done as a part of
+>     annual data release process. 
+> 
+> We may also want a table or something graphic to reflect these.  I am
+> thinking of an update version of the old data products slide.
+> 
+> pp. 4 section 2.1 and in general:
+> 
+> I would recommend avoiding mentioning specific Pipelines (e.g.
+> Association Pipeline) and in the same sense as our use cases, just talk
+> about "processing" i.e. association processing.  This is because, over
+> time, our notion of what processing occurs in what pipelines has
+> evolved, and may evolve again.  This would make the document insensitive
+> to such changes.
+> 
+> pp. 4, section 2.2:
+> 
+> Avoid use of "snaps" or define.
+> 
+> Use of "up-to-date database" needs forward reference to section 2.4 for
+> definition.
+> 
+> pp. 5, section 2.2:
+> 
+> Define "Data Release database"
+> 
+> #8 uses "payload" and "packet" to mean the same thing
+> 
+> pp. 8, section 2.5 and subsections:
+> 
+> This enumeration of all fields works for up-date-database where there
+> aren't many columns.  When you get to (Astro)Object table it has so many
+> columns this may be unwieldy in a document.  Consider moving to appendix.
+> 
+> I assume notes regarding what was removed, added, will be suppressed in
+> document to Science Collaborations.
+> 
+> pp. 15, footnote 24
+> 
+> I believe this was requested for a 30 day buffer by Chris Smith a while back
+> 
+> 
+> pp. 17, section 2.9
+> 
+> I believe EPO asked for a "matching service" to match IDs from one DR to
+> another at the last AHM, but we declined to provide it, leaving them to
+> do so.  You or K-T may recall more details.
+> 
+> 
+> On Mar 18, 2013, at 9:57 PM, Mario Juric wrote:
+> 
+>> <Level1-Draft1.pdf>
+> 
+
+
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

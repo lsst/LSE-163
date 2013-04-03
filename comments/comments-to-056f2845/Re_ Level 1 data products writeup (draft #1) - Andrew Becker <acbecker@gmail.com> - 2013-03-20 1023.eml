@@ -1,0 +1,475 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 10:23:15 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2KHNDIc022033
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 10:23:14 -0700
+Received: from mail-ve0-f178.google.com (mail-ve0-f178.google.com [209.85.128.178])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KHND6x005816
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 13:23:13 -0400
+Received: by mail-ve0-f178.google.com with SMTP id db10so1657351veb.9
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 10:23:13 -0700 (PDT)
+X-Received: by 10.52.27.138 with SMTP id t10mr7659881vdg.59.1363800193074;
+        Wed, 20 Mar 2013 10:23:13 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp20627vem;
+        Wed, 20 Mar 2013 10:23:12 -0700 (PDT)
+X-Received: by 10.50.150.228 with SMTP id ul4mr26494igb.9.1363800191701;
+        Wed, 20 Mar 2013 10:23:11 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id lr7si3924710icb.66.2013.03.20.10.23.11
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 10:23:11 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of acbecker@gmail.com) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of acbecker@gmail.com) smtp.mail=acbecker@gmail.com;
+       dkim=pass header.i=@gmail.com
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KHNAxH005681
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 13:23:10 -0400
+Received: from mail-pb0-f42.google.com ([209.85.160.42]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 10:23:09 -0700
+Received: by mail-pb0-f42.google.com with SMTP id xb4so1525650pbc.1
+        for <multiple recipients>; Wed, 20 Mar 2013 10:23:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type;
+        bh=WKBdl4R8v+l+NBbfIjPM3Hg9sht/8YZzExg2Igvma8Q=;
+        b=KEo1ssDY9LidYgFZTOidGzE26OgE32yuAJy44Q7vbRUJJKTE7wpM54q+eN7+0TFZfF
+         14cBIOmc6nGlPfFWQCjc7JSagw65DWjQL5TdSSWr+O4483b9h1+KM5nafvnVJFd8XYgx
+         WYfgBkXBtZwxA2VfyMuS0a3h15oxX+N66Wh8IxfPKXsAlu0zTWw2Dt5g1CMhrqvOpQ9x
+         3b+YGpk6zSjCfbH7Seh4cnZEeFSSO7BJvnL5u3xbJrMtyejr8SLA9tJec25kgXL6LJjH
+         d+OtdbB5euNdfZcDDvPse2a1tvx5odbVHQYjfc5rr5oMX++jvv7y3T48mfYFNoTReyVb
+         z5gw==
+X-Received: by 10.68.231.164 with SMTP id th4mr9954214pbc.198.1363800189051;
+        Wed, 20 Mar 2013 10:23:09 -0700 (PDT)
+Received: from darkstar.astro.washington.edu (darkstar.astro.washington.edu. [128.208.190.119])
+        by mx.google.com with ESMTPS id qb10sm2771605pbb.43.2013.03.20.10.23.07
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 10:23:07 -0700 (PDT)
+Message-ID: <5149F07A.8040403@gmail.com>
+Date: Wed, 20 Mar 2013 10:23:06 -0700
+From: Andrew Becker <acbecker@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+CC: Jacek Becla <becla@slac.stanford.edu>,
+        "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        "Lim, Kian-Tat" <ktl@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <5148B561.3020602@gmail.com> <514923A2.60506@lsst.org>
+In-Reply-To: <514923A2.60506@lsst.org>
+Content-Type: multipart/alternative;
+ boundary="------------070900010307090702050401"
+X-OriginalArrivalTime: 20 Mar 2013 17:23:09.0813 (UTC) FILETIME=[97D40A50:01CE258F]
+
+This is a multi-part message in MIME format.
+--------------070900010307090702050401
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi all - here is another email exchange between myself and Mario on this.
+Andy
+
+On 03/19/13 19:49, Mario Juric wrote:
+> On 3/19/13 13:58 , Andrew Becker wrote:
+>> Hi Mario - My comments are:
+>>
+> Thanks! See below for further questions/clarification.
+>
+> PS: can CC my reply to everyone else? I'd like to keep everyone involved
+> included in the discussion to avoid repetition.
+>
+>>   * I would remove the "if at all" from the coupling of up-to-date
+>> database to data release database.  People will truly want/need this, so
+>> we might as well do it.
+>>
+> My intent with that remark was to point out that with this model, the DR
+> database doesn't even have to exist and we could still do Level 1. This
+> may be the case during the first few months of commissioning and ops.
+>
+> Once we have DR coverage, we'll definitely do associations and send them
+> out.
+>
+>>   * DiaSource table will not necessarily have sky, as the difference
+>> images have no sky.
+>>
+> Good point. Maybe this is better described as 'local background'? It's
+> basically what you'd use to compute the detection SNR, but given the
+> noise will be convolved it's not clear how useful or not this is.
+>
+> Thoughts?
+
+If we trust our code, and we should by then, all objects should have sky = 0.0.
+
+>
+>>   * SNR = of detection, or of (Psf) measurement?
+>>   
+> Detection. The idea is to give the end-user a value to filter on to
+> control the number of (truly unavoidable noise-generated) false positives.
+>
+> How is the SNR of the PSF measurement defined? I thought that these two
+> were the same. Or is it the difference of approximate detection PSF vs.
+> the PSF used for the measurement?
+>>   * remove trailWidth.  I don't see why we don't forward model a line
+>> convolved withthe Psf.  Should write a paper on that...
+>>
+> This *is* the forward model of a line, with an additional degree of
+> freedom that the line can have finite width. My thought was that this
+> may be a cheap way to detect a few more cosmics or other line-like
+> artifacts (I admit I haven't really thought it through; you may be right
+> that setting width=0 is sufficient).
+>
+>>   * There is value in extendednessof DiaSources (in particular, for
+>> recognizing comets)
+>>
+> How is extendedness (== 1 - SExtractor's stellaricity?) computed? Is
+> this something that we can derive from the second moments?
+
+Second moments are how SExtractor does it, I believe.  In the DR pipelines I think we plan on using 
+model vs. Psf magnitudes.  I'm not sure fitting model magnitudes to DiaSources is necessary, so we 
+should consider reverting to something simpler.
+
+>>   * Shouldn't H,G beper-filterfor SSObject?  No point in taking our
+>> observations to V-band...
+>>
+> Good point. This would also let one construct color indices that are
+> phase-angle independent.
+>
+> Btw, here's a useful high-level overview of the (H, G) magnitude system:
+> http://www.britastro.org/asteroids/dymock4.pdf
+>
+>>   * Define the process of arriving at the "limited number" of DiaSources
+>> that have precovery forced phot.  E.g. they are new.
+>>
+> Agreed that we need to clarify this. "Limited" in this context will mean
+> "as much as we can support". I'm hoping that Jacek and K-T tell me we
+> could do forced photometry going back, say, ~30 days, for *all* newly
+> detected objects (I believe we're keeping a ~30 day cache of calexps on
+> disk).
+>
+> Forced photometry going further back than the cache allows us to go
+> could then be done over a longer period of time (~days to weeks, instead
+> of hours).
+>
+>>   * I presume that we will make new templates during Data Release
+>> productions.  This will yield an entirely new set of difference images.
+> Yes, and (in general) DIASources an DIAObjects.
+>
+>> Also, do we plan on doing amp- or sensor-level diffim in nightly
+>> processing?   If amp-level, specifify that the data release diffims will
+>> be different in that they will likely be sensor-level.
+>>
+> This is still TBD, but I believe we're moving to a model where we'll
+> have to do per-chip (and beyond) processing even with nightly data.
+> E.g., you're finding that to derive the spatial PSF model that works at
+> the edges you need the information for adjacent sensors.
+
+This production is not indicating that we need to move beyond the chip level for pure diffim 
+processing.  Tho it is likely we will need to for other aspects of the overall problem (Wcs, sky 
+background).
+
+> Thanks for all the comments. I'll incorporate them as soon as I'm back
+> in Tucson,
+> - M.
+>
+>> Andy
+>>
+>>
+>>
+>> On 03/18/13 21:57, Mario Juric wrote:
+>>> Dear DM crowd (and Zeljko),
+>>> 	Attached to this e-mail you'll find the first draft of a writeup on
+>>> Level 1 processing and data products. I'm asking for your initial round
+>>> of comments, preferably by this Friday. Over the weekend, I'll
+>>> incorporate any commends I receive and would aim to send it for round #2
+>>> of comments to the Science Council and the Science Collaboration chairs.
+>>> By the end of the month I (optimistically) hope to have ready part #2 of
+>>> that document, that deals with Level 2. We're aiming for an external
+>>> review in late May.
+>>>
+>>> 	The document is intended to capture at a detailed yet readable and
+>>> understandable level how we plan to generate L1 products, when, what
+>>> they will consist of, and how they will be distributed. Our DB team will
+>>> use it to derive the details of database and schema design, the science
+>>> teams will use it to verify that LSST plans capture science
+>>> requirements, and it will be used to populate the UML model to enable
+>>> requirements tracking and software design consistency checks. It will
+>>> also be the primary document we will give to our data products
+>>> reviewers, and it's not inconceivable that we may turn it into a
+>>> companion to the "Overview Paper".
+>>>
+>>> 	Please comment on technical feasibility, scientific completeness,
+>>> clarity, style, etc. At this point, the document is a statement on what
+>>> I would *like* to be done, not necessarily what we actually *can* do
+>>> given the resources. There are still many TBDs and TODOs in the text --
+>>> your thoughts on those would be appreciated. There are some new ideas
+>>> (e.g., "trailed source model"). There are also some things that were
+>>> left out wrt. the previous baseline (http://ls.st/wxv) -- please point
+>>> out those that I should have kept.
+>>>
+>>> PS: In case you need it, TeX sources are available at http://ls.st/r7z
+>>> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+>>> PPPS: I owe many of you replies to e-mails; I'll do that tomorrow while
+>>> on the way to FNAL for DES review. I've been largely ignoring e-mail
+>>> today in order to finish this document.
+>>>
+>>> Cheers,
+>
+
+
+--------------070900010307090702050401
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    <font size="+1"><tt><font size="+1">Hi all - here is <font
+            size="+1">another email exchange between myself and M<font
+              size="+1">ario on this.<br>
+              <font size="+1">Andy</font><br>
+            </font></font></font></tt></font><br>
+    <div class="moz-cite-prefix">On 03/19/13 19:49, Mario Juric wrote:<br>
+    </div>
+    <blockquote cite="mid:514923A2.60506@lsst.org" type="cite">
+      <pre wrap="">On 3/19/13 13:58 , Andrew Becker wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">Hi Mario - My comments are:
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+Thanks! See below for further questions/clarification.
+
+PS: can CC my reply to everyone else? I'd like to keep everyone involved
+included in the discussion to avoid repetition.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> * I would remove the "if at all" from the coupling of up-to-date
+database to data release database.  People will truly want/need this, so
+we might as well do it.
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+My intent with that remark was to point out that with this model, the DR
+database doesn't even have to exist and we could still do Level 1. This
+may be the case during the first few months of commissioning and ops.
+
+Once we have DR coverage, we'll definitely do associations and send them
+out.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> * DiaSource table will not necessarily have sky, as the difference
+images have no sky. 
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+Good point. Maybe this is better described as 'local background'? It's
+basically what you'd use to compute the detection SNR, but given the
+noise will be convolved it's not clear how useful or not this is.
+
+Thoughts?</pre>
+    </blockquote>
+    <br>
+    If we trust our code, and we should by then, all objects should have
+    sky = 0.0.<br>
+    <br>
+    <blockquote cite="mid:514923A2.60506@lsst.org" type="cite">
+      <pre wrap="">
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> * SNR = of detection, or of (Psf) measurement?
+ 
+</pre>
+      </blockquote>
+      <pre wrap="">
+Detection. The idea is to give the end-user a value to filter on to
+control the number of (truly unavoidable noise-generated) false positives.
+
+How is the SNR of the PSF measurement defined? I thought that these two
+were the same. Or is it the difference of approximate detection PSF vs.
+the PSF used for the measurement?</pre>
+    </blockquote>
+    <blockquote cite="mid:514923A2.60506@lsst.org" type="cite">
+      <blockquote type="cite">
+        <pre wrap=""> * remove trailWidth.  I don't see why we don't forward model a line
+convolved withthe Psf.  Should write a paper on that...
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+This *is* the forward model of a line, with an additional degree of
+freedom that the line can have finite width. My thought was that this
+may be a cheap way to detect a few more cosmics or other line-like
+artifacts (I admit I haven't really thought it through; you may be right
+that setting width=0 is sufficient).
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> * There is value in extendednessof DiaSources (in particular, for
+recognizing comets)
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+How is extendedness (== 1 - SExtractor's stellaricity?) computed? Is
+this something that we can derive from the second moments?
+</pre>
+    </blockquote>
+    <br>
+    Second moments are how SExtractor does it, I believe.&nbsp; In the DR
+    pipelines I think we plan on using model vs. Psf magnitudes.&nbsp; I'm
+    not sure fitting model magnitudes to DiaSources is necessary, so we
+    should consider reverting to something simpler.<br>
+    <br>
+    <blockquote cite="mid:514923A2.60506@lsst.org" type="cite">
+      <pre wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> * Shouldn't H,G beper-filterfor SSObject?  No point in taking our
+observations to V-band...
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+Good point. This would also let one construct color indices that are
+phase-angle independent.
+
+Btw, here's a useful high-level overview of the (H, G) magnitude system:
+<a class="moz-txt-link-freetext" href="http://www.britastro.org/asteroids/dymock4.pdf">http://www.britastro.org/asteroids/dymock4.pdf</a>
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> * Define the process of arriving at the "limited number" of DiaSources
+that have precovery forced phot.  E.g. they are new.
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+Agreed that we need to clarify this. "Limited" in this context will mean
+"as much as we can support". I'm hoping that Jacek and K-T tell me we
+could do forced photometry going back, say, ~30 days, for *all* newly
+detected objects (I believe we're keeping a ~30 day cache of calexps on
+disk).
+
+Forced photometry going further back than the cache allows us to go
+could then be done over a longer period of time (~days to weeks, instead
+of hours).
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> * I presume that we will make new templates during Data Release
+productions.  This will yield an entirely new set of difference images. 
+</pre>
+      </blockquote>
+      <pre wrap="">
+Yes, and (in general) DIASources an DIAObjects.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">Also, do we plan on doing amp- or sensor-level diffim in nightly
+processing?   If amp-level, specifify that the data release diffims will
+be different in that they will likely be sensor-level.
+
+</pre>
+      </blockquote>
+      <pre wrap="">
+This is still TBD, but I believe we're moving to a model where we'll
+have to do per-chip (and beyond) processing even with nightly data.
+E.g., you're finding that to derive the spatial PSF model that works at
+the edges you need the information for adjacent sensors.
+</pre>
+    </blockquote>
+    <br>
+    This production is not indicating that we need to move beyond the
+    chip level for pure diffim processing.&nbsp; Tho it is likely we will
+    need to for other aspects of the overall problem (Wcs, sky
+    background).&nbsp; <br>
+    <br>
+    <blockquote cite="mid:514923A2.60506@lsst.org" type="cite">
+      <pre wrap="">
+Thanks for all the comments. I'll incorporate them as soon as I'm back
+in Tucson,
+- M.
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">
+Andy
+
+
+
+On 03/18/13 21:57, Mario Juric wrote:
+</pre>
+        <blockquote type="cite">
+          <pre wrap="">Dear DM crowd (and Zeljko),
+	Attached to this e-mail you'll find the first draft of a writeup on
+Level 1 processing and data products. I'm asking for your initial round
+of comments, preferably by this Friday. Over the weekend, I'll
+incorporate any commends I receive and would aim to send it for round #2
+of comments to the Science Council and the Science Collaboration chairs.
+By the end of the month I (optimistically) hope to have ready part #2 of
+that document, that deals with Level 2. We're aiming for an external
+review in late May.
+
+	The document is intended to capture at a detailed yet readable and
+understandable level how we plan to generate L1 products, when, what
+they will consist of, and how they will be distributed. Our DB team will
+use it to derive the details of database and schema design, the science
+teams will use it to verify that LSST plans capture science
+requirements, and it will be used to populate the UML model to enable
+requirements tracking and software design consistency checks. It will
+also be the primary document we will give to our data products
+reviewers, and it's not inconceivable that we may turn it into a
+companion to the "Overview Paper".
+
+	Please comment on technical feasibility, scientific completeness,
+clarity, style, etc. At this point, the document is a statement on what
+I would *like* to be done, not necessarily what we actually *can* do
+given the resources. There are still many TBDs and TODOs in the text --
+your thoughts on those would be appreciated. There are some new ideas
+(e.g., "trailed source model"). There are also some things that were
+left out wrt. the previous baseline (<a class="moz-txt-link-freetext" href="http://ls.st/wxv">http://ls.st/wxv</a>) -- please point
+out those that I should have kept.
+
+PS: In case you need it, TeX sources are available at <a class="moz-txt-link-freetext" href="http://ls.st/r7z">http://ls.st/r7z</a>
+PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+PPPS: I owe many of you replies to e-mails; I'll do that tomorrow while
+on the way to FNAL for DES review. I've been largely ignoring e-mail
+today in order to finish this document.
+
+Cheers,
+</pre>
+        </blockquote>
+        <pre wrap="">
+</pre>
+      </blockquote>
+      <pre wrap="">
+
+</pre>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------070900010307090702050401--

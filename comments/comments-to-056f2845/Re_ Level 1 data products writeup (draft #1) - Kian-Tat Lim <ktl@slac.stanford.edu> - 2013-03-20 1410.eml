@@ -1,0 +1,85 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 14:10:56 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2KLAtvc019522
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 14:10:56 -0700
+Received: from mail-vc0-f182.google.com (mail-vc0-f182.google.com [209.85.220.182])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KLAt8u010069
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 17:10:55 -0400
+Received: by mail-vc0-f182.google.com with SMTP id ht11so1756078vcb.27
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 14:10:54 -0700 (PDT)
+X-Received: by 10.52.20.177 with SMTP id o17mr8879689vde.17.1363813854812;
+        Wed, 20 Mar 2013 14:10:54 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp28082vem;
+        Wed, 20 Mar 2013 14:10:54 -0700 (PDT)
+X-Received: by 10.50.135.100 with SMTP id pr4mr399349igb.37.1363813853726;
+        Wed, 20 Mar 2013 14:10:53 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id fb9si994344igb.51.2013.03.20.14.10.53
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 14:10:53 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KLAq1p009983
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 17:10:52 -0400
+Received: from nospam3.slac.stanford.edu ([134.79.109.10]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 14:10:51 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam3.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2KLAkH3004660
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 20 Mar 2013 14:10:46 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id 140D71F7BD; Wed, 20 Mar 2013 14:10:46 -0700 (PDT)
+Date: Wed, 20 Mar 2013 14:10:46 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Jacek Becla <becla@slac.stanford.edu>,
+        "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+Message-ID: <20130320211045.GV17256@sccs-ktlim.slac.stanford.edu>
+References: <5147F046.8090004@lsst.org>
+ <514938A1.9060305@SLAC.Stanford.EDU>
+ <51494C9C.9000304@lsst.org>
+ <514A1E46.2060902@SLAC.Stanford.EDU>
+ <20130320210407.GS17256@sccs-ktlim.slac.stanford.edu>
+ <514A250F.3000206@lsst.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <514A250F.3000206@lsst.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 20 Mar 2013 21:10:52.0108 (UTC) FILETIME=[6730D0C0:01CE25AF]
+
+Mario,
+
+> > 	Yes, keeping DIAObject updates is not too bad, but keeping 10 or
+> > 11 releases of the entire up-to-date database is (around) 5X the
+> > storage.  Still, it's just some disk space...
+> > 
+> 
+> Note that the DIAObject/DIASource/SSObject/etc. tables are also a part
+> of the DR, so only the extra ~1 year of updates are unique.
+
+	True, but it's 1 year + 9 months of prep, no?
+
+	Combining the two does help a bit.  The DR databases roll off to
+tape.  I imagine that people will not mind if the up-to-date databases
+do as well.  In that case, the incremental cost is not bad.
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu

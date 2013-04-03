@@ -1,0 +1,85 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Mon, 25 Mar 2013 11:14:46 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2PIEjqt011697
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Mon, 25 Mar 2013 11:14:46 -0700
+Received: from mail-vc0-f177.google.com (mail-vc0-f177.google.com [209.85.220.177])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2PIEiSR003389
+	for <mjuric@majuric.org>; Mon, 25 Mar 2013 14:14:45 -0400
+Received: by mail-vc0-f177.google.com with SMTP id ia10so4939979vcb.36
+        for <mjuric@majuric.org>; Mon, 25 Mar 2013 11:14:44 -0700 (PDT)
+X-Received: by 10.52.20.177 with SMTP id o17mr14741359vde.17.1364235284694;
+        Mon, 25 Mar 2013 11:14:44 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp38010vem;
+        Mon, 25 Mar 2013 11:14:43 -0700 (PDT)
+X-Received: by 10.60.3.200 with SMTP id e8mr12120321oee.94.1364235283388;
+        Mon, 25 Mar 2013 11:14:43 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id s7si11234418obw.40.2013.03.25.11.14.37
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 25 Mar 2013 11:14:43 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of becla@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of becla@slac.stanford.edu) smtp.mail=becla@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2PIETmv001845
+	for <mjuric-lsst@majuric.org>; Mon, 25 Mar 2013 14:14:32 -0400
+Received: from nospam3.slac.stanford.edu ([134.79.109.10]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 25 Mar 2013 11:13:56 -0700
+Received: from exch-hub2.win.slac.stanford.edu (exch-hub2.slac.stanford.edu [134.79.164.112])
+	by nospam3.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2PIDmBf015452
+	(version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+	Mon, 25 Mar 2013 11:13:48 -0700
+	(envelope-from becla@slac.stanford.edu)
+Received: from EXCH-CLIENT3.win.slac.stanford.edu (2002:864f:6c8f::864f:6c8f)
+ by exch-hub2.win.slac.stanford.edu (2002:864f:a470::864f:a470) with Microsoft
+ SMTP Server (TLS) id 8.3.298.1; Mon, 25 Mar 2013 11:13:47 -0700
+Received: from [198.129.220.143] (198.129.220.143) by email.slac.stanford.edu
+ (134.79.108.143) with Microsoft SMTP Server (TLS) id 8.3.298.1; Mon, 25 Mar
+ 2013 11:13:46 -0700
+Message-ID: <515093DA.7000602@SLAC.Stanford.EDU>
+Date: Mon, 25 Mar 2013 11:13:46 -0700
+From: Jacek Becla <becla@slac.stanford.edu>
+Organization: SLAC National Accelerator Laboratory
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130308 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+CC: Tim Axelrod <taxelrod@gmail.com>,
+        "Dubois-Felsmann, Gregory Peter"
+	<gpdf@slac.stanford.edu>,
+        "Lim, Kian-Tat" <ktl@slac.stanford.edu>,
+        "Jeffrey
+ Kantor" <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        "Andy Becker" <acbecker@gmail.com>,
+        Robert Lupton the Good
+	<rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@lsst.org>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com> <514DDB0B.4070106@lsst.org>
+In-Reply-To: <514DDB0B.4070106@lsst.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 25 Mar 2013 18:13:56.0448 (UTC) FILETIME=[83D46600:01CE2984]
+
+We always assumed in the past that we'd be sending postage stamp
+with the alert, that is what we have in the baseline. My feeling
+is we should keep it that way
+
+Jacek
+
+On 03/23/2013 09:40 AM, Mario Juric wrote:
+>> p. 14, Section 2.6.  I'm pretty convinced that the postage stamps should
+>> >be sent with the alerts.  If not, there will just be a flood of requests
+>> >for them, because brokers will likely do that automatically.
+>> >
+> That was my sense as well, but I wanted to hear from Jacek and K-T first.
+>
+

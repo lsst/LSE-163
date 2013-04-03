@@ -1,0 +1,200 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 10:29:27 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2KHTL1i022810
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 10:29:22 -0700
+Received: from mail-ve0-f172.google.com (mail-ve0-f172.google.com [209.85.128.172])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KHTL5b005123
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 13:29:21 -0400
+Received: by mail-ve0-f172.google.com with SMTP id cz11so1647460veb.31
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 10:29:21 -0700 (PDT)
+X-Received: by 10.58.233.210 with SMTP id ty18mr9004359vec.46.1363800561172;
+        Wed, 20 Mar 2013 10:29:21 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp20934vem;
+        Wed, 20 Mar 2013 10:29:20 -0700 (PDT)
+X-Received: by 10.50.220.170 with SMTP id px10mr2137962igc.61.1363800557749;
+        Wed, 20 Mar 2013 10:29:17 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id id8si3996525icc.2.2013.03.20.10.29.17
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 10:29:17 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KHTGIs003926
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 13:29:16 -0400
+Received: from nospam1.slac.stanford.edu ([134.79.18.81]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 10:29:16 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam1.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2KHT6YC009738
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 20 Mar 2013 10:29:07 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id D56301F7BD; Wed, 20 Mar 2013 10:29:06 -0700 (PDT)
+Date: Wed, 20 Mar 2013 10:29:06 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Jacek Becla <becla@slac.stanford.edu>,
+        "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+Message-ID: <20130320172906.GA17256@sccs-ktlim.slac.stanford.edu>
+References: <5147F046.8090004@lsst.org>
+ <514938A1.9060305@SLAC.Stanford.EDU>
+ <51494C9C.9000304@lsst.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51494C9C.9000304@lsst.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 20 Mar 2013 17:29:16.0160 (UTC) FILETIME=[72302800:01CE2590]
+
+Mario,
+
+> > page 6  that "DIASource records are updated to point to the new
+> > DIAObject record".
+> > Keeping track of where they pointed prior
+> > to that update is actually non trivial - that simple pointer
+> > update may result is producing a copy of a DIASources
+
+Issuing new DIASources is easy/cheap.
+
+But it's actually worse: what happens to the DIAObjects that now do not
+have DIASources pointing to them?  (See below)
+
+> In the meantime, I've seen the light and concluded this was an
+> embarrassingly bad idea, for the simple reason that solar system objects
+> will display strong phase effects (like the Moon, they'll have different
+> total flux depending on Sun-Object-Earth angle). That makes their
+> phase-uncorrected lightcurves (that the DIAObject entry would contain)
+> quite nonsensical.
+
+I'm OK with DIASources belonging to either DIAObjects or SSObjects but
+not both.  I'm a little worried that things may move back and forth.
+
+My comments:
+
+p. 2
+
+"begin the regular survey operations before the end of this decade"
+Not sure about that, even with 2011-2020 decade definition.
+
+10,000 sq deg vs. 30,000 sq deg vs. 18,000 sq deg should be clarified more
+24.5 vs. 27.5 should be clarified more
+Very Deep and Fast all one, or two separate?
+
+p. 3
+
+Kind of confusing to have item 1 be Level 2 and vice versa
+
+Should define "source"
+DIASources are detections and measurements
+Mention that DIASources can be negative (something moving away or disappearing)?
+
+p. 4
+
+How/why are DIAObjects different from Objects?
+How are initial DIAObjects generated in up-to-date database?
+Sounds like DIAObjects are only created from DIASources
+
+What happens if multiple DIAObjects associate to the DIASource?
+
+Footnote 5 is backwards.  Foreign key is from DIAObject table and is in
+DIASource row.
+
+p. 5
+
+Does DIAObject entry have to be updated immediately?
+How much information is needed for the update?
+Can it be done incrementally?
+
+Which Data Release database is searched?  Presumably latest available
+Is it searched based on the DIASource or the DIAObject (or are they essentially
+identical due to the assumption of low proper motion)?
+
+Can two very close DIASources match to the same DIAObject?  Does it matter
+which one comes first?
+
+Where/when does prediction of SSObject location occur?
+Does prediction of fast-moving non-SSObject locations occur?
+
+Should we really describe MOPS in detail?
+Tracks are more than two DIASources -- they are made from tracklets, which are
+themselves three DIASources, I believe
+
+p. 6
+
+Putting SSObjects in the DIAObject table is OK for light curves but bad for
+association, unless all DIAObjects have positions predicted
+Suggest associating to SSObjects then DIAObjects (or vice versa)
+
+p. 7
+
+Having parent-child temporal associations in any sort of Object table does not
+make much sense; temporal aspects are captured by Sources
+Better to express by having multiple Objects and Sources at same location
+Need to figure out what to do with positional association in such cases
+
+Footnote 10: fully live database will be very difficult, particularly with AP
+move, if u-t-d DB is considered part of DAC
+
+We have plenty of room in 64 bits as long as we don't want too many coded,
+low-entropy fields in the id
+Are lookups from the id to other metadata tables too difficult?
+ccdExposureId is not just CCD but also visit (should not use term "exposure")?
+What about sources detected across CCDs?
+ccdExposureId might be inside diaSourceId anyway
+
+p. 10
+
+What about extended variables (comets, asteroid outgassing, light echoes,
+lensed variables)?
+
+p. 11
+
+diaObjectId should almost certainly only be 64 bits
+Aren't proper motions necessary for correct association of fast movers?
+
+p. 12
+
+Storing light curve in DIAObject is difficult: variable length; use
+separate table -- but isn't this just the DIASources?
+Querying "nearbyObj" columns is difficult; should probably be separate table
+
+p. 13
+
+If SSObjects are DIAObjects, should record DIAObject id in SSObject table
+Actually, likely there will be several DIAObjects for each SSObject; should
+they be merged?
+
+p. 14
+
+Include the whole DIAObject record; it's relatively small
+
+How many past DIASources for the DIAObject should be sent?  I think all
+(now that I read p. 15, not sure about precovery data)
+
+We have space for two 30x30 cutouts; people wanted pixels not URIs
+
+p. 16
+
+9 months of new DIASources may not match well with reprocessed DIAObjects
+For pixels, could maybe do 8.5 months in 2 weeks, then 2 weeks in 1 day
+ 
+New releases of u-t-d DB may also have new columns
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu

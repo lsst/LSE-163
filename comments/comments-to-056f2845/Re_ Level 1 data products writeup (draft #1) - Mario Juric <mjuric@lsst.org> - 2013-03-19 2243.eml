@@ -1,0 +1,205 @@
+Message-ID: <51494C9C.9000304@lsst.org>
+Date: Wed, 20 Mar 2013 00:43:56 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Jacek Becla <becla@slac.stanford.edu>
+CC: "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>, 
+ "Lim, Kian-Tat" <ktl@slac.stanford.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Andy Becker <acbecker@gmail.com>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <514938A1.9060305@SLAC.Stanford.EDU>
+In-Reply-To: <514938A1.9060305@SLAC.Stanford.EDU>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/19/13 23:18 , Jacek Becla wrote:
+> Mario,
+> 
+> Nice document! Here are my comments, observations and questions:
+> 
+
+Nice comments! See for more comments below.
+
+> 1) page 14, "we require that queries executed at a known point
+> in time against some version of the up-to-date db be repeatable
+> at a later data". To the best of my knowledge this is NOT part
+> of the current official baseline, e.g. I know it came up in
+
+Understood. Think of this document (once it's finished) as a statement
+of what we believe the future baseline should be; we'll turn it into
+change requests as needed when we converge (from science, technical and
+budget/schedule points of view).
+
+> discussions with Joshua Bloom, we think it is the right thing
+> to do, and based on quick check the cost of doing it seems
+> reasonable etc, but we should make it clear that it is a change
+> to the baseline, and I'd caution against promising something
+> very hard too fast. For instance, you "casually" ;) say on
+
+Agreed. I'll add some text at the very beginning explaining that this is
+a work in progress. At the moment, I have no plans to circulate this
+text beyond us + science council + science collaboration council before
+it goes through the change request process.
+
+> page 6  that "DIASource records are updated to point to the new
+> DIAObject record". Keeping track of where they pointed prior
+> to that update is actually non trivial - that simple pointer
+> update may result is producing a copy of a DIASources
+> (I can think of cheaper solutions from storage perspective,
+> but convoluted from querying perspective)
+> 
+
+Understood -- and that's where I'll need your input from technical
+feasibility point of view. The current text is a statement of what I
+think is needed for science.
+
+> 2) there is something wrong with pointers to SSObject in your
+> proposed schema. Given you said on page 8 that DIASource.diaObjectId
+> "cannot be null", I am guessing that every diasource
+> will have its diaobject, even if that diasource belongs
+> to ssobject. Is that the case? Further, (still page 8) you are
+> unsure if we need both diaObject and ssObject ids. In your
+> schema the DIAObject table does not point to SSObject,
+> so if we don't keep the pointer to SSObject in DIAObject
+> (when applicable), how can we find it?
+> 
+
+Yeah, that is a bit of a mess (reflects the evolution of the document).
+Here's what my intent was:
+
+* A set of DIASources gets linked by MOPS
+* These get their own SSObject entry with an orbit and other Solar
+  System-only information.
+* However, these still are describing objects of variable flux, so it
+  may make sense to maintain a DIAObject record (and all of its summary
+  light-curve statistics) for this group of sources as well.
+
+In the meantime, I've seen the light and concluded this was an
+embarrassingly bad idea, for the simple reason that solar system objects
+will display strong phase effects (like the Moon, they'll have different
+total flux depending on Sun-Object-Earth angle). That makes their
+phase-uncorrected lightcurves (that the DIAObject entry would contain)
+quite nonsensical.
+
+A question for the Solar System folks will be whether they'd like any
+other summary information beyond (H, G) magnitudes (per-band) in
+SSObject table.
+
+> 3) you introduced 128 bit ids, is that really necessary?
+> We don't have any 128 bit ids in any of our baseline tables.
+> We do have composite keys, but if that is what you mean,
+> I think we should say it explicitly
+> 
+
+It seemed to me that we were already struggling with packing all
+information of interest into 64 bits (just based on traffic on
+lsst-data). This is unlikely to get better (e.g., I'd like us to encode
+a DR number identifier in there as well, so it's clear from which DR an
+object came from just by looking at its ID). A clean solution would be
+to just bite the bullet and go to a wider integer, if we can do it
+technically and afford it.
+
+I know the ForcedPhotometry table may grow undesirably because of this;
+however, the extra 64 bits may not have full 64 bits of entropy, so most
+the difference could get compressed-away. Also, are 128 bit IDs
+possible/reasonable for present day (or ~circa 2018) databases? What
+about Python/numpy support for 128 bit integers? Anyway, it's an
+implementation question for you/K-T/Robert.
+
+> 4) Page 4, you say "separate rows in the Object table for
+> DiaObjects. Do you really mean "rows" here? (which would
+> imply exactly the same schema), or "columns". And second,
+> do you mean Object table from DR, or DIAObject?
+> 
+
+I really meant 'additional rows'. This was a straw-man scenario in which
+we wouldn't have a DIAObject table, but would just append to the Object
+table from DR. I don't think it's feasible, and just creates confusion.
+I'll delete that paragraph unless there are objections.
+
+> 5) page 8, filterId in DIASource - this is internal optimization,
+> (we can get it through ccdExposureId), so let's not cloud the
+> picture with denormalization for convenience/speed here.
+> 
+
+OK. The current baseline schema *has* such denormalized fields, that's
+why I asked.
+
+I'll stick to just listing the non-redundant columns in this document,
+and will count on you and K-T to denormalize as needed to meet the query
+response time requirements (once we converge).
+
+> 6) all columns that represent errors - our standard naming
+> convention is "Sigma".
+> 
+
+Yes, this is a trial balloon to see if there's a strong resistance to
+changing it. But upon further consideration, I think the suffix should
+really be "Stdev".
+
+Rationale: I think we should be using suffix "Err" for standard errors
+(eg., an estimate of the error in measurement of the mean magnitude of
+an object given many measurements), while we should be using "Stdev" to
+denote the estimate of inherent widths of distributions (e.g., the
+estimate of the error of an *individual* measurement of an object). If
+you measure the same star N times, the former will decrease with
+sqrt(N), while the latter will stay the same.
+
+I *think* this is a relatively standard physics nomenclature, and the
+distinction is important, esp. when we start computing summary
+statistics for various quantities (e.g. in QA, or for light curves).
+
+What do others think?
+
+> 7) page 14 (bottom) + page 15 (top) - I'd not be so specific
+> with "createdTAI", "deletedTAI", it is an implementation detail
+> that we need to discuss much more before putting in
+> an official document. I'd be ok with saying something like
+> select * from DIASource WHERE "data is valid as of YYYY-MM-DD"
+> without implying how we are going to implement it.
+> 
+
+Will do, though I think I'll keep the original example just as a
+reminder that that is probably the maximum level of additional query
+complexity that we should aim for. I've recently heard *many* complaints
+about how queries against the DES database are horrendously complicated
+to write (too many JOINs), and pleas that we don't do the same.
+
+> 8) page 16. When we replace the up-to-date with the latest
+> one produced by DR, should we be worrying about killing
+> reproducibility? Perhaps we have to keep the up-to-date
+> that we are replacing? - we would have to run it through
+> spreadsheets to see how much it'd cost.
+> 
+
+Yes, we'll need to keep the older versions of up-to-date databases, just
+as we keep the older DRs.
+
+> 9) also related to page 16. What happens if we replay
+> the alert production with the latest algorithms, and
+> that "generate" new alerts that we didn't generate
+> during the original production? Should we send such
+> alerts out?
+> 
+
+We don't. We only send alerts during nightly alert processing.
+
+> 
+> I might read it again and have more comments...
+> 
+
+Thanks for the existing ones!
+
+Cheers,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

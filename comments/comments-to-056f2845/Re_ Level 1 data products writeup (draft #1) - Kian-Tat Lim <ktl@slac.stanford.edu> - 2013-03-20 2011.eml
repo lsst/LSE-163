@@ -1,0 +1,85 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 20:11:44 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2L3Bh8g001281
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 20:11:44 -0700
+Received: from mail-ve0-f182.google.com (mail-ve0-f182.google.com [209.85.128.182])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2L3Bgjx009937
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 23:11:42 -0400
+Received: by mail-ve0-f182.google.com with SMTP id ox1so2068542veb.13
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 20:11:42 -0700 (PDT)
+X-Received: by 10.220.225.200 with SMTP id it8mr11147371vcb.39.1363835502574;
+        Wed, 20 Mar 2013 20:11:42 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp37045vem;
+        Wed, 20 Mar 2013 20:11:41 -0700 (PDT)
+X-Received: by 10.182.160.106 with SMTP id xj10mr5634235obb.98.1363835501246;
+        Wed, 20 Mar 2013 20:11:41 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id b2si3828830obn.142.2013.03.20.20.11.40
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 20:11:40 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2L3Bd42009807
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 23:11:40 -0400
+Received: from nospam5.slac.stanford.edu ([134.79.102.15]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 20:11:38 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam5.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2L3BXTi025225
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 20 Mar 2013 20:11:33 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id 19F761F7BD; Wed, 20 Mar 2013 20:11:33 -0700 (PDT)
+Date: Wed, 20 Mar 2013 20:11:33 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Jeffrey Kantor <jkantor@lsst.org>, Jacek Becla <becla@slac.stanford.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Andy Becker <acbecker@gmail.com>, Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+Message-ID: <20130321031133.GD21841@sccs-ktlim.slac.stanford.edu>
+References: <5147F046.8090004@lsst.org>
+ <1ECE17AD-F819-46DD-865A-EFC3C03E6B33@lsst.org>
+ <514A7757.3080409@lsst.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <514A7757.3080409@lsst.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 21 Mar 2013 03:11:38.0888 (UTC) FILETIME=[CDAD5080:01CE25E1]
+
+Mario,
+
+Jeff wrote:
+> > pp. 15, footnote 24
+> > I believe this was requested for a 30 day buffer by Chris Smith a while back
+
+You responded:
+> Yes, I recall us planning to keep the last ~30 days of images (calexps)
+> cached on disk -- someone who knows the sizing model please confirm.
+> 
+> If that's the case, then it's not a problem.
+
+The sciReq sheet cell G166 says that we need to have room for 30 nights'
+worth of calibrated images on disk plus another 6 nights' worth of space
+(but not organized by nights at all) as a cache for on-demand access to
+images.
+
+We do not currently have a dataflow from that cache to daytime forced
+photometry (or a real daytime processing definition, for that matter),
+but as you say it shouldn't be a problem.
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu

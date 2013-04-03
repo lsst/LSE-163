@@ -1,0 +1,46 @@
+Message-ID: <514A8202.5030106@lsst.org>
+Date: Wed, 20 Mar 2013 22:44:02 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Kian-Tat Lim <ktl@slac.stanford.edu>
+CC: Jacek Becla <becla@slac.stanford.edu>, 
+ "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Andy Becker <acbecker@gmail.com>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <514938A1.9060305@SLAC.Stanford.EDU> <51494C9C.9000304@lsst.org> <514A1E46.2060902@SLAC.Stanford.EDU> <20130320210407.GS17256@sccs-ktlim.slac.stanford.edu> <514A250F.3000206@lsst.org> <20130320211045.GV17256@sccs-ktlim.slac.stanford.edu> <514A72AB.5070400@lsst.org> <20130321030749.GC21841@sccs-ktlim.slac.stanford.edu>
+In-Reply-To: <20130321030749.GC21841@sccs-ktlim.slac.stanford.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/20/13 22:07 , Kian-Tat Lim wrote:
+> Mario,
+> 
+>> Re. DR databases -- when you say "roll off to tape", that means that
+>> (for example), once DR3 is out, DR1 won't be query-able any more (but
+>> still available as a bulk download)? (sorry, I know I should know these
+>> things).
+> 
+> 	Sort of.  LDM-141 (storage estimates) dbData sheet F121:I134
+> shows that we only keep DR1, the latest DR (N), and DR N-1 on disk at
+> any given time.  Retrieving database data from tape is not currently a
+> documented external interface.  "Bulk download" of a database is not a
+> very well-defined interface, either.
+> 
+
+OK, thanks. We need to (at least roughly) define that interface and
+account for it in the sizing model (I'll add a TBD). Otherwise tape
+becomes functionally equivalent to /dev/null.
+
+Cheers,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

@@ -1,0 +1,185 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Tue, 19 Mar 2013 21:19:18 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2K4JBWL016285
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Tue, 19 Mar 2013 21:19:12 -0700
+Received: from mail-vb0-f48.google.com (mail-vb0-f48.google.com [209.85.212.48])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2K4J6HB009630
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 00:19:11 -0400
+Received: by mail-vb0-f48.google.com with SMTP id fc21so833630vbb.35
+        for <mjuric@majuric.org>; Tue, 19 Mar 2013 21:19:06 -0700 (PDT)
+X-Received: by 10.58.18.201 with SMTP id y9mr5991473ved.36.1363753145982;
+        Tue, 19 Mar 2013 21:19:05 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp82721vem;
+        Tue, 19 Mar 2013 21:19:05 -0700 (PDT)
+X-Received: by 10.50.191.228 with SMTP id hb4mr3172392igc.37.1363753144347;
+        Tue, 19 Mar 2013 21:19:04 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id lr7si322232icb.48.2013.03.19.21.19.03
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 19 Mar 2013 21:19:04 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of becla@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of becla@slac.stanford.edu) smtp.mail=becla@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2K4J1Oq009219
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 00:19:02 -0400
+Received: from nospam3.slac.stanford.edu ([134.79.109.10]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 19 Mar 2013 21:19:01 -0700
+Received: from exch-hub1.win.slac.stanford.edu (exch-hub1.slac.stanford.edu [134.79.164.111])
+	by nospam3.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2K4Ipka002141
+	(version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+	Tue, 19 Mar 2013 21:18:52 -0700
+	(envelope-from becla@slac.stanford.edu)
+Received: from EXCH-CLIENT1.win.slac.stanford.edu (2002:864f:6c8d::864f:6c8d)
+ by exch-hub1.win.slac.stanford.edu (2002:864f:a46f::864f:a46f) with Microsoft
+ SMTP Server (TLS) id 8.3.298.1; Tue, 19 Mar 2013 21:18:51 -0700
+Received: from [192.168.0.2] (76.245.44.104) by email.slac.stanford.edu
+ (134.79.108.141) with Microsoft SMTP Server (TLS) id 8.3.298.1; Tue, 19 Mar
+ 2013 21:18:50 -0700
+Message-ID: <514938A1.9060305@SLAC.Stanford.EDU>
+Date: Tue, 19 Mar 2013 21:18:41 -0700
+From: Jacek Becla <becla@slac.stanford.edu>
+Organization: SLAC National Accelerator Laboratory
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130308 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+CC: "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        "Lim, Kian-Tat"
+	<ktl@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic
+	<ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        "Robert
+ Lupton the Good" <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org>
+In-Reply-To: <5147F046.8090004@lsst.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 20 Mar 2013 04:19:01.0064 (UTC) FILETIME=[0C96AC80:01CE2522]
+
+Mario,
+
+Nice document! Here are my comments, observations and questions:
+
+1) page 14, "we require that queries executed at a known point
+in time against some version of the up-to-date db be repeatable
+at a later data". To the best of my knowledge this is NOT part
+of the current official baseline, e.g. I know it came up in
+discussions with Joshua Bloom, we think it is the right thing
+to do, and based on quick check the cost of doing it seems
+reasonable etc, but we should make it clear that it is a change
+to the baseline, and I'd caution against promising something
+very hard too fast. For instance, you "casually" ;) say on
+page 6  that "DIASource records are updated to point to the new
+DIAObject record". Keeping track of where they pointed prior
+to that update is actually non trivial - that simple pointer
+update may result is producing a copy of a DIASources
+(I can think of cheaper solutions from storage perspective,
+but convoluted from querying perspective)
+
+2) there is something wrong with pointers to SSObject in your
+proposed schema. Given you said on page 8 that DIASource.diaObjectId
+"cannot be null", I am guessing that every diasource
+will have its diaobject, even if that diasource belongs
+to ssobject. Is that the case? Further, (still page 8) you are
+unsure if we need both diaObject and ssObject ids. In your
+schema the DIAObject table does not point to SSObject,
+so if we don't keep the pointer to SSObject in DIAObject
+(when applicable), how can we find it?
+
+3) you introduced 128 bit ids, is that really necessary?
+We don't have any 128 bit ids in any of our baseline tables.
+We do have composite keys, but if that is what you mean,
+I think we should say it explicitly
+
+4) Page 4, you say "separate rows in the Object table for
+DiaObjects. Do you really mean "rows" here? (which would
+imply exactly the same schema), or "columns". And second,
+do you mean Object table from DR, or DIAObject?
+
+5) page 8, filterId in DIASource - this is internal optimization,
+(we can get it through ccdExposureId), so let's not cloud the
+picture with denormalization for convenience/speed here.
+
+6) all columns that represent errors - our standard naming
+convention is "Sigma".
+
+7) page 14 (bottom) + page 15 (top) - I'd not be so specific
+with "createdTAI", "deletedTAI", it is an implementation detail
+that we need to discuss much more before putting in
+an official document. I'd be ok with saying something like
+select * from DIASource WHERE "data is valid as of YYYY-MM-DD"
+without implying how we are going to implement it.
+
+8) page 16. When we replace the up-to-date with the latest
+one produced by DR, should we be worrying about killing
+reproducibility? Perhaps we have to keep the up-to-date
+that we are replacing? - we would have to run it through
+spreadsheets to see how much it'd cost.
+
+9) also related to page 16. What happens if we replay
+the alert production with the latest algorithms, and
+that "generate" new alerts that we didn't generate
+during the original production? Should we send such
+alerts out?
+
+
+I might read it again and have more comments...
+
+Thanks,
+Jacek
+
+
+
+
+On 03/18/2013 09:57 PM, Mario Juric wrote:
+> Dear DM crowd (and Zeljko),
+> 	Attached to this e-mail you'll find the first draft of a writeup on
+> Level 1 processing and data products. I'm asking for your initial round
+> of comments, preferably by this Friday. Over the weekend, I'll
+> incorporate any commends I receive and would aim to send it for round #2
+> of comments to the Science Council and the Science Collaboration chairs.
+> By the end of the month I (optimistically) hope to have ready part #2 of
+> that document, that deals with Level 2. We're aiming for an external
+> review in late May.
+>
+> 	The document is intended to capture at a detailed yet readable and
+> understandable level how we plan to generate L1 products, when, what
+> they will consist of, and how they will be distributed. Our DB team will
+> use it to derive the details of database and schema design, the science
+> teams will use it to verify that LSST plans capture science
+> requirements, and it will be used to populate the UML model to enable
+> requirements tracking and software design consistency checks. It will
+> also be the primary document we will give to our data products
+> reviewers, and it's not inconceivable that we may turn it into a
+> companion to the "Overview Paper".
+>
+> 	Please comment on technical feasibility, scientific completeness,
+> clarity, style, etc. At this point, the document is a statement on what
+> I would *like* to be done, not necessarily what we actually *can* do
+> given the resources. There are still many TBDs and TODOs in the text --
+> your thoughts on those would be appreciated. There are some new ideas
+> (e.g., "trailed source model"). There are also some things that were
+> left out wrt. the previous baseline (http://ls.st/wxv) -- please point
+> out those that I should have kept.
+>
+> PS: In case you need it, TeX sources are available at http://ls.st/r7z
+> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+> PPPS: I owe many of you replies to e-mails; I'll do that tomorrow while
+> on the way to FNAL for DES review. I've been largely ignoring e-mail
+> today in order to finish this document.
+>
+> Cheers,
+>
+

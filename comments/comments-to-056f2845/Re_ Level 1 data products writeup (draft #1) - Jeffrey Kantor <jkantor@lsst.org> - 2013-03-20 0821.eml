@@ -1,0 +1,273 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 08:21:28 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2KFLRfL006136
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 08:21:28 -0700
+Received: from mail-vb0-f43.google.com (mail-vb0-f43.google.com [209.85.212.43])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KFLQ58032366
+	for <mjuric@majuric.org>; Wed, 20 Mar 2013 11:21:26 -0400
+Received: by mail-vb0-f43.google.com with SMTP id fs19so1175518vbb.2
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 08:21:26 -0700 (PDT)
+X-Received: by 10.58.252.72 with SMTP id zq8mr8534451vec.20.1363792886006;
+        Wed, 20 Mar 2013 08:21:26 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp15606vem;
+        Wed, 20 Mar 2013 08:21:24 -0700 (PDT)
+X-Received: by 10.42.85.146 with SMTP id q18mr6917942icl.25.1363792883721;
+        Wed, 20 Mar 2013 08:21:23 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id ma3si3362835igc.9.2013.03.20.08.21.23
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 08:21:23 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of JKantor@lsst.org) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of JKantor@lsst.org) smtp.mail=JKantor@lsst.org
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2KFLMYx032201
+	for <mjuric-lsst@majuric.org>; Wed, 20 Mar 2013 11:21:22 -0400
+Received: from dhcp-24-173.tuc.noao.edu ([140.252.24.173]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 08:21:21 -0700
+From: Jeffrey Kantor <jkantor@lsst.org>
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: multipart/alternative; boundary="Apple-Mail=_AB2D2C4C-FD04-42E4-B2FD-E3319DAE1AC7"
+Subject: Re: Level 1 data products writeup (draft #1)
+Date: Wed, 20 Mar 2013 08:21:21 -0700
+In-Reply-To: <5147F046.8090004@lsst.org>
+To: Mario Juric <MJuric@lsst.org>
+References: <5147F046.8090004@lsst.org>
+Message-Id: <1ECE17AD-F819-46DD-865A-EFC3C03E6B33@lsst.org>
+X-Mailer: Apple Mail (2.1283)
+X-OriginalArrivalTime: 20 Mar 2013 15:21:21.0761 (UTC) FILETIME=[93E3CD10:01CE257E]
+
+
+--Apple-Mail=_AB2D2C4C-FD04-42E4-B2FD-E3319DAE1AC7
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=windows-1252
+
+Hi Mario,
+
+It is very good and will be a valuable document.  My comments below.  =
+Thanks!
+
+Overall:
+
+I'd go ahead and use AstroObject where you have Object, we'll be using =
+that term in the other models, might as well introduce it now.  It is =
+more important where it might be confused with Object in the software =
+engineering sense, but even in this context, it let's us reserve =
+"object" for more generic sense of the word.
+
+pp. 2, sec 1.1:
+
+I found myself having to be careful distinguishing between DIAObject and =
+Object while reading.  It's a bit of a catch-22 in having to describe =
+Level 1 and Level 2 separately when introducing both.  I think it would =
+help people reading later in sections 2.1, 2.2 if this introductory =
+section at least list the Level 1 and Level 2 data products that you =
+describe in detail later.  It should be clear right up front that these =
+are different things.  I realize there is a "document flow" issue, but =
+it feels that you can do this at a summary level first, then go into =
+Level 1 and Level 2 in detail as you have now. Also, you introduce the =
+two types of image analyses in the reverse numerical order to the =
+"Level" of their data products.  Here is my suggestion for a revised =
+1.1:
+
+1.1 Level 1 and 2 Data Products
+
+LSST Data Management will perform two, somewhat overlapping in =
+scientific intent, types of image analyses:
+
+Analysis of difference images, with the goal of detecting and =
+characterizing astrophysical phenomena revealed by their time-dependent =
+nature.  This is done on a nightly or daily basis and produces Level 1 =
+data products: DIASource, DIAObject, SSObject, Transient Alert.  The =
+detection of supernovae superimposed on bright extended galaxies is an =
+example of this analysis.
+
+Analysis of science images, with the goal of detecting and =
+characterizing astrophysical objects.  This is done on an annual basis =
+and produces Level 2 data products: Source, Object, Data Release.  =
+Characterization of faint galaxies on deep co-adds is an example of this =
+analysis.
+
+The two types of analysis have different requirements on timeliness. =
+Changes in flux or position of objects may need to be immediately =
+followed up, lest interesting information may be lost. Thus, the primary =
+results of analysis of difference images =96 =93transient alerts=94 =96 =
+belong to =93Level 1=94 data products and generally need to be broadcast =
+within 60 seconds of shutter close. The analysis of science images is =
+less time sensitive, and will be done as a part of annual data release =
+process.=20
+
+We may also want a table or something graphic to reflect these.  I am =
+thinking of an update version of the old data products slide.
+
+pp. 4 section 2.1 and in general:
+
+I would recommend avoiding mentioning specific Pipelines (e.g. =
+Association Pipeline) and in the same sense as our use cases, just talk =
+about "processing" i.e. association processing.  This is because, over =
+time, our notion of what processing occurs in what pipelines has =
+evolved, and may evolve again.  This would make the document insensitive =
+to such changes.
+
+pp. 4, section 2.2:
+
+Avoid use of "snaps" or define.
+
+Use of "up-to-date database" needs forward reference to section 2.4 for =
+definition.
+
+pp. 5, section 2.2:
+
+Define "Data Release database"
+
+#8 uses "payload" and "packet" to mean the same thing
+
+pp. 8, section 2.5 and subsections:
+
+This enumeration of all fields works for up-date-database where there =
+aren't many columns.  When you get to (Astro)Object table it has so many =
+columns this may be unwieldy in a document.  Consider moving to =
+appendix.
+
+I assume notes regarding what was removed, added, will be suppressed in =
+document to Science Collaborations.
+
+pp. 15, footnote 24
+
+I believe this was requested for a 30 day buffer by Chris Smith a while =
+back
+
+
+pp. 17, section 2.9
+
+I believe EPO asked for a "matching service" to match IDs from one DR to =
+another at the last AHM, but we declined to provide it, leaving them to =
+do so.  You or K-T may recall more details.
+
+
+On Mar 18, 2013, at 9:57 PM, Mario Juric wrote:
+
+> <Level1-Draft1.pdf>
+
+
+--Apple-Mail=_AB2D2C4C-FD04-42E4-B2FD-E3319DAE1AC7
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=windows-1252
+
+<html><head></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">Hi =
+Mario,<div><br></div><div>It is very good and will be a valuable =
+document. &nbsp;My comments below. =
+&nbsp;Thanks!</div><div><br></div><div>Overall:</div><div><br></div><div>I=
+'d go ahead and use AstroObject where you have Object, we'll be using =
+that term in the other models, might as well introduce it now. &nbsp;It =
+is more important where it might be confused with Object in the software =
+engineering sense, but even in this context, it let's us reserve =
+"object" for more generic sense of the =
+word.</div><div><br></div><div>pp. 2, sec =
+1.1:</div><div><br></div><div>I found myself having to be careful =
+distinguishing between DIAObject and Object while reading. &nbsp;It's a =
+bit of a catch-22 in having to describe Level 1 and Level 2 separately =
+when introducing both. &nbsp;I think it would help people reading later =
+in sections 2.1, 2.2 if this introductory section at least list the =
+Level 1 and Level 2 data products that you describe in detail later. =
+&nbsp;It should be clear right up front that these are different things. =
+&nbsp;I realize there is a "document flow" issue, but it feels that you =
+can do this at a summary level first, then go into Level 1 and Level 2 =
+in detail as you have now. Also, you introduce the two types of image =
+analyses in the reverse numerical order to the "Level" of their data =
+products. &nbsp;Here is my suggestion for a revised =
+1.1:</div><div><br></div><div>
+	=09
+=09
+=09
+		<div class=3D"column"><p><span style=3D"font-size: =
+14.000000pt; font-family: 'CMBX12'">1.1 Level 1 and 2 Data Products
+</span></p><p><span style=3D"font-size: 12.000000pt; font-family: =
+'CMR12'">LSST Data Management will perform two, somewhat overlapping in =
+scientific
+intent, types of image analyses:</span></p>
+		</div>
+		<div class=3D"column">
+			<ol style=3D"list-style-type: decimal">
+				<li style=3D"font-size: 12.000000pt; =
+font-family: 'CMR12'"><p><span style=3D"font-size: 12pt; font-family: =
+CMR12; ">Analysis of&nbsp;</span><span style=3D"font-size: 12pt; =
+font-family: CMTI12; ">difference images,&nbsp;</span><span =
+style=3D"font-size: 12pt; font-family: CMR12; ">with the goal of =
+detecting and characterizing astrophysical phenomena revealed by their =
+time-dependent nature. &nbsp;This is done on a nightly or daily basis =
+and produces Level 1 data products: DIASource, DIAObject, SSObject, =
+Transient Alert. &nbsp;</span>The detection of supernovae superimposed =
+on bright extended galaxies is an example of this analysis.</p>
+				</li>
+				<li><p style=3D"font-family: CMR12; =
+font-size: 12pt; "><span style=3D"font-size: 12.000000pt; font-family: =
+'CMR12'"><span style=3D"font-size: 12pt; font-family: CMR12; ">Analysis =
+of&nbsp;</span><span style=3D"font-size: 12pt; font-family: CMTI12; =
+">science images,&nbsp;</span><span style=3D"font-size: 12pt; =
+font-family: CMR12; ">with the goal of detecting and characterizing =
+astrophysical objects. &nbsp;This is done on an annual basis and =
+produces Level 2 data products: Source, Object, Data Release. =
+&nbsp;</span></span>Characterization of faint galaxies on deep co-adds =
+is an example of this analysis.</p><p style=3D"font-family: CMR12; =
+font-size: 12pt; text-align: left; ">The two types of analysis have =
+different requirements on timeliness. Changes
+in flux or position of objects may need to be immediately followed up, =
+lest
+interesting information may be lost. Thus, the primary results of =
+analysis
+of difference images =96 =93transient alerts=94 =96 belong to =93Level =
+1=94 data products
+and generally need to be broadcast within 60 seconds of shutter close. =
+The
+analysis of science images is less time sensitive, and will be done as a =
+part of
+annual data release process.&nbsp;</p></li></ol>
+		</div></div><div><div><div>We may also want a table or =
+something graphic to reflect these. &nbsp;I am thinking of an update =
+version of the old data products slide.</div><div><br></div><div>pp. 4 =
+section 2.1 and in general:</div><div><br></div><div>I would recommend =
+avoiding mentioning specific Pipelines (e.g. Association Pipeline) and =
+in the same sense as our use cases, just talk about "processing" i.e. =
+association processing. &nbsp;This is because, over time, our notion of =
+what processing occurs in what pipelines has evolved, and may evolve =
+again. &nbsp;This would make the document insensitive to such =
+changes.</div><div><br></div><div>pp. 4, section =
+2.2:</div><div><br></div><div>Avoid use of "snaps" or =
+define.</div><div><br></div><div>Use of "up-to-date database" needs =
+forward reference to section 2.4 for =
+definition.</div><div><br></div><div>pp. 5, section =
+2.2:</div><div><br></div><div>Define "Data Release =
+database"</div><div><br></div><div>#8 uses "payload" and "packet" to =
+mean the same thing</div><div><br></div><div>pp. 8, section 2.5 and =
+subsections:</div><div><br></div><div>This enumeration of all fields =
+works for up-date-database where there aren't many columns. &nbsp;When =
+you get to (Astro)Object table it has so many columns this may be =
+unwieldy in a document. &nbsp;Consider moving to =
+appendix.</div><div><br></div><div>I assume notes regarding what was =
+removed, added, will be suppressed in document to Science =
+Collaborations.</div><div><br></div><div>pp. 15, footnote =
+24</div><div><br></div><div>I believe this was requested for a 30 day =
+buffer by Chris Smith a while =
+back</div><div><br></div><div><br></div><div>pp. 17, section =
+2.9</div><div><br></div><div>I believe EPO asked for a "matching =
+service" to match IDs from one DR to another at the last AHM, but we =
+declined to provide it, leaving them to do so. &nbsp;You or K-T may =
+recall more details.</div><div><br></div><div><br></div><div>On Mar 18, =
+2013, at 9:57 PM, Mario Juric wrote:</div><br =
+class=3D"Apple-interchange-newline"><blockquote =
+type=3D"cite"><span>&lt;Level1-Draft1.pdf&gt;</span></blockquote></div><br=
+></div></body></html>=
+
+--Apple-Mail=_AB2D2C4C-FD04-42E4-B2FD-E3319DAE1AC7--

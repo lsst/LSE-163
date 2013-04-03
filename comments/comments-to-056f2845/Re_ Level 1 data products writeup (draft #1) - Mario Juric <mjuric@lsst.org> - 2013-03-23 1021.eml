@@ -1,0 +1,81 @@
+Message-ID: <514DE49F.30609@lsst.org>
+Date: Sat, 23 Mar 2013 12:21:35 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Jacek Becla <becla@slac.stanford.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Kian-Tat Lim <ktl@slac.stanford.edu>, Jeffrey Kantor <JKantor@lsst.org>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Andy Becker <acbecker@gmail.com>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org>
+In-Reply-To: <5147F046.8090004@lsst.org>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+Everyone,
+	Thanks for the comments -- it will likely take me a few days to
+incorporate them into the text and send an updated version.
+
+	A question for Jacek/K-T: does MySQL support computed columns (I found
+info on Google saying that MariaDB does, but I'm not sure about MySQL)?
+
+	I ask because it's clear that we'll want to store flux, but it's
+equally clear that the majority of users will want to query magnitudes.
+The transformation is straightfowrard (log, multiply, add), and may be
+best implemented as a computed value.
+
+Cheers,
+- M.
+
+On 3/18/13 23:57 , Mario Juric wrote:
+> Dear DM crowd (and Zeljko),
+> 	Attached to this e-mail you'll find the first draft of a writeup on
+> Level 1 processing and data products. I'm asking for your initial round
+> of comments, preferably by this Friday. Over the weekend, I'll
+> incorporate any commends I receive and would aim to send it for round #2
+> of comments to the Science Council and the Science Collaboration chairs.
+> By the end of the month I (optimistically) hope to have ready part #2 of
+> that document, that deals with Level 2. We're aiming for an external
+> review in late May.
+> 
+> 	The document is intended to capture at a detailed yet readable and
+> understandable level how we plan to generate L1 products, when, what
+> they will consist of, and how they will be distributed. Our DB team will
+> use it to derive the details of database and schema design, the science
+> teams will use it to verify that LSST plans capture science
+> requirements, and it will be used to populate the UML model to enable
+> requirements tracking and software design consistency checks. It will
+> also be the primary document we will give to our data products
+> reviewers, and it's not inconceivable that we may turn it into a
+> companion to the "Overview Paper".
+> 
+> 	Please comment on technical feasibility, scientific completeness,
+> clarity, style, etc. At this point, the document is a statement on what
+> I would *like* to be done, not necessarily what we actually *can* do
+> given the resources. There are still many TBDs and TODOs in the text --
+> your thoughts on those would be appreciated. There are some new ideas
+> (e.g., "trailed source model"). There are also some things that were
+> left out wrt. the previous baseline (http://ls.st/wxv) -- please point
+> out those that I should have kept.
+> 
+> PS: In case you need it, TeX sources are available at http://ls.st/r7z
+> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+> PPPS: I owe many of you replies to e-mails; I'll do that tomorrow while
+> on the way to FNAL for DES review. I've been largely ignoring e-mail
+> today in order to finish this document.
+> 
+> Cheers,
+> 
+
+
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

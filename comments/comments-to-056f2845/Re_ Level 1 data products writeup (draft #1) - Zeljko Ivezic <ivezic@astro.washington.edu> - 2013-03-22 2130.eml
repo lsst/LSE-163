@@ -1,0 +1,77 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Fri, 22 Mar 2013 21:30:47 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2N4UjMB001663
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Fri, 22 Mar 2013 21:30:46 -0700
+Received: from mail-vb0-f51.google.com (mail-vb0-f51.google.com [209.85.212.51])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2N4Uj6a005311
+	for <mjuric@majuric.org>; Sat, 23 Mar 2013 00:30:45 -0400
+Received: by mail-vb0-f51.google.com with SMTP id fq11so2912460vbb.24
+        for <mjuric@majuric.org>; Fri, 22 Mar 2013 21:30:44 -0700 (PDT)
+X-Received: by 10.52.27.138 with SMTP id t10mr4689286vdg.59.1364013044618;
+        Fri, 22 Mar 2013 21:30:44 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp108095vem;
+        Fri, 22 Mar 2013 21:30:43 -0700 (PDT)
+X-Received: by 10.60.132.140 with SMTP id ou12mr4322931oeb.56.1364013043109;
+        Fri, 22 Mar 2013 21:30:43 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id xw10si3833869obb.138.2013.03.22.21.30.42
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 22 Mar 2013 21:30:42 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ivezic@astro.washington.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ivezic@astro.washington.edu) smtp.mail=ivezic@astro.washington.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2N4UeQm003947
+	for <mjuric-lsst@majuric.org>; Sat, 23 Mar 2013 00:30:41 -0400
+Received: from mxout12.cac.washington.edu ([140.142.32.167]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 22 Mar 2013 21:30:38 -0700
+Received: from smtp.washington.edu (smtp.washington.edu [140.142.32.205])
+	by mxout12.cac.washington.edu (8.14.4+UW11.03/8.14.4+UW13.02) with ESMTP id r2N4UWoP029158
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+	Fri, 22 Mar 2013 21:30:32 -0700
+X-Auth-Received: from [172.16.0.12] (c-174-61-225-148.hsd1.wa.comcast.net [174.61.225.148])
+	(authenticated authid=ivezic)
+	by smtp.washington.edu (8.14.4+UW11.03/8.14.4+UW13.02) with ESMTP id r2N4UVUK012427
+	(version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT);
+	Fri, 22 Mar 2013 21:30:32 -0700
+Subject: Re: Level 1 data products writeup (draft #1)
+Mime-Version: 1.0 (Apple Message framework v1085)
+Content-Type: text/plain; charset=us-ascii
+From: Zeljko Ivezic <ivezic@astro.washington.edu>
+In-Reply-To: <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com>
+Date: Fri, 22 Mar 2013 21:30:37 -0700
+Cc: Mario Juric <mjuric@lsst.org>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AC1F8509-78FA-4B0B-A6D1-3606D0013461@astro.washington.edu>
+References: <5147F046.8090004@lsst.org> <CALN0OHxgtLCY9BUQ4uE+n_keQ3yeLQeYryPH+Xvs5GbqBgOeMA@mail.gmail.com>
+To: Tim Axelrod <taxelrod@gmail.com>
+X-Mailer: Apple Mail (2.1085)
+X-PMX-Version: 6.0.0.2142326, Antispam-Engine: 2.7.2.2107409, Antispam-Data: 2013.3.23.42119
+X-PMX-Server: mxout12.cac.washington.edu
+X-Uwash-Spam: Gauge=IIIIIIIII, Probability=9%, Report='
+ MULTIPLE_RCPTS 0.1, HTML_00_01 0.05, HTML_00_10 0.05, MIME_LOWER_CASE 0.05, BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_1000_LESS 0, BODY_SIZE_2000_LESS 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_500_599 0, BODY_SIZE_7000_LESS 0, DATE_TZ_NA 0, NO_URI_FOUND 0, __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN 0, __HAS_FROM 0, __HAS_MSGID 0, __HAS_X_MAILER 0, __IN_REP_TO 0, __MIME_TEXT_ONLY 0, __MIME_VERSION 0, __MIME_VERSION_APPLEMAIL 0, __MSGID_APPLEMAIL 0, __MULTIPLE_RCPTS_CC_X2 0, __SANE_MSGID 0, __TO_MALFORMED_2 0, __USER_AGENT_APPLEMAIL 0, __X_MAILER_APPLEMAIL 0'
+X-OriginalArrivalTime: 23 Mar 2013 04:30:38.0617 (UTC) FILETIME=[2B9A1090:01CE277F]
+
+On Mar 22, 2013, at 6:00 PM, Tim Axelrod wrote:
+> p. 8  There is already a standard unit for flux that is used very =
+widely in astronomy and physics - the Jansky. =20
+
+I haven't fully digested this document yet, nor comments by others, but =
+here I fully
+agree with Tim. Maggies are the result of not believing in absolute =
+calibration.=20
+Luptitudes are the result of being unable to carry negative fluxes. Both =
+are=20
+obsolete by now in my opinion. I hope Robert agrees?=20
+        Z.
+
+=20=

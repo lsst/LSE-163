@@ -1,0 +1,73 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Mon, 25 Mar 2013 09:43:58 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2PGhvTm032154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Mon, 25 Mar 2013 09:43:57 -0700
+Received: from mail-ve0-f179.google.com (mail-ve0-f179.google.com [209.85.128.179])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2PGhpDh014286
+	for <mjuric@majuric.org>; Mon, 25 Mar 2013 12:43:56 -0400
+Received: by mail-ve0-f179.google.com with SMTP id da11so4994194veb.24
+        for <mjuric@majuric.org>; Mon, 25 Mar 2013 09:43:51 -0700 (PDT)
+X-Received: by 10.52.27.138 with SMTP id t10mr13926555vdg.59.1364229831520;
+        Mon, 25 Mar 2013 09:43:51 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp35915vem;
+        Mon, 25 Mar 2013 09:43:50 -0700 (PDT)
+X-Received: by 10.60.59.74 with SMTP id x10mr5166432oeq.48.1364229830450;
+        Mon, 25 Mar 2013 09:43:50 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id cg10si4200181obc.63.2013.03.25.09.43.48
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 25 Mar 2013 09:43:50 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2PGhl6Q014133
+	for <mjuric-lsst@majuric.org>; Mon, 25 Mar 2013 12:43:48 -0400
+Received: from nospam1.slac.stanford.edu ([134.79.18.81]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 25 Mar 2013 09:43:47 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam1.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2PGhbli014670
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 25 Mar 2013 09:43:38 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id B82321F836; Mon, 25 Mar 2013 09:43:37 -0700 (PDT)
+Date: Mon, 25 Mar 2013 09:43:37 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Jacek Becla <becla@slac.stanford.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+Message-ID: <20130325164337.GA16425@sccs-ktlim.slac.stanford.edu>
+References: <5147F046.8090004@lsst.org>
+ <514DE49F.30609@lsst.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <514DE49F.30609@lsst.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 25 Mar 2013 16:43:47.0498 (UTC) FILETIME=[EBD820A0:01CE2977]
+
+Mario,
+
+> 	A question for Jacek/K-T: does MySQL support computed columns (I found
+> info on Google saying that MariaDB does, but I'm not sure about MySQL)?
+
+	Not in tables, currently, to my knowledge.  But a view can
+contain them.
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu

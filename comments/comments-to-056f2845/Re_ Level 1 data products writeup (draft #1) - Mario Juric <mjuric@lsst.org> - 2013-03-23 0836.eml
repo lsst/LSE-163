@@ -1,0 +1,281 @@
+Message-ID: <514DCC18.6000407@lsst.org>
+Date: Sat, 23 Mar 2013 10:36:56 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Robert Lupton the Good <rhl@astro.princeton.edu>
+CC: Kian-Tat Lim <ktl@slac.stanford.edu>, 
+ Jacek Becla <becla@slac.stanford.edu>,
+ "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>, 
+ Jeffrey Kantor <JKantor@lsst.org>,
+ Zeljko Ivezic <ivezic@astro.washington.edu>, 
+ Andy Becker <acbecker@gmail.com>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <514938A1.9060305@SLAC.Stanford.EDU> <51494C9C.9000304@lsst.org> <20130320172906.GA17256@sccs-ktlim.slac.stanford.edu> <514A8144.4060901@lsst.org> <2CFF91FC-8051-4339-A58D-50BA198296A3@astro.princeton.edu>
+In-Reply-To: <2CFF91FC-8051-4339-A58D-50BA198296A3@astro.princeton.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/21/13 17:17 , Robert Lupton the Good wrote:
+> As the masses have said, nice document.
+> 
+> 					R
+> 
+> Section 2.1  The S/N = 5 for DIASources isn't graven in stone (but I
+> bet it's < 6).  I think it's a bit clearer to say "Change in flux at
+> a given position"
+> 
+
+SNR=5 is our baseline, and we're likely to go with it unless it
+generates a tremendous number of false positives. The actual detection
+SNR will be included in the VOEvent so that end-users could filter it
+more aggressively if needed.
+
+> How do we handle asteroids on top of variables? (If we do).
+
+I didn't consider those. If it's a known asteroid, we could flag the
+measurement of both the asteroid and the variable as
+BLENDED (or something similar). I'm not expecting many of these (I may
+be wrong, haven't actually checked...).
+
+> Asteroids on constant brightness stars are handled by your list of
+> matched Objects.
+> 
+
+If they're on top of a constant-brightness star, the star should be
+subtracted away and gone in the diffims, shouldn't it?
+
+> 2.2 point 3.  "Force-photometered" (ughh) as a PSF?  What if it's
+> extended [probably trailed, but who knows for sure?]?
+> 
+
+Could we do forced photometry on direct image, but using the source
+footprint+weights as detected on the difference image?
+
+Any suggestions on a Cambridge-approved replacement for the made-up verb?
+
+> We may well detect at 5 and alert at 5.3 or something;  this
+> information must go out in the VOEvent.
+> 
+
+It's in there (Table 1, column SNR).
+
+> 2.3 Point 1.  Are those tracklets?  
+
+Yes (I got the terminology wrong, it's on the "to-fix" list).
+
+> 
+> point 2.  What happens when previous DIASources become dis-associated with an SSObject?
+> 
+
+The proposal is that they get deleted.
+
+> Will we be using J2000?  Or some GAIA-based system?
+> 
+
+Doesn't really matter right now -- we'll decide when the time is
+appropriate.
+
+But you're right, I should remove it lest someone think we're wed to J2000.
+
+> Why are we carrying sky and skyErr for all DIASources?  There was
+> some discussion with ACB on this, but I think I'd rather trust the
+> quoted errors than use the localBackground to estimate them myself.
+
+Could it still be useful for QA?
+
+> The only use that I know of for sky in the SDSS object tables was to
+> compare the local to the global value to see how important deblending
+> had been --- and there must be a better way of capturing that.
+> 
+
+And Andy also pointed out that on a diffim, localBackground should be zero.
+
+> I'm not getting into naming-of-errors.  As Jacek says, there was
+> quite a history of discussion which we should read before reopening
+> this.
+
+Didn't realize I was reopening a sensitive topic. Can someone forward me
+the history?
+
+> 
+> I don't understand, "SNR".  Is this the level at which we think we
+> detected it (which is a per-visit number) or a per-object S/N ratio,
+> in which case what's the difference from psfFluxErr/psfFlux
+> 
+
+Per-object number; I wasn't sure if we were going to re-measure after
+detection with (for example) a more accurate PSF model, or a better
+centroid. If so, the detection SNR is not necessarily equal to the
+measurement SNR.
+
+> I wouldn't use "Log" to mean Log_{10}.  And I might go with Log_e == Ln anyway
+> 
+
+Agreed, will change to ln().
+
+> I'm not sure we need all those trail parameters (and covariances
+> etc.).  I'd be amazed if e.g. the angle from the moments didn't give
+> the trail angle to sufficient accuracy.  I bet we don't need all the
+> moment covariances either --- in fact, I'm not sure we need a trailed
+> model and a moment too (are you thinking about comets?). 
+
+I'm thinking about fast-moving asteroids. For those MOPS will depend on
+a good estimate of the velocity, and fitting a line-segment model seems
+like an optimal solution.
+
+(I admit I added the width parameter without a good reason, and only a
+vague notion that it may help in distinguishing moving objects from CRs
+or other artifacts)
+
+> All of
+> these inflate the table significantly, as almost all sources will be
+> well fit by a single PSF model.  We could have a secondary table, I
+> suppose, for a small subset [normally something to which I
+> strenuously object]
+> 
+
+Given the (so far) single use case, that's an option. But then we'll
+have to establish thresholds when we will or won't measure it.
+
+An alternative is to keep the measurement but not store all covariances.
+That could be sufficient for MOPS. I'll go with that, unless there are
+objections.
+
+> Do we really need the extinction (and two numbers to boot)?  It's
+> been applied to the fluxes, and you'd have to be really poking down
+> in the detritus to care about those values.
+> 
+
+Don't have an opinion. Can anyone imagine use-cases for these, in the
+context of alert production? Tim?
+
+> You'll get into trouble with users by removing "extendedness" -- they
+> want to be told the Truth.  Add a UDF?
+
+How shall we define it? Some function of second moments? Expected vs.
+observed curve of growth? I'd need a description of an algorithm.
+
+> 
+> I'd assume that the moments were the standard adaptive gaussian
+> moments (I don't know any better). 
+
+Yes.
+
+> Or they could be a trailed
+> Gaussian --- that might be a good idea in the context of merging
+> trails and moments.
+> 
+
+I worry that that would make them harder to explain to a typical
+end-user. Adaptive moments are a quantity they've (kind of) gotten used to.
+
+> I'm not sure that we should marginalise over priors to get
+> expectation values.  My usual preference is to quote the likelihood
+> and allow the users to convert to probabilities (of course, quoting a
+> mean and variance rather implies that the likelihood is Gaussian.
+> And we don't have post-Gaussian parameters saved [or calculated?]).
+> This is OK with me.
+> 
+
+We're not storing moments of likelihood beyond the second. I suspect we
+won't be calculating it either (at least for the AP)? Did you have
+something else in mind?
+
+It matters less here in AP, but we may need both in the DRP catalogs.
+The majority of users will just want "the magnitude" (e.g., to compute
+colors, plot CMDs, etc), and these subtle differences will be lost on
+them. We should give them the expectation value marginalized over some
+reasonable prior. I'd make these the default (i.e., *Flux, *FluxSigma
+would be marginalized over all other parameters).
+
+For the small minority that does care, we give them the maximum
+likelihood + some TBD description of the shape of the posterior
+(covariance matrix, or a few independent samples).
+
+Thoughts?
+
+> At Data release time, moving and variable sources can and will be
+> included in the deblending codes.
+> 
+
+What do you mean by this? That (for example), the deblender will be
+aware that there was a SNe on top of a galaxy at T=12345?
+
+> There are also typical slavic grammatical errors;  I'd be happy to
+> fix these up at a later date.
+> 
+
+Puno hvala.
+
+> And some comments on previous comments:
+>>>
+>>> What about extended variables (comets, asteroid outgassing, light echoes,
+>>> lensed variables)?
+>>>
+>>
+>> I think it's beyond our scope (the characterization vs. classification mantra).
+> 
+> Isn't this measuring proper parameters, rather than classifying?
+> 
+
+I'm guessing that all of these should be detectable through a
+combination of moments (+ knowing that the object is moving, for the
+first two).
+
+I'm hesitant to add more models/measurements to alert processing, unless
+there's a compelling science case that demands immediate follow-up and
+wouldn't be possible w/o the added measurement.
+
+>>> If SSObjects are DIAObjects, should record DIAObject id in SSObject table Actually, likely there will be several DIAObjects for each SSObject; should they be merged?
+>>>
+>>
+>> I'm thinking that once DIASources are linked to SSObjects, they
+>> should be "unlinked" from their DIAObjects (and the DIAObjects
+>> deleted if that action made them orphaned).
+> 
+> This would make sense if we made 100% correct linkages.  In reality
+> we'll make mistakes;  it's probably OK to delete the DIAObjects and
+> recreate them if the linkage turns out to be wrong.
+> 
+
+I think so too.
+
+>>>
+>>> My intuition is that this shouldn't happen often with real astrophysical objects, but if we have lots of false positives, they may contaminate the DIAObjects.
+>>
+>> How will we prevent multiple DIASources matching to a DIAObject? Determining that another DIASource in the same visit has already matched will be somewhat difficult (especially if at the edge of a parallelization boundary).
+> 
+> I think Mario's assumption was probably that the DIASources were
+> sparse.  As soon as that's not true (if it ever is --- depends on
+> e.g. cleanliness of subtractions in the bulge in the presence of
+> proper motion and DCR) this problem is very hard.  For example, not
+> only are there multiple possible matches, but there'll be the problem
+> of deblending consistently (including across boundaries).
+> 
+
+You're correct re. assumption about sparseness. When the density of
+DIASources becomes such that it's ambiguous how to assign them, I don't
+think there's a clear general solution. We may as well continue to
+associate as we do (knowing it's suboptimal), and leave it up to the
+users to devise better techniques that fit their science goals (e.g.,
+association that takes colors or fluxes into account). But I suspect
+that diffim may begin failing long before that.
+
+I am worried about the false positives. They may generate many
+DIAObjects which we then have to force-photometer on every subsequent
+image. If that becomes an issue, we can set a threshold for what
+triggers the forced-photometry follow-up (e.g., at least two DIASources
+associated to a DIAObject, or make a more stringent cut on SNR, etc.).
+We'll know more once we see the actual false positives we'll have to
+deal with.
+
+Thanks!
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

@@ -51,10 +51,12 @@
 \newcommand{\DIASources}{\code{DIASources}\xspace}
 \newcommand{\DIAObject}{\code{DIAObject}\xspace}
 \newcommand{\DIAObjects}{\code{DIAObjects}\xspace}
-\newcommand{\DB}{{\em up-to-date database}\xspace}
-\newcommand{\DR}{{\em Data Release database}\xspace}
+\newcommand{\DB}{{Level 1 database}\xspace}
+\newcommand{\DR}{{Data Release database}\xspace}
 \newcommand{\Object}{\code{Object}\xspace}
 \newcommand{\Objects}{\code{Objects}\xspace}
+\newcommand{\Source}{\code{Source}\xspace}
+\newcommand{\Sources}{\code{Sources}\xspace}
 \newcommand{\SSObject}{\code{SSObject}\xspace}
 \newcommand{\SSObjects}{\code{SSObjects}\xspace}
 \newcommand{\VOEvent}{\code{VOEvent}\xspace}
@@ -76,7 +78,7 @@ This document describes the contents of Level 1 and 2 LSST data products and the
 
 % Note: paragraph lifted from Zeljko's overview paper
 LSST will be a large, wide-field ground-based system
-designed to obtain multiple images covering the sky that is visible from Cerro Pach\'{o}n in Northern Chile. The current baseline design, with an 8.4m (6.7m effective) primary mirror, a 9.6 deg$^2$ field of view, and a 3.2 Gigapixel camera, will allow about 10,000 square degrees of sky to be covered using pairs  of 15-second exposures \R{in two photometric bands} \B{twice per night} every three nights on average, with typical 5$\sigma$ depth for point sources of $r\sim24.5$ (AB). The system is designed to yield high image quality as well as superb astrometric  and photometric accuracy. The \B{total} survey area will include 30,000 deg$^2$ with $\delta<+34.5^\circ$, and will be imaged multiple times in six bands, $ugrizy$, covering the wavelength range 320--1050 nm. The project is scheduled to  begin the regular survey operations before the end of this decade. About 90\% of the observing time will be devoted to a deep-wide-fast survey mode which will \B{uniformly} observe a 18,000 deg$^2$ region about 1000 times (summed over all six bands) during the anticipated 10 years of operations, and yield a coadded map to $r\sim27.5$. These data will result in databases including 10 billion galaxies and a similar number of stars, and will serve the majority of the primary science programs. The remaining 10\% of the observing time will be allocated to special projects such as a Very Deep and Fast time domain survey.
+designed to obtain multiple images covering the sky that is visible from Cerro Pach\'{o}n in Northern Chile. The current baseline design, with an 8.4m (6.7m effective) primary mirror, a 9.6 deg$^2$ field of view, and a 3.2 Gigapixel camera, will allow about 10,000 square degrees of sky to be covered using pairs  of 15-second exposures \R{in two photometric bands} \B{twice per night} every three nights on average, with typical 5$\sigma$ depth for point sources of $r\sim24.5$ (AB). The system is designed to yield high image quality as well as superb astrometric  and photometric accuracy. The \B{total} survey area will include 30,000 deg$^2$ with $\delta<+34.5^\circ$, and will be imaged multiple times in six bands, $ugrizy$, covering the wavelength range 320--1050 nm. The project is scheduled to  begin the regular survey operations at the start of next decade. About 90\% of the observing time will be devoted to a deep-wide-fast survey mode which will \B{uniformly} observe a 18,000 deg$^2$ region about 1000 times (summed over all six bands) during the anticipated 10 years of operations, and yield a coadded map to $r\sim27.5$. These data will result in databases including 10 billion galaxies and a similar number of stars, and will serve the majority of the primary science programs. The remaining 10\% of the observing time will be allocated to special projects such as a Very Deep and Fast time domain survey.
 
 The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize changes in time in LSST-observed universe. The results of that processing will be catalogs of detected objects and the measurements of their properties, and prompt alerts to ``transients'' -- changes in astrophysical scenary discovered by differencing incoming images against older, deeper, images of the sky in the same direction (templates).
 
@@ -87,13 +89,12 @@ The {\em broad}, {\em high-level}, requirements for LSST Data Products are given
 LSST Data Management will perform two, somewhat overlapping in scientific intent, types of image analyses:
 
 \begin{enumerate}
-\item Analysis of {\em science images}, with the goal of detecting and characterizing astrophysical objects.
-\item Analysis of {\em difference images}\footnote{Images created by subtracting science images against an older image of the sky (the {\em template}).}, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature.
+\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing is done on a nightly or daily basis and produces {\bf Level 1} data products. These include sources detected in difference images (\DIASources), objects these sources are associated to (\DIAObjects), solar system objects (\SSObject), and alerts to these discoveries.
+\item Analysis of science images, with the goal of detecting and characterizing astrophysical objects. Characterization of faint galaxies on deep co-adds is an example of this analysis. This is done on an annual basis and produces {\bf Level 2} data products. These {\em Data Releases} will include catalogs of \Objects (detections on deep co-adds) and \Sources (measurements on individual science images), as well as fully reprocessed Level 1 data products (see \S \ref{sec:l1dbreproc}).
 \end{enumerate}
+ 
+The two types of analysis have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus, the primary results of analysis of difference images -- newly discovered transients -- generally need to be broadcast as {\em transient alerts} within 60 seconds of shutter close. The analysis of science images is less time sensitive, and will be done as a part of annual data release process.
 
-Characterization of faint galaxies on deep co-adds is an example of a use case for the former; detection of supernovae superimposed on bright extended galaxies is an example of analysis more readily performed by the latter.
-
-The two types of analysis have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information may be lost. Thus, the primary results of analysis of difference images -- ``transient alerts'' -- belong to ``Level 1'' data products and generally need to be broadcast within 60 seconds of shutter close. The analysis of science images is less time sensitive, and will be done as a part of annual data release process.
 
 % In both cases, the software analyzes the image data to detect {\em sources}, groupings of pixels with values inconsistent with being noise at some preset level (e.g., a typical threshold is $S/N = 5$). If the detection is performed on science images, we call the resulting sources {\em Sources}\footnote{Note the capitalization}. If the source has been detected on a difference image, we call it a {\em DIASource}\footnote{for {\em Difference Image Analysis Source}}.
 
@@ -105,42 +106,46 @@ The two types of analysis have different requirements on timeliness. Changes in 
 
 Level 1 data products are a product of difference image analysis (DIA). These are primarily {\em \DIASources} (sources detected on difference images) and related, broadly defined, metadata. This includes cut-outs\footnote{Small sub-images at the position of a detected source. Also known as {\em postage stamps}.}, as well as fitted orbits for those that are found to be due to objects in the Solar System (typically, asteroids or comets).
 
-\DIASources are sources detected on difference images (e.g., those above $S/N=5$ after correlation with an apropriate PSF profile). They represent changes changes in flux wrt. to the deep template. Physically, a \DIASource may be an observation of a new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star).
+\DIASources are sources detected on difference images (e.g., those above $S/N=5$ after correlation with an appropriate PSF profile). They represent changes changes in flux wrt. to the deep template. Physically, a \DIASource may be an observation of a new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Note that their flux can go negative (e.g., if a source present in the template image reduced its brightness, or moved away).
 
-\DIASources detected on visits taken at different times are associated to \DIAObjects. \DIAObjects represent the underlying astrophysical phenomenon detected and measured by individual \DIASources. The association can be done in two different ways: by assuming the underlying phenomenon is an object within the Solar System moving on an orbit around one of its major bodies, or by assuming the underlying phenomenon is distand enough to only exhibit small proper motion\footnote{TBD: define 'small'}. The latter type of association is done during normal alert processing right after the image has been acquired by the Association Pipeline. The former is done at daytime by the Moving Objects Pipeline (aka \code{MOPS}), unless the \DIASource is an apparition of an already known Solar System object (in which case it's flagged as such during alert processing).
+\DIASources detected on visits taken at different times are associated to \DIAObjects. \DIAObjects represent the underlying astrophysical phenomenon detected and measured by individual \DIASources. The association can be done in two different ways: by assuming the underlying phenomenon is an object within the Solar System moving on an orbit around one of its major bodies, or by assuming the underlying phenomenon is distant enough to only exhibit small proper motion\footnote{TBD: define 'small'}. The latter type of association is performed during difference image analysis right after the image has been acquired. The former is done at daytime by the Moving Objects Processing Software (\code{MOPS}), unless the \DIASource is an apparition of an already known Solar System object (``\SSObjects''), in which case it's flagged as such during difference image analysis.
 
-Note that \DIASources that are not at the time recognized as Solar System objects (``\SSObjects'') will be broadcast as VOEvents at the end of Alert Processing.
+Note that \DIASources that are not at the time recognized as Solar System objects will be broadcast as VOEvents at the end of difference image analysis.
 
-\subsection{Alert Processing}
+\subsection{Level 1 Data Processing}
 
-The following will occur during normal alert processing:
+\subsubsection{Difference Image Analysis}
+
+The following will occur during normal difference image analysis:
 \begin{enumerate}
-\item A visit is acquired and the images reduced to a single science image (cosmic ray rejection, ISR, combining of snaps, etc.).
+\item A visit is acquired and the images reduced to a single science image (cosmic ray rejection, ISR, combining of snaps\footnote{A visit consists of two, nominally 15 second, exposures, which we call {\em snaps}.}, etc.).
 \item The visit image is differenced against the appropriate template and \DIASources are detected.
 \item The flux and shape\footnote{The ``shape'' in this context are weighted 2nd moments, as well as a fit to a trailed source model.} of the DIASource are measured on the difference image. The science image is force-photometered at the position of the \DIASource to obtain a measure of the absolute flux.
-\item The \DB is searched for a \DIAObject positionally associatable with the observed \DIASource. If no match is found, a new \DIAObject is created. The observed \DIASource is associated to the \DIAObject\footnote{eg., by setting the foreign key in the \DIAObject table}.
-\item The \DIAObject entry is updated with new data (eg., the lightcurves, periods or low-order moments of the lightcurve are updated). The centroid and proper motion solution for the \DIAObject may be updated as well (TBD).
-\item If the \DIASource is associated to a known moving object, alert processing terminates here (see section \ref{sec:ssProcessing} for how it continues).
-\item A \DR is searched for one or more \Objects positionally associatable with the \DIAObject. The IDs of these objects are recorded and provided with the issued alert.
-\item A \VOEvent is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this VOEvent, the \DIASource ID, the \DIAObject ID, name of the \DR and the IDs of nearby \Objects, and the associated payload (centroid, fluxes, low-order lightcurve moments, periods, etc.). See Section \ref{sec:voEventContents} for a more complete enumeration of packet contents. Importantly, a receiver should be able to regenerate the \VOEvent payload at a later thate using the included metadata (IDs and database names).
+\item The \DB (see \S \ref{sec:level1db}) is searched for a \DIAObject or \SSObject positionally associatable with the observed \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with one and only one \DIAObject or \SSObject. The algorithm will take into account the proper and Keplerian motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource to find the maximally likely match.}. If no match is found, a new \DIAObject is created. The observed \DIASource is associated to the \DIAObject\footnote{eg., by setting the foreign key in the \DIASource table's row.}.
+\item The \DIAObject row is updated with new data. All affected columns are recomputed, including proper motions, centroids, light curves, etc.
+\item If the \DIASource is associated to an \SSObject (a known moving object), alert processing terminates here (see section \ref{sec:ssProcessing} for how it continues).
+\item A \DR\footnote{A \DR is a database resulting from annual data release processing.} is searched for one or more \Objects positionally associatable with the \DIAObject. The IDs of these objects are recorded and provided with the issued alert.
+\item A \VOEvent is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this \VOEvent, the \DIASource ID, the \DIAObject ID, name of the \DR and the IDs of nearby \Objects, and the associated science payload (centroid, fluxes, low-order lightcurve moments, periods, etc.). See Section \ref{sec:voEventContents} for a more complete enumeration of its contents. We guarantee that a receiver will always be able to regenerate the \VOEvent packet at any later date using the included metadata (IDs and database names).
+\item Precovery forced photometry is performed on any difference image of the field taken within the past 30 days, and added to the database within 24 hours. No alerts are issued with the precovery photometry.
 \end{enumerate}
 
-\subsection{Solar System Object Processing}
+\subsubsection{Solar System Object Processing}
 \label{sec:ssProcessing}
 
 The following will occur during normal Solar System object processing (in daytime after a night of observing):
 \begin{enumerate}
-\item All \DIASources detected on the previous night, that have not been matched with high probability to a known \Object, \SSObject, or an artifact, are analyzed for potential pairs, forming {\em tracks}.
 \item The orbits/physical properties of \SSObjects that were re-observed on the previous night are recomputed. Updated records are entered to the \SSObjects table.
-\item The collection of tracks collected over the past TBD days\footnote{Most likely, $\sim 30$?} is analyzed for those consistent with being on the same Keplerian orbit around the Sun.
-\item For those that are, an orbit is fitted and a new \SSObject table entry created. A new \DIAObject entry is also created, collecting the time-variability information from linked \DIASources. \DIASource records are updated to point to the new \DIAObject record.
+\item All \DIASources detected on the previous night, that have not been matched with high probability to a known \Object, \SSObject, or an artifact, are analyzed for potential pairs, forming {\em tracklets}.
+\item The collection of tracklets collected over the past 30 days is analyzed for those {\em tracks} consistent with being on the same Keplerian orbit around the Sun.
+\item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \DIAObject record. \DIAObjects ``orphaned'' by this unlinking are deleted.\footnote{Some \DIAObjects may only be left with forced photometry measurements at their location (since all \DIAObjects are force-photometered on previous and subsequent visits);  these will be kept but flagged as such.}.
 \end{enumerate}
 
 \subsection{The \DB}
+\label{sec:level1db}
 
 The described alert processing design presupposes the existence of an \DB that contains the objects and sources observed on difference images since the beginning of the survey At minimum\footnote{It also needs to contain Exposure metadata as well (to be written), and also the MOPS tables (to be written)}, this database contains three tables: \DIAObjects, \SSObjects, and \DIASources. They are populated in the course of Alert and Solar System Object Processing\footnote{The latter is also colloquially known as {\em DayMOPS}}.
 
-As described, {\em this database is only loosly coupled (if at all) to the \DR}. Most of the coupling is through providing positional matches between the \DIAObjects table in the \DB and the \Objects in a \DR database.
+As described, {\em this database is only loosly coupled to the \DR}. Most of the coupling is through providing positional matches between the \DIAObjects table in the \DB and the \Objects in a \DR database.
 
 Importantly, there is no direct \DIASource-to-\Object match. This may seem odd at first: for example, in a simple case of a variable star, this is exactly what an astronomer would want. That approach, however, is problematic in following scenarios:
 \begin{itemize}
@@ -150,11 +155,9 @@ Importantly, there is no direct \DIASource-to-\Object match. This may seem odd a
 \end{itemize}
 Note that given the information we do keep in the database, the \DIASource-to-\Object matches can be provides at a higher level (either through views or pre-built table).
 
-An alternative possibility is to have additional rows in the \Object table for \DIAObjects, and consider the \DIAObjects as being "temporally deblended" from the \Objects\footnote{TBD: Need to think about this more; this just occurred to me as this document was being written}. This approach is likely functionally similar to the one with two distincti tables; {\bf the important point is that having a \DIASource be positionally coincident with an \Object does not imply it is physically related to that \Object}; that is why the correct data model relationship is one of {\em positional association}, not of {\em physical identity}.
+Philosophically, with this model we're emphasizing that {\bf having a \DIASource be positionally coincident with an \Object does not imply it is physically related to it}. Absent other information, the least presumptuous data model relationship is one of {\em positional association}, not {\em physical identity}.
 
 As the \DB gets updated during the night, its updated contents of should be visible (queryable) at the moment of issuance of a VOEvent that refers to it\footnote{TBD: We could probably relax this to a 24-hr delay window, but then it would be up to the receivers of VOEvents to keep track of any intra-night information they want to keep. This may be an issue where there's an event that seems uninteresting until a later time in the night (e.g., an emergent microlensing event).}.
-
-\subsection{Core \DB Tables}
 
 There are three ``core'' tables in the \DB: the \DIASource table, with information about detected and/or measured \DIASources, \DIAObject table, with summary information about \DIAObjects derived from the associated \DIASources, and the \SSObject table (short for {\bf Solar System Object}\footnote{This is what we used to call a ``Moving Object''. This name is potentially confusing, as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects in an out of the Solar System.}) holding derived orbits and associated Solar System Object-specific information.
 
@@ -175,17 +178,15 @@ There are three ``core'' tables in the \DB: the \DIASource table, with informati
 
 diaSourceId & uint128 & ~ & Unique identifier \\ 
 
-ccdExposureId & uint64 & ~ & ID of CCD where this source was measured \\ 
+ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\ 
 
-filterId & uint8 & ~ & ID of filter\footnote{TBD: fields like filterID (denormalized columns) -- should they be here?}\\ 
+diaObjectId & uint128 & ~ & ID of \DIAObject this source was associated with\footnote{diaObjectId must be NULL if ssObjectId is not NULL} \\ 
 
-diaObjectId & uint128 & ~ & ID of \DIAObject this source was associated with (cannot be NULL). \\ 
-
-ssObjectId & uint64 & ~ & ID of \SSObject this source has been linked to (may be NULL)\footnote{TBD: diaObject/ssObject IDs -- are both needed? Should we only link to \DIAObjects and then have a flag within a \DIAObject that it's a Solar System object?}. \\ 
+ssObjectId & uint64 & ~ & ID of \SSObject this source has been linked to\footnote{ssObjectId must be NULL if diaObjectId is not NULL} \\ 
 
 midPointTAI & double & TAI & Time of mid-exposure for this DIASource. \\ 
 
-radec & double[2] & degrees & J2000 $(\alpha, \delta)$. \\ 
+radec & double[2] & degrees & $(\alpha, \delta)$. \\ 
 
 radecCov & float[3] & various & \texttt{radec} covariance matrix \\ 
 
@@ -193,41 +194,41 @@ xy & float[2] & pixels & Measured CCD column and row of the centroid on the CCD 
 
 xyCov & float[3] & various & Centroid covariance matrix \\ 
 
-sky & float & DN & Sky background at the position (centroid) of the object. \\ 
+SNR & float & ~ & The signal-to-noise ratio at which this source was detected.\footnote{This is not necessarily the same as psFlux/psFluxStdev, as the flux measurement algorithm may be more accurate than the detection algorithm.} \\
 
-skyErr & float & DN & Estimated uncertainty of \texttt{sky} \\ 
+psFlux & float & nmgy\footnote{A ``maggie'', as introduced by SDSS, is a linear measure of flux; one maggie has an AB magnitude of 0. ``nmgy'' is short for nanomaggies. See \S \ref{sec:fluxes} for details} & Calibrated flux for point source model (maximum likelihood value). Note this actually measures the flux {\em difference} between the template and the science image. \\ 
 
-SNR & float & ~ & The signal-to-noise ratio at which this source was detected. \\
+psFluxStdev & float & nmgy & Estimated uncertainty of \texttt{psFlux} (standard deviation of the likelihood) \\
 
-psFlux & float & nmgy\footnote{A ``maggie'', as introduced by SDSS, is a linear measure of flux; one maggie has an AB magnitude of 0. ``nmgy'' is short for nanomaggies.} & Calibrated flux for point source model\footnote{TBD: maximum likelihood flux or (better) the expectation value of flux marginalized over the posterior distribution of the centroid.}  Note this actually measures the flux {\em difference} between the template and the science image. \\ 
+psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
-psFluxErr & float & nmgy & Estimated uncertainty of \texttt{psFlux} \\ 
+trailFlux & float & nmgy & Calibrated flux for trailed source model\footnote{A {\em Trailed Source Model} attempts to fit an model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). The primary use case is the characterization of fast-moving asteroids.}\footnote{This model does not fit for direction of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity that is not clearly offset by increased MOPS performance given the information.} (maximum likelihood). Note this actually measures the flux {\em difference} between the template and the science image. \\ 
 
-psLogL & float & ~ & $log_{10}$ likelihood of the observed data given the point source model. \\ 
-
-trailFlux & float & nmgy & Calibrated flux for trailed source model\footnote{A {\em Trailed Source Model} attempts to fit an model of an object of finite width that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). The primary use case is the characterization of fast-moving asteroids.}. Note this actually measures the flux {\em difference} between the template and the science image. \\ 
-
-trailLength & float & arcsec & Maximum likelihood fit of the length of the trail. \\ 
-
-trailWidth & float & arcsec & Maximum likelihood fit of the width of the trail. \\ 
+trailLength & float & arcsec & Maximum likelihood fit of the length of the trail\footnote{Note that we'll likely measure trailRow and trailCol, and transform to trailLength/trailAngle (or trailRa/trailDec) for storage in the database. A stretch goal is to retain both.}\footnote{TBD: Do we need a separate trailCentroid? It's unlikely that we do, but one may wish to prove it.}. \\ 
 
 trailAngle & float & degrees & Maximum likelihood fit of the angle between the meridian through the centroid and the trail direction (bearing). \\ 
 
-trailLogL & float & ~ & $log_{10}$ likelihood of the observed data given the trailed source model. \\ 
+trailLnL & float & ~ & Natural $log$ likelihood of the observed data given the trailed source model. \\ 
 
-trailCov & float[10] & various & Covariance matrix of trailed source model parameters. \\ 
+trailCov & float[6] & various & Covariance matrix of trailed source model parameters. \\ 
 
 fpFlux & float & nmgy & Calibrated flux for point source model measured on the science image centered at the centroid measured on the difference image (forced photometry flux) \\ 
 
-fpFluxErr & float & nmgy & Estimated uncertainty of \texttt{fpFlux} \\ 
+fpFluxStdev & float & nmgy & Estimated uncertainty of \texttt{fpFlux} \\ 
 
-grayExtinction & float & nmgy & Applied photometric extinction correction (gray component) \\ 
+fpSky & float & DN & Estimated sky background at the position (centroid) of the object. \\ 
 
-nonGrayExtinction & float & nmgy & Applied photometric extinction correction (color-dependent component) \\ 
+fpSkyStdev & float & DN & Estimated uncertainty of \texttt{fpSky} \\ 
+
+%grayExtinction & float & nmgy & Applied photometric extinction correction (gray component) \\ 
+
+%nonGrayExtinction & float & nmgy & Applied photometric extinction correction (color-dependent component) \\ 
 
 moments & float[5] & various & Adaptive first and second moments ($I_{x}, I_{y}, I_{xx}, I_{yy}, I_{xy}$). \\ 
 
-momentsErr & float[5] & various & Estimated uncertainty for each entry in \texttt{moments}. \\ 
+momentsStdev & float[5] & various & Estimated uncertainty for each entry in \texttt{moments}. \\ 
+
+extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments and model fluxes or from a likelihood ratio of point/trailed source models (TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
 
 flags & bit[64] & bit & Flags \\ \hline
 \end{longtable}
@@ -239,7 +240,6 @@ Notes about changes with respect to the previous baseline:
 \item Removed "small galaxy" model fits. We don't plan to do galaxy model fits on difference images.
 \item Removed "canonical small galaxy" model fits. See above.
 \item Removed galExtinction: this should be a UDF using extinction maps
-\item Removed \texttt{extendedness}. Use the likelihood ratio of point source vs. trailed source models.
 \item TBD: Should we record the likelihood there are multiple peaks in the footprint? This is assuming we won't deblend on DIASources.
 \item Note: \texttt{moment*} fields -- an algorithm needs to be described.
 \item Note: We have to be very specific whether the values we quote are ML or expectation values (and if latter, what are they marginalized over). For most use cases the expectation value will be the right one to use, but we need to understand and take care of non-standard cases as well.
@@ -247,22 +247,6 @@ Notes about changes with respect to the previous baseline:
 \item TBD: gray/nonGray extinction: should this be a UDF?
 \item TODO: See what other fields SDSS has. Also see what fields PanSTARRS has. Collect input from SCs.
 \end{itemize}
-
-% DIASource:
-%* centroid
-%* PSFflux
-%* PSFflux_err
-%* SNR
-%* local background
-%* shape (weighted 2nd moments)
-%* metadata:
-%  * DIASourceID
-%  * DIASource association probability (?)
-%  * exposureID
-%  * Software version ID
-%  * AlertTime (time when this record was added to the database)
-%* isForced (flag: if yes, this is a forced-photometry measurement)
-%* isDiscoverySource (flag: if yes, this was the discovery observation of this object)
 
 \subsubsection{\DIAObject Table}
 
@@ -281,13 +265,13 @@ Notes about changes with respect to the previous baseline:
 
 diaObjectId & uint128 & ~ & Unique identifier \\ 
 
-radec & double[2] & degrees & J2000 $(\alpha, \delta)$. \\ 
+radec & double[2] & degrees & $(\alpha, \delta)$. \\ 
 
 radecCov & float[3] & various & Astrometric covariance matrix \\ 
 
 radecTAI & double & TAI & Time at which the object was at a position \texttt{radec}. \\ 
 
-pm & float[2] & mas/yr & Proper motion vector\footnote{TBD: Should we even attempt to compute proper motions and parallaxes as a part of alert processing? There needs to be a clear use case for keeping these.}. \\ 
+pm & float[2] & mas/yr & Proper motion vector\footnote{High proper-motion or parallax objects will appear as ``dipoles" in difference images.} \\ 
 
 plx & float & mas & Parallax \\ 
 
@@ -295,11 +279,11 @@ pmPlxCov & float[6] & various & Proper motion - parallax covariances. \\
 
 psFlux & float[ugrizy] & nmgy & Weighted mean point-source model magnitude\footnote{TBD: This should probably be the mean of the absolute flux, not of the differences between flux on templates and science images.} \\ 
 
-psFluxErr & float[ugrizy] & nmgy & Error  \\ 
+psFluxStdev & float[ugrizy] & nmgy & Error  \\ 
 
 lsPeriod  & float[ugrizy] & day & Period (the coordinate of the highest peak in Lomb-Scargle periodogram) \\
 
-lsSigma  & float[ugrizy] & day & Width of the peak at \texttt{lsPeriod}. \\
+lsStdev  & float[ugrizy] & day & Width of the peak at \texttt{lsPeriod}. \\
 
 lsPower   & float[ugrizy] & ?? & Power associated with \texttt{lsPeriod} peak. \\
 
@@ -313,25 +297,6 @@ flags & bit[64] & bit & Flags \\ \hline
 
 \end{longtable}
 \end{center}
-
-%DIAObject:
-%* centroid
-%* centroidError
-%* proper motion
-%* parallax
-%* ugrizy:
-%  * weighted mean PSFflux
-%  * sigma
-%  * period[3] (Lomb-Scargle peaks)
-%  * period_sigma[3] (width of Lomb-Scargle peaks)
-%  * characterization parameters[50]?
-%* closest 3 objects from DRP database
-%  * DRP DB ID
-%  * ObjectID[3]
-%* metadata
-%  * DIAObjectID
-%  * AlertTime (time when this record was added to the database)
-%  * SSObjectID
 
 \subsubsection{\SSObject Table}
 
@@ -364,9 +329,13 @@ MOID & float[2] & AU & Minimum orbit intersection distances\footnote{\url{http:/
 
 moidLon & double[2] & AU & MOID longitudes. \\
 
-H & float & mag & Derived absolute magnitude \\
+H & float[6] & mag & Derived mean absolute magnitude, per band\footnote{TBD: It is not obvious that determining $(H,G)$ is not a Level 3 tasks. E.g., there may be more than one way to do these, depending on what one assumes about G, how the phase curve is fitted, etc. I'm inclined to drop these as well, and restrict the project deliverable to dynamical information only unless there are strong feelings otherwise.}. \\
 
-G & float & mag & Derived slope parameter \\
+G & float[6] & mag & Derived slope parameter, per band\footnote{TBD: The slope parameter for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs, and add it later in Ops. Or fit with a strong prior.} \\
+
+hStdev & float[6] & mag & Uncertainty in estimate of H (marginalized over any other fit parameters)\\
+
+gStdev & float[6] & mag & Uncertainty in estimate of G (marginalized over any other fit parameters)\\
 
 flags & bit[64] & bit & Flags \\ \hline
 
@@ -379,47 +348,69 @@ Notes about changes with respect to the previous baseline:
 \item Removed all shape-related columns; determining these is outside of the scope of the Project.
 \item Removed taxonomy related columns; determining these is outside of the scope of the Project.
 \item Removed \texttt{albedo} -- I don't believe albedo can be determined solely from LSST data (more likely, we will need to assume a particular value).
-\item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as these can be obtained by joining \SSObject to \DIAObject table. Note that this implies that \DIAObjects can be created through two different association methods (positional, MOPS), and that the \SSObject table is in effect an extension of the \DIAObject table.
+\item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (e.g., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes\footnote{Note: LSST database will provide functions to compute the phase (Sun/Asteroid/Earth) angle $\alpha$ for every observation, as well as the reduced ($H(\alpha)$) and absolute ($H$) asteroid magnitudes.}. Deriving phase-corrected light curves is left as a Level 3 task.
 \item Removed a number of other MOPS-specific columns. These are algorithm-specific and should not be a part of the baseline, outward-facing, schema\footnote{Because we may change the algorithm and they may disappear; the scientists should not be relying on them being there.}. They will need to be documented and added back into the physical schema, for sizing purposes.
 \end{itemize}
 
-%SSObject (SolarSystemObject):
-%* orbital elements and errors
-%* H, G
-%* colors?
-%* metadata
-%  * SSObjectID
+\subsubsection{Maximum Likelihood vs. Expectation Value}
 
-\subsection{The Contents of an Alert Packet}
-\label{sec:voEventContents}
+Unless noted otherwise, maximum likelihood values will be quoted for all measurements. Together with covariances, this allows the end-user to apply whatever prior they deem appropriate when computing posteriors or expectation values.
 
-We plan to transmit the following information in each \VOEvent packet:
+Nevertheless, we recognize that the large majority of users are likely to want {\em expectation values} of the posterior computed over some reasonable prior. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams.
 
-\begin{itemize}
-\item \DB id (example: DR5-up2date)
-\item alertTimestamp (An timestamp that can be used to execute a against the \DB as it existed when this alert was issued)
-\item diaSourceId
-\item diaObjectId
-\item objectIds of nearby objects from the \DR (up to TBD objects within a TBD arcsec radius)
-\item Science Payload:
-	\begin{itemize}
-    \item The entire DIASource record
-  	\item A TBD fraction of the DIAObject record
-    \end{itemize}
-% \item Flags (isSolarSystemObject, isArtefact, etc.)
-\item URIs to cut-outs (TBD: Should we broadcast the postage stamps? E.g., 50x50 pix wide reduced images)?
-\end{itemize}
+We will support these use-cases by providing pre-computed columns with expectation values, taking care to name them accordingly.
 
-TBD: Do we issue \VOEvents for asteroids?
+\subsubsection{Fluxes and Magnitudes}
+\label{sec:fluxes}
 
-\subsection{Repeatability of Queries against the \DB}
+We record fluxes rather than magnitudes. Because flux measurements on difference images are performed against a template, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes ($\log$ of a negative number is undefined).
 
-We require that queries executed at a known point in time against some version of the \DB be repeatable at a later date. The implementation of this requirement is left up to the database team.
+We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. An object with flux of one maggie (integrated over the bandpass) has an AB magnitude of 0:
+\begin{equation}
+    m_{AB} = -2.5 \log_{10}(f/{\rm maggie})}
+\end{equation}
 
-One option may be to make the key tables (nearly) append-only, with each row having two timestamps -- createdTAI and deletedTAI, so that queries may be limited as follows:
+We prefer to use maggies as our flux unit (as opposed to Jansky) to allow the user to differentiate between two different sources of calibration error: error in relative calibration of the survey, and error absolute calibration (the knowledge of absolute flux of photometric standards).
+
+Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual" or ``computed" columns}. Negative flux entries will evaluate to \code{NULL}. Similarly, we will provide columns with flux (and its error estimates) expressed in Jy.
+
+\subsubsection{Precovery}
+
+When a new \DIASource is detected, it's useful to perform forced photometry at the location of the new source on images taken prior to discovery, colloquially know as {\em ``precovery"}\footnote{When Solar System objects are concerned, precovery has a slightly different meaning: predicting the position of a newly discovered \SSObject on previous images, and associating with it \DIASources consistent with its predicted position.}. Doing precovery in real time over all previously taken visits is too I/O intensive to be feasible. We therefore plan the following:
+\begin{enumerate}
+\item For all newly discovered objects, perform precovery forced photometry on visits taken in the previous 30 days.
+\item Make available a ``precovery service'' to request precovery for a limited number of \DIASources and make it available within 24 hours of the request. Web interface and machine-accessible APIs will be provided.
+\end{enumerate}
+
+The former should satisfy the most common use cases (e.g., SNe), while the latter will provide an opportunity for more extensive immediate precovery of targets of special interest.
+
+\subsubsection{Annual Reprocessings}
+\label{sec:l1dbreproc}
+
+In what we've described so far, the \DB is continually being added to as new images are taken and \DIASources identified. Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Existing \DIASources are not re-measured (at the pixel level) and updated at the same time.
+
+This is not optimal. Newer versions of LSST pipelines are likely to improve measurements on older data. Also, forced photometry should be performed on the position of the \DIAObject on all pre-discovery images.
+
+We therefore plan to reprocess all image differencing-derived data (the \DB) at the same time as we perform the annual Data Release productions. This will include all images taken since the start of observation, to the time when the DR production begins. The reprocessed images will be processed with a single version of the image differencing and measurement software, resulting in a consistent data set.
+
+As reprocessing is expected to take on order of $\sim 9$ months, more data will be acquired in the meantime. These data will be reprocessed as well, and added to the new \DB generated by the data release processing. The reprocessed database will thus ``catch up" with the \DB currently in use. Once it does, the existing \DB will be replaced by the new one and all future alerts will refer to the reprocessed \DB. Alerts for new sources ``discovered" during data release processing and/or the catch-up process will {\em not} be issued.
+
+Note that \DB reprocessing and switch will have {\em significant} side-effects on downstream users. For example, all \DIASource and \DIAObject IDs will change in general. Some \DIASources and \DIAObjects will disappear (e.g., if they're image subtraction artifacts artifacts that the improved software was now able to recognize as such). New ones may appear. The \DIASource/\DIAObject/\Objects associations will change as well.
+
+While the annual database switches will undoubtedly cause technical inconvenience (eg., a \DIASource detected at some position and associated to one \DIAObject ID on day $T-1$, will now be associated to a different \DIAObject ID on day $T+0$), the resulting database will be a more accurate description of the astrophysics that the survey is seeing (eg., the association on day $T+0$ is the correct one; the associations on $T-1$ and previous days were actually made to an artifact that skewed the \DIAObject summary of measurements).
+
+To ease the transition, third parties (VO event brokers) may choose to provide positional-crossmatching to older versions of the \DB. A set of best practices will be developed to minimize the disruptions caused by the switches (e.g., when writing event-broker queries, filter on position, not on \DIAObject ID, if possible, etc.). A \DB distribution service, allowing for bulk downloads of the reprocessed \DB, will need to be established to support the brokers who will use it locally to perform more advanced brokering\footnote{TBD: We need bulk-download DB distribution services for the DRP database as well, for the same reason, as well as to enable end-users to run local copies of the LSST DBs}.
+
+Older versions of the \DB will be archived following the same rules as for the \DR{}s. DR1, the most recent DR, and the one preceding the most recent one will be kept on disk and loaded into the database. Others will be archived to tape and available as bulk downloads.
+
+\subsubsection{Repeatability of Queries}
+
+We require that queries executed at a known point in time against some version of the \DB be repeatable at a later date. The exact implementation of this requirement is under consideration by the DM database team.
+
+One possibility may be to make the key tables (nearly) append-only, with each row having two timestamps -- createdTAI and deletedTAI, so that queries may be limited through a WHERE clause:
 
 \begin{quote}
-\texttt{SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS' BETWEEN createdTAI and deletedTAI}
+\texttt{SELECT * FROM DIASource WHERE ``data is valid as of YYYY-MM-DD"}\footnote{E.g., an implementation of this may look like \texttt{SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS' BETWEEN createdTAI and deletedTAI}}
 \end{quote}
 
 A (perhaps less error-prone) alternative may be to provide multiple virtual databases that the user would access as:
@@ -431,26 +422,59 @@ A (perhaps less error-prone) alternative may be to provide multiple virtual data
 
 The latter method would probably be limited to nightly granularity, unless there's a mechanism to create virtual databases/views on-demand.
 
-\subsection{Rebasing the \DB to DRP-reprocessed version}
-
-In what we've described so far, the \DB is continually being added to as new images are taken and DIASources identified. Every time a new DIASource is associated to an existing DIAObject, the DIAObject record is updated to incorporate new information brought in by the DIASource. However, existing DIASources are not re-measured (at the pixel level) and updated at the same time. This is not optimal: newer versions of LSST pipelines are likely to improve measurements on older data. Also, forced photometry should be performed on the position of the DIAObject on pre-discovery images.
-
-Doing this in real time (reprocessing old DIASource measurements, and performing precovery forced photometry) is not possible due to technical difficulties\footnote{TBD: Is it inconceivable that we wouldn't be able to perform pre-covery forced photometry in daytime for a limited subset of the data (e.g., going back ~2 weeks)? This may be all that's needed to satisfy most use cases}. Instead, we plan to:
-\begin{enumerate}
-\item Make available a service which will perform pre-covery forced photometry for a limited number of DIASources and make it available within 24 hours of the request.
-\item Reprocess all image differencing-derived data at the same time as we perform the annual Data Release productions. This will include all images taken since the start of observation, to the time when the DR production begins. The reprocessed images will be processed with a single version of the image differencing and measurement software, resulting in a consistent data set. As the reprocessing is expected to take on order of $\sim 9$ months, more data will be acquired in the meantime. These data will be ``replayed'' on top of the new \DB generated by the reprocessing\footnote{Note that the new data will {\em not} be reprocessed on the pixel level; the existing measurements (basically, the DIASource records.) will be used to update the DIAObjects in the reprocessed database}\footnote{TBD: Do we have the resources to pixel-level reprocess?}. The replay process is expected to finish quickly (e.g., in a single  day) -- once it does, the existing \DB will be replaced by the reprocessed \DB and all future alerts will refer to the reprocessed \DB. In addition to database replacement, new image differencing templates may\footnote{TBD: we may want to produce new diffim templates soon in the DRP process, and begin using them as soon as they're available} also come into effect at this point.
-\end{enumerate}
-
-Note that \DB reprocessing and switch will have significant side-effects on downstream users. For example, all \DIASource and \DIAObject IDs will change in general. Some \DIASources and \DIAObjects will disappear (e.g., if they're image subtraction artifacts artifacts that the improved software was now able to recognize as such). New ones may appear. The \DIASource/\DIAObject/\Objects associations will change as well.
-
-While the annual database switches will undoubtedly cause technical inconvenience (eg., a \DIASource detected at some position and associated to one \DIAObject ID on day $T-1$, will now be associated to a different \DIAObject ID on day $T+0$), the resulting database will be a more accurate description of the astrophysics that the survey is seeing (eg., the association on day $T+0$ is the correct one; the associations on $T-1$ and previous days were actually made to an artifact that skewed the \DIAObject summary of measurements).
-
-To ease the transition, third parties (VO event brokers) may choose to provide positional-crossmatching to older versions of the \DB. A set of best practices will be developed to minimize the disruptions caused by the switches (e.g., when writing event-broker queries, filter on position, not on \DIAObject ID, if possible, etc.). A \DB distribution service, allowing for bulk downloads of the reprocessed \DB, will need to be established to support the brokers who will use it locally to perform more advanced brokering\footnote{TBD: We need bulk-download DB distribution services for the DRP database as well, for the same reason, as well as to enable end-users to run local copies of the LSST DBs}.
-
-\subsection{Uniqueness of IDs across database versions}
+\subsubsection{Uniqueness of IDs across database versions}
 
 To reduce the likelihood for confusion, all \texttt{*Source} and \texttt{*Object}  IDs shall be unique across database versions. For example, DR4 and DR5 reprocessings will share no identical IDs.
 
 It's TBD whether this would be a good idea for exposures as well, as there's substantial benefit in being able to query for the same exposure in different reprocessings (and there's a natural 1:1 map between between them). The baseline is {\em not} to do this for the exposures.
+
+\subsection{Transient Alerts}
+\label{sec:voEventContents}
+
+\subsubsection{Information Contained in Each Transient Alert}
+
+For each detected \DIASource, we will issue a ``Transient Alert" within 60 seconds of the end of exposure. These alerts will be issued in \VOEvent format, and should be readable by \VOEvent-compliant clients.
+
+Each transient alert (\VOEvent packet) will at least include the following:
+
+\begin{itemize}
+\item \DB id (example: DR5-up2date)
+\item alertTimestamp (An timestamp that can be used to execute a query against the \DB as it existed when this alert was issued)
+\item diaSourceId
+\item diaObjectId
+\item objectIds of nearby objects from the \DR, sorted on distance (up to TBD objects within a TBD arcsec radius)
+\item Transient Data:
+    \begin{itemize}
+    \item The DIASource record that triggered the alert
+    \item The entire DIAObject record
+    \item All previous DIASource records
+    \end{itemize}
+% \item Flags (isSolarSystemObject, isArtefact, etc.)
+\item $30\times 30$ pixel cut-out of the difference image (10 bytes/pixel)
+\item $30\times 30$ pixel cut-out of the template image (10 bytes/pixel)
+\end{itemize}
+
+TBD: Do we issue \VOEvents for asteroids?
+
+\subsubsection{Using Transient Alerts}
+
+We plan to broadcast information about transient alerts in \VOEvent format, using standard IVOA protocols (e.g., VOEvent Transport Protocol; VTP). As a very high rate of alerts is expected, approaching $\sim 2$ million per night, we plan for public VOEvent Event Brokers\footnote{These brokers are envisioned to be operated as a public service by third parties who will have signed MOUs with LSST. An example may be the VAO or its successors.} to be the primary end-points of LSST's VTP streams. End-users will use these brokers to classify and filter events on the stream for those fitting their science goals. End-users will {\em not} be able to subscribe to full, unfiltered, alert streams coming directly from LSST.
+
+For end-users, LSST will provide a basic, limited capacity, transient alert filtering capability. It will let astronomers create simple filters that limit what \VOEvents are ultimately forwarded to them. These {\em user defined filters} will be possible to specify using an SQL-like declarative language, or short snippets of (likely Python) code. For example:
+\begin{verbatim}
+    # Keep only never-before-seen transients within two
+    # effective radii of a galaxy. This is for illustration 
+    # only; the exact methods/members/APIs may change.
+    
+    def filter(alert):
+        if len(alert.sources) > 1:
+            return False
+        nn = alert.diaobject.nearest_neighbors[0]
+        if not nn.flags.GALAXY:
+            return False
+        return nn.dist < 2. * nn.Re
+\end{verbatim}
+
+We emphasize that this LSST-provided capability will be limited, and is {\em not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could. For example, we do not plan to provide any classification (e.g., ``is the light curve consistent with an RR Lyra?", or ``a Type Ia SN?"). No additional information other than what's contained in the VOEvent packet will be possible to filter on (e.g., cross-matches with other catalogs). The complexity and run time of user defined filters will be limited by available resources. Execution latency will not be guaranteed. The number of \VOEvents transmitted to each user per user will be limited as well (e.g., up to 100 per visit). Finally, the total number of simultaneous subscribers is likely to be limited -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
 
 \end{document}

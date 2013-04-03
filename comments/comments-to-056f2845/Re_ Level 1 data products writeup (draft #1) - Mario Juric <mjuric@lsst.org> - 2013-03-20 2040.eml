@@ -1,0 +1,330 @@
+Message-ID: <514A8144.4060901@lsst.org>
+Date: Wed, 20 Mar 2013 22:40:52 -0500
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130216 Thunderbird/17.0.3
+MIME-Version: 1.0
+To: Kian-Tat Lim <ktl@slac.stanford.edu>
+CC: Jacek Becla <becla@slac.stanford.edu>, 
+ "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, 
+ Zeljko Ivezic <ivezic@astro.washington.edu>,
+ Andy Becker <acbecker@gmail.com>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+References: <5147F046.8090004@lsst.org> <514938A1.9060305@SLAC.Stanford.EDU> <51494C9C.9000304@lsst.org> <20130320172906.GA17256@sccs-ktlim.slac.stanford.edu>
+In-Reply-To: <20130320172906.GA17256@sccs-ktlim.slac.stanford.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 3/20/13 12:29 , Kian-Tat Lim wrote:
+> Mario,
+> 
+>>> page 6  that "DIASource records are updated to point to the new
+>>> DIAObject record".
+>>> Keeping track of where they pointed prior
+>>> to that update is actually non trivial - that simple pointer
+>>> update may result is producing a copy of a DIASources
+> 
+> Issuing new DIASources is easy/cheap.
+> 
+> But it's actually worse: what happens to the DIAObjects that now do not
+> have DIASources pointing to them?  (See below)
+> 
+
+I gave up on that; as you point out, too many nasty side effects.
+
+>> In the meantime, I've seen the light and concluded this was an
+>> embarrassingly bad idea, for the simple reason that solar system objects
+>> will display strong phase effects (like the Moon, they'll have different
+>> total flux depending on Sun-Object-Earth angle). That makes their
+>> phase-uncorrected lightcurves (that the DIAObject entry would contain)
+>> quite nonsensical.
+> 
+> I'm OK with DIASources belonging to either DIAObjects or SSObjects but
+> not both.  I'm a little worried that things may move back and forth.
+> 
+> My comments:
+> 
+> p. 2
+> 
+> "begin the regular survey operations before the end of this decade"
+> Not sure about that, even with 2011-2020 decade definition.
+> 
+
+I lifted this entire paragraph from the Overview paper. I guess Zeljko
+will need to update it ;-).
+
+> 10,000 sq deg vs. 30,000 sq deg vs. 18,000 sq deg should be clarified more
+> 24.5 vs. 27.5 should be clarified more
+> Very Deep and Fast all one, or two separate?
+> 
+
+See above.
+
+> p. 3
+> 
+> Kind of confusing to have item 1 be Level 2 and vice versa
+> 
+
+Yes, but item 1 is also what's usually done, so if you think about it
+that way, it makes sense.
+
+> Should define "source"
+> DIASources are detections and measurements
+> Mention that DIASources can be negative (something moving away or disappearing)?
+> 
+
+I'll see how to incorporate this, w/o going into too much detail.
+
+> p. 4
+> 
+> How/why are DIAObjects different from Objects?
+
+Explained in Sec 2.4 (I should forward-reference it).
+
+> How are initial DIAObjects generated in up-to-date database?
+
+Explained in 2.2
+
+> Sounds like DIAObjects are only created from DIASources
+> 
+
+Correct.
+
+> What happens if multiple DIAObjects associate to the DIASource?
+
+Can't happen. We associate a DIASource to only a single DIAObject. This
+will lead to a certain number of mis-associations, but I'm not sure if
+the added complexity of multiple (or probabilistic) associations is
+worth it.
+
+> 
+> Footnote 5 is backwards.  Foreign key is from DIAObject table and is in
+> DIASource row.
+> 
+
+Will fix.
+
+> p. 5
+> 
+> Does DIAObject entry have to be updated immediately?
+
+Before the alert is issued. The idea is that someone querying the
+database after receiving the alert will see the information consistent
+with the alert (assuming a subsequent event didn't further change it).
+
+> How much information is needed for the update?
+
+Let's see:
+* mean position
+* proper motion and parallax (if we choose to fit these)
+* mean flux (for that band)
+* period and other light-curve characteristics
+* nearby objects from DR
+
+Basically, that's more/less the entire record. To compute it, we may
+need all DIASources.
+
+> Can it be done incrementally?
+> 
+
+Possibly. Depends of the chosen algorithms. It would certainly be
+desirable to be able to do so, but I'm not sure if we'll be able to
+guarantee it.
+
+I don't think any of these should be especially computationally
+intensive. Most are relatively straight-forward statistics or fits.
+
+> Which Data Release database is searched?  Presumably latest available
+
+Yes.
+
+> Is it searched based on the DIASource or the DIAObject (or are they essentially
+> identical due to the assumption of low proper motion)?
+> 
+
+I'd say DIAObject, and taking into account the proper motion (I need to
+add this to the document).
+
+> Can two very close DIASources match to the same DIAObject?  Does it matter
+> which one comes first?
+> 
+
+No and probably yes.
+
+My intuition is that this shouldn't happen often with real astrophysical
+objects, but if we have lots of false positives, they may contaminate
+the DIAObjects.
+
+> Where/when does prediction of SSObject location occur?
+> Does prediction of fast-moving non-SSObject locations occur?
+> 
+
+Both occur when we build the "instance catalog".
+
+> Should we really describe MOPS in detail?
+
+I think this is at a sufficiently high level that it's relatively
+algorithm independent.
+
+> Tracks are more than two DIASources -- they are made from tracklets, which are
+> themselves three DIASources, I believe
+> 
+
+You're right, I got my terminology wrong (how embarrassing). I'll
+correct it.
+
+> p. 6
+> 
+> Putting SSObjects in the DIAObject table is OK for light curves but bad for
+> association, unless all DIAObjects have positions predicted
+> Suggest associating to SSObjects then DIAObjects (or vice versa)
+> 
+
+I've given up on this idea -- a DIASource should be associated to either
+a DIAObject or an SSObject.
+
+> p. 7
+> 
+> Having parent-child temporal associations in any sort of Object table does not
+> make much sense; temporal aspects are captured by Sources
+> Better to express by having multiple Objects and Sources at same location
+> Need to figure out what to do with positional association in such cases
+> 
+
+Yep. This was a bad idea.
+
+> Footnote 10: fully live database will be very difficult, particularly with AP
+> move, if u-t-d DB is considered part of DAC
+> 
+
+OK. Let's get back to this once I incorporate all comments.
+
+> We have plenty of room in 64 bits as long as we don't want too many coded,
+> low-entropy fields in the id
+
+Is there room for a 'Data Release' field (4 bits, 5 if we want to play
+it safe)?
+
+> Are lookups from the id to other metadata tables too difficult?
+
+No. My desire for unique IDs is not intended so that people would decode
+them to avoid accessing metadata tables; it's to prevent errors where
+Joe Q. Astronomer will write down an ID and three years later query a
+different DR, only to get back a completely different object.
+
+> ccdExposureId is not just CCD but also visit (should not use term "exposure")?
+
+Good point. Should we use ccdVisitId?
+
+> What about sources detected across CCDs?
+
+Haven't really thought about it... Let me noodle it a little...
+
+> ccdExposureId might be inside diaSourceId anyway
+> 
+> p. 10
+> 
+> What about extended variables (comets, asteroid outgassing, light echoes,
+> lensed variables)?
+> 
+
+I think it's beyond our scope (the characterization vs. classification
+mantra).
+
+> p. 11
+> 
+> diaObjectId should almost certainly only be 64 bits
+> Aren't proper motions necessary for correct association of fast movers?
+
+They are, but an alternative stance is that that is not time-critical
+science and can be done off of DRP data where we will fit the proper
+motions.
+
+I think we should fit it on difference images, since *probably* it's not
+that expensive (I'm tempted to claim it's just a linear fit, but
+parallax terms don't quite make it so for nearby stars).
+
+> 
+> p. 12
+> 
+> Storing light curve in DIAObject is difficult: variable length; use
+> separate table -- but isn't this just the DIASources?
+
+Yes.
+
+> Querying "nearbyObj" columns is difficult; should probably be separate table
+> 
+
+Could be -- that's a logical schema discussion for you and Jacek.
+
+> p. 13
+> 
+> If SSObjects are DIAObjects, should record DIAObject id in SSObject table
+> Actually, likely there will be several DIAObjects for each SSObject; should
+> they be merged?
+> 
+
+I'm thinking that once DIASources are linked to SSObjects, they should
+be "unlinked" from their DIAObjects (and the DIAObjects deleted if that
+action made them orphaned).
+
+> p. 14
+> 
+> Include the whole DIAObject record; it's relatively small
+> 
+
+Makes it a lot easier.
+
+> How many past DIASources for the DIAObject should be sent?  I think all
+> (now that I read p. 15, not sure about precovery data)
+
+I'd say just the current one. The idea is that the DIAObject will
+contain enough information to allow for classification, plus the brokers
+will likely have a local copy of our DR+u-t-d databases to provide more
+sophisticated filtering.
+
+That said, if we can afford sending out all DIASources with each alert,
+we should consider it.
+
+> 
+> We have space for two 30x30 cutouts; people wanted pixels not URIs
+> 
+
+OK, I'll make a note of that.
+
+> p. 16
+> 
+> 9 months of new DIASources may not match well with reprocessed DIAObjects
+
+They will get matched to whatever DIAObjects are there, and those that
+have no match will create new ones. It's exactly the same procedure that
+would happen if we magically had the reprocessed DR database ready in a
+day so that no catch-up was needed.
+
+> For pixels, could maybe do 8.5 months in 2 weeks, then 2 weeks in 1 day
+>  
+
+That's a possibility. I heard that Fermi (the satellite) does it like
+that for new data releases.
+
+> New releases of u-t-d DB may also have new columns
+> 
+
+So you're worried that we couldn't simply replay the new DIASources
+because of that? Good point.
+
+Do we have enough computing to catch up on pixel-level? I think that
+would roughly ~double the diffim processing budget for DR1/DR2, becoming
+progressively easier with every subsequent release.
+
+
+Thanks -- I'll be incorporating these over the next few days!
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

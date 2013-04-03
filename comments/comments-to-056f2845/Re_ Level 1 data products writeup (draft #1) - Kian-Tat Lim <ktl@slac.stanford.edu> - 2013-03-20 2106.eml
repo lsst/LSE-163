@@ -1,0 +1,216 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 20 Mar 2013 21:06:26 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r2L46OKU008388
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 20 Mar 2013 21:06:25 -0700
+Received: from mail-ve0-f169.google.com (mail-ve0-f169.google.com [209.85.128.169])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2L46Ojv007739
+	for <mjuric@majuric.org>; Thu, 21 Mar 2013 00:06:24 -0400
+Received: by mail-ve0-f169.google.com with SMTP id 15so2145274vea.0
+        for <mjuric@majuric.org>; Wed, 20 Mar 2013 21:06:24 -0700 (PDT)
+X-Received: by 10.220.231.199 with SMTP id jr7mr11209811vcb.70.1363838783966;
+        Wed, 20 Mar 2013 21:06:23 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp38238vem;
+        Wed, 20 Mar 2013 21:06:23 -0700 (PDT)
+X-Received: by 10.60.3.71 with SMTP id a7mr5809689oea.35.1363838782873;
+        Wed, 20 Mar 2013 21:06:22 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id k8si4244929obr.57.2013.03.20.21.06.22
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 20 Mar 2013 21:06:22 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r2L46LPg007618
+	for <mjuric-lsst@majuric.org>; Thu, 21 Mar 2013 00:06:22 -0400
+Received: from nospam3.slac.stanford.edu ([134.79.109.10]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Mar 2013 21:06:19 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam3.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r2L46CpA006775
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 20 Mar 2013 21:06:13 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id A62411F7BD; Wed, 20 Mar 2013 21:06:12 -0700 (PDT)
+Date: Wed, 20 Mar 2013 21:06:12 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Jacek Becla <becla@slac.stanford.edu>,
+        "Dubois-Felsmann, Gregory Peter" <gpdf@slac.stanford.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>,
+        Zeljko Ivezic <ivezic@astro.washington.edu>,
+        Andy Becker <acbecker@gmail.com>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #1)
+Message-ID: <20130321040612.GA22608@sccs-ktlim.slac.stanford.edu>
+References: <5147F046.8090004@lsst.org>
+ <514938A1.9060305@SLAC.Stanford.EDU>
+ <51494C9C.9000304@lsst.org>
+ <20130320172906.GA17256@sccs-ktlim.slac.stanford.edu>
+ <514A8144.4060901@lsst.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <514A8144.4060901@lsst.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 21 Mar 2013 04:06:19.0333 (UTC) FILETIME=[70F97F50:01CE25E9]
+
+Mario,
+
+> > What happens if multiple DIAObjects associate to the DIASource?
+> 
+> Can't happen. We associate a DIASource to only a single DIAObject.
+
+So what's the algorithm for choosing?  Shortest distance, and random if
+two are the same?
+
+> > How much information is needed for the update?
+> 
+> Let's see:
+> * mean position
+> * proper motion and parallax (if we choose to fit these)
+> * mean flux (for that band)
+> * period and other light-curve characteristics
+> * nearby objects from DR
+> 
+> Basically, that's more/less the entire record. To compute it, we may
+> need all DIASources.
+> 
+> > Can it be done incrementally?
+> 
+> Possibly. Depends of the chosen algorithms. It would certainly be
+> desirable to be able to do so, but I'm not sure if we'll be able to
+> guarantee it.
+> 
+> I don't think any of these should be especially computationally
+> intensive. Most are relatively straight-forward statistics or fits.
+
+The problem is organizing the data so that we can recompute all of these
+rapidly after association.  We were going to have a special binary dump
+of the (DIA)Object table to do assoc.  Now we'll either have to query
+for DIASources (slow) or dump them, too (large).  Bandwidth requirements
+will increase a lot.
+
+> > Can two very close DIASources match to the same DIAObject?  Does it matter
+> > which one comes first?
+> 
+> No and probably yes.
+> 
+> My intuition is that this shouldn't happen often with real astrophysical
+> objects, but if we have lots of false positives, they may contaminate
+> the DIAObjects.
+
+How will we prevent multiple DIASources matching to a DIAObject?
+Determining that another DIASource in the same visit has already matched
+will be somewhat difficult (especially if at the edge of a
+parallelization boundary).
+
+> > Where/when does prediction of SSObject location occur?
+> > Does prediction of fast-moving non-SSObject locations occur?
+> 
+> Both occur when we build the "instance catalog".
+
+This isn't mentioned anywhere, is it?  This catalog is itself a problem,
+as it needs to be computed for every visit.  I think it may have to be
+done virtually -- we match with a larger radius to the recorded (mean)
+RA/dec and then correct using the proper motion to filter the multiple
+matches to the best one.  On the other hand, we may have enough prep
+time per visit while the camera is doing its job to predict locations
+for all in-view SSObjects and DIAObjects.
+
+> I've given up on this idea -- a DIASource should be associated to either
+> a DIAObject or an SSObject.
+
+Which one takes priority?
+
+> Good point. Should we use ccdVisitId?
+
+Probably that would be better.
+
+> > What about extended variables (comets, asteroid outgassing, light echoes,
+> > lensed variables)?
+> 
+> I think it's beyond our scope (the characterization vs. classification
+> mantra).
+
+This is not about classification.  It's about what measurements we're
+making.  If we're not characterizing well enough for someone else to do
+the classification, we'll hear about it.
+
+> > Aren't proper motions necessary for correct association of fast movers?
+> 
+> They are, but an alternative stance is that that is not time-critical
+> science and can be done off of DRP data where we will fit the proper
+> motions.
+> 
+> I think we should fit it on difference images, since *probably* it's not
+> that expensive (I'm tempted to claim it's just a linear fit, but
+> parallax terms don't quite make it so for nearby stars).
+
+But fast movers can be variable/transient as well, and maybe trigger
+follow-up, no?
+
+> I'm thinking that once DIASources are linked to SSObjects, they should
+> be "unlinked" from their DIAObjects (and the DIAObjects deleted if that
+> action made them orphaned).
+
+[Note to Jacek: a live diaObjectId index in the DIASource table will be
+an absolute necessity to find orphaned DIAObjects; this will add seeks
+to use and update the index.]
+
+> > How many past DIASources for the DIAObject should be sent?  I think all
+> > (now that I read p. 15, not sure about precovery data)
+> 
+> I'd say just the current one. The idea is that the DIAObject will
+> contain enough information to allow for classification, plus the brokers
+> will likely have a local copy of our DR+u-t-d databases to provide more
+> sophisticated filtering.
+> 
+> That said, if we can afford sending out all DIASources with each alert,
+> we should consider it.
+
+Hmm.  Not sure that the brokers can maintain a useful-enough copy of the
+DR+u-t-d databases just based on the alerts.  And any ad hoc replication
+system is bound to get out of sync and cause problems.
+
+It looks like you're requiring us to have all the DIASources anyway to
+update the DIAObject, so we might as well send them.
+
+> > 9 months of new DIASources may not match well with reprocessed DIAObjects
+> 
+> They will get matched to whatever DIAObjects are there, and those that
+> have no match will create new ones. It's exactly the same procedure that
+> would happen if we magically had the reprocessed DR database ready in a
+> day so that no catch-up was needed.
+
+OIC.  We use the detections/measurements but not the ids from the
+replayed DIASources.  Yes, that's OK.
+
+There's another issue, though: which template?  The reprocessed
+DIAObjects may have used a newer/better template than the replayed ones.
+Pixel-level reprocessing could use the same template as the reprocessed.
+
+> > New releases of u-t-d DB may also have new columns
+> 
+> So you're worried that we couldn't simply replay the new DIASources
+> because of that? Good point.
+
+No, I wasn't, but that is an issue, too.
+
+> Do we have enough computing to catch up on pixel-level? I think that
+> would roughly ~double the diffim processing budget for DR1/DR2, becoming
+> progressively easier with every subsequent release.
+
+It's not in the model now, but we probably have enough.
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu
