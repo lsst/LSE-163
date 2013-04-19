@@ -197,11 +197,11 @@ xy & float[2] & pixels & Column and row of the centroid. \\
 
 xyCov & float[3] & various & Centroid covariance matrix \\ 
 
-SNR & float & ~ & The signal-to-noise ratio at which this source was detected in the difference image.\footnote{This is not necessarily the same as psFlux/psFluxStdev, as the flux measurement algorithm may be more accurate than the detection algorithm.} \\
+SNR & float & ~ & The signal-to-noise ratio at which this source was detected in the difference image.\footnote{This is not necessarily the same as psFlux/psFluxSigma, as the flux measurement algorithm may be more accurate than the detection algorithm.} \\
 
 psFlux & float & nmgy\footnote{A ``maggie'', as introduced by SDSS, is a linear measure of flux; one maggie has an AB magnitude of 0. ``nmgy'' is short for a nanomaggie. Flux of $0.063$~nmgy corresponds to a $24.5^{\rm th}$ magnitude star. See \S \ref{sec:fluxes} for details.} & Calibrated flux for point source model. Note this actually measures the flux {\em difference} between the template and the science image. \\ 
 
-psFluxStdev & float & nmgy & Estimated uncertainty of \texttt{psFlux}. \\
+psFluxSigma & float & nmgy & Estimated uncertainty of \texttt{psFlux}. \\
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
@@ -217,11 +217,11 @@ trailCov & float[6] & various & Covariance matrix of trailed source model parame
 
 fpFlux & float & nmgy & Calibrated flux for point source model measured on the science image centered at the centroid measured on the difference image (forced photometry flux) \\ 
 
-fpFluxStdev & float & nmgy & Estimated uncertainty of \texttt{fpFlux}. \\ 
+fpFluxSigma & float & nmgy & Estimated uncertainty of \texttt{fpFlux}. \\ 
 
 fpSky & float & nmgy/asec$^{2}$ & Estimated sky background at the position (centroid) of the object. \\ 
 
-fpSkyStdev & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpSky}. \\ 
+fpSkySigma & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpSky}. \\ 
 
 %grayExtinction & float & nmgy & Applied photometric extinction correction (gray component) \\ 
 
@@ -229,7 +229,7 @@ fpSkyStdev & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpSky}. 
 
 moments & float[5] & various & Adaptive first and second moments ($I_{x}, I_{y}, I_{xx}, I_{yy}, I_{xy}$), measured on the difference image. \\ 
 
-momentsStdev & float[5] & various & Estimated uncertainty for each entry in \texttt{moments}. \\ 
+momentsSigma & float[5] & various & Estimated uncertainty for each entry in \texttt{moments}. \\ 
 
 extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments and model fluxes or from a likelihood ratio of point/trailed source models (exact algorithm TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
 
@@ -283,17 +283,17 @@ psFlux & float[ugrizy] & nmgy & Weighted mean point-source model magnitude. \\
 
 psFluxErr & float[ugrizy] & nmgy & Standard error of {\tt psFlux}  \\ 
 
-psFluxStdev & float[ugrizy] & nmgy & Standard deviation of the distribution of {\tt psFlux}. \\ 
+psFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of {\tt psFlux}. \\ 
 
 fpFlux & float[ugruzy] & nmgy & Weighted mean forced photometry flux.\\
 
 fpFluxErr & float[ugrizy] & nmgy & Standard error of {\tt fpFlux} \\ 
 
-fpFluxStdev & float[ugrizy] & nmgy & Standard deviation of the distribution of {\tt fpFlux}. \\ 
+fpFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of {\tt fpFlux}. \\ 
 
 lsPeriod  & float[ugrizy] & day & Period (the coordinate of the highest peak in Lomb-Scargle periodogram) \\
 
-lsStdev  & float[ugrizy] & day & Width of the peak at \texttt{lsPeriod}. \\
+lsSigma  & float[ugrizy] & day & Width of the peak at \texttt{lsPeriod}. \\
 
 lsPower   & float[ugrizy] & ~ & Power associated with \texttt{lsPeriod} peak. \\
 
@@ -377,7 +377,7 @@ Difference image analysis will use the appropriate template given the time of ob
 
 Unless noted otherwise, maximum likelihood values will be quoted for all fitted parameters (measurements). Together with covariances, these will allow the end-user to apply whatever prior they deem appropriate when computing posteriors\footnote{There's a tacit assumption that a Gaussian is a reasonably good description of the likelihood surface around the ML peak.}.
 
-We employ a convention where estimates of standard errors have the suffix {\tt Err}, while the estimates of inherent widths of distribution (or functions in general) have the suffix {\tt Stdev}\footnote{Given $N$ measurements, standard errors scale as $N^{-1/2}$, while widths remain constant.}. The latter are defined as the square roots of the second moment of the quantity at hand.
+We employ a convention where estimates of standard errors have the suffix {\tt Err}, while the estimates of inherent widths of distribution (or functions in general) have the suffix {\tt Sigma}\footnote{Given $N$ measurements, standard errors scale as $N^{-1/2}$, while widths remain constant.}. The latter are defined as the square roots of the second moment of the quantity at hand.
 
 For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by providing additional pre-computed columns, taking care to name them accordingly so as to minimize incorrect accidental usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may be the maximum likelihood value.
 
