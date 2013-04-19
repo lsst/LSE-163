@@ -50,12 +50,14 @@
 \newcommand{\VOEvent}{\code{VOEvent}\xspace}
 \newcommand{\VOEvents}{\code{VOEvents}\xspace}
 
-\title{LSST Data Products Definition (DRAFT)}
+\title{Large Synoptic Survey Telescope \\
+Data Products Definition Document \\
+(*** DRAFT ***)}
 \author{
     Mario Juri\'c \texttt{(mjuric@lsst.org)} \vspace{1ex} \\
     {\em with input from} \vspace{1ex} \\
     T. Axelrod, A.C. Becker, J. Becla,  J. Kantor, K-T Lim,\\
-    {\em and} R. Lupton \vspace{1.2ex} \\
+    R. Lupton, {\em and} M. Strauss \vspace{1.2ex} \\
     {\em for LSST Data Management}
 }
 
@@ -141,7 +143,7 @@ The following will occur during normal Solar System object processing (in daytim
 
 The described alert processing design presupposes the existence of an \DB that contains the objects and sources observed on difference images since the beginning of the survey. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, or implementation-dependent, irrelevant for science, and therefore not discussed here.}, this database will have tables of \DIASources, \DIAObjects, and \SSObjects. They are populated in the course of difference image and Solar System object processing\footnote{The latter is also colloquially known as {\em DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (queryable) immediately\footnote{No later than the moment of issuance of any transient alert that may refer to it.}.
 
-Note that {\em this database is only loosly coupled to the \DR}. All of the coupling is through providing positional matches between the \DIAObjects table in the \DB and the \Objects in the \DR database. There is no direct \DIASource-to-\Object match.
+Note that {\em this database is only loosely coupled to the \DR}. All of the coupling is through providing positional matches between the \DIAObjects table in the \DB and the \Objects in the \DR database. There is no direct \DIASource-to-\Object match. The adopted data model emphasizes that {\em having a \DIASource be positionally coincident with an \Object does not imply it is physically related to it}. Absent other information, the least presumptuous data model relationship is one of {\em positional association}, not {\em physical identity}.
 
 This may seem odd at first: for example, in a simple case of a variable star, matching individual \DIASources to \Objects is exactly what an astronomer would want. That approach, however, fails in the following scenarios:
 \begin{itemize}
@@ -150,8 +152,6 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 \item {\em A supernova on top of a pair of blended galaxies.} It is not clear in general to which galaxy this \DIASource would belong. That in itself is a research question.
 \end{itemize}
 
-Philosophically, the adopted model emphasizes that {\em having a \DIASource be positionally coincident with an \Object does not imply it is physically related to it}. Absent other information, the least presumptuous data model relationship is one of {\em positional association}, not {\em physical identity}.
-
 \vspace{2ex}
 \DIASource-to-\Object matches can still be emulated via a three-step link (\DIASource-\DIAObject-\Object). For ease of use, views or pre-built table with these will be offered to end-users.
 
@@ -159,7 +159,7 @@ Philosophically, the adopted model emphasizes that {\em having a \DIASource be p
 
 \subsubsection{\DIASource Table}
 
-This is a table\footnote{For this and other tables that follow a {\em conceptual schema} is presented that conveys {\em what} data will be recorded in the table, rather than the details of {\em how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL. Secondly, the tables presented here are normalizes (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to table with exposure metadata, there's no column for 'band' in \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.} of sources detected at $SNR \geq 5$ on difference images (\DIASources). On average, we expect $\sim 2000$ \DIASources per visit ($\sim 2{\rm M}$ per night).
+This is a table\footnote{For this and other tables that follow a {\em conceptual schema} is presented that conveys {\em what} data will be recorded in the table, rather than the details of {\em how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL. Secondly, the tables presented here are normalizes (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to table with exposure metadata, there's no column for 'band' in \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.} of sources detected at $SNR \geq 5$ on difference images (\DIASources). On average, we expect $\sim 2000$ \DIASources per visit ($\sim 2{\rm M}$ per night; 20,000 per deg$^2$ per hour).
 
 Some $SNR \geq 5$ sources will not be caused by observed astrophysical phenomena, but by artifacts (bad columns, diffraction spikes, etc.). The difference image analysis software will attempt to identify and flag these as such.
 
@@ -201,11 +201,11 @@ SNR & float & ~ & The signal-to-noise ratio at which this source was detected in
 
 psFlux & float & nmgy\footnote{A ``maggie'', as introduced by SDSS, is a linear measure of flux; one maggie has an AB magnitude of 0. ``nmgy'' is short for a nanomaggie. Flux of $0.063$~nmgy corresponds to a $24.5^{\rm th}$ magnitude star. See \S \ref{sec:fluxes} for details.} & Calibrated flux for point source model. Note this actually measures the flux {\em difference} between the template and the science image. \\ 
 
-psFluxStdev & float & nmgy & Estimated uncertainty of \texttt{psFlux} (standard deviation of the likelihood) \\
+psFluxStdev & float & nmgy & Estimated uncertainty of \texttt{psFlux}. \\
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
-trailFlux & float & nmgy & Calibrated flux for a trailed source model\footnote{A {\em Trailed Source Model} attempts to fit an model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). Roughly, it's a fit to a PSF-convolved line. The primary use case is to characterize fast-moving Solar System objects.}$^,$\footnote{This model does not fit for the {\em direction} of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity, and is not clearly justified by increased MOPS performance given the added information.}. Note this actually measures the flux {\em difference} between the template and the science image. \\ 
+trailFlux & float & nmgy & Calibrated flux for a trailed source model\footnote{A {\em Trailed Source Model} attempts to fit a (PSF-convolved) model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). Roughly, it's a fit to a PSF-convolved line. The primary use case is to characterize fast-moving Solar System objects.}$^,$\footnote{This model does not fit for the {\em direction} of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity, and is not clearly justified by increased MOPS performance given the added information.}. Note this actually measures the flux {\em difference} between the template and the science image. \\ 
 
 trailLength & float & arcsec & Maximum likelihood fit of trail length\footnote{Note that we'll likely measure trailRow and trailCol, and transform to trailLength/trailAngle (or trailRa/trailDec) for storage in the database. A stretch goal is to retain both.}$^,$\footnote{TBD: Do we need a separate trailCentroid? It's unlikely that we do, but one may wish to prove it.}. \\ 
 
@@ -217,11 +217,11 @@ trailCov & float[6] & various & Covariance matrix of trailed source model parame
 
 fpFlux & float & nmgy & Calibrated flux for point source model measured on the science image centered at the centroid measured on the difference image (forced photometry flux) \\ 
 
-fpFluxStdev & float & nmgy & Estimated uncertainty of \texttt{fpFlux} \\ 
+fpFluxStdev & float & nmgy & Estimated uncertainty of \texttt{fpFlux}. \\ 
 
-fpSky & float & DN & Estimated sky background at the position (centroid) of the object. \\ 
+fpSky & float & nmgy/asec$^{2}$ & Estimated sky background at the position (centroid) of the object. \\ 
 
-fpSkyStdev & float & DN & Estimated uncertainty of \texttt{fpSky} \\ 
+fpSkyStdev & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpSky}. \\ 
 
 %grayExtinction & float & nmgy & Applied photometric extinction correction (gray component) \\ 
 
@@ -275,21 +275,21 @@ radecTai & double & time & Time at which the object was at a position \texttt{ra
 
 pm & float[2] & mas/yr & Proper motion vector\footnote{High proper-motion or parallax objects will appear as ``dipoles" in difference images. Great care will have to be taken not to misidentify these as subtraction artifacts.} \\ 
 
-plx & float & mas & Parallax \\ 
+parallax & float & mas & Parallax \\ 
 
-pmPlxCov & float[6] & various & Proper motion - parallax covariances. \\ 
+pmParallaxCov & float[6] & various & Proper motion - parallax covariances. \\ 
 
 psFlux & float[ugrizy] & nmgy & Weighted mean point-source model magnitude. \\ 
 
-psFluxErr & float[ugrizy] & nmgy & Uncertainty in estimate of {\tt psFlux}  \\ 
+psFluxErr & float[ugrizy] & nmgy & Standard error of {\tt psFlux}  \\ 
 
-psFluxStdev & float[ugrizy] & nmgy & Width of the {\tt psFlux} distribution. \\ 
+psFluxStdev & float[ugrizy] & nmgy & Standard deviation of the distribution of {\tt psFlux}. \\ 
 
 fpFlux & float[ugruzy] & nmgy & Weighted mean forced photometry flux.\\
 
-fpFluxErr & float[ugrizy] & nmgy & Uncertainty in estimate of {\tt fpFlux} \\ 
+fpFluxErr & float[ugrizy] & nmgy & Standard error of {\tt fpFlux} \\ 
 
-fpFluxStdev & float[ugrizy] & nmgy & Width of the {\tt fpFlux} distribution. \\ 
+fpFluxStdev & float[ugrizy] & nmgy & Standard deviation of the distribution of {\tt fpFlux}. \\ 
 
 lsPeriod  & float[ugrizy] & day & Period (the coordinate of the highest peak in Lomb-Scargle periodogram) \\
 
@@ -297,7 +297,7 @@ lsStdev  & float[ugrizy] & day & Width of the peak at \texttt{lsPeriod}. \\
 
 lsPower   & float[ugrizy] & ~ & Power associated with \texttt{lsPeriod} peak. \\
 
-lcChar   & float[$6\times{}M$] & ~ & Light-curve characterization summary statistics (e.g., 2nd moments, etc.). The exact contents, and an appropriate value of N, are to be determined in consultation with time-domain experts. \\
+lcChar   & float[$6\times{}M$] & ~ & Light-curve characterization summary statistics (e.g., 2nd moments, etc.). The exact contents, and an appropriate value of M, are to be determined in consultation with time-domain experts. \\
 
 nearbyObj   & uint128[3] & ~ & Closest \Objects in \DR. \\
 
@@ -331,7 +331,7 @@ oeCov & double[21] & various & Covariance matrix for \texttt{oe} \\
 
 arc & float & days & Arc of observation. \\
 
-orbFitChi2 & float & ~ & $\chi^2$ for the orbital elements fit. \\
+orbFitLnL & float & ~ & Natural log of the likelohood of the orbital elements fit. \\
 
 nOrbFit & int16 & ~ & Number of observations used in the fit. \\
 
@@ -343,9 +343,9 @@ H & float[6] & mag & Mean absolute magnitude, per band. \\
 
 G & float[6] & mag & Fitted slope parameter, per band\footnote{The slope parameter for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs, and add it later in Operations. Alternatively, we may fit it with a strong prior.} \\
 
-hStdev & float[6] & mag & Uncertainty in estimate of H \\
+hErr & float[6] & mag & Uncertainty in estimate of H \\
 
-gStdev & float[6] & mag & Uncertainty in estimate of G \\
+gErr & float[6] & mag & Uncertainty in estimate of G \\
 
 flags & bit[64] & bit & Flags \\ \hline
 
@@ -373,9 +373,11 @@ Templates for difference image analysis will be created by co-adding 6-months to
 
 Difference image analysis will use the appropriate template given the time of observation, airmass, and seeing.
 
-\subsubsection{Likelihoods vs. Posteriors}
+\subsubsection{Statistical Considerations}
 
 Unless noted otherwise, maximum likelihood values will be quoted for all fitted parameters (measurements). Together with covariances, these will allow the end-user to apply whatever prior they deem appropriate when computing posteriors\footnote{There's a tacit assumption that a Gaussian is a reasonably good description of the likelihood surface around the ML peak.}.
+
+We employ a convention where estimates of standard errors have the suffix {\tt Err}, while the estimates of inherent widths of distribution (or functions in general) have the suffix {\tt Stdev}\footnote{Given $N$ measurements, standard errors scale as $N^{-1/2}$, while widths remain constant.}. The latter are defined as the square roots of the second moment of the quantity at hand.
 
 For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by providing additional pre-computed columns, taking care to name them accordingly so as to minimize incorrect accidental usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may be the maximum likelihood value.
 
@@ -389,7 +391,7 @@ We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a li
     m_{AB} = -2.5 \log_{10}(f/{\rm maggie})}
 \end{equation}
 
-We chose to use maggies (as opposed to Jansky) to allow the user to differentiate between two different sources of calibration error: error in relative calibration of the survey, and error absolute calibration (the knowledge of absolute flux of photometric standards).
+We chose to use maggies (as opposed to Jansky) to allow the user to differentiate between two different sources of calibration error: error in relative calibration of the survey, and error in absolute calibration (the knowledge of absolute flux of photometric standards).
 
 \vspace{1em}
 We realize that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual" or ``computed" columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimates).
@@ -422,7 +424,7 @@ While the annual database switches will undoubtedly cause technical inconvenienc
 
 To ease the transition, third parties (VO event brokers) may choose to provide positional-crossmatching to older versions of the \DB. A set of best practices will be developed to minimize the disruptions caused by the switches (e.g., when writing event-broker queries, filter on position, not on \DIAObject ID, if possible, etc.). A \DB distribution service, allowing for bulk downloads of the reprocessed \DB, will need to be established to support the brokers who will use it locally to perform more advanced brokering\footnote{A ``bulk-download" database distribution service will be provided for the \DR{}s as well, to enable end-users to establish and run local mirrors (partial or full).}.
 
-Older versions of the \DB will be archived following the same rules as for the \DR{}s. DR1, the most recent DR, and the one preceding the most recent one will be kept on disk and loaded into the database. Others will be archived to tape and available as bulk downloads.
+Older versions of the \DB will be archived following the same rules as for the \DR{}s. DR1, the most recent DR, and the penultimate data release will be kept on disk and loaded into the database. Others will be archived to tape and available as bulk downloads.
 
 \subsubsection{Repeatability of Queries}
 
@@ -507,6 +509,8 @@ What follows is a (non-exhaustive) list of issues that are still being discussed
 
 \begin{itemize}
     \item {\em What light-curve metric should we compute and provide with transient alerts?} We strive to compute general purpose metrics which will facilitate classification. We have not baselined any yet.
+    \item {\em Should we measure on individual snaps?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period?
+    \item {\em Should we choose {\tt nearbyObj}s differently?} One proposal is to find the brightest \Object within $XX$ arcsec (with $XX \sim 10$arcsec), and the total number of \Objects within $XX$ arcsec.
     \item {\em Don't use the term 'transient' to refer to all \DIASources}. This causes confusion and is inconsistent with the usual meaning of {\em transient} as impermanent astrophysical source, lasting only for a short time. The term {\em transient alert} will also need to be changed.
     \item {\em Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs).
     \item {\em Is a fully up-to-date \DB after each alert technically feasible?} If not, we will delay making the updated \DB available until the end of night. Transient alerts will still be issued within 60 seconds.
@@ -514,6 +518,7 @@ What follows is a (non-exhaustive) list of issues that are still being discussed
     \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the use cases envisioned so far.
     \item {\em Will LSST provide a limited-capability event broker, as described in \S \ref{sec:eventbrokers}?} The SRD seems to demand it, but the opposing view is that it's not clear how useful it would be (and it's not useful, we shouldn't waste resources to provide it).
     \item {\em Should we broadcast alerts to Solar System objects?}. I think the answer is yes -- otherwise we will need to devise a separate mechanism to distribute orbit updates. This needs to be added to the document.
+    \item {\em Can users query the \DB for all \DIASources next to an \Object?} Is this technically feasible?
     \item {\em Do we have to, and can we, use 128 bit integers for IDs?}. If 64 bit integers are provably sufficient, they will take up less space and be better supported (technologically).
 
 \end{itemize}
