@@ -505,18 +505,14 @@ We emphasize that this LSST-provided capability will be limited, and is {\em not
 
 \subsection{Open Issues to be Closed before Baselining this Document}
 
-What follows is a (non-exhaustive) list of issues that are still being discussed and where changes are likely. Input on any of these will be appreciated.
+What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are likely. Input on any of these will be appreciated.
 
 \begin{itemize}
     \item {\em What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have not baselined any yet.
-    \item {\em Should we measure on individual snaps?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period?
+    \item {\em Should we measure on individual snaps (or their difference)?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period? Is it technically feasible?
     \item {\em Should we choose {\tt nearbyObj}s differently?} One proposal is to find the brightest \Object within $XX$ arcsec (with $XX \sim 10$arcsec), and the total number of \Objects within $XX$ arcsec.
-    \item {\em Should we, and can we (within budget), provide forced photometry of detected \DIASources on individual snaps (or the difference of snaps)}? We'd need to document scientific use cases that demand this, as well as assessment that it's technically feasible.
     \item {\em Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs).
-    \item {\em Is a fully up-to-date \DB after each alert technically feasible?} If not, we will delay making the updated \DB available until the end of night. Alerts will still be issued within 60 seconds.
-    \item {\em Is a precovery service technically feasible?} Currently, it doesn't appear to be.
-    \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the use cases envisioned so far.
-    \item {\em Will LSST provide a limited-capability event broker, as described in \S \ref{sec:eventbrokers}?} The SRD seems to demand it, but the opposing view is that it's not clear how useful it would be (and it's not useful, we shouldn't waste resources to provide it).
+    \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Level 1 database will {\em not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.).
     \item {\em Should we broadcast alerts to Solar System objects?}. I think the answer is yes -- otherwise we will need to devise a separate mechanism to distribute orbit updates. This needs to be added to the document.
     \item {\em Can users query the \DB for all \DIASources next to an \Object?} Is this technically feasible?
     \item {\em Do we have to, and can we, use 128 bit integers for IDs?}. If 64 bit integers are provably sufficient, they will take up less space and be better supported (technologically).
