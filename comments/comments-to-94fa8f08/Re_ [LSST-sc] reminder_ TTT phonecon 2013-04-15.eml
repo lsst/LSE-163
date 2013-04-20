@@ -1,0 +1,110 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Mon, 15 Apr 2013 08:02:26 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r3FF2Pje007248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Mon, 15 Apr 2013 08:02:26 -0700
+Received: from mail-vb0-f52.google.com (mail-vb0-f52.google.com [209.85.212.52])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3FF2OsM020370
+	for <mjuric@majuric.org>; Mon, 15 Apr 2013 11:02:25 -0400
+Received: by mail-vb0-f52.google.com with SMTP id w8so3888716vbf.11
+        for <mjuric@majuric.org>; Mon, 15 Apr 2013 08:02:24 -0700 (PDT)
+X-Received: by 10.220.155.8 with SMTP id q8mr16289738vcw.42.1366038144551;
+        Mon, 15 Apr 2013 08:02:24 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp154744vem;
+        Mon, 15 Apr 2013 08:02:22 -0700 (PDT)
+X-Received: by 10.229.93.153 with SMTP id v25mr275834qcm.55.1366038142665;
+        Mon, 15 Apr 2013 08:02:22 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id gc8si6263117qab.95.2013.04.15.08.02.21
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Mon, 15 Apr 2013 08:02:22 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning tyson@physics.ucdavis.edu does not designate 206.123.89.208 as permitted sender) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=softfail (google.com: domain of transitioning tyson@physics.ucdavis.edu does not designate 206.123.89.208 as permitted sender) smtp.mail=tyson@physics.ucdavis.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3FF2KVB020159
+	for <mjuric-lsst@majuric.org>; Mon, 15 Apr 2013 11:02:20 -0400
+Received: from solid.physics.ucdavis.edu ([169.237.42.75]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 15 Apr 2013 08:02:19 -0700
+Received: from [192.168.88.251] (208-91-6-150.host.wintersbroadband.com [208.91.6.150] (may be forged))
+	(authenticated bits=0)
+	by solid.physics.ucdavis.edu (8.13.8/8.13.8) with ESMTP id r3FF2IIs018876
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@lsst.org>; Mon, 15 Apr 2013 08:02:19 -0700
+Message-ID: <516C1669.7080001@physics.ucdavis.edu>
+Date: Mon, 15 Apr 2013 08:02:01 -0700
+From: Tony Tyson <tyson@physics.ucdavis.edu>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+Subject: Re: [LSST-sc] reminder: TTT phonecon 2013-04-15
+References: <D152AD63-BADF-487C-AC25-FBB60553125D@astro.washington.edu> <516BCA62.4010803@lsst.org>
+In-Reply-To: <516BCA62.4010803@lsst.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 15 Apr 2013 15:02:19.0699 (UTC) FILETIME=[39E87830:01CE39EA]
+
+Hi Mario,,
+Brief comments on your lst page:
+
+ YES, I AGREE:
+Don't use the term 'transient' to refer to all DIASources. This causes
+confusion and is inconsistent with the usual meaning of transient as
+impermanent astrophysical source, lasting only for a short time. The
+term transient alert will also need to be changed.
+
+YES:
+ Is Level 1 database required to be relational?. A no-SQL solution may
+be more appropriate given the use cases envisioned so far.
+
+
+I THINK WE NEED TO DISTINGUISH MOVING OBJECTS BECAUSE OF THE NEED FOR 
+SPEC FOLLOWUP OF REAL TRANSIENTS.  IN FACT, ONE MIGHT ARGUE THAT SINCE 
+THE 60 SEC IS MAINLY DRIVEN BY THAT, WE SHOULD MINIMIZE THE FALSE ALARM 
+RATE DUE TO MOVING OBJECTS INCLUDING DEBRIS:
+  Will LSST provide a limited-capability event broker, as described in
+x2.4.2? The SRD seems to demand it, but the opposing view is that
+it's not clear how useful it would be (and it's not useful, we shouldn't
+waste resources to provide it).
+
+MAYBE THIS IS RELATED:
+Should we broadcast alerts to Solar System objects?. I think the an-
+swer is yes { otherwise we will need to devise a separate mechanism to
+distribute orbit updates. This needs to be added to the document.
+
+Tony
+
+On 4/15/2013 2:37 AM, Mario Juric wrote:
+> On 4/14/13 14:03 , Zeljko Ivezic wrote:
+>>            Dear all,
+>>
+>> This is a reminder that we will have our TTT phonecon tomorrow,
+>> Monday, April 15, 2013, at 1:00pm PST.
+>>
+>> We will use the System Science and Engineering participant code:
+>> 518-2287# (after dialing the usual 866 330 1200).
+>>
+>>           Agenda:
+>>
+>> 1) Simple Event Broker discussion: Mario
+>>
+>>   - see section 3.5 in the SRD and section 2.4 in the document attached to
+>>     http://listserv.lsstcorp.org/mailman/private/lsst-sc/2013/2006.html
+>>
+> I incorporated Michael's comments on the previous draft; the new version
+> is at:
+>
+> https://dev.lsstcorp.org/cgit/contrib/data_products.git/plain/main.pdf
+>
+> (note that Chrome on the Mac has a bug that prevents it from opening the
+> above PDF; use Safari if you encounter that problem).
+>
+> Cheers,
+

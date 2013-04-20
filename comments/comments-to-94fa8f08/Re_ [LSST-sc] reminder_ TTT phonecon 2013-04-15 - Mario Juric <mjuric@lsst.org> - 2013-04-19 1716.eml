@@ -1,0 +1,241 @@
+Message-ID: <5171DE70.4030208@lsst.org>
+Date: Fri, 19 Apr 2013 17:16:48 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Zeljko Ivezic <ivezic@astro.washington.edu>
+CC: lsst-sc@lsstcorp.org
+Subject: Re: [LSST-sc] reminder: TTT phonecon 2013-04-15
+References: <D152AD63-BADF-487C-AC25-FBB60553125D@astro.washington.edu> <516BCA62.4010803@lsst.org> <27681D2A-F6A7-4EC0-A37D-EA4601330CCA@astro.washington.edu>
+In-Reply-To: <27681D2A-F6A7-4EC0-A37D-EA4601330CCA@astro.washington.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+
+On 4/15/13 16:02 , Zeljko Ivezic wrote:
+>         Hi Mario,
+> 
+> this document is turning out quite well! I have a few more minor comments on
+> the latest version (some others were already addressed): 
+> 
+> - Sec 2.2.1, the second bullet: should we add that threshold SNR is TBD?
+
+The SNR is currently set at 5, per the SRD (pg 34, 2nd paragraph).
+
+We may want to reconsider it since Andy et al.'s recent analysis shows
+that this will lead to 570 to 2300 spurious sources per focal plane,
+just due to noise (see http://ls.st/x9f). This may require a change in
+the SRD.
+
+> - do Objects know that some DIAObjects are linked to them?
+
+Good point.
+
+While that may be as simple as a join, if L1 database does not use qserv
+it may not be that simple. I'll discuss this with the database team.
+
+I added it to the list of open issues.
+
+> - do DIAObjects know about DIAObjects obtained during the same night? 
+>   that is, can we improve the selection robustness by deploying followup
+>   *after the second visit*? 
+
+I think you meant "do DIAObjects know about DIASources obtained during
+the same night?".
+
+If so, yes. The database is updated in real time. When the second
+DIASource comes in and is associated with the DIAObject, the alert that
+will be sent out will have the information on the previous ones as well
+(the entire light curve is sent out).
+
+> - am I correctly understanding that snaps are *not* used to measure 
+>   variability? Tony often mentions this possibility in the context of 
+>    "unknown unknowns". It turns out that light curve derivative of 
+>    1 mag/hr is a good separator between very rare true transients
+>    such as gamma-ray burst afterglow and variable stars. With 17 sec 
+>    between two snaps, this is 5 millimag. Therefore, snaps could indeed
+>    be vary valuable for robustly finding rare transients (especially if the 
+>    second visit confirms it). 
+
+That is the current baseline. Something like what you're proposing could
+be an interesting stretch goal.
+
+Could you point me to a paper discussing these fast transients? I'd like
+to understand better what's expected and if/how we could accommodate a
+measurement that would help with these.
+
+> - Sec 2.2.2, the second bullet: how do you know that something is an
+>     artifact? 
+
+For example, if an object was detected at the location of a predicted
+diffraction spike, it may be possible to say with a great degree of
+certainty that it's more likely to be an artifact than a real object.
+
+Optimally, I'd like not to have to use this kind of information and let
+the artifacts filter themselves out by not fitting any orbit, but if we
+have more artifacts than expected (and it overwhelms MOPS), we may need
+to do this.
+
+> - 30 days shows up multiple times; how much freedom do we have to
+>   make it longer (for SNe and tidal disruption events, we may want to 
+>   have 3-4 months)
+
+30 days is the size of the currently allocated cache for calibrated
+images. I'm also not entirely happy about it, and we're looking into how
+much it would cost to extend that cache, potentially to infinity (i.e.,
+keep all data on disk).
+
+> - editing: I think paragraph starting with "Philosophically…" from page 9
+>   would be better after the first paragraph in Sec 2.3 (page 8)
+
+Agreed. I reshuffled the paragraphs in Sec 2.3 a bit to make it better.
+
+> - Sec 2.3.1: it would be useful to add "20,000/sq.deg./hour" after 
+>   "2000 DIASources per visit"
+
+OK.
+
+> - I remember seeing discussion of the following somewhere so it may 
+>   be superfluous: "standard deviation" is used incorrectly in most cases;
+>   first, std. dev. is defined for distributions, not functions (and thus
+> there is 
+>   no such a thing as std. dev. of the likelihood); second, we mix
+> uncertainty
+>   and std. dev. in most instances (if Description says "uncertainty", then 
+>   why Name uses Stdev, instead of obvious Unc?)
+
+I'm trying to differentiate between two things: error in the estimate of
+the mean of a distribution or function, and the estimate of the width
+(*defined* as the square root of the second moment) of that distribution
+(or function). I chose the suffix "Err" for the former, and "Stdev" for
+the latter. The other possibility is "Sigma" (instead of Stdev).
+
+I don't have a strong opinion on either, as long as the distinction
+between the two is kept. I think you're right, that 'Stdev' may imply to
+some more than just sqrt(V(f)). I now changed it to 'Sigma'. I do have a
+strong(er) opinion that 'Err' should *not* be used for distribution
+widths, as it's likely to get confused for the standard error of the mean.
+
+I added a section that establishes these conventions. It defines
+'Err'-suffixed variables as being the standard error of the mean of the
+quantity being measured, while 'Sigma'-suffixed variables are defined as
+estimates of the square root of the second moment of whatever they
+pertain to:
+
+"We employ a convention where estimates of standard errors have the
+suffix {\tt Err}, while the estimates of inherent widths of distribution
+(or functions in general) have the suffix {\tt Sigma}\footnote{Given $N$
+measurements, standard errors scale as $N^{-1/2}$, while widths remain
+constant.}. The latter are defined as the square roots of the second
+moment of the quantity at hand."
+
+> - footnote #30: "a model" instead of "an model"; also, wouldn't
+> "PSF-convolved 
+>   line" be better as "line convolved with the PSF"?  Though I
+> acknowledge that 
+>   this survived "the red pen of MAS" so it's probably ok either way…
+
+It's not a simple line -- because of the 2-4 second gap between visits,
+it will have a (flux) dip in the middle.
+
+> - footnote #31: back to snaps: is it really totally off the table to use 
+>   snap information?
+
+It's not, but we need to document good science cases that demand it.
+Your GRB example is the first (quantitative) one I've seen.
+
+For example, we could perform forced PSF photometry on the difference of
+snaps at locations of DIASources, and provide these as extra columns.
+
+It does double the memory required to process a visit, as well as the
+I/O (possibly). It's not cheap, a-priori.
+
+I'll add it to the issues list and see what the SCs will say.
+
+> - Table 1: why is flux from sources in nmgy and the sky surface brightness
+>   is uncalibrated (in DN)? 
+
+Changed to nmgy/arcsec^2.
+
+> - we need to distinguish ISM extinction and atmospheric extinction
+
+Neither appears in the tables right now. We've had atmospheric
+extinction as a column in previous drafts, but Robert and Tim felt it
+wasn't very useful.
+
+> - Table 2: given that Names can have at least 11 characters, why do 
+>   we call parallax "plx"? Why not "parallax"?
+
+Changed it to parallax.
+
+> - Table 2: here psFluxStdev appears to really be standard deviation; why
+>   then to call it width in Description? (psFluxErr would be better as
+> psFluxUnc)
+
+Because it *is* meant to be the width of the light curve. In contrast,
+psFluxErr is the standard error of the mean (psFlux).
+
+I changed its description to 'Standard deviation of the distribution of
+{\tt psFlux}.'
+
+> - Table 2: Type for lcChar - shouldn't M be N (or N-> in Description? 
+
+Fixed.
+
+> - Table 2: std. dev. in lsStdev is a good example of inappropriate use;
+>    here we should provide uncertainty in the best-fit period
+
+We're providing the width of the peak. The width may be is due to poor
+sampling (uncertainty due to measurement), or due to quasi-periodic
+oscillations. I'd argue that 'lsSigma' is the right name.
+
+> - Table 2: nearbyObj etc: I think it would be (more) useful to have the 
+>   brightest object within XX arcsec, and/or how many objects within XX
+> arcsec,
+>   where XX is about 10 arcsec
+
+I'll add that to "Issues" and see what feedback we get from the SCs.
+
+> - Table 3: isn't the size of oeCov 28 (and not 21)? 
+
+No. There are only 6 free parameters (epoch is fixed).
+
+> - Table 3: earlier we used log likelihood and here we use chi2; we should
+>   be consistent
+
+Good catch.
+
+> - Sec 2.3.5: it's good to have it! I would rename gFlux as gFluxExp to make
+>   it more obvious (in contrast to gFluxML)
+
+My sense is that your average astronomer will be very annoyed by the
+additional 'Exp' (and wonder what it has to do with exponentials). I'll
+leave it as-is for now; we have ample time to decide on the naming.
+
+> - Sec 2.3.6: missing "in" in "error IN absolute calibration" after eq. 1
+
+Fixed.
+
+> - Sec 2.3.7: "one preceding the most recent one" can be said as
+> "penultimate"
+
+Thanks!
+
+> - Sec 2.4.1: it might be more useful to bin 2x2 the 30x30 pixel stamps; 
+>     the volume stays the same, but more useful for this purpose
+> 
+
+Why not let the user do it? Also, I don't understand the comment about
+the volume (you don't mean data volume?)
+
+
+Thanks for the comments, these were really useful! I'm incorporating a
+few others after which I'll send out a new version of the document.
+
+Cheers,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key
