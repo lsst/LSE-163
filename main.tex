@@ -66,7 +66,7 @@ Data Products Definition Document \\
 \maketitle
 
 \begin{abstract}
-This document describes the plans for contents of Level 1 and 2 LSST data products, and the rationale behind various choices that were made. This is an {\bf internal draft} and a work in progress. {\bf It should not be circulated further until this notice is removed.}
+This document describes the plans for contents of Level 1 and 2 LSST data products, and the rationale behind various choices that were made. This is an {\bf internal draft} and a work in progress. {\bf It should not be circulated widely until this notice is removed.}
 \end{abstract}
 
 \tableofcontents
@@ -380,7 +380,7 @@ Notes about changes with respect to the previous baseline:
 
 \subsubsection{Estimator and Naming Conventions}
 
-We employ a convention where estimates of standard errors have the suffix {\tt Err}, while the estimates of inherent widths of distribution (or functions in general) have the suffix {\tt Sigma}\footnote{Given $N$ measurements, standard errors scale as $N^{-1/2}$, while widths remain constant.}. The latter are defined as the square roots of the second moment of the quantity at hand.
+We employ a convention where estimates of standard errors have the suffix {\tt Err}, while the estimates of inherent widths of distribution (or functions in general) have the suffix {\tt Sigma}\footnote{Given $N$ measurements, standard errors scale as $N^{-1/2}$, while widths remain constant.}. The latter are defined as the square roots of the second moment about the quoted value of the quantity at hand.
 
 Unless noted otherwise, maximum likelihood values are be quoted for all fitted parameters (measurements). Together with covariances, these let the end-user apply whatever prior they deem appropriate when computing posteriors\footnote{There's a tacit assumption that a Gaussian is a reasonably good description of the likelihood surface around the ML peak.}.
 
@@ -464,13 +464,20 @@ To reduce the likelihood for confusion, all \Source, \Object, \DIASource, and \D
 
 Note, however, that exposure and visit IDs will remain the same across releases.
 
-\subsection{Level 1 Imaging}
+\subsection{Level 1 Image Products}
+
+\subsubsection{Visit Images}
+
+Raw and processed visit images will be made available for download no later than 300 seconds from the end of visit acquisition.
+
+The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days, with slower access afterwards (minutes to hours).
+
 \subsubsection{Difference Images}
 \label{sec:diffims}
 
-The users will be able to download any difference image (or a select subset thereof, to the individual CCD level) within 300 seconds of the end of observation.
+Complete difference images will be made available for download no later than 300 seconds from the end of visit acquisition.
 
-The images will remain accessible on low-latency storage (disk) for at least 30 days, after which they will be accessible from the mass storage (tape). The primary difference is in latency of access: while the time from request to download for an image on disk will be on order of seconds, the time to retrieve an image from tape may be minutes to hours.
+The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days, with slower access afterwards (minutes to hours).
 
 \subsubsection{Image Differencing Templates}
 \label{sec:templates}
@@ -527,14 +534,15 @@ For the end-users, LSST will provide a basic, limited capacity, alert filtering 
 
 We emphasize that this LSST-provided capability will be limited, and is {\em not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could. For example, we do not plan to provide any classification (eg., ``is the light curve consistent with an RR Lyra?", or ``a Type Ia SN?"). No information beyond what is contained in the \VOEvent packet will be available to user-defined filters (eg., cross-matches with other catalogs). The complexity and run time of user defined filters will be limited by available resources. Execution latency will not be guaranteed. The number of \VOEvents transmitted to each user per user will be limited as well (eg., at least up to $\sim 20$ per visit per user, dynamically throttled depending on load). Finally, the total number of simultaneous subscribers is likely to be limited -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
 
-\subsection{Open Issues to be Closed before Baselining this Document}
+\subsection{Open Issues}
 
-What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are likely. Input on any of these will be appreciated.
+What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are likely. Input on any of these will be appreciated. These need to be resolved before this document is baselined.
 
 \begin{itemize}
     \item {\em What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have not baselined any yet.
     \item {\em Should we measure on individual snaps (or their difference)?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period? Is it technically feasible?
     \item {\em Should we choose {\tt nearbyObj}s differently?} One proposal is to find the brightest \Object within $XX$ arcsec (with $XX \sim 10$arcsec), and the total number of \Objects within $XX$ arcsec.
+    \item {\em Should the postage stamps provided with the alerts be binned, and by what factor?}
     \item {\em When should we (if ever) stop performing forced photometry on positions of \DIAObjects?} Depending on the rate of false positives, unidentified artifacts, or unrecognized Solar System objects, the number of forced measurements may dramatically grow over time.
     \item {\em Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs).
     \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Level 1 database will {\em not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.).
