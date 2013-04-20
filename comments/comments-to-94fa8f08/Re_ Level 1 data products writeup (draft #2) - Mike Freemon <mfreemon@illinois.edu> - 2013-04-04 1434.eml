@@ -1,0 +1,126 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Thu, 04 Apr 2013 14:35:07 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r34LZ5aA008370
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Thu, 4 Apr 2013 14:35:06 -0700
+Received: from mail-vb0-f50.google.com (mail-vb0-f50.google.com [209.85.212.50])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r34LZ5O7023912
+	for <mjuric@majuric.org>; Thu, 4 Apr 2013 17:35:05 -0400
+Received: by mail-vb0-f50.google.com with SMTP id w15so1659852vbb.37
+        for <mjuric@majuric.org>; Thu, 04 Apr 2013 14:35:05 -0700 (PDT)
+X-Received: by 10.220.231.199 with SMTP id jr7mr6111121vcb.70.1365111305181;
+        Thu, 04 Apr 2013 14:35:05 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp234112vem;
+        Thu, 4 Apr 2013 14:35:04 -0700 (PDT)
+X-Received: by 10.60.144.226 with SMTP id sp2mr5762080oeb.64.1365111304108;
+        Thu, 04 Apr 2013 14:35:04 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id cg10si9419934obc.135.2013.04.04.14.35.03
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 04 Apr 2013 14:35:04 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of mfreemon@illinois.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of mfreemon@illinois.edu) smtp.mail=mfreemon@illinois.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r34LZ2ws023745
+	for <mjuric-lsst@majuric.org>; Thu, 4 Apr 2013 17:35:03 -0400
+Received: from rimantadine.ncsa.uiuc.edu ([141.142.199.3]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 4 Apr 2013 14:35:02 -0700
+Received: from [141.142.220.224] (ncsa-2-usernet220-224.ncsa.uiuc.edu [141.142.220.224])
+	(authenticated bits=0)
+	by rimantadine.ncsa.uiuc.edu (8.14.6/8.14.4) with ESMTP id r34LYtjt020150
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 4 Apr 2013 16:34:56 -0500
+Message-ID: <515DF1EE.7050705@illinois.edu>
+Date: Thu, 04 Apr 2013 16:34:38 -0500
+From: Mike Freemon <mfreemon@illinois.edu>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+CC: =?UTF-8?B?U2NodXlsZXIgVmFuIER5ayDinIY=?= <vandyk@ipac.caltech.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Dick Shaw <shaw@noao.edu>, Kian-Tat Lim <ktl@slac.stanford.edu>,
+        Jacek Becla <becla@slac.stanford.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Andrew Connolly <ajc@astro.washington.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>, Andy Becker <acbecker@gmail.com>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org>
+In-Reply-To: <515DC9D3.4090101@lsst.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Null-Tag: 7260118a2b07eafbd4314e455ec3749d
+X-OriginalArrivalTime: 04 Apr 2013 21:35:02.0451 (UTC) FILETIME=[43DBD830:01CE317C]
+
+Hi Mario,
+
+Minor comments.
+
+Section 1.1
+
+"Thus the primary results of analysis of difference images -- newly 
+discovered transients -- generally need to be broadcast as transient 
+alerts within 60 seconds of shutter close."
+
+I believe this should be 60 seconds from readout complete, not shutter 
+close.
+
+Section 2.4.1
+
+Has it been decided that the VOEvents will contain the cutout images 
+(rather than a link to the cutout images)?
+
+Section 2.4.2
+
+Are all VOEvent Brokers required to implement/deploy the LSST-specific 
+capabilities (the user defined filters)?  If so, how is that enforced? 
+If not, why can't a subscriber request all alerts (not that their system 
+can handle it, but what is in place to prevent it)?  Are these LSST 
+customizations to the standard VOEvent brokers, or LSST-specific 
+customizations (to be proposed) to the VO standards?  Note: This is a 
+partial duplicate of an existing bullet in the Open Issues section.
+
+- Mike
+
+
+On 4/4/2013 1:43 PM, Mario Juric wrote:
+> Dear DM crowd (+Zeljko and Tim),
+> 	Attached to this e-mail you'll find the second draft of the writeup on
+> Level 1 processing and data products (Level 2 is under development).
+> Some of you have reviewed draft #1 and provided many, many, useful
+> comments (thanks!). I'm asking for the second round of comments,
+> preferably by next Friday (April 12). I aim to send it for round #3 of
+> comments to the Science Council and Science Collaboration chairs soon
+> after your feedback is incorporated. We're aiming for an external review
+> in late May.
+>
+> 	The document is intended to capture at a detailed yet readable and
+> understandable level how we plan to generate L1 products, when, what
+> they will consist of, and how they will be distributed. Our DB team will
+> use it to derive the details of database and schema design, the science
+> teams will use it to verify that LSST plans capture science
+> requirements, and it will be used to populate the UML model to enable
+> requirements tracking and software design consistency checks. It will
+> also be the primary document we will give to our data products
+> reviewers, and it's not inconceivable that we may turn it into a
+> companion to the "Overview Paper".
+>
+> 	Please comment on technical feasibility, scientific completeness,
+> clarity, style, etc. At this point, the document is a statement on what
+> I would *like* to be done, not necessarily what we actually *can* do
+> given the resources. There are still some TBDs and TODOs in the text --
+> your thoughts on those would be appreciated.
+>
+> PS: Let me know if you want the .tex
+> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+>
+> Cheers,
+>

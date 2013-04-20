@@ -1,0 +1,100 @@
+Message-ID: <5171F78E.3010401@lsst.org>
+Date: Fri, 19 Apr 2013 19:03:58 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Andrew Becker <acbecker@gmail.com>
+CC: =?UTF-8?B?U2NodXlsZXIgVmFuIER5ayDinIY=?= <vandyk@ipac.caltech.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Dick Shaw <shaw@noao.edu>, Kian-Tat Lim <ktl@slac.stanford.edu>, 
+ Jacek Becla <becla@slac.stanford.edu>,
+ Mike Freemon <mfreemon@illinois.edu>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Andrew Connolly <ajc@astro.washington.edu>, 
+ Jeffrey Kantor <JKantor@lsst.org>,
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <515F6573.1070408@gmail.com>
+In-Reply-To: <515F6573.1070408@gmail.com>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 4/5/13 16:59 , Andrew Becker wrote:
+> Hi Mario - My main comments are:
+> 
+>  * page 3: Clarify that the Level 1 reductions will be re-done with
+> every Level 2 run.
+> 
+
+Hmm, I can't find a good place to add that in. Entire section 2.3.8 is
+devoted to it, though.
+
+>  * page 5: Not sure that the source forced flux on the calexp will be
+> useful in all cases (e.g. supernovae).  Is there a way to distinguish
+> when this value is or is not trustworthy?
+> 
+
+The difference of forced flux and flux on diffim should carry some
+information about this?
+
+>  * page 6: There will a ton of precovery forced photometry coming from
+> Solar System objects until our SSObject table becomes comprehensive.
+> 
+
+Yup. It's a TBD issue how to handle these. The real question is when (if
+ever) we stop doing forced-photometry measurements (say, if the
+DIAObject has not been seen in a while). I added it as an issue in the
+final section.
+
+>  * page 6: Tracklets comes from the 2 snaps, yes?  Or from the 2 sets of
+> snaps per night?  Would be good to clarify.
+> 
+
+From two visits.
+
+>  * page 9: I don't know if we currently store the S/N anything was
+> detected at (I may be wrong though).  Is there a reason to not use
+> psFlux/psFluxStdev?
+> 
+
+Just to leave open the possibility that the two may be different (in
+principle, they are, otherwise we wouldn't be re-measuring after detection).
+
+>  * page 12: I don't know if we need to store entries in the DIAObject
+> table that would more naturally go in the Object table (proper motion
+> and parallax come to mind).
+> 
+
+The idea is that we would determine these from difference images, even
+in the absence of the Object table. It's not clear how good of an idea
+this is. We need to think through how to handle objects with parallaxes
+and proper motions in diffims (they'll leave dipoles all around). It's
+recorded as an issue.
+
+>  * page 16: The Pogson magnitudes table, with negative values = NULL, is
+> a bit dangerous as there is the potential to be misused.  E.g. for QSOs
+> you will only get half the data.
+> 
+
+I'm not sure what you mean. What would be an example query?
+
+>  * page 20: It does seem a bit strange to say that will serve as a
+> broker, but users can't receive an unfiltered stream. The former seems
+> harder than the latter; how do our computational requirements scale with
+> the number of listeners?
+> 
+
+It's the bandwidth that worries me. Imagine 100 users with ~10 MB/s
+streams pointed to each of them. That's 10 Gbps of outgoing bandwidth.
+
+I don't think we're sized for that much (Mike would know). In any case,
+I prefer to err on the side of controlling expectations.
+
+Thanks,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

@@ -1,0 +1,101 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Thu, 04 Apr 2013 17:00:28 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r3500Q5S027387
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Thu, 4 Apr 2013 17:00:27 -0700
+Received: from mail-vc0-f176.google.com (mail-vc0-f176.google.com [209.85.220.176])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3500QQB009834
+	for <mjuric@majuric.org>; Thu, 4 Apr 2013 20:00:26 -0400
+Received: by mail-vc0-f176.google.com with SMTP id ib11so2782712vcb.21
+        for <mjuric@majuric.org>; Thu, 04 Apr 2013 17:00:26 -0700 (PDT)
+X-Received: by 10.52.90.112 with SMTP id bv16mr5421532vdb.62.1365120026201;
+        Thu, 04 Apr 2013 17:00:26 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp237997vem;
+        Thu, 4 Apr 2013 17:00:25 -0700 (PDT)
+X-Received: by 10.182.123.49 with SMTP id lx17mr6190398obb.63.1365120025073;
+        Thu, 04 Apr 2013 17:00:25 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id o3si9807833obx.12.2013.04.04.17.00.24
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 04 Apr 2013 17:00:24 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3500NWB009728
+	for <mjuric-lsst@majuric.org>; Thu, 4 Apr 2013 20:00:23 -0400
+Received: from nospam3.slac.stanford.edu ([134.79.109.10]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 4 Apr 2013 17:00:23 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam3.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r3500Ccu014350
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 4 Apr 2013 17:00:12 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id EF9311F826; Thu,  4 Apr 2013 17:00:11 -0700 (PDT)
+Date: Thu, 4 Apr 2013 17:00:11 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Mario Juric <mjuric@lsst.org>
+Cc: Schuyler Van Dyk =?utf-8?B?4pyG?= <vandyk@ipac.caltech.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Dick Shaw <shaw@noao.edu>, Jacek Becla <becla@slac.stanford.edu>,
+        Mike Freemon <mfreemon@illinois.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Andrew Connolly <ajc@astro.washington.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>, Andy Becker <acbecker@gmail.com>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+Message-ID: <20130405000011.GB17747@sccs-ktlim.slac.stanford.edu>
+References: <515DC9D3.4090101@lsst.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <515DC9D3.4090101@lsst.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 05 Apr 2013 00:00:23.0099 (UTC) FILETIME=[91C520B0:01CE3190]
+
+Mario,
+
+	My comments on this draft:
+
+2.2.1
+
+#4: Need to associate to two SSObject positions -- propagated and template-time
+ (one will be positive, other will be negative)
+
+#4 footnote 6: Document assumption that multiple DIASources will not match
+ to one DIAObject to prevent multiple updates
+
+#7: Are L2DB Object matches to DIASources or DIAObjects?
+ * If the former, this is a pretty big but narrow match table
+ * If the latter, this is only for new DIAObjects and is easier/faster
+
+#8: query time == time when database has been updated with new DIAObject
+ measurements?
+ * Can we batch up updates and have them all appear at same time?
+
+#9: Precovery only for new DIAObjects, right?  Or old ones, too?
+ * Equivalent to doing forced photom of all DIAObjects on each diffim
+ * Diffims are not cached; would have to cache or recompute on the fly
+ * Precovery inserts into DIASource table? or DIAForcedPhotom table?
+   + If DIASource, which columns are missing, if any?
+
+2.2.2
+
+#4: Points to new SSObject record, not DIAObject
+
+2.3.6
+
+#2: Retrieving all historic images for a given location on the sky within
+ 24 hours may not be possible (would require average of one tape read per
+ minute or so) -- or we have to keep all calexps on disk
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu

@@ -1,0 +1,241 @@
+Message-ID: <517205E7.9030609@lsst.org>
+Date: Fri, 19 Apr 2013 20:05:11 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Dick Shaw <shaw@noao.edu>
+CC: Schuyler Van Dyk ? <vandyk@ipac.caltech.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Kian-Tat Lim <ktl@slac.stanford.edu>, 
+ Jacek Becla <becla@slac.stanford.edu>,
+ Mike Freemon <mfreemon@illinois.edu>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Andrew Connolly <ajc@astro.washington.edu>, 
+ Jeffrey Kantor <JKantor@lsst.org>,
+ Andy Becker <acbecker@gmail.com>, Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <web-82837711@email.noao.edu>
+In-Reply-To: <web-82837711@email.noao.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 4/12/13 16:48 , Dick Shaw wrote:
+> Hi Mario,
+> 
+> Here are some tardy but, I hope, useful comments on your draft
+> description of the LSST data products. In general I think the scope is
+> about right, as is the level of detail. There is plenty of opportunity
+> for wordsmithing and fixing typos, grammatical rough patches, etc. but I
+> won't bother with any of that here.
+> 
+
+Hi Dick,
+	Thanks for the excellent comments! I know the grammar has (more than a
+few) rough patches, but we'll work on that closer to the review.
+
+Comments below:
+
+> Cheers,
+> Dick
+> 
+> 1. I found the document to be a difficult read, which I think can be
+> fixed with some reorganization. The flow can be improved fairly
+> dramatically by doing the following:
+> 
+>   - move the description of the database tables to appendices
+
+This has already been suggested, but I'm trying to resist it. Really,
+these tables are the *core* of this document, and everything else is
+there to provide sufficient information to the reader to tell whether
+the columns we plan to provide/measure are sufficient for their science
+case.
+
+>   - move bullet lists of changes w.r.t. previous baseline to the end of
+> document
+
+I hid them entirely.
+
+>   - move much of the substantial content now in footnotes to the main
+> text (poster child example: footnote 15).
+
+The footnotes are my attempt to keep the balance between being
+relatively high-level in the document, and providing more information to
+those who want to know more.
+
+15 is an example where I failed. I converted it into a paragraph.
+
+>   - eliminate footnotes that are too technical to be interesting or
+> helpful (ex: footnotes 7, 13, 35, 38)
+> 
+
+I'd prefer to keep those. They're there to provide hints to our team.
+Outside readers can just ignore them.
+
+> 2. In the end I found it hard to understand at a high level what the
+> data products really are without parsing the whole document. It would be
+> better I think to introduce the products (maybe list them in a table),
+> then talk about how they are produced, then give details of the
+> contents. 
+
+I think you're seeing the effects of the evolution of this document to
+its current state. Once we're closed to the review, someone with a good
+eye for editing may need to give it some cut-and-paste treatment.
+
+> A reader would have to read footnote 37 on page 16 before
+> discovering that processed images are going to be a published data
+> product. My recollection is that users will be able to request any
+> calibrated image cut-out, but it will in general be regenerated
+> on-the-fly as these products will not be preserved very long. Is this
+> still true? If so the document should say so. Similar comment applies to
+> difference images.
+> 
+
+That's a good point -- we've said nothing about the images.
+
+I added a new section discussing these (2.3.4).
+
+> 3. There are quite a few instances of technical terms that are not
+> defined when first used. "ISR," "MOPS," "broker," and
+> "forced-photometry" are examples, and it is not clear whether the latter
+> term is meaningfully different than "photometry" in this context. The
+> definition of "difference image" would benefit from embellishment. I
+> would say it is "an arithmetic difference of two images that have been
+> warped to the same geometric grid and photometrically scaled" and
+> elaborate that the difference is expected to be zero within the noise,
+> except for sources that are new or that have changed in brightness.
+> 
+
+I'd prefer not to go into such level of detail: a) the readers may be
+confused why we're trying to define the terms they believe (rightly or
+not) they understand, and b) we ourselves haven't fully defined the
+details of how these images are going to be produced.
+
+> 4. Some terminology is problematic. For instance, in much of the
+> document the term "VO Event" seems to be a synonym for "Alert" when of
+> course it is not. A VOEvent is a serialization of an Alert, or
+> notification of a discovery of a new DIASource. I think I would replace
+> all occurrences of "VOEvent" with "Alert" until sect. 2.4.2, where
+> VOEvent is defined.
+> 
+
+Good point. I've tried to use "alert" whenever possible, unless I really
+wanted to specifically say VOEvent.
+
+> For political correctness, I think I would rephrase the first paragraph
+> in sect. 2.4.2 to indicate that the project plans to use a community
+> standard protocol for conveying alerts, and that the most developed
+> standard today is VOEvent (cite ref). With the demise of VAO, this
+> approach seems more prudent to me.
+> 
+
+I added a caveat.
+
+> 5. There are a few logical inconsistencies and outright contradictions
+> that need to be fixed.
+> 
+>   - Sect. 2.3.5: the logic for representing brightnesses as flux rather
+> than magnitudes is muddled. For instance if a DIASource is a variable
+> star, a negative flux merely means that the star was dimmer w.r.t. the
+> template. The brightness (or brightness difference) could clearly be
+> represented in magnitudes in this case. Thus the statement in parg. 4
+> (negative fluxes->NULL) does not follow.
+> 
+
+I don't understand how would you represent the difference in brightness
+(both positive and negative) in magnitudes? Are you proposing a separate
++/- column?
+
+>   - Sect. 2.3.7, parg. 1: '...DIASources are never re-measured at the
+> pixel level" is not consistent with paragraphs 3 and following, where
+> the regeneration of DIASources is described in detail.
+> 
+
+I changed that sentence to better reflect what I wanted to say (it's a
+hypothetical).
+
+>   - Sect. 2.4.2: I don't see what would stop someone from getting the
+> full event stream by merely writing a suitably trivial filter in the
+> "bare bones" broker that LSST provides. It also seems like an avoidably
+
+No. There's a maximum of ~20 alerts you can get per image.
+
+> horrible thing to scale LSST/DM to issue alerts within 60s, only to
+> claim it has too few resources to serve the events to more than a few. I
+> think this needs to be thought through, and the discussion in the last
+> paragraph is too vague to be useful. The policy discussion needs to be
+> moved to a different document.
+> 
+
+Some more information has been added to that section which I hope will
+make it clearer. What we're trying to say is that a) LSST will provide
+basic brokering services for everyone but b) we'd really prefer if the
+community organized and operated a public event broker service to do this.
+
+We don't have the bandwidth to send a full stream to anyone who requests
+it. It's also unlikely to be useful -- I doubt one can follow up more
+than ~20 alerts per visit (those few who will may get special treatment).
+
+>   - Sect. 2.3: the claim of philosophical purity re: the distinction of
+> positional association and identity is diluted by including light curves
+> in the alert payload. Also, in footnote 6: "the [association] algorithm
+> will take into account... [various things]... to find the _maximally
+> likely_ match." (BTW, in footnote 6 you surely meant to say that the
+> association algorithm guarantees that a DIASource is associated with
+> _one or zero_ DIAObject or SSObject, yes?)
+> 
+
+You're right, I fixed the wording.
+
+In the end, a DIAObject is created if an association is not found.
+
+>   - Table 1, fpSky and fpSkyStdev: why are the units in DN? (and where
+> is DN defined?) If the units of source brightness are physical flux or
+> mags, how would a sky brightness in DN be useful to users?
+> 
+
+Changed these to nmgy/arcsec^2
+
+> 6. A few details are needed on this points:
+> 
+> - Sect. 2.3.7: the discussion of updating the Level 1 database is
+> confusing, and I wonder if "less is more" in this case? Will old
+> versions of the Level 1 databases be retained and accessible?
+> 
+
+It's important to have this discussion for our database team to
+understand what will be expected of them.
+
+> - The concept of a template is introduced early, but that begs the
+> question of how they are created. Will they be cleansed of transients,
+> or SSOs? Our last DRB just averaged the input frames (with outlier
+> rejection, I believe). But if we did that, then presumably we would
+> always issue alerts at the position of brighter transients, which would
+> be a Bad Thing.
+> 
+
+I added a (brief) section on how templates are created. I don't think
+there's a need to go into much detail about this here, since I want to
+focus the readers' attention on the catalogs more than the images.
+
+> 7. Some details are not needed:
+> 
+> - Sect. 2.3.7, parg 4: I think I would omit details like how long you
+> think it will take to run the annual DRP.
+> 
+> - Sect. 2.3.8, last parg.: this sentence has too much jargon. I think I
+> would omit the SQL examples entirely, as they don't add much to the
+> discussion.
+
+Both of these are here more for the benefit of our DB/DRP teams, than
+the outside reader. I agree that some may be confused, but that may be
+hard to avoid given the complexity of this document.
+
+Thanks for the comments! I hope to have the next draft ready soon (and
+move on to Level 2).
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

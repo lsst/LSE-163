@@ -1,0 +1,175 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Fri, 12 Apr 2013 17:41:10 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r3D0f853026740
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Fri, 12 Apr 2013 17:41:09 -0700
+Received: from mail-vb0-f44.google.com (mail-vb0-f44.google.com [209.85.212.44])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3D0f7IU020405
+	for <mjuric@majuric.org>; Fri, 12 Apr 2013 20:41:08 -0400
+Received: by mail-vb0-f44.google.com with SMTP id e12so2623015vbg.3
+        for <mjuric@majuric.org>; Fri, 12 Apr 2013 17:41:07 -0700 (PDT)
+X-Received: by 10.220.225.200 with SMTP id it8mr10145731vcb.39.1365813667479;
+        Fri, 12 Apr 2013 17:41:07 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp79531vem;
+        Fri, 12 Apr 2013 17:41:06 -0700 (PDT)
+X-Received: by 10.229.6.1 with SMTP id 1mr4809733qcx.17.1365813664374;
+        Fri, 12 Apr 2013 17:41:04 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id q15si4050341qcg.175.2013.04.12.17.41.02
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 12 Apr 2013 17:41:04 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of shaw@email.noao.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of shaw@email.noao.edu) smtp.mail=shaw@email.noao.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3D0erFS019781
+	for <mjuric-lsst@majuric.org>; Fri, 12 Apr 2013 20:40:53 -0400
+Received: from email.noao.edu ([140.252.1.57]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 12 Apr 2013 17:40:52 -0700
+Received: from [140.252.4.21] (account shaw@email.noao.edu)
+  by email.noao.edu (CommuniGate Pro WEBUSER 5.4.7)
+  with HTTP id 82838004; Fri, 12 Apr 2013 17:40:52 -0700
+From: "Dick Shaw" <shaw@noao.edu>
+Subject: Re: Level 1 data products writeup (draft #2)
+To: "Kian-Tat Lim" <ktl@slac.stanford.edu>
+Cc: "Mario Juric" <mjuric@lsst.org>,
+        "Schuyler Van Dyk ?"
+ <vandyk@ipac.caltech.edu>,
+        "Gregory P. Dubois-Felsmann"
+ <gpdf@slac.stanford.edu>,
+        "Jacek Becla" <becla@slac.stanford.edu>,
+        "Mike Freemon" <mfreemon@illinois.edu>,
+        "Robert Lupton the Good"
+ <rhl@astro.princeton.edu>,
+        "Andrew Connolly" <ajc@astro.washington.edu>,
+        "Jeffrey Kantor" <JKantor@lsst.org>,
+        "Andy Becker"
+ <acbecker@gmail.com>,
+        "Tim Axelrod" <taxelrod@gmail.com>
+X-Mailer: CommuniGate Pro WebUser v5.4.7
+Date: Sat, 13 Apr 2013 00:40:52 +0000
+Message-ID: <web-82838008@email.noao.edu>
+In-Reply-To: <20130413001256.GB29360@sccs-ktlim.slac.stanford.edu>
+References: <515DC9D3.4090101@lsst.org>
+ <web-82837711@email.noao.edu>
+ <20130413001256.GB29360@sccs-ktlim.slac.stanford.edu>
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1; format="flowed"
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 13 Apr 2013 00:40:52.0691 (UTC) FILETIME=[8D397230:01CE37DF]
+
+Hi K-T,
+
+On Fri, 12 Apr 2013 17:12:56 -0700
+  Kian-Tat Lim <ktl@slac.stanford.edu> wrote:
+> 	Some quick responses...
+> 
+>> 1. I found the document to be a difficult read, which I think can be
+>> fixed with some reorganization. The flow can be improved fairly
+>> dramatically by doing the following:
+>> 
+>>   - move the description of the database tables to appendices
+> 
+> 	I think this is dangerous; the specifics of what is measured
+> and how seem to be quite important.
+
+?? I'm not suggesting that the tables be deleted, just moved to the end of the 
+doc.
+
+>> My recollection is that users will be able to request any calibrated
+>> image cut-out, but it will in general be regenerated on-the-fly as
+>> these products will not be preserved very long. Is this still true? If
+>> so the document should say so. Similar comment applies to difference
+>> images.
+> 
+> 	The first part of this is correct.  The latency for retrieval of
+> an arbitrary calibrated image cutout may vary depending on its age.  We
+> do not currently plan to publish difference images other than the
+> postage stamps included in the alerts.  If those need to be part of the
+> L1 Data Products, we will need to make changes.
+
+I'm not advocating change, just clarity.
+
+>> it is not clear whether ["forced-photometry"] is meaningfully
+>> different than "photometry" in this context.
+> 
+> 	I think at least the position is fixed for "forced-photometry"
+> measurements while it might be "peaked-up" for just "photometry"
+> measurements.
+
+You and I understand that; a person external to the project may not. I'm not 
+sure the technical difference is worth explaining, given the scope of this 
+document. If it is, let's explain it more fully.
+
+>> The definition of "difference image" would benefit from embellishment.
+>> I would say it is "an arithmetic difference of two images that have
+>> been warped to the same geometric grid and photometrically scaled" and
+>> elaborate that the difference is expected to be zero within the noise,
+>> except for sources that are new or that have changed in brightness.
+> 
+> 	There might be more background and PSF matching going on than
+> your proposed definition would suggest.
+
+Sure. My point was to elaborate on the definition since it lies at the very 
+heart of generating L-1 data products.
+
+>>   - Sect. 2.4.2: I don't see what would stop someone from getting
+>> the full event stream by merely writing a suitably trivial filter in
+>> the "bare bones" broker that LSST provides. It also seems like an
+>> avoidably horrible thing to scale LSST/DM to issue alerts within
+>> 60s, only to claim it has too few resources to serve the events to
+>> more than a few. I think this needs to be thought through, and the
+>> discussion in the last paragraph is too vague to be useful. The
+>> policy discussion needs to be moved to a different document.
+> 
+> 	We've always said we're only required to serve events to a few
+> brokers who then distribute them to the community.  This area is fraught
+> with land mines.
+
+Right. Which is why I suggested trying to excise the policy stuff from the 
+technical definition doc.
+
+>> Also, in footnote 6: "the [association]
+>> algorithm will take into account... [various things]... to find the
+>> _maximally likely_ match." (BTW, in footnote 6 you surely meant to
+>> say that the association algorithm guarantees that a DIASource is
+>> associated with _one or zero_ DIAObject or SSObject, yes?)
+> 
+> 	If the DIASource is not associated with a prior DIAObject or
+> SSObject, a DIAObject will be created for it.
+
+Yes but the sentence says the association will return "one and only one" which 
+seems to run counter to the rest of the text.
+
+>> - The concept of a template is introduced early, but that begs the
+>> question of how they are created. Will they be cleansed of
+>> transients, or SSOs? Our last DRB just averaged the input frames
+>> (with outlier rejection, I believe). But if we did that, then
+>> presumably we would always issue alerts at the position of brighter
+>> transients, which would be a Bad Thing.
+> 
+> 	I'm not sure I understand this Bad Thing.  Are you saying that a
+> given transient should generate only one alert?  I don't think that's
+> ever been the case, but brokers can filter out recurrent alerts if they
+> choose.
+
+The problem is that in the stack of images that go into any given patch of 
+sky, there will be some bright transients (asteroids) that appear in one image 
+but not the others. If the template is co-added without filtering out these 
+transients, then the system will issue an alert _every time_ that patch of sky 
+is observed. This is not so bad for SNe but is a bother for SSOs: those alerts 
+would be bogus, of course, but they are avoidable. Yes, smart brokers can 
+filter them out but why make the problem harder for users?
+
+Really, though, my uber-point is to say something about how templates are 
+created, and to address fairly obvious implications for issuing alerts based 
+on DIA.
+
+-Dick

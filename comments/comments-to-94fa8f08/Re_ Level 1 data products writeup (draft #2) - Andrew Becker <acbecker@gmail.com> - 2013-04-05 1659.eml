@@ -1,0 +1,139 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Fri, 05 Apr 2013 16:59:55 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r35NxsHg020982
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Fri, 5 Apr 2013 16:59:55 -0700
+Received: from mail-vb0-f51.google.com (mail-vb0-f51.google.com [209.85.212.51])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r35Nxrtd029942
+	for <mjuric@majuric.org>; Fri, 5 Apr 2013 19:59:53 -0400
+Received: by mail-vb0-f51.google.com with SMTP id x19so2526963vbf.38
+        for <mjuric@majuric.org>; Fri, 05 Apr 2013 16:59:53 -0700 (PDT)
+X-Received: by 10.220.153.143 with SMTP id k15mr9802935vcw.33.1365206393515;
+        Fri, 05 Apr 2013 16:59:53 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp277299vem;
+        Fri, 5 Apr 2013 16:59:52 -0700 (PDT)
+X-Received: by 10.60.145.147 with SMTP id su19mr9887836oeb.9.1365206392020;
+        Fri, 05 Apr 2013 16:59:52 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id tu9si12801424oeb.14.2013.04.05.16.59.51
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 05 Apr 2013 16:59:52 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of acbecker@gmail.com) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of acbecker@gmail.com) smtp.mail=acbecker@gmail.com;
+       dkim=pass header.i=@gmail.com
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r35NxoPE029832
+	for <mjuric-lsst@majuric.org>; Fri, 5 Apr 2013 19:59:50 -0400
+Received: from mail-pd0-f175.google.com ([209.85.192.175]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 5 Apr 2013 16:59:50 -0700
+Received: by mail-pd0-f175.google.com with SMTP id g10so2025066pdj.6
+        for <multiple recipients>; Fri, 05 Apr 2013 16:59:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=x-received:message-id:date:from:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=m05q7RQG5eRFZe1/wfUSgnC3zlxvVgMcnzVm9bh2+wY=;
+        b=hoDsOCQPv4j0X2bg6FjdhjYnTTlKysc2gqvVkASpgDghA1OfISJz9BALNI2ntzt5S/
+         bEoq4EGHd9+vf2QJ5+y7/VLIbxuhewf4maHRpGutfrdswvLVBRgNL2qHtx79n2mrGgyL
+         ID/Nj8+zcLNdKPOPyMsvvIrtBsh+JPvSAPPL0Z9CT3kUMTNRepXeWVheJPYsBTckBY7r
+         947Wzlerk40UuaATCIoTLyp1IEU+hT2Pn/5mTfASLfKXx4vyhSxHWPgCUAU2LRH/bkZ3
+         dQC7TabkWrF/RFRP4NOdL3jFsp1OYYGYUoRrcnCMHoEhUfBmPvm6ve2zBBNUSHdPlCmp
+         0ejQ==
+X-Received: by 10.66.159.6 with SMTP id wy6mr17554889pab.206.1365206389576;
+        Fri, 05 Apr 2013 16:59:49 -0700 (PDT)
+Received: from darkstar.astro.washington.edu (darkstar.astro.washington.edu. [128.208.190.119])
+        by mx.google.com with ESMTPS id of1sm2412533pbb.2.2013.04.05.16.59.47
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 05 Apr 2013 16:59:48 -0700 (PDT)
+Message-ID: <515F6573.1070408@gmail.com>
+Date: Fri, 05 Apr 2013 16:59:47 -0700
+From: Andrew Becker <acbecker@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:17.0) Gecko/20130107 Thunderbird/17.0.2
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+CC: =?UTF-8?B?U2NodXlsZXIgVmFuIER5ayDinIY=?= <vandyk@ipac.caltech.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Dick Shaw <shaw@noao.edu>, Kian-Tat Lim <ktl@slac.stanford.edu>,
+        Jacek Becla <becla@slac.stanford.edu>,
+        Mike Freemon <mfreemon@illinois.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Andrew Connolly <ajc@astro.washington.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>, Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org>
+In-Reply-To: <515DC9D3.4090101@lsst.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 05 Apr 2013 23:59:50.0345 (UTC) FILETIME=[A8A90390:01CE3259]
+
+Hi Mario - My main comments are:
+
+  * page 3: Clarify that the Level 1 reductions will be re-done with every Level 2 run.
+
+  * page 5: Not sure that the source forced flux on the calexp will be useful in all cases (e.g. 
+supernovae).  Is there a way to distinguish when this value is or is not trustworthy?
+
+  * page 6: There will a ton of precovery forced photometry coming from Solar System objects until 
+our SSObject table becomes comprehensive.
+
+  * page 6: Tracklets comes from the 2 snaps, yes?  Or from the 2 sets of snaps per night?  Would be 
+good to clarify.
+
+  * page 9: I don't know if we currently store the S/N anything was detected at (I may be wrong 
+though).  Is there a reason to not use psFlux/psFluxStdev?
+
+  * page 12: I don't know if we need to store entries in the DIAObject table that would more 
+naturally go in the Object table (proper motion and parallax come to mind).
+
+  * page 16: The Pogson magnitudes table, with negative values = NULL, is a bit dangerous as there 
+is the potential to be misused.  E.g. for QSOs you will only get half the data.
+
+  * page 20: It does seem a bit strange to say that will serve as a broker, but users can't receive 
+an unfiltered stream. The former seems harder than the latter; how do our computational requirements 
+scale with the number of listeners?
+
+Cheers,
+Andy
+
+On 04/04/13 11:43, Mario Juric wrote:
+> Dear DM crowd (+Zeljko and Tim),
+> 	Attached to this e-mail you'll find the second draft of the writeup on
+> Level 1 processing and data products (Level 2 is under development).
+> Some of you have reviewed draft #1 and provided many, many, useful
+> comments (thanks!). I'm asking for the second round of comments,
+> preferably by next Friday (April 12). I aim to send it for round #3 of
+> comments to the Science Council and Science Collaboration chairs soon
+> after your feedback is incorporated. We're aiming for an external review
+> in late May.
+>
+> 	The document is intended to capture at a detailed yet readable and
+> understandable level how we plan to generate L1 products, when, what
+> they will consist of, and how they will be distributed. Our DB team will
+> use it to derive the details of database and schema design, the science
+> teams will use it to verify that LSST plans capture science
+> requirements, and it will be used to populate the UML model to enable
+> requirements tracking and software design consistency checks. It will
+> also be the primary document we will give to our data products
+> reviewers, and it's not inconceivable that we may turn it into a
+> companion to the "Overview Paper".
+>
+> 	Please comment on technical feasibility, scientific completeness,
+> clarity, style, etc. At this point, the document is a statement on what
+> I would *like* to be done, not necessarily what we actually *can* do
+> given the resources. There are still some TBDs and TODOs in the text --
+> your thoughts on those would be appreciated.
+>
+> PS: Let me know if you want the .tex
+> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+>
+> Cheers,
+

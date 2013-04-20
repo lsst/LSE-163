@@ -1,0 +1,40 @@
+Message-ID: <5171F7C7.9090005@lsst.org>
+Date: Fri, 19 Apr 2013 19:04:55 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Kian-Tat Lim <ktl@slac.stanford.edu>
+CC: Andrew Becker <acbecker@gmail.com>, =?UTF-8?B?U2NodXlsZXIgVmFuIER5ayDinIY=?=
+ <vandyk@ipac.caltech.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Dick Shaw <shaw@noao.edu>, Jacek Becla <becla@slac.stanford.edu>, 
+ Mike Freemon <mfreemon@illinois.edu>,
+ Robert Lupton the Good <rhl@astro.princeton.edu>, 
+ Andrew Connolly <ajc@astro.washington.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <515F6573.1070408@gmail.com> <20130406010356.GA873@sccs-ktlim.slac.stanford.edu>
+In-Reply-To: <20130406010356.GA873@sccs-ktlim.slac.stanford.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 4/5/13 18:03 , Kian-Tat Lim wrote:
+> Andy,
+> 
+>>  * page 6: Tracklets comes from the 2 snaps, yes?  Or from the 2
+>> sets of snaps per night?  Would be good to clarify.
+> 
+> 	2 visits per night, not from the 2 snaps.  (There ought not to
+> be enough motion between the snaps to get a tracklet!)
+> 
+
+Of course, if there is, that's a *really* interesting object. We'll need
+to be careful that CR+streak rejection does not remove these as well.
+
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

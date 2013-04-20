@@ -1,0 +1,155 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Thu, 04 Apr 2013 15:28:24 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r34MSM0p015346
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Thu, 4 Apr 2013 15:28:23 -0700
+Received: from mail-vb0-f51.google.com (mail-vb0-f51.google.com [209.85.212.51])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r34MSMKR032119
+	for <mjuric@majuric.org>; Thu, 4 Apr 2013 18:28:22 -0400
+Received: by mail-vb0-f51.google.com with SMTP id x19so1733531vbf.10
+        for <mjuric@majuric.org>; Thu, 04 Apr 2013 15:28:22 -0700 (PDT)
+X-Received: by 10.220.225.200 with SMTP id it8mr6281793vcb.39.1365114501988;
+        Thu, 04 Apr 2013 15:28:21 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp235592vem;
+        Thu, 4 Apr 2013 15:28:21 -0700 (PDT)
+X-Received: by 10.182.32.1 with SMTP id e1mr5938322obi.90.1365114501145;
+        Thu, 04 Apr 2013 15:28:21 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id az2si4258468obb.65.2013.04.04.15.28.20
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Thu, 04 Apr 2013 15:28:21 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of mfreemon@illinois.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of mfreemon@illinois.edu) smtp.mail=mfreemon@illinois.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r34MSKwa032001
+	for <mjuric-lsst@majuric.org>; Thu, 4 Apr 2013 18:28:20 -0400
+Received: from amantadine.ncsa.uiuc.edu ([141.142.192.229]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 4 Apr 2013 15:28:19 -0700
+Received: from [141.142.220.224] (ncsa-2-usernet220-224.ncsa.uiuc.edu [141.142.220.224])
+	(authenticated bits=0)
+	by amantadine.ncsa.uiuc.edu (8.14.6/8.14.4) with ESMTP id r34MSDYA032087
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 4 Apr 2013 17:28:14 -0500
+Message-ID: <515DFE6C.4000103@illinois.edu>
+Date: Thu, 04 Apr 2013 17:27:56 -0500
+From: Mike Freemon <mfreemon@illinois.edu>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+CC: =?UTF-8?B?U2NodXlsZXIgVmFuIER5ayDinIY=?= <vandyk@ipac.caltech.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Dick Shaw <shaw@noao.edu>, Kian-Tat Lim <ktl@slac.stanford.edu>,
+        Jacek Becla <becla@slac.stanford.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Andrew Connolly <ajc@astro.washington.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>, Andy Becker <acbecker@gmail.com>,
+        Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <515DF1EE.7050705@illinois.edu> <515DFACF.6070201@lsst.org>
+In-Reply-To: <515DFACF.6070201@lsst.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Null-Tag: 471e04a4e761f69517a3dfe3139f31ec
+X-OriginalArrivalTime: 04 Apr 2013 22:28:19.0663 (UTC) FILETIME=[B58BADF0:01CE3183]
+
+Hi Mario,
+
+Sounds good.  The only followup thought I would raise is that the 
+VOEvent broker servers are not LSST's.  This whole area (e.g. who is 
+responsible for the event distribution network) is not well defined yet. 
+  I would recommend that Ray be added to this discussion as the LSST VO 
+Lead.
+
+- Mike
+
+
+On 4/4/2013 5:12 PM, Mario Juric wrote:
+> On 4/4/13 14:34 , Mike Freemon wrote:
+>> Hi Mario,
+>>
+>> Minor comments.
+>>
+>
+> Hi Mike,
+> 	Thanks for the comments. Responses below.
+>
+>> Section 1.1
+>>
+>> "Thus the primary results of analysis of difference images -- newly
+>> discovered transients -- generally need to be broadcast as transient
+>> alerts within 60 seconds of shutter close."
+>>
+>> I believe this should be 60 seconds from readout complete, not shutter
+>> close.
+>>
+>
+> You're right, I'll change it.
+>
+>> Section 2.4.1
+>>
+>> Has it been decided that the VOEvents will contain the cutout images
+>> (rather than a link to the cutout images)?
+>>
+>
+> Not formally, but this document is the proposal to make that decision.
+>
+> The feedback I got for version #1 (btw., it's all archived at
+> https://dev.lsstcorp.org/cgit/contrib/data_products.git/) was unanimous
+> in preferring data to URIs.
+>
+>> Section 2.4.2
+>>
+>> Are all VOEvent Brokers required to implement/deploy the LSST-specific
+>> capabilities (the user defined filters)?  If so, how is that enforced?
+>
+> No. I'm not sure if there's a standardized query/filtering language, so
+> every broker is permitted to come up with it's own. I'll check with VO
+> gurus about that.
+>
+>> If not, why can't a subscriber request all alerts (not that their system
+>> can handle it, but what is in place to prevent it)?
+>
+> Because our system may not be able to handle it -- if we had 100 users
+> all requesting the full data stream, that may quickly grow into
+> Gbits/sec (we need to estimate those numbers). I want to set the
+> expectation low.
+>
+>> Are these LSST
+>> customizations to the standard VOEvent brokers, or LSST-specific
+>> customizations (to be proposed) to the VO standards?  Note: This is a
+>> partial duplicate of an existing bullet in the Open Issues section.
+>>
+>
+> We're embracing the VO standards (VOEvent, and VOEvent Transport
+> Protocol), but I don't think we're extending them (yet?).
+>
+> The filtering language and mechanisms for Event Brokers are unspecified
+> and implementation specific (to my knowledge). If we needed to deploy
+> our own "bare bones" broker, we'd allow filters specified with snippets
+> of code (e.g., Python), or some a declarative SQL-ish language
+> (Jacek/K-T, is there something standard the industry uses for filtering
+> streams of data?).
+>
+> Note that all of this is to satisfy the often overlooked statement in
+> the SRD that states that:
+>
+>    "The users will have an option of a query-like pre-filtering of this
+>     data stream in order to select likely candidates for specific
+>     transient type. Users may also query the LSST science database at
+>     any time for additional information that may be useful, such as the
+>     properties of static objects that are positionally close to the
+>     candidate transients. Several pre-defined filters optimized for
+>     traditionally popular transients, such as supernovae and microlensed
+>     sources, will also be available, as well as the ability to add new
+>     pre-defined filters as the survey continues."
+>
+> Cheers,
+>

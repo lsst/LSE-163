@@ -1,0 +1,60 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Fri, 05 Apr 2013 05:44:12 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r35CiAcr031634
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Fri, 5 Apr 2013 05:44:11 -0700
+Received: from mail-ve0-f172.google.com (mail-ve0-f172.google.com [209.85.128.172])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r35CiAxm032029
+	for <mjuric@majuric.org>; Fri, 5 Apr 2013 08:44:10 -0400
+Received: by mail-ve0-f172.google.com with SMTP id oz10so3526851veb.31
+        for <mjuric@majuric.org>; Fri, 05 Apr 2013 05:44:10 -0700 (PDT)
+X-Received: by 10.52.28.173 with SMTP id c13mr6801871vdh.96.1365165850066;
+        Fri, 05 Apr 2013 05:44:10 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp256786vem;
+        Fri, 5 Apr 2013 05:44:09 -0700 (PDT)
+X-Received: by 10.60.54.6 with SMTP id f6mr1447628oep.136.1365165849008;
+        Fri, 05 Apr 2013 05:44:09 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id l2si11429059oeh.45.2013.04.05.05.44.08
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 05 Apr 2013 05:44:08 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of mfreemon@illinois.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by domain of mfreemon@illinois.edu) smtp.mail=mfreemon@illinois.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r35Ci8w3031867
+	for <mjuric-lsst@majuric.org>; Fri, 5 Apr 2013 08:44:08 -0400
+Received: from amantadine.ncsa.uiuc.edu ([141.142.192.229]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 5 Apr 2013 05:44:07 -0700
+Received: from [192.168.1.106] (c-98-228-51-57.hsd1.il.comcast.net [98.228.51.57])
+	(authenticated bits=0)
+	by amantadine.ncsa.uiuc.edu (8.14.6/8.14.4) with ESMTP id r35Ci5pu023965
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@lsst.org>; Fri, 5 Apr 2013 07:44:06 -0500
+Message-ID: <515EC703.7020408@illinois.edu>
+Date: Fri, 05 Apr 2013 07:43:47 -0500
+From: Mike Freemon <mfreemon@illinois.edu>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+MIME-Version: 1.0
+To: Mario Juric <mjuric@lsst.org>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <515DF1EE.7050705@illinois.edu> <515DFACF.6070201@lsst.org> <515DFE6C.4000103@illinois.edu> <515E0253.90207@lsst.org>
+In-Reply-To: <515E0253.90207@lsst.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Null-Tag: 6015401a72ff22b5dd199c1aed7c0d73
+X-OriginalArrivalTime: 05 Apr 2013 12:44:07.0266 (UTC) FILETIME=[431A1C20:01CE31FB]
+
+Hi Mario,
+
+In adding Ray, I just noticed:  You may have inadvertently omitted 
+Zeljko from this email thread.
+
+- Mike

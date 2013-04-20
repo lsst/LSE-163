@@ -1,0 +1,57 @@
+Message-ID: <515DFE1A.5000802@lsst.org>
+Date: Thu, 04 Apr 2013 15:26:34 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Dick Shaw <shaw@noao.edu>
+CC: Schuyler Van Dyk ? <vandyk@ipac.caltech.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Kian-Tat Lim <ktl@slac.stanford.edu>, 
+ Jacek Becla <becla@slac.stanford.edu>,
+ Mike Freemon <mfreemon@illinois.edu>, 
+ Robert Lupton the Good <rhl@astro.princeton.edu>,
+ Andrew Connolly <ajc@astro.washington.edu>, 
+ Jeffrey Kantor <JKantor@lsst.org>,
+ Andy Becker <acbecker@gmail.com>, Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <web-82750724@email.noao.edu>
+In-Reply-To: <web-82750724@email.noao.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+On 4/4/13 15:22 , Dick Shaw wrote:
+> On Thu, 04 Apr 2013 11:43:31 -0700
+>  Mario Juric <mjuric@lsst.org> wrote:
+> [...]
+>> PPS: The document has *not* been spell-checked. Ignore any such mistakes.
+> 
+> I've only scanned the document, but there is a mis-spelling that really
+> should be pointed out. In 2.4.1, at the top of p. 19 where the
+> information content of the transient alert is being described:
+> 
+> * 30x30 pixel cut-out of the difference image (10 bytes/pixel)
+> 
+> [and similarly for template image]. Surely you mean 10 BITS per pixel, no?
+> 
+
+No, I mean 10 *bytes* per pixel. 4 bytes for the image plane, 4 bytes
+for the variance plane, and 2 bytes for flags. The intent is to allow
+further processing on that stamp, and not just use it for eyeballing.
+
+> Along that line, I wonder how the image would be represented... some
+> graphics format? It would be worth mentioning that. I presume you did
+> not mean FITS since the implied datatype is not available.
+> 
+
+FITS (MEF). Compressed (probably).
+
+Both of these are good points; I'll clarify them.
+
+Thanks!,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

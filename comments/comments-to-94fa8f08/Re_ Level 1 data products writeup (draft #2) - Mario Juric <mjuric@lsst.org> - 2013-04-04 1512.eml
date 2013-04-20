@@ -1,0 +1,107 @@
+Message-ID: <515DFACF.6070201@lsst.org>
+Date: Thu, 04 Apr 2013 15:12:31 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Mike Freemon <mfreemon@illinois.edu>
+CC: =?UTF-8?B?U2NodXlsZXIgVmFuIER5ayDinIY=?= <vandyk@ipac.caltech.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Dick Shaw <shaw@noao.edu>, Kian-Tat Lim <ktl@slac.stanford.edu>, 
+ Jacek Becla <becla@slac.stanford.edu>,
+ Robert Lupton the Good <rhl@astro.princeton.edu>, 
+ Andrew Connolly <ajc@astro.washington.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, Andy Becker <acbecker@gmail.com>, 
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <515DF1EE.7050705@illinois.edu>
+In-Reply-To: <515DF1EE.7050705@illinois.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 4/4/13 14:34 , Mike Freemon wrote:
+> Hi Mario,
+> 
+> Minor comments.
+> 
+
+Hi Mike,
+	Thanks for the comments. Responses below.
+
+> Section 1.1
+> 
+> "Thus the primary results of analysis of difference images -- newly
+> discovered transients -- generally need to be broadcast as transient
+> alerts within 60 seconds of shutter close."
+> 
+> I believe this should be 60 seconds from readout complete, not shutter
+> close.
+> 
+
+You're right, I'll change it.
+
+> Section 2.4.1
+> 
+> Has it been decided that the VOEvents will contain the cutout images
+> (rather than a link to the cutout images)?
+> 
+
+Not formally, but this document is the proposal to make that decision.
+
+The feedback I got for version #1 (btw., it's all archived at
+https://dev.lsstcorp.org/cgit/contrib/data_products.git/) was unanimous
+in preferring data to URIs.
+
+> Section 2.4.2
+> 
+> Are all VOEvent Brokers required to implement/deploy the LSST-specific
+> capabilities (the user defined filters)?  If so, how is that enforced?
+
+No. I'm not sure if there's a standardized query/filtering language, so
+every broker is permitted to come up with it's own. I'll check with VO
+gurus about that.
+
+> If not, why can't a subscriber request all alerts (not that their system
+> can handle it, but what is in place to prevent it)? 
+
+Because our system may not be able to handle it -- if we had 100 users
+all requesting the full data stream, that may quickly grow into
+Gbits/sec (we need to estimate those numbers). I want to set the
+expectation low.
+
+> Are these LSST
+> customizations to the standard VOEvent brokers, or LSST-specific
+> customizations (to be proposed) to the VO standards?  Note: This is a
+> partial duplicate of an existing bullet in the Open Issues section.
+> 
+
+We're embracing the VO standards (VOEvent, and VOEvent Transport
+Protocol), but I don't think we're extending them (yet?).
+
+The filtering language and mechanisms for Event Brokers are unspecified
+and implementation specific (to my knowledge). If we needed to deploy
+our own "bare bones" broker, we'd allow filters specified with snippets
+of code (e.g., Python), or some a declarative SQL-ish language
+(Jacek/K-T, is there something standard the industry uses for filtering
+streams of data?).
+
+Note that all of this is to satisfy the often overlooked statement in
+the SRD that states that:
+
+  "The users will have an option of a query-like pre-filtering of this
+   data stream in order to select likely candidates for specific
+   transient type. Users may also query the LSST science database at
+   any time for additional information that may be useful, such as the
+   properties of static objects that are positionally close to the
+   candidate transients. Several pre-defined filters optimized for
+   traditionally popular transients, such as supernovae and microlensed
+   sources, will also be available, as well as the ability to add new
+   pre-defined filters as the survey continues."
+
+Cheers,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

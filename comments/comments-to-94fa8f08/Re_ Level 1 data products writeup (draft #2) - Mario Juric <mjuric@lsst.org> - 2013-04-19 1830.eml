@@ -1,0 +1,112 @@
+Message-ID: <5171EFD3.50009@lsst.org>
+Date: Fri, 19 Apr 2013 18:30:59 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:17.0) Gecko/20130307 Thunderbird/17.0.4
+MIME-Version: 1.0
+To: Kian-Tat Lim <ktl@slac.stanford.edu>
+CC: =?UTF-8?B?U2NodXlsZXIgVmFuIER5ayDinIY=?= <vandyk@ipac.caltech.edu>, 
+ "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+ Dick Shaw <shaw@noao.edu>, Jacek Becla <becla@slac.stanford.edu>, 
+ Mike Freemon <mfreemon@illinois.edu>,
+ Robert Lupton the Good <rhl@astro.princeton.edu>, 
+ Andrew Connolly <ajc@astro.washington.edu>,
+ Jeffrey Kantor <JKantor@lsst.org>, Andy Becker <acbecker@gmail.com>, 
+ Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+References: <515DC9D3.4090101@lsst.org> <20130405000011.GB17747@sccs-ktlim.slac.stanford.edu>
+In-Reply-To: <20130405000011.GB17747@sccs-ktlim.slac.stanford.edu>
+X-Enigmail-Version: 1.5.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 4/4/13 17:00 , Kian-Tat Lim wrote:
+> Mario,
+> 
+> 	My comments on this draft:
+> 
+> 2.2.1
+> 
+> #4: Need to associate to two SSObject positions -- propagated and template-time
+>  (one will be positive, other will be negative)
+> 
+
+Template-time one will not exist; we'll median the templates so any
+moving objects (and artifacts) do not show up.
+
+> #4 footnote 6: Document assumption that multiple DIASources will not match
+>  to one DIAObject to prevent multiple updates
+> 
+
+Done.
+
+> #7: Are L2DB Object matches to DIASources or DIAObjects?
+>  * If the former, this is a pretty big but narrow match table
+>  * If the latter, this is only for new DIAObjects and is easier/faster
+> 
+
+Only Object->DIAObject. But the match has to be repeated every time a
+new DIASource is matched to a DIAObject, because the DIAObject's
+centroid may change. That is, it's not just for new DIAObjects.
+
+> #8: query time == time when database has been updated with new DIAObject
+>  measurements?
+>  * Can we batch up updates and have them all appear at same time?
+> 
+
+We're allowed to batch per-visit updates. If we think of this as a
+series of sequence points, here's what they would be:
+
+1) take exposure & readout
+2) perform DIA analysis
+3) update the database with results from #2
+4) users see data updated by #3
+5) transmit the alerts
+
+The intent is that someone who receives an alert is guaranteed to find
+it in the database as well.
+
+> #9: Precovery only for new DIAObjects, right?  Or old ones, too?
+>  * Equivalent to doing forced photom of all DIAObjects on each diffim
+>  * Diffims are not cached; would have to cache or recompute on the fly
+
+As we discussed, diffims are mentioned in the current baseline as a L1
+data product, so we may need to accommodate this.
+
+>  * Precovery inserts into DIASource table? or DIAForcedPhotom table?
+>    + If DIASource, which columns are missing, if any?
+> 
+
+
+For now, I'm treating DIAForcedSource the same as a DIASource (but with
+a, say, 'FORCED' flag set). We may split the tables up in the logical
+schema.
+
+Important note: only PSF photometry will be done for forced photometry,
+so the forced table will be narrower.
+
+> 2.2.2
+> 
+> #4: Points to new SSObject record, not DIAObject
+> 
+
+God catch!
+
+> 2.3.6
+> 
+> #2: Retrieving all historic images for a given location on the sky within
+>  24 hours may not be possible (would require average of one tape read per
+>  minute or so) -- or we have to keep all calexps on disk
+> 
+
+We may need to support this for other reasons (eg., access to diffims in
+Level 3). The whole issue of what's on tape (and how) and what's on disk
+will need to be revisited.
+
+Thanks for the comments, once I incorporate all others I'll put out a
+new draft (or a "release candidate"),
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key

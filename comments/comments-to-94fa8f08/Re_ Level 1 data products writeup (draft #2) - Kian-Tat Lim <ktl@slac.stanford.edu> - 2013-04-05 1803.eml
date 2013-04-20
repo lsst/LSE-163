@@ -1,0 +1,74 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Fri, 05 Apr 2013 18:04:16 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r3614E4u029219
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Fri, 5 Apr 2013 18:04:15 -0700
+Received: from mail-vc0-f172.google.com (mail-vc0-f172.google.com [209.85.220.172])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3614E3m007255
+	for <mjuric@majuric.org>; Fri, 5 Apr 2013 21:04:14 -0400
+Received: by mail-vc0-f172.google.com with SMTP id gd11so537849vcb.3
+        for <mjuric@majuric.org>; Fri, 05 Apr 2013 18:04:14 -0700 (PDT)
+X-Received: by 10.220.155.8 with SMTP id q8mr9881598vcw.42.1365210253905;
+        Fri, 05 Apr 2013 18:04:13 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.44.42 with SMTP id b10csp278439vem;
+        Fri, 5 Apr 2013 18:04:13 -0700 (PDT)
+X-Received: by 10.182.235.49 with SMTP id uj17mr9604690obc.18.1365210252369;
+        Fri, 05 Apr 2013 18:04:12 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id nl2si13095904obb.149.2013.04.05.18.04.11
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Fri, 05 Apr 2013 18:04:12 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of ktl@slac.stanford.edu) smtp.mail=ktl@slac.stanford.edu
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r3614Aj6006055
+	for <mjuric-lsst@majuric.org>; Fri, 5 Apr 2013 21:04:11 -0400
+Received: from nospam3.slac.stanford.edu ([134.79.109.10]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 5 Apr 2013 18:04:09 -0700
+Received: from sccs-ktlim.slac.stanford.edu (sccs-ktlim.slac.stanford.edu [134.79.230.45])
+	by nospam3.slac.stanford.edu (8.14.4/8.14.4) with ESMTP id r3613ull010807
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 5 Apr 2013 18:03:56 -0700
+	(envelope-from ktl@slac.stanford.edu)
+Received: by sccs-ktlim.slac.stanford.edu (Postfix, from userid 9394)
+	id 6C4871F82B; Fri,  5 Apr 2013 18:03:56 -0700 (PDT)
+Date: Fri, 5 Apr 2013 18:03:56 -0700
+From: Kian-Tat Lim <ktl@slac.stanford.edu>
+To: Andrew Becker <acbecker@gmail.com>
+Cc: Mario Juric <mjuric@lsst.org>,
+        Schuyler Van Dyk =?utf-8?B?4pyG?= <vandyk@ipac.caltech.edu>,
+        "Gregory P. Dubois-Felsmann" <gpdf@slac.stanford.edu>,
+        Dick Shaw <shaw@noao.edu>, Jacek Becla <becla@slac.stanford.edu>,
+        Mike Freemon <mfreemon@illinois.edu>,
+        Robert Lupton the Good <rhl@astro.princeton.edu>,
+        Andrew Connolly <ajc@astro.washington.edu>,
+        Jeffrey Kantor <JKantor@lsst.org>, Tim Axelrod <taxelrod@gmail.com>
+Subject: Re: Level 1 data products writeup (draft #2)
+Message-ID: <20130406010356.GA873@sccs-ktlim.slac.stanford.edu>
+References: <515DC9D3.4090101@lsst.org>
+ <515F6573.1070408@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <515F6573.1070408@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 06 Apr 2013 01:04:09.0386 (UTC) FILETIME=[A4D3F0A0:01CE3262]
+
+Andy,
+
+>  * page 6: Tracklets comes from the 2 snaps, yes?  Or from the 2
+> sets of snaps per night?  Would be good to clarify.
+
+	2 visits per night, not from the 2 snaps.  (There ought not to
+be enough motion between the snaps to get a tracklet!)
+
+-- 
+Kian-Tat Lim, LSST Data Management, ktl@slac.stanford.edu
