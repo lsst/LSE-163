@@ -47,6 +47,8 @@
 \newcommand{\Sources}{\code{Sources}\xspace}
 \newcommand{\ForcedSource}{\code{ForcedSource}\xspace}
 \newcommand{\ForcedSources}{\code{ForcedSources}\xspace}
+\newcommand{\FaintSource}{\code{FaintSource}\xspace}
+\newcommand{\FaintSources}{\code{FaintSources}\xspace}
 \newcommand{\SSObject}{\code{SSObject}\xspace}
 \newcommand{\SSObjects}{\code{SSObjects}\xspace}
 \newcommand{\VOEvent}{\code{VOEvent}\xspace}
@@ -569,20 +571,72 @@ The co-adds used for \Object detection are designed to be deeper and have better
 
 The deblender will be run simultaneously on the catalog of peaks\footnote{The source detection algorithm we plan to employ returns the regions of connected of pixels above the nominal $S/N$ threshold in the {\em PSF-likelihood image} of the visit. These regions are called {\em footprints}. Each footprint may have one or more {\em peaks}, and it is these peaks that the deblender will use to infer the number and positions of objects blended in each footprint.} detected in the deep co-adds, the \DIAObject catalog from the \DB, and one or more external catalogs.  It will use the knowledge of peak positions, bands, time, time variability (from Level 1), Galactic longitude and latitude, and other available information to produce a master list of deblended \Objects. Metadata on why and how a particular \Object was deblended will be kept.
 
-The properties of \Objects, including their exact positions, motions, parallaxes, and shapes, will be characterized by MultiFit-type algorithms\footnote{``MultiFit algorithms'' are those that simultaneously fit PSF-convolved models to multi-epoch observations of an object. This is in contrast to measurement techniques where multi-epoch images are co-added first, and the properties are measured from the co-added pixels.}. Using the measured position as a strong prior, their properties in individual visits (independent of any others) will be measured, forming the table of \Sources (where $S/N \ge 5$) and \ForcedSources (where $S/N < 5$).
+The properties of \Objects, including their exact positions, motions, parallaxes, and shapes, will be characterized by MultiFit-type algorithms\footnote{``MultiFit algorithms'' are those that simultaneously fit PSF-convolved models to multi-epoch observations of an object. This is in contrast to measurement techniques where multi-epoch images are co-added first, and the properties are measured from the co-added pixels.}. Using the measured position as a strong prior, their properties in individual visits (independent of any others) will be measured, forming the table of \Sources (where $S/N \ge 5$) and \FaintSources (where $S/N < 5$).
 
 \subsection{Level 2 Data Processing}
 
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.5]{Level_2_Processing_Flowchart}
-    \caption{Level 2 Data Processing Overview}    
+    \caption{Level 2 Data Processing Overview\label{fig:level2dp}}    
 \end{figure}
+
+Figure~\ref{fig:level2dp} presents a high-level view of the Level 2 data processing workflow\footnote{Some LSST documents refer to {\em Data Release Processing}, which includes both Level 1 reprocessing (see \S~\ref{sec:l1dbreproc}), and the Level 2 processing described here}. Chronologically, the processing begins with co-add creation (top) and ends with single-epoch object characterization\footnote{We're omitting global astrometric and photometric calibration steps, as well as quality assessment tasks, as they're beyond the current scope of this document.}.
+
+The following is a high-level description of steps which will occur during regular Level 2 data processing:
+\begin{enumerate}
+    \item {\em Coadd creation}: Deep co-adds are created in $ugrizy$ bands, as well as a deeper, multi-color, co-adds\footnote{We'll denote the ``band" of the multi-color co-add as 'M'.}. They will be optimized for a reasonable combination of depth (i.e., no PSF matching) and resolution (i.e., only above-average seeing visits may be used to construct them). Transient sources (including Solar System objects, explosive transients, etc), will be rejected from the co-adds. See \S~\ref{sec:coadds} for details.
+    \item {\em Co-add source detection and characterization}. Sources will be detected on all co-adds generated in the previous step. The source detection algorithm will detect regions of connected of pixels, known as {\em footprints}, above the nominal $S/N$ threshold in the {\em PSF-likelihood image} of the visit. Each footprint may have one or more {\em peaks}, and the collection of these peaks (and their membership in the footprints) are the output of this stage.
+    \item {\em Association and deblending}. The next stage in the pipeline, which we will for simplicity just call {\em the deblender}, synthesizes a list of unique objects given the information about peaks and footprints detected in all co-adds, the list of \DIAObjects detected of difference images, and objects from external catalogs. It will make use of all information available at this stage, including the knowledge of peak positions, bands, time, time variability (from Level 1), Galactic longitude and latitude, etc. The output of this stage is a list of (uncharacterized) \Objects\footnote{Depending on the exact implementation of the deblender, this stage may also attach significant metadata (eg, deblended footprints and pixel-weight maps) to each deblended \Object record.}.
+    \item {\em Multi-epoch object characterization}. A set of predefined model fits and measurements will be performed on each of the \Objects identified in the previous step, taking all available multi-epoch data into account. Model fits will be performed using {\em MultiFit}-type algorithms. Rather than co-adding a set of images and measuring object characteristics off a co-add, MultiFit simultaneously fits PSF-convolved models to multi-epoch observations of an object. This reduces systematic errors, improves the overall $S/N$, and allows one to fit for some time-dependent quantities not easily recoverable from the co-adds (for example, the proper motion). The models we plan to fit will {\em not} allow for flux variability (see the next item).
+    \item {\em Single-epoch object characterization}. Once the position, motion, shape, and average flux have been characterized in the previous step, they will be used as priors and/or initial conditions for source measurements and model fits in individual epochs (on visits). The per-epoch measurements will generally have a lower $S/N$ than the multi-epoch ones, and some will fall below the nominal detection $S/N = 5$ ratio. For these low SNR sources, we will only measure the PSF flux, and not the full suite of measurements presented in \S~\ref{sec:sourceTable}. The results will be stored in \Source and \FaintSource tables.
+\end{enumerate}
 
 \subsection{The Level 2 Database}
 
+\subsubsection{\Object Table}
+\label{sec:objectTable}
+
+\subsubsection{\Source Table}
+\label{sec:sourceTable}
+
+\subsubsection{\FaintSource Table}
+\label{sec:faintSourceTable}
+
 \subsection{Level 2 Image Products}
 
+\subsubsection{Visit Images}
+
+All raw and processed visit images will be available for download as FITS files. They will be downloadable both through the human-friendly Science User Interface, as well as machine-friendly APIs.
+
+Sufficient metadata\footnote{Including the hardware and operating system specifications.} and all necessary image processing software will be provided to enable the user to regenerate bitwise identical processed from raw images.
+
+\subsubsection{Coadded Images}
+\label{sec:coadds}
+
+To support Level 2 processing, LSST will create three classes of co-adds:
+    \begin{itemize}
+        \item One set of full depth\footnote{Including all visits from the start of the survey} {\em deep co-adds}. One deep co-add will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color co-add\footnote{In text to follow, we'll denote the ``band" of the multi-color co-add as 'M'.}. These co-adds will be optimized for a reasonable combination of depth (i.e., no PSF matching) and resolution (i.e., only above-average seeing visits may be used to construct them). Transient sources (including Solar System objects, explosive transients, etc), will be removed. These co-adds will be kept indefinitely and made available to the users.
+        \item Multiple (ugrizyM) sets of yearly co-adds. Each of these sets will be created using only a year's worth of data, but be like the deep co-adds described above in all other respects. These are designed to enable detection of long-term variable objects that would be ``washed out" (or rejected) in full-depth co-adds. {\bf We \em do not plan to keep and make these co-adds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.
+        \item One (ugrizyM) set of PSF-matched co-adds. These will be used to measure colors of objects at ``standard" seeing. {\bf \em We do not plan to keep and make these co-adds available}.. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.
+    \end{itemize}
+
+To build the co-adds, we plan to subdivide the sky into 12 overlapping\footnote{We're planning for 3.5 degrees of overlap, roughly accommodating a full LSST focal plane.} {\em tracts}, spanning approximately $75 \times 72$ degrees. The sky will be stereographically projected onto the tracts\footnote{See \url{https://dev.lsstcorp.org/trac/wiki/DM/SAT/SkyMap} for details.}, and be pixelized into (logical) images 2.0 x 1.9 megapixels in size (3.8 terapixels in all). Physically, these large images will be subdivided into smaller (e.g. $2{\rm k} \times 2{\rm k}$), non-overlapping, {\em patches}, though that will be transparent to the users. The users will be able to request arbitrarily chosen regions\footnote{Up to some reasonable upper size limit; i.e., we don't plan to expect to support creation of 2.8 Tpix FITS files.} in each tract, and receive them back as a FITS file.
+
+\vspace{1ex}
+
+We re-iterate that {\bf not all co-adds will be kept and served to the public}\footnote{The co-adds are a major cost driver for storage. LSST Data Management system is currently sized to keep and serve seven co-adds.}, though sufficient metadata will be provided to users to recreate them on their own. Some co-adds may be entirely ``virtual": for example, the PSF-matched co-adds could be implemented as ad-hoc convolutions of postage stamps when the colors are measured.
+
+We {\em \bf will} retain smaller sections of all generated co-adds, to support quality assessment and targeted science. For example, the retained sections may be positioned to cover areas of the sky of special interest such as overlaps with other surveys, nearby galaxies, large clusters, etc.
+
+\subsection{Data Availability}
+
+What's kept and for how long.
+
 \subsection{Open Issues}
+
+\begin{itemize}
+    \item {\em Which co-adds to we keep and serve to the public?} Probably non-PSF matched co-adds with CoaddPSF (aka. StackFit PSF). PSF-matched co-adds are another option and may be easier for the community to work with.
+\end{itemize}
 
 \end{document}
