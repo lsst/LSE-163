@@ -592,10 +592,155 @@ The following is a high-level description of steps which will occur during regul
     \item {\em Single-epoch object characterization}. Once the position, motion, shape, and average flux have been characterized in the previous step, they will be used as priors and/or initial conditions for source measurements and model fits in individual epochs (on visits). The per-epoch measurements will generally have a lower $S/N$ than the multi-epoch ones, and some will fall below the nominal detection $S/N = 5$ ratio. For these low SNR sources, we will only measure the PSF flux, and not the full suite of measurements presented in \S~\ref{sec:sourceTable}. The results will be stored in \Source and \FaintSource tables.
 \end{enumerate}
 
-\subsection{The Level 2 Database}
+\subsubsection{Object Characterization Measures}
+
+Properties of detected objects will be measured as a part of the object characterization step described in the previous section. This section discusses at a high level which properties will be measured and how. For a more detailed list and description of quantities being fit/measured, see the table in \S~\ref{sec:objectTable}.
+
+All measurements discussed in this section deal with properties of {\em objects}, and will be performed on multi-epoch co-adds or by simultaneously fitting to all epochs. Measurements of sources in individual visits, independent of all others, are described in \S~\ref{sec:sourceMeas}.
+
+\vspace{1em}
+
+To characterize objects, we plan to measure the following:
+%
+\begin{itemize}
+    \item {\em Point source model fit}. The object is modeled as a point source with finite proper motion and parallax, and constant flux (in each band). There are a total of 11 free parameters, simultaneously constrained using information from all available epochs and bands. This model is a good description for stars and other unresolved sources.
+    \item {\em Bulge-disk model fit}. The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies. The object is assumed not to move. The components share the same ellipticity and center. One effective radius is fit for each component (i.e., the radius is not a function of band). The central surface brightness is allowed to vary from band to band. There are a total of 18 free parameters, which will be simultaneously constrained using information from all available epochs and bands. Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted.
+
+   In addition to the maximum likelihood values of fitted parameters and their covariances, a number ($\sim 200$) of independent samples from the likelihood function will be provided. These will enable use-cases sensitive to departures of the likelihood function from Gaussian approximation.
+
+    \item {\em Centroids}. Centroids will be computed independently in each band using an algorithm similar to that employed by SDSS. Information from all epochs will be used to perform the estimation. These centroids will be used for adaptive moment, Petrosian, Kron and aperture measurements.
+
+    \item {\em Adaptive moments}. Adaptive moments will be computed using the information from all epochs, independently for each band. The moments of the PSF realized at the position of the object will be provided as well.
+    
+    \item {\em Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured using elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and convolved to a canonical circular PSF ({\em ``PSF-homogenized"\footnote{This is an attempt to derive a definition of elliptical apertures that does not depend on seeing. For example, for a large galaxy, the correction to standard seeing will introduce little change to measured ellipticity. Apertures for small galaxies will tend to be circular (due to smearing by the PSF). But in the intermediate regime, this method results in derived apertures that are relatively seeing independent. Note that this is only the case for {\em apertures}; the measured flux will still be seeing dependent and it is up to the user to take this into account.}}). The radii will be computed independently for each band. Fluxes will be computed in each band, by integrating the light within some multiple of {\em the radius measured in the canonical band}\footnote{The aperture in all bands will be set by the profile of the galaxy in the canonical band alone. This procedure ensures that the color measured by comparing the flux in different bands is measured through a consistent aperture. See \url{http://www.sdss.org/dr7/algorithms/photometry.html} for details.} (most likely the $i$ band). Radii enclosing 50\% and 100\% of light will be provided.
+    \item {\em Aperture fluxes}. Aperture fluxes will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures.
+
+\end{itemize}
+
+\subsubsection{Source Characterization Measures}
+\label{sec:sourceMeas}
+
+\subsection{The Level 2 Catalogs}
 
 \subsubsection{\Object Table}
 \label{sec:objectTable}
+
+\begin{center}
+\begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
+\caption[\DIASource Table]{Level 2 Catalog \Object Table
+} \\
+
+\hline \multicolumn{1}{c}{\bf Name} & \multicolumn{1}{c}{\bf Type} & \multicolumn{1}{c}{\bf Unit} & \multicolumn{1}{c}{\bf Description} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{r}{{\em Continued on next page}} \\
+\endfoot
+
+\hline\hline
+\endlastfoot
+
+objectId & uint128 & ~ & Unique object identifier \\ 
+
+psRadec & double[2] & degrees & Point source model: $(\alpha, \delta)$ position of the object at time {\tt radecTai}. \\
+
+psRadecTai & double & time & Point source model: Time at which the object was at position {\tt radec}. \\
+
+psPm & float[2] & mas/yr & Point source model: Proper motion vector.\\ 
+
+psParallax & float & mas & Point source model: Parallax. \\ 
+
+psFlux & float[ugrizy] & nmgy & Point source model fluxes\footnote{Point source model assumes that fluxes are constant in each band. If the object is variable, {\tt psFlux} will effectively be some estimate of the average flux.}.\\ 
+
+psCov & float[66] & various & Point-source model covariance matrix\footnote{Not all elements of the covariance matrix will be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim 1$\% ).}. \\ 
+
+psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
+
+
+bdRadec & double[2] & degrees & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk", we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object at time {\tt radecTai}, in each band. \\
+
+bdEllip & float[2] & ~ & B+D model: Ellipticity $(e_1, e_2)$ of the object. \\
+
+bdI0B & float[ugrizy] & nmgy/as$^2$ & B+D model: Central surface brightness of the de Vaucouleurs component. \\
+
+bdI0D & float[ugrizy] & nmgy/as$^2$ & B+D model: Central surface brightness of the exponential component. \\
+
+bdReB & float & arcsec & B+D model: Effective radius of the de Vaucouleurs profile component. \\
+
+bdReD & float & arcsec & B+D model: Effective radius of the exponential profile component. \\
+
+bdCov & float[171] & various & B+D model covariance matrix\footnote{See {\tt psCov} for notes on precision of variances/covariances.}. \\ 
+
+bdLnL & float & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\ 
+
+bdSamples & float[18][200] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
+
+
+radec & double[6][2] & arcsec & Position of the object (centroid), computed independently in each band. The centroid will be computed using an algorithm similar to that employed by SDSS.\\
+
+radecSigma & double[6][2] & arcsec & Uncertainty of {\tt radec}. \\
+
+
+E1 & float[ugrizy] & ~ & Adaptive $e_1$ shape measure. See Bernstein \& Jarvis (2002) for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+
+E2 & float[ugrizy] & ~ & Adaptive $e_2$ shape measure. \\
+
+E1E2cov & float[3] & ~ & {\tt E1}, {\tt E2} covariance matrix. \\
+
+mSum & float[6] & ~ & Sum of the second adaptive moments. \\
+
+mSumSigma & float[6] & ~ & Uncertainty in {\tt mSum} \\
+
+m4 & float[6] & ~ & Fourth order adaptive moment. \\
+
+
+petroRad & float[6] & arcsec & Petrosian radius computed using. \\
+
+petroRadSigma & float[6] & arcsec & Uncertainty of {\tt petroRad} \\
+
+petroFlux & float[6] & nmgy & Petrosian flux within a defined multiple of {\tt petroRad} \\
+
+petroFluxSigma & float[6] & nmgy & Uncertainty in {\tt petroFlux} \\
+
+petroRad50 & float[6] & arcsec & Radius containing 50\% of Petrosian flux. \\
+
+petroRad50Sigma & float[6] & arcsec & Uncertainty of {\tt petroRad50}. \\
+
+petroRad90 & float[6] & arcsec & Radius containing 90\% of Petrosian flux. \\
+
+petroRad90Sigma & float[6] & arcsec & Uncertainty of {\tt petroRad90}. \\
+
+
+kronRad & float[6] & arcsec & Kron radius \\
+
+kronRadSigma & float[6] & arcsec & Uncertainty of {\tt kronRad} \\
+
+kronFlux & float[6] & nmgy & Kron flux within a defined multiple of {\tt kronRad} \\
+
+kronFluxSigma & float[6] & nmgy & Uncertainty in {\tt kronFlux} \\
+
+kronRad50 & float[6] & arcsec & Radius containing 50\% of Kron flux. \\
+
+kronRad50Sigma & float[6] & arcsec & Uncertainty of {\tt kronRad50}. \\
+
+kronRad90 & float[6] & arcsec & Radius containing 90\% of Kron flux. \\
+
+kronRad90Sigma & float[6] & arcsec & Uncertainty of {\tt kronRad90}. \\
+
+
+apN & int8 & ~ & Number of radial apertures. \\
+
+apMeanFlux & float[6][{\tt apN}] & nmgy & Mean flux within an aperture. \\
+
+apMeanFluxSigma & float[6][{\tt apN}] & nmgy & Standard deviation of {\tt apMeanFlux}. \\
+
+
+flags & bit[128] & bit & Flags \\ \hline
+\end{longtable}
+\end{center}
+
+
+
+
 
 \subsubsection{\Source Table}
 \label{sec:sourceTable}
