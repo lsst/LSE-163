@@ -313,13 +313,17 @@ fpFluxErr & float[ugrizy] & nmgy & Standard error of {\tt fpFlux} \\
 
 fpFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of {\tt fpFlux}. \\ 
 
-lsPeriod  & float[ugrizy] & day & Period (the coordinate of the highest peak in Lomb-Scargle periodogram) \\
+% lsPeriod  & float[ugrizy] & day & Period (the coordinate of the highest peak in Lomb-Scargle periodogram) \\
 
-lsSigma  & float[ugrizy] & day & Width of the peak at \texttt{lsPeriod}. \\
+% lsSigma  & float[ugrizy] & day & Width of the peak at \texttt{lsPeriod}. \\
 
-lsPower   & float[ugrizy] & ~ & Power associated with \texttt{lsPeriod} peak. \\
+% lsPower   & float[ugrizy] & ~ & Power associated with \texttt{lsPeriod} peak. \\
 
-lcChar   & float[$6\times{}M$] & ~ & Light-curve characterization summary statistics (eg., 2nd moments, etc.). The exact contents, and an appropriate value of M, are to be determined in consultation with time-domain experts. \\
+% lcChar   & float[$6\times{}M$] & ~ & Light-curve characterization summary statistics (eg., 2nd moments, etc.). The exact contents, and an appropriate value of M, are to be determined in consultation with time-domain experts. \\
+
+lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from light-curves using generalized Lomb-Scargle periodogram (Table~4, Richards et al. 2011)\footnote{The exact features in use when LSST begins operations are likely to be different compared to the baseline described here. This is to be expected given the rapid pace of research in time domain astronomy. However, the {\em number} of computed features is unlikely to grow beyond the present estimate.}\\
+
+lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from light-curves (Table~5, Richards et al. 2011) \\
 
 nearbyObj   & uint64[3] & ~ & Closest \Objects in \DR. \\
 
@@ -629,6 +633,8 @@ To enable science cases depending on observations of non-variable objects in the
     \item {\em Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured in standard seeing using self-similar elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and {\em homogenized}, convolved to a canonical circular PSF\footnote{This is an attempt to derive a definition of elliptical apertures that does not depend on seeing. For example, for a large galaxy, the correction to standard seeing will introduce little change to measured ellipticity. Corrected apertures for small galaxies will tend to be circular (due to smearing by the PSF). In the intermediate regime, this method results in derived apertures that are relatively seeing-independent. Note that this is only the case for {\em apertures}; the measured flux will still be seeing dependent and it is up to the user to take this into account.}. The radii will be computed independently for each band. Fluxes will be computed in each band, by integrating the light within some multiple of {\em the radius measured in the canonical band}\footnote{The shape of the aperture in all bands will be set by the profile of the galaxy in the canonical band alone. This procedure ensures that the color measured by comparing the flux in different bands is measured through a consistent aperture. See \url{http://www.sdss.org/dr7/algorithms/photometry.html} for details.} (most likely the $i$ band). Radii enclosing 50\% and 90\% of light will be provided.
     \item {\em Aperture surface brightness}. Aperture surface brightness will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures, in standard seeing.
 
+    \item {\em Variability characterization}. Two groups of parameters will be provided, designed to characterize periodic and aperiodic variability features (Richards et al. 2011). We caution that the exact features in use when LSST begins operations are likely to be different compared to the baseline described here; this is to be expected given the rapid pace of research in time domain astronomy. However, their {\em number} is unlikely to grow beyond the present estimate.
+
 \end{itemize}
 
 \subsubsection{Source Characterization}
@@ -794,6 +800,12 @@ apN & int8 & ~ & Number of elliptical annuli (see below). \\
 apMeanSb & float[6][{\tt apN}] & nmgy/asec$^2$ & Mean surface brightness within an annulus\footnote{A database function will be provided to compute the area of each annulus, to enable the computation of aperture flux.}. \\
 
 apMeanSbSigma & float[6][{\tt apN}] & nmgy/asec$^2$ & Standard deviation of {\tt apMeanSb}. \\
+
+
+lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from light-curves using generalized Lomb-Scargle periodogram (Table~4, Richards et al. 2011).\\
+
+lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from light-curves (Table~5, Richards et al. 2011). \\
+
 
 flags & bit[128] & bit & Flags \\ \hline
 \end{longtable}
@@ -1078,7 +1090,6 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 
 \begin{itemize}
 
-    \item Variability characterization
     \item Solar System objects in L2
     \item Solar system object merging with external catalogs
     \item Mechanisms for updating the document
@@ -1089,6 +1100,7 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
     \item Understand how to record photometric calibration
     \item Add required accuracy to all tables
 
+%    \item Variability characterization
 %    \item Crowded field photometry
 %    \item Level 3
 %    \item Data availability policies
