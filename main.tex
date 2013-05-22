@@ -617,18 +617,18 @@ To enable science cases depending on observations of non-variable objects in the
 %
 \begin{itemize}
     \item {\em Point source model fit}. The observed object is modeled as a point source with finite proper motion and parallax and constant flux (a-priori different in each band). This model is a good description for stars and other unresolved sources. Its 11 parameters will be simultaneously constrained using information from all available observations in all bands\footnote{The fitting procedure will account for differential chromatic refraction.}.
-    \item {\em Bulge-disk model fit}. The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies\footnote{We may reconsider this choice if a better suited parametrization is discovered in the course of LSST Construction.}. The object is assumed not to move\footnote{I.e., have zero proper motion.}. The components share the same ellipticity and center. One effective radius is fit for each component (that is, the radius is {\em not} a function of band). The central surface brightness is allowed to vary from band to band. There are a total of 18 free parameters, which will be simultaneously constrained using information from all available epochs and bands. Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted to limit the range of its sampling.
+    \item {\em Bulge-disk model fit}. The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies\footnote{We may reconsider this choice if a better suited parametrization is discovered while LSST is in Construction.}. The object is assumed not to move\footnote{I.e., have zero proper motion.}. The components share the same ellipticity and center. One effective radius is fit for each component (that is, the radius is {\em not} a function of band). The central surface brightness is allowed to vary from band to band. There are a total of 18 free parameters, which will be simultaneously constrained using information from all available epochs and bands. Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted to limit the range of its sampling.
 
    In addition to the maximum likelihood values of fitted parameters and their covariances, a number (currently planned to be $\sim 200$, on average) of independent samples from the likelihood function will be provided. These will enable use-cases sensitive to departures from the Gaussian approximation.
+
+    \item {\em Standard colors}. Colors of the object in ``standard seeing" (for example, the third quartile expected survey seeing in the $i$ band, $\sim 0.8"$) will be measured. These colors are guaranteed to be seeing-insensitive,  suitable for estimation of photometric redshifts\footnote{The problem of optimal determination of photometric redshift is the subject of intense research in the community. The approach we're taking here is conservative, following contemporary practices. As new insights develop, we will revisit the issue.}.
 
     \item {\em Centroids}. Centroids will be computed independently in each band using an algorithm similar to that employed by SDSS. Information from all epochs will be used to derive the estimate. These centroids will be used for adaptive moment, Petrosian, Kron, standard color, and aperture measurements.
 
     \item {\em Adaptive moments}. Adaptive moments will be computed using information from all epochs, independently for each band. The moments of the PSF realized at the position of the object will be provided as well.
 
-    \item {\em Standard colors}. Colors of the object in ``standard seeing\footnote{Likely the median expected survey seeing in the $i$ band.}" will be measured. These colors are guaranteed to be seeing-insensitive,  suitable for estimation of photometric redshifts\footnote{The problem of optimal determination of photometric redshift is the subject of intense research in the community. The approach we're taking here is conservative, following contemporary practices. As new insights develop, we will revisit the issue.}.
-
-    \item {\em Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured using self-similar elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and convolved to a canonical circular PSF ({\em ``PSF-homogenized"\footnote{This is an attempt to derive a definition of elliptical apertures that does not depend on seeing. For example, for a large galaxy, the correction to standard seeing will introduce little change to measured ellipticity. Apertures for small galaxies will tend to be circular (due to smearing by the PSF). But in the intermediate regime, this method results in derived apertures that are relatively seeing-independent. Note that this is only the case for {\em apertures}; the measured flux will still be seeing dependent and it is up to the user to take this into account.}}). The radii will be computed independently for each band. Fluxes will be computed in each band, by integrating the light within some multiple of {\em the radius measured in the canonical band}\footnote{The shape of the aperture in all bands will be set by the profile of the galaxy in the canonical band alone. This procedure ensures that the color measured by comparing the flux in different bands is measured through a consistent aperture. See \url{http://www.sdss.org/dr7/algorithms/photometry.html} for details.} (most likely the $i$ band). Radii enclosing 50\% and 90\% of light will be provided.
-    \item {\em Aperture fluxes}. Aperture fluxes will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures.
+    \item {\em Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured in standard seeing using self-similar elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and {\em homogenized}, convolved to a canonical circular PSF\footnote{This is an attempt to derive a definition of elliptical apertures that does not depend on seeing. For example, for a large galaxy, the correction to standard seeing will introduce little change to measured ellipticity. Corrected apertures for small galaxies will tend to be circular (due to smearing by the PSF). In the intermediate regime, this method results in derived apertures that are relatively seeing-independent. Note that this is only the case for {\em apertures}; the measured flux will still be seeing dependent and it is up to the user to take this into account.}. The radii will be computed independently for each band. Fluxes will be computed in each band, by integrating the light within some multiple of {\em the radius measured in the canonical band}\footnote{The shape of the aperture in all bands will be set by the profile of the galaxy in the canonical band alone. This procedure ensures that the color measured by comparing the flux in different bands is measured through a consistent aperture. See \url{http://www.sdss.org/dr7/algorithms/photometry.html} for details.} (most likely the $i$ band). Radii enclosing 50\% and 90\% of light will be provided.
+    \item {\em Aperture surface brightness}. Aperture surface brightness will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures, in standard seeing.
 
 \end{itemize}
 
@@ -649,7 +649,7 @@ The following source properties are planned to be measured:
     
 %    \item {\em Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured using elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and convolved to a canonical circular PSF. Fluxes will be computed in each band, by integrating the light within some multiple of {\em the radius measured in the same band}\footnote{Note that this is different}. Radii enclosing 50\% and 100\% of light will be provided.
 
-    \item {\em Aperture fluxes}. Aperture fluxes will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures.
+    \item {\em Aperture surface brightness}. Aperture surface brightness will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures.
 
 %    \item {\em Bulge-disk model fit}. The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies. The object is assumed not to move. The components share the same ellipticity and center. There are a total of 8 free parameters ($\alpha$, $\delta$, $e_1$, $e_2$, $I_{0B}$, $I_{0D}$, $R_{eB}$, $R_{eD}$). Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted. Only maximum likelihood values and the covariance matrix will be stored.
 
@@ -726,9 +726,9 @@ bdLnL & float & ~ & Natural $log$ likelihood of the observed data given the bulg
 
 bdSamples & float[18][200] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
 
-extColor & float[5] & mag & Color of the object measured in ``standard seeing". While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-Z determinations.\\
+stdColor & float[5] & mag & Color of the object measured in ``standard seeing". While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-Z determinations.\\
 
-extColorSigma & float[5] & mag & Uncertainty of {\tt extColor}. \\
+stdColorSigma & float[5] & mag & Uncertainty of {\tt extColor}. \\
 
 radec & double[6][2] & arcsec & Position of the object (centroid), computed independently in each band. The centroid will be computed using an algorithm similar to that employed by SDSS.\\
 
@@ -752,6 +752,8 @@ petroRad & float[ugrizy] & arcsec & Petrosian radius (computed using elliptical 
 
 petroRadSigma & float[ugrizy] & arcsec & Uncertainty of {\tt petroRad} \\
 
+petroBand & int8 & ~ & The band of the canonical {\tt petroRad} \\
+
 petroFlux & float[ugrizy] & nmgy & Petrosian flux within a defined multiple of the canonical {\tt petroRad} \\
 
 petroFluxSigma & float[ugrizy] & nmgy & Uncertainty in {\tt petroFlux} \\
@@ -768,6 +770,8 @@ petroRad90Sigma & float[ugrizy] & arcsec & Uncertainty of {\tt petroRad90}. \\
 kronRad & float[ugrizy] & arcsec & Kron radius (computed using elliptical apertures defined by the adaptive moments) \\
 
 kronRadSigma & float[ugrizy] & arcsec & Uncertainty of {\tt kronRad} \\
+
+kronBand & int8 & ~ & The band of the canonical {\tt kronRad} \\
 
 kronFlux & float[ugrizy] & nmgy & Kron flux within a defined multiple of the canonical {\tt kronRad} \\
 
@@ -896,7 +900,7 @@ objectId & uint128 & ~ & Unique object identifier \\
 
 ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\ 
 
-psXY & float[2] & ~ & Location of the measurement, in pixel coordinates\footnote{The precision of the position has to be no greater than 1/100$^{\rm th}$ of a pixel. For a 4k$\times$4k CCD, {\tt psXY} should require no more than 38 bits of storage (or 5 bytes, rounded up)}. \\
+% psXY & float[2] & ~ & Location of the measurement, in pixel coordinates\footnote{The precision of the position has to be no greater than 1/100$^{\rm th}$ of a pixel. For a 4k$\times$4k CCD, {\tt psXY} should require no more than 38 bits of storage (or 5 bytes, rounded up)}. \\
 
 psFlux & float & nmgy & Point source model flux.\\ 
 
@@ -959,5 +963,29 @@ What's kept and for how long (the data releases on disk vs. tape).
 \section{Deep Drilling Data Products}
 
 Say something about the deep drilling data products. These will involve special nightly stacks, special image differencing procedures, and separate databases. Roughly, since the details of all DDs won't be known for a while (and will change), this section will lay out the constraints on what can and cannot be done for DD processing.
+
+\section{TBD}
+
+\begin{itemize}
+    \item Add canonical band columns
+    \item ID sizes
+
+    \item Level 3
+    \item Data availability policies
+    \item Crowded field photometry
+    \item Variability characterization
+    \item Solar System objects in L2
+    \item Solar system object merging with external catalogs
+    \item Mechanisms for updating the document
+
+    \item Selection functions
+    \item Deblending, children, etc
+    \item Implement K-T's comments
+    \item Understand how to record photometric calibration
+    \item Add required accuracy to all tables
+
+    \item Colors
+
+\end{itemize}
 
 \end{document}
