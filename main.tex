@@ -659,13 +659,17 @@ Note that we do {\em not} plan to fit extended source Bulge+Disk models to indiv
 \subsubsection{Forced Photometry}
 \label{sec:forcedPhotL2}
 
-% The majority of \Objects in the \Object table, derived by associating the sources in individual epochs and deep coadds, will be below the single-visit signal-to-noise detection threshold.
-
-% Object characterization with $MultiFit$ assumes that 
-
 {\em Forced Photometry} is the measurement of flux in individual visits, given a fixed position, shape, and the deblending parameters of an object. It enables the study of time variability of an object's flux, irrespective of whether the flux in any given individual visit is above or below the detection threshold.
 
 Forced photometry will be performed on all visits, for all \Objects. The measured fluxes will be stored in the \ForcedSources table. Due to space constraints, we only plan to measure the PSF flux.
+
+\subsubsection{Crowded Field Photometry}
+
+A fraction of LSST imaging will cover areas of high object (mostly stellar) density. These include the Galactic plane, the Large and Small Magellanic Clouds, and a number of globular clusters (among others).
+
+LSST does {\em not} plan to build or deploy algorithms specifically optimized for crowded field photometry. {\em \bf Processing these areas with advanced crowded field photometry codes is left to the users as a Level 3 task.}
+
+Nevertheless, high-density areas {\em will} be processed on a {\em best effort} basis. LSST image processing and measurement software, primarily designed to operate in non-crowded regions, will be minimally extended to perform in areas of crowding. The current LSST applications development plan envisions making the deblender aware of Galactic longitude and latitude, and permitting it to use that information as a prior when deciding how to deblent objects\footnote{If the deblender knows that virtually all objects are stars (point sources), they can be deblended in a fashon that broadly mimics crowded field photometry codes (eg. {\tt DAOPHOT}).}. While not guaranteed to reach the accuracy or completeness of purpose-built crowded field photometry codes, we expect this approach will yield reasonable results even in areas of high crowding.
 
 \subsection{The Level 2 Catalogs}
 
@@ -1074,8 +1078,6 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 
 \begin{itemize}
 
-    \item Level 3
-    \item Crowded field photometry
     \item Variability characterization
     \item Solar System objects in L2
     \item Solar system object merging with external catalogs
@@ -1087,10 +1089,12 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
     \item Understand how to record photometric calibration
     \item Add required accuracy to all tables
 
-    \item Data availability policies
-    \item Colors
-    \item Add canonical band columns
-    \item ID sizes
+%    \item Crowded field photometry
+%    \item Level 3
+%    \item Data availability policies
+%    \item Colors
+%    \item Add canonical band columns
+%    \item ID sizes
 
 \end{itemize}
 
