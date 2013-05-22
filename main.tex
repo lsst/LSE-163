@@ -601,7 +601,7 @@ The following is a high-level description of steps which will occur during regul
     \item {\em Relative calibration}: The survey is internally calibrated, both photometrically and astrometrically. Relative zero point and astrometric corrections are computed for every visit. Sufficient data is kept to reconstruct the normalized system response function $\phi_b(\lambda)$ (see Eq.~5, SRD) at every position in the focal plane at the time of each visit as required by \S~3.3.4 of the SRD.
     \item {\em Coadd creation}: Deep per-band coadds are created in $ugrizy$ bands, as well as deeper, multi-color, coadds\footnote{We'll denote the ``band" of the multi-color coadd as 'M'.}. They will be optimized for a reasonable combination of depth (i.e., no PSF matching) and resolution (i.e., only above-average seeing visits may be used to construct them). Transient sources (including Solar System objects, explosive transients, etc), will be rejected from the coadds. See \S~\ref{sec:coadds} for details.
     \item {\em Coadd source detection and characterization}. Sources will be detected on all coadds generated in the previous step. The source detection algorithm will detect regions of connected pixels, known as {\em footprints}, above the nominal $S/N$ threshold in the {\em PSF-likelihood image} of the visit. Each footprint may have one or more {\em peaks}, and the collection of these peaks (and their membership in the footprints) are the output of this stage. This information will be stored in a catalog of \CoaddSources\footnote{The exact contents of this catalog will be implementation specific and will not be described here.}.
-    \item {\em Association and deblending}. The next stage in the pipeline, which we will for simplicity just call {\em the deblender}, synthesizes a list of unique objects. In doing so it will consider the catalog of \Sources, the the catalog of \CoaddSources, \DIAObjects and \DIASources detected on difference images, and objects from external catalogs.
+    \item {\em Association and deblending}. The next stage in the pipeline, which we will for simplicity just call {\em the deblender}, synthesizes a list of unique objects. In doing so it will consider the catalogs of \Sources and \CoaddSources, catalogs of \DIASources, \DIAObjects and \SSObjects detected on difference images, and objects from external catalogs.
     
     The deblender will make use of all information available at this stage, including the knowledge of peak positions, bands, time, time variability (from Level 1), Galactic longitude and latitude, etc. The output of this stage is a list of (uncharacterized) \Objects\footnote{Depending on the exact implementation of the deblender, this stage may also attach significant metadata (eg, deblended footprints and pixel-weight maps) to each deblended \Object record.}.
     \item {\em Multi-epoch object characterization}. A set of predefined model fits and measurements will be performed on each of the \Objects identified in the previous step, taking all available multi-epoch data into account. Model fits will be performed using {\em MultiFit}-type algorithms. Rather than coadding a set of images and measuring object characteristics on the coadd, MultiFit simultaneously fits PSF-convolved models to the objects multiple observations. This reduces systematic errors, improves the overall $S/N$, and allows for fitting of time-dependent quantities degenerate with shape on the coadds (for example, the proper motion). The models we plan to fit will {\em not} allow for flux variability (see the next item).
@@ -735,7 +735,7 @@ bdCov & float[171] & various & B+D model covariance matrix\footnote{See {\tt psC
 
 bdLnL & float & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\ 
 
-bdSamples & float[18][200] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
+bdSamples & float[19][200] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
 
 stdColor & float[5] & mag & Color of the object measured in ``standard seeing". While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-Z determinations.\\
 
@@ -971,7 +971,13 @@ We {\em \bf will} retain smaller sections of all generated coadds, to support qu
 
 \subsection{Data Release Availability and Retention Policies}
 
-Products for Data Release 1, the most recent data release, and the penultimate data release will be kept on fast storage, with catalogs loaded into the database. Other releases will be archived to mass storage (tape). The users {\bf \em will not be able to perform database queries against archived releases}. They will be made available as bulk downloads in some common format (for example, FITS binary tables).
+Over 10 years of operations, LSST will produce eleven data releases: two for the first year of data, and one every subsequent year. Each data release will include reprocessing of all data from the start of the survey, up to the cutoff date for that release.
+
+The contents of data releases are expected to range from XX PB (DR1) to $\sim 70$ PB for DR11 (this includes the raw images, retained coadds, and catalogs). Given that scale, it is not feasible to keep all data releases loaded and accessible at all times.
+
+Instead, the contents of the most recent data release, and the penultimate data release will be kept on fast storage and with catalogs loaded into the database. Statistics collected by prior surveys (eg., SDSS) show that users nearly always prefer accessing the most recent data release, but sometimes may use the penultimate one (this is especially true just after the publication of a new data release). Older releases are used rarely.
+
+Older releases will be archived to mass storage (tape). The users {\bf \em will not be able to perform database queries against archived releases}. They will be made available as bulk downloads in some common format (for example, FITS binary tables).
 
 All raw data used to generate any public data product (raw exposures, calibration frames, telemetry, configuration metadata, etc.) will be kept and made available for download.
 
@@ -981,13 +987,10 @@ All raw data used to generate any public data product (raw exposures, calibratio
     \item {\em Which coadds to we keep and serve to the public?} Probably non-PSF matched coadds with CoaddPSF (aka. StackFit PSF). PSF-matched coadds are another option and may be easier for the users to work with.
 \end{itemize}
 
-\section{Deep Drilling Data Products}
-
-Say something about the deep drilling data products. These will involve special nightly stacks, special image differencing procedures, and separate databases. Roughly, since the details of all DDs won't be known for a while (and will change), this section will lay out the constraints on what can and cannot be done for DD processing.
-
 \section{Level 3 Data Products and Capabilities}
 
 {\em Level 3 capabilities} are envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for Level 3 is established in \S~3.5 of the LSST SRD.
+\\
 
 Level 3 capabilities include three separate deliverables:
 %
@@ -997,7 +1000,7 @@ Level 3 capabilities include three separate deliverables:
     \item Level 3 programming environment / framework
 \end{enumerate}
 %
-Many scientists' work may involve using two or all three of them in concert, but they can each be used independently.
+Many scientists' work may involve using two or all three of them in concert, but they can each be used independently. We describe each one of them in the subsections to follow.
 
 \subsection{Level 3 Data Products and Associated Storage Resources}
 
@@ -1088,22 +1091,42 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 \item Taking on a new Level 2 DP means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new L2DP through DR11.
 \end{itemize}
 
+\section{Data Products for Special Programs}
+
+LSST Survey Specifications (LSST SRD, \S~3.4) specify that 90\% of LSST observing time will be spend executing the so-called ``universal cadence". These observations will result in Level 1 and 2 data products described so far in this document.
+
+The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special" regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
+
+The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the {\em constraints} on these data products, given the adopted Level 1/2/3 architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or comes with additional, external, funding, capabilities, and/or expertize.}. These constraints allow us to size and construct the data management system, with no need to knowing the exact definition of these programs far in advance.
+\\
+
+Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence. The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Level 1 data products.
+
+For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main" (Level 1 and 2) database. The system will, however, allow for simple federation with Level 1/2/3 data products (i.e., cross-queries and joins).
+
+As a concrete example, a data product complement for a ``deep drilling" field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds" (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours, and iv) special deep templates, built using the best recently acquired seeing data, produced on a forthnightly cadence.
+\\
+
+Note that the data rights and access rules apply just as they would for for Level 1/2/3. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
 
 
 \section{TBD}
 
 \begin{itemize}
 
+    \item Dipole model in L1
     \item Solar System objects in L2
     \item Solar system object merging with external catalogs
     \item Mechanisms for updating the document
 
+    \item References
+
     \item Selection functions
-    \item Deblending, children, etc
-    \item Implement K-T's comments
     \item Understand how to record photometric calibration
     \item Add required accuracy to all tables
 
+%    \item Deblending, children, etc
+%    \item Implement K-T's comments
 %    \item Variability characterization
 %    \item Crowded field photometry
 %    \item Level 3
