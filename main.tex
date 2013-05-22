@@ -195,11 +195,11 @@ Unless noted otherwise, all \DIASource quantities (fluxes, centroids, etc.) are 
 \hline\hline
 \endlastfoot
 
-diaSourceId & uint128 & ~ & Unique source identifier \\ 
+diaSourceId & uint64 & ~ & Unique source identifier \\ 
 
 ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\ 
 
-diaObjectId & uint128 & ~ & ID of the \DIAObject this source was associated with, if any. \\ 
+diaObjectId & uint64 & ~ & ID of the \DIAObject this source was associated with, if any. \\ 
 
 ssObjectId & uint64 & ~ & ID of the \SSObject this source has been linked to, if any. \\ 
 
@@ -287,7 +287,7 @@ Notes about changes with respect to the previous baseline:
 \hline\hline
 \endlastfoot
 
-diaObjectId & uint128 & ~ & Unique identifier \\ 
+diaObjectId & uint64 & ~ & Unique identifier \\ 
 
 radec & double[2] & degrees & $(\alpha, \delta)$ position of the object at time \texttt{radecTai} \\ 
 
@@ -321,7 +321,7 @@ lsPower   & float[ugrizy] & ~ & Power associated with \texttt{lsPeriod} peak. \\
 
 lcChar   & float[$6\times{}M$] & ~ & Light-curve characterization summary statistics (eg., 2nd moments, etc.). The exact contents, and an appropriate value of M, are to be determined in consultation with time-domain experts. \\
 
-nearbyObj   & uint128[3] & ~ & Closest \Objects in \DR. \\
+nearbyObj   & uint64[3] & ~ & Closest \Objects in \DR. \\
 
 nearbyObjDist   & float[3] & arcsec & Distances to \texttt{nearbyObj}. \\
 
@@ -557,7 +557,6 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
     \item {\em Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs).
     \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Level 1 database will {\em not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.).
     \item {\em Can users query the \DB for all \DIASources next to an \Object?} Is this technically feasible?
-    \item {\em Do we have to, and can we, use 128 bit integers for IDs?}. If 64 bit integers are provably sufficient, they will take up less space and be better supported (technologically).
 
 \end{itemize}
 
@@ -691,7 +690,7 @@ These convey {\em what} data will be recorded in each table, rather than the det
 \hline\hline
 \endlastfoot
 
-objectId & uint128 & ~ & Unique object identifier \\ 
+objectId & uint64 & ~ & Unique object identifier \\ 
 
 psRadecTai & double & time & Point source model: Time at which the object was at position {\tt radec}. \\
 
@@ -819,11 +818,11 @@ flags & bit[128] & bit & Flags \\ \hline
 \hline\hline
 \endlastfoot
 
-sourceId & uint128 & ~ & Unique source identifier\footnote{It would be optimal if the source ID is globally unique across all releases. Whether that's realized will depend on technological and space constraints.} \\ 
+sourceId & uint64 & ~ & Unique source identifier\footnote{It would be optimal if the source ID is globally unique across all releases. Whether that's realized will depend on technological and space constraints.} \\ 
 
 ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\ 
 
-objectId & uint128 & ~ & ID of the \Object this source was associated with, if any. \\ 
+objectId & uint64 & ~ & ID of the \Object this source was associated with, if any. \\ 
 
 ssObjectId & uint64 & ~ & ID of the \SSObject this source has been linked to, if any. \\ 
 
@@ -896,7 +895,7 @@ flags & bit[128] & bit & Flags \\ \hline
 \hline\hline
 \endlastfoot
 
-objectId & uint128 & ~ & Unique object identifier \\ 
+objectId & uint64 & ~ & Unique object identifier \\ 
 
 ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\ 
 
