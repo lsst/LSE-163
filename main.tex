@@ -949,9 +949,11 @@ We reiterate that {\bf not all coadds will be kept and served to the public}\foo
 
 We {\em \bf will} retain smaller sections of all generated coadds, to support quality assessment and targeted science. Retained sections may be positioned to cover areas of the sky of special interest such as overlaps with other surveys, nearby galaxies, large clusters, etc.
 
-\subsection{Data Availability}
+\subsection{Data Release Availability and Retention Policies}
 
-What's kept and for how long (the data releases on disk vs. tape).
+Products for Data Release 1, the most recent data release, and the penultimate data release will be kept on fast storage, with catalogs loaded into the database. Other releases will be archived to mass storage (tape). The users {\bf \em will not be able to perform database queries against archived releases}. They will be made available as bulk downloads in some common format (for example, FITS binary tables).
+
+All raw data used to generate any public data product (raw exposures, calibration frames, telemetry, configuration metadata, etc.) will be kept and made available for download.
 
 \subsection{Level 2 Open Issues}
 
@@ -966,11 +968,8 @@ Say something about the deep drilling data products. These will involve special 
 \section{TBD}
 
 \begin{itemize}
-    \item Add canonical band columns
-    \item ID sizes
 
     \item Level 3
-    \item Data availability policies
     \item Crowded field photometry
     \item Variability characterization
     \item Solar System objects in L2
@@ -983,7 +982,10 @@ Say something about the deep drilling data products. These will involve special 
     \item Understand how to record photometric calibration
     \item Add required accuracy to all tables
 
+    \item Data availability policies
     \item Colors
+    \item Add canonical band columns
+    \item ID sizes
 
 \end{itemize}
 
