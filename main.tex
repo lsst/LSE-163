@@ -702,6 +702,8 @@ These convey {\em what} data will be recorded in each table, rather than the det
 
 objectId & uint64 & ~ & Unique object identifier \\ 
 
+parentObjectId & uint64 & ~ & ID of the parent \Object this object has been deblended from, if any. \\
+
 psRadecTai & double & time & Point source model: Time at which the object was at position {\tt radec}. \\
 
 psRadec & double[2] & degrees & Point source model: $(\alpha, \delta)$ position of the object at time {\tt radecTai}. \\
@@ -841,6 +843,8 @@ ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\
 objectId & uint64 & ~ & ID of the \Object this source was associated with, if any. \\ 
 
 ssObjectId & uint64 & ~ & ID of the \SSObject this source has been linked to, if any. \\ 
+
+parentSourceId & uint64 & ~ & ID of the parent \Source this source has been deblended from, if any. \\
 
 psFlux & float & nmgy & Calibrated point source model flux.\\ 
 
