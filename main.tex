@@ -57,12 +57,12 @@
 
 \title{Large Synoptic Survey Telescope \\
 Data Products Definition Document \\
-{\small \bf [To become LSE-163 following review and CCB approval]}}
+{\small \bf [To become LSE-163 pending review and CCB approval]}}
 \author{
     Mario Juri\'c\footnote{Please direct comments to \textless\href{mailto:mjuric@lsst.org}{mjuric@lsst.org}\textgreater.},
     R. H. Lupton, T. Axelrod, G.P. Dubois-Felsmann, \\    
-    \v{Z}. Ivezi\'c, A.C. Becker, J. Becla,  M. Freemon, J. Kantor, \\
-    K-T Lim, D. Shaw, M. Strauss, {\em and} J.A. Tyson \vspace{1.2ex} \\
+    \v{Z}. Ivezi\'c, A.C. Becker, J. Becla,  A.J. Connolly, M. Freemon, \\
+     J. Kantor, K-T Lim, D. Shaw, M. Strauss, {\em and} J.A. Tyson \vspace{1.2ex} \\
     {\em for the LSST Project}
 }
 
@@ -106,7 +106,7 @@ designed to obtain multiple images covering the sky that is visible from Cerro P
 
 The project is scheduled to  begin the regular survey operations at the start of next decade. About 90\% of the observing time will be devoted to a deep-wide-fast survey mode which will \B{uniformly} observe a 18,000 deg$^2$ region about 1000 times (summed over all six bands) during the anticipated 10 years of operations, and yield a coadded map to $r\sim27.5$. These data will result in catalogs including over $38$ billion stars and galaxies, that will serve the majority of the primary science programs. The remaining 10\% of the observing time will be allocated to special projects such as a Very Deep and Fast time domain survey\footnote{Informally known as ``Deep Drilling Fields".}.
 
-The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize changes in time in LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction ({\em templates}, see \S \ref{sec:templates}).
+The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction ({\em templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
 
 \vspace{1em}
 
@@ -427,6 +427,8 @@ nearbyObj   & uint64[3] & ~ & Closest \Objects in \DR. \\
 
 nearbyObjDist   & float[3] & arcsec & Distances to \texttt{nearbyObj}. \\
 
+nearbyObjLnL   & float[3] & ~ &  Natural $\log$ likelihood that the observed \DIAObject is the same object as the nearby \Object. \\
+
 flags & bit[64] & bit & Flags \\ \hline
 
 \end{longtable}
@@ -598,17 +600,17 @@ We emphasize that this LSST-provided capability will be limited, and is {\em not
 
 \subsection{Open Issues}
 
-What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are likely. Input on any of these will be appreciated. These need to be resolved before this document is baselined.
+What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are possible. The estimate of the time by which a decision should be made is noted in parentheses.
 
 \begin{itemize}
-    \item {\em What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have currently baselined the Richards et al. (2011) feature set.
-    \item {\em Should we measure on individual snaps (or their difference)?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period? Is it technically feasible?
-    \item {\em Should we choose {\tt nearbyObj}s differently?} One proposal is to find the brightest \Object within $XX$ arcsec (with $XX \sim 10$arcsec), and the total number of \Objects within $XX$ arcsec.
-    \item {\em Should the postage stamps provided with the alerts be binned, and by what factor?} The thought is that a human user may have an easier time performing a final by-eye check with larger postage stamps.
-    \item {\em When should we (if ever) stop performing forced photometry on positions of \DIAObjects?} Depending on the rate of false positives, unidentified artifacts, or unrecognized Solar System objects, the number of forced measurements may dramatically grow over time.
-    \item {\em Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs).
-    \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Level 1 database will {\em not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.).
-    \item {\em Should we associate alerts with external catalogs?}. LSST will have a copy of many external catalogs (or parts thereof), and could in principle provide limited positional association. Right now, it's up to the downstream brokers to perform such associations.
+    \item {\em Should we measure on individual snaps (or their difference)?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period? Is it technically feasible? (FDR)
+    \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Level 1 database will {\em not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.). (FDR)
+    \item {\em Should we associate alerts with external catalogs?}. LSST will have a copy of many external catalogs (or parts thereof), and could in principle provide limited positional association. Right now, it's up to the downstream brokers to perform such associations. (CONSTRUCTION)
+    \item {\em Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs). (CONSTRUCTION)
+    \item {\em What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have currently baselined the Richards et al. (2011) feature set. (COMMISSIONING)}
+    \item {\em Should we choose {\tt nearbyObj}s differently?} One proposal is to find the brightest \Object within $XX$ arcsec (with $XX \sim 10$arcsec), and the total number of \Objects within $XX$ arcsec. (COMMISSIONING)
+    \item {\em Should the postage stamps provided with the alerts be binned, and by what factor?} The thought is that a human user may have an easier time performing a final by-eye check with larger postage stamps. (COMMISSIONING)
+    \item {\em When should we (if ever) stop performing forced photometry on positions of \DIAObjects?} Depending on the rate of false positives, unidentified artifacts, or unrecognized Solar System objects, the number of forced measurements may dramatically grow over time. (OPERATIONS)
 
 \end{itemize}
 
@@ -1048,20 +1050,22 @@ All raw data used to generate any public data product (raw exposures, calibratio
 
 \subsection{Open Issues}
 
+What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are possible. The estimate of the time by which a decision should be made is noted in parentheses.
+
 \begin{itemize}
-    \item {\em Is our approach to crowded field photometry satisfactory?} Is there another, given the budget and schedule constraints?
+    \item {\em Is our approach to crowded field photometry satisfactory?} Is there another, given the budget and schedule constraints? (FDR)
 
-    \item {\em What is the definition of a crowded field?} This is related to the question of when is LSST photometry allowed to deviate from SRD specs due to crowding.
+    \item {\em What is the definition of a crowded field?} This is related to the question of when is LSST photometry allowed to deviate from SRD specs due to crowding. (FDR)
 
-    \item {\em Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with "large" galaxy characterization. Measures like isophote twists, Gini coefficients, etc. This is now considered to be Level 3, but it's likely at least a portion of it belongs to Level 2 -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful.
+    \item {\em Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with "large" galaxy characterization. Measures like isophote twists, Gini coefficients, etc. This is now considered to be Level 3, but it's likely at least a portion of it belongs to Level 2 -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
 
-    \item {\em Which coadds to we keep and serve to the public?} Probably non-PSF matched coadds with CoaddPsf (aka. StackFit PSF). PSF-matched coadds are another option and may be easier for the users to work with.
+    \item {\em Which coadds to we keep and serve to the public?} Probably non-PSF matched coadds with CoaddPsf (aka. StackFit PSF). PSF-matched coadds are another option and may be easier for the users to work with. (CONSTRUCTION)
 
-    \item {\em What is the primary use-case for retained coadds?} These are the set of coadds (one per band) that we'll serve to the users. For example, should the primary purpose of deep coadds be the study of diffuse structures (in which case we may prefer to optimize depth at the cost of degrading the seeing), or is it to enable alternative studies of object shapes, where the resolution (and minimization of systematics) is paramount? This is very much related to the question above.
+    \item {\em What is the primary use-case for retained coadds?} These are the set of coadds (one per band) that we'll serve to the users. For example, should the primary purpose of deep coadds be the study of diffuse structures (in which case we may prefer to optimize depth at the cost of degrading the seeing), or is it to enable alternative studies of object shapes, where the resolution (and minimization of systematics) is paramount? This is very much related to the question above. (CONSTRUCTION)
 
-    \item {\em Do we need both Kron and Petrosian fluxes?} These are intimately related to aperture fluxes, and given aperture fluxes in multiple apertures may be even derived from these.
+    \item {\em Do we need both Kron and Petrosian fluxes?} These are intimately related to aperture fluxes, and given aperture fluxes in multiple apertures may be even derived from these. (OPERATIONS)
 
-    \item {\em Do we need multiple estimates of object centroids?} The document currently assumes that the model-independent centroiding algorithm, the point source model fit, and the extended source model fit, don't necessarily need to agree on the location of the center of an object. This is true in general. However, it has been pointed out that when they do not agree, the associated flux measurement is meaningless anyway.
+    \item {\em Do we need multiple estimates of object centroids?} The document currently assumes that the model-independent centroiding algorithm, the point source model fit, and the extended source model fit, don't necessarily need to agree on the location of the center of an object. This is true in general. However, it has been pointed out that when they do not agree, the associated flux measurement is meaningless anyway. (OPERATIONS)
 
 \end{itemize}
 
