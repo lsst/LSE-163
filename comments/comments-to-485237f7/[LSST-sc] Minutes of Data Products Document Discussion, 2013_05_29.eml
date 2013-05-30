@@ -1,0 +1,290 @@
+Return-Path: <majuric+caf_=mjuric=majuric.org@gmail.com>
+Received: from localhost.localdomain ([unix socket])
+	 by ix (Cyrus v2.3.7-Invoca-RPM-2.3.7-12.el5_7.2) with LMTPA;
+	 Wed, 29 May 2013 12:09:03 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from colo.majuric.org ([10.11.0.1])
+	by localhost.localdomain (8.13.8/8.13.8) with ESMTP id r4TJ92Io020793
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <mjuric@mail.majuric.org>; Wed, 29 May 2013 12:09:03 -0700
+Received: from mail-vc0-f175.google.com (mail-vc0-f175.google.com [209.85.220.175])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r4TJ91Lu017770
+	for <mjuric@majuric.org>; Wed, 29 May 2013 15:09:01 -0400
+Received: by mail-vc0-f175.google.com with SMTP id hv10so6609876vcb.20
+        for <mjuric@majuric.org>; Wed, 29 May 2013 12:09:01 -0700 (PDT)
+X-Received: by 10.58.215.200 with SMTP id ok8mr2577469vec.21.1369854541121;
+        Wed, 29 May 2013 12:09:01 -0700 (PDT)
+X-Forwarded-To: mjuric@majuric.org
+X-Forwarded-For: majuric@gmail.com mjuric@majuric.org
+Delivered-To: majuric@gmail.com
+Received: by 10.58.169.115 with SMTP id ad19csp23273vec;
+        Wed, 29 May 2013 12:09:00 -0700 (PDT)
+X-Received: by 10.60.142.7 with SMTP id rs7mr2545181oeb.106.1369854540462;
+        Wed, 29 May 2013 12:09:00 -0700 (PDT)
+Received: from colo.majuric.org ([206.123.89.208])
+        by mx.google.com with ESMTPS id rw5si23085200obb.30.2013.05.29.12.08.59
+        for <majuric@gmail.com>
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Wed, 29 May 2013 12:09:00 -0700 (PDT)
+Received-SPF: neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of lsst-sc-bounces@lsstcorp.org) client-ip=206.123.89.208;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 206.123.89.208 is neither permitted nor denied by best guess record for domain of lsst-sc-bounces@lsstcorp.org) smtp.mail=lsst-sc-bounces@lsstcorp.org;
+       dkim=neutral (bad format) header.i=@gmail.com
+Received: from mail.lsst.org (mail.lsstcorp.org [140.252.15.63])
+	by colo.majuric.org (8.13.8/8.13.8) with ESMTP id r4TJ7wc1017738
+	for <mjuric-lsst@majuric.org>; Wed, 29 May 2013 15:07:59 -0400
+Received: from listserv.lsstcorp.org ([140.252.15.62]) by mail.lsst.org with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 29 May 2013 12:07:58 -0700
+Received: from listserv.lsstcorp.org (listserv.lsstcorp.org [127.0.0.1] (may be forged))
+	by listserv.lsstcorp.org (8.13.8/8.13.8) with ESMTP id r4TJ7uMo012635;
+	Wed, 29 May 2013 12:07:57 -0700
+Received: from mail.lsst.org (pdc.lsst.local [140.252.15.63])
+	by listserv.lsstcorp.org (8.13.8/8.13.8) with ESMTP id r4TJ7rxa012631; 
+	Wed, 29 May 2013 12:07:53 -0700
+Received: from mail-pb0-f49.google.com ([209.85.160.49]) by mail.lsst.org with
+	Microsoft SMTPSVC(6.0.3790.3959); Wed, 29 May 2013 12:07:53 -0700
+Received: by mail-pb0-f49.google.com with SMTP id rp8so9618349pbb.36
+	for <multiple recipients>; Wed, 29 May 2013 12:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20120113;
+	h=sender:message-id:date:from:organization:user-agent:mime-version:to
+	:subject:x-enigmail-version:content-type:content-transfer-encoding;
+	bh=wqorBidzch/QIPkPHl751yGQNL5aChMrajtV3xZXpJg=;
+	b=hNi7/s0zrFHhCj8brktHWly0rnV6TNgAos6PaunqcROp0dk6lP/pytLyp6ri/0iIyo
+	rgqZHzNR21BS0TMT/1I4wfq6N4E1VMOREYq3p2PfFBQQLgbLg07Aqy4ssDiu8r8Lo2aN
+	AvJYDoJfpys1AnSlz7Uk51xoRBdXibtrh04a5yqwP60m1hcVzrxzt71KMtFJCriWbsRN
+	Y3cMslP8kiDotWvkVmktMA3pEL5eTeBykN7jL4siYzVQBsZZdI1kxlUJSoteR9hpCdnR
+	0nKbsBaKua8SRjHDIo+BkJmxdOU2igT8456qYV32s/oHBuyCeqxNK6mcZ2ZiM2BIUqHe
+	eVBA==
+X-Received: by 10.66.26.52 with SMTP id i20mr4706275pag.209.1369854472990;
+	Wed, 29 May 2013 12:07:52 -0700 (PDT)
+Received: from gamont.local ([65.129.178.173]) by mx.google.com with ESMTPSA id
+	if5sm38340690pbb.31.2013.05.29.12.07.51 for <multiple recipients>
+	(version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+	Wed, 29 May 2013 12:07:52 -0700 (PDT)
+Message-ID: <51A65206.9000105@lsst.org>
+Date: Wed, 29 May 2013 12:07:50 -0700
+From: Mario Juric <mjuric@lsst.org>
+Organization: Large Synoptic Survey Telescope Inc.
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7;
+	rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+MIME-Version: 1.0
+To: "lsst-sc@lsstcorp.org Lsst-sc" <lsst-sc@lsstcorp.org>,
+        Lsst-science-working-group <lsst-science-working-group@lsstcorp.org>
+X-Enigmail-Version: 1.5.1
+X-OriginalArrivalTime: 29 May 2013 19:07:53.0671 (UTC)
+	FILETIME=[D2372D70:01CE5C9F]
+Subject: [LSST-sc] Minutes of Data Products Document Discussion, 2013/05/29
+X-BeenThere: lsst-sc@lsstcorp.org
+X-Mailman-Sequence-ID: 2097.0
+X-Mailman-Version: 2.1.13
+Precedence: list
+List-Id: Project Controlled LSST Science Council Mailing List
+	<lsst-sc.lsstcorp.org>
+List-Unsubscribe: <http://listserv.lsstcorp.org/mailman/options/lsst-sc>,
+	<mailto:lsst-sc-request@lsstcorp.org?subject=unsubscribe>
+List-Archive: <http://listserv.lsstcorp.org/mailman/private/lsst-sc>
+List-Post: <mailto:lsst-sc@lsstcorp.org>
+List-Help: <mailto:lsst-sc-request@lsstcorp.org?subject=help>
+List-Subscribe: <http://listserv.lsstcorp.org/mailman/listinfo/lsst-sc>,
+	<mailto:lsst-sc-request@lsstcorp.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: lsst-sc-bounces@lsstcorp.org
+Errors-To: lsst-sc-bounces@lsstcorp.org
+
+Attending (8am-9am):
+	Dave Monet, Michael Strauss, Sidney Wolff, Beth Willman,
+	John Bochanski, Niel Brandt, Mario Juric
+
+Attending (9am-10am):
+	Ashish Mabhabal, Niel Brandt, Tony Tyson, Mario Juric
+
+
+* Michael Strauss asked about the place of this document in the LSST
+  document hierarchy; what's its purpose? What will it be used for?
+
+  Mario explains that this is a document that collects in one place
+  and discusses in some detail what the LSST plans to deliver as its
+  final data products at all levels (1/2/3/DD). This is intended to be
+  a human-readable description of normative SysML requirements. It also
+  discusses the rationale and history for some of the decisions made,
+  that otherwise get lost in more formal requirements documents. The
+  question of "how" (i.e., the details of algorithms) is beyond its
+  scope (to a degree that it is not necessary to understand the data
+  products).
+
+  Also, it is unlikely we got everything right this early. Plans will
+  change. Those changes will be communicated through this document to
+  the community (and the Science Council) before being formally
+  implemented as LSST requirements changes. There's some precendent
+  for descriptive documents of this sort (eg., there's LSE-40 as well
+  as the SRD itself which is maintained as a LaTeX doc).
+
+* Beth Willman asked about crowded field photometry. What does
+  "crowded" mean, the way we use it in the document? Another way of
+  saying this is, at what point is the accuracy of measurement, due to
+  crowding, allowed to deviate from the SRD?
+
+  MJ thinks this is a good question, one that we don't have a crisp
+  answer to. His guess is that if all footprints in the image are
+  blends of ~10 or more objects, it's crowded. We should define
+  it better.
+
+  Overall, DM's idea right now is to use our knowledge of crowding
+  (density on the sky, Galactic lon/lat) to as a hint to the deblender
+  that it can assume that blends are composed of point sources (in
+  which case it can do a much better job of deblending the flux). We
+  won't know quantitatively how well this works until it's implemented.
+  That's why we're treating it as a best-effort effort.
+
+  Sidney points out that the SRD is not clear about this either, and
+  she's working on a language to have ready at the final design review.
+
+  Beth asked about what the MW collaboration could do about deblending
+  and crowded fields? MJ needs to think about it. One option may be
+  that, given LSST has not signed up for a specialized crowded-field
+  code, researching, getting funded, and producing such a code (that we
+  could even incorporate into Level 2 at a later date) may be an option
+  for the MW SC.
+
+  Michael Strauss asked whether difference images are expected to be
+  crowded? The intuition is that the answer is no, but we'll know more
+  once Abi's program on DECam gets some data.
+
+  Michael also asked about co-adds in crowded fields; will they be
+  equally good? At what point do we stop adding more epochs? Sidney &
+  MJ think this is more a cadence than data product question.
+
+* Beth asked about metadata kept for individual exposures. MJ didn't
+  have a list handy, but assures everyone we'll keep much more metadata
+  than is customary today. We plan to have more details in the next
+  6-12 months.
+
+* Q: Do logL (log likelihood) values quoted in the Object catalog take
+  color priors into account? A: No. It's purely how well the particular
+  model fits the data (it's a transformation of the chi^2). The
+  end-user can fold in their own priors for (say) star-galaxy
+  separation.
+
+* What should the science collaboration members concentrate on when
+  reading this document?
+  => Look at the "open issues" subsections of the document
+  => Look at how we plan to do Level 2. It's somewhat different
+     from what people usually do today, in that we plan to derive the
+     master object list from co-adds, and run object characterization
+     with MultiFit. For example, this potentially complicates the
+     determination of selection functions.
+  => Look at the relationship between Level 1 and 2. Right now the two
+     databases are essentially independent, but positionally cross-
+     matched. Does that satisfy the science cases?
+
+* Extended galaxies: we currently plan to measure surface brightness in
+  self-similar elliptical apertures. We *don't* plan to detect and
+  measure features like isophote twists or bars. We could, if it's not
+  computationally intensive, and if there's agreement on what's useful
+  to measure. Michael asked this question be sent to the relevant SC.
+
+* Dave Monet notes that the document is far ahead of the software, and
+  wonders when will we be able to test how well this works? Sidney
+  points out this is by design -- this document is about scope of what
+  LSST will deliver, and the software we need to build flows from there.
+  MJ explains that we have a few years of construction before all pieces
+  fall into place. We have of course tested and prototyped many of them
+  in isolation, but unfortunately not the ones Dave cares about (eg.,
+  astrometry/proper motions via MultiFit). MJ reiterated that the
+  project will publish a full development roadmap once it's finalized
+  for Final Design Review (this fall).
+
+* Niel Brandt looked at the "special programs" section. Asks to make
+  sure there's no major conflict with DD field white paper. MJ will
+  e-mail DD white-paper authors to alert them to this section and ask
+  more about the specific data products they expect.
+
+* Tony Tyson points out the usual difficult trade we're making here:
+  keeping ourselves open to discovering the unexpected, yet having to
+  be definite about what we'll do. He cautions that we should always
+  be on the lookout for whether we're throwing anything out.
+
+  Tony argues we should do multiple co-adds: "lucky seeing", best
+  seeing, median seeing, etc. For example, deblending will be helped by
+  having a "best seeing" coadd. MJ clarifies that actually is the
+  current plan; he will clarify it in the document.
+
+  MJ points out that we won't keep the pixels of all of those coadds,
+  simply because we don't have the space. We have room for only one
+  set. Which one should we keep? Which one will be the most useful to
+  the community? This is a really good open question (one that doesn't
+  necessarily need to be resolved right away).
+
+* Tony points out we need a metric for crowded fields to flag them as
+  "already deep enough", and perhaps inform the scheduler to reduce the
+  number of visits there in the future.
+
+  Tony also points out that QA metrics in general need to become a part
+  of the delivered data products. MJ agrees, but think there's no time
+  to do it right now. It likely is an item we may need to do before FDR.
+
+* Tony worries about false alarm rates, trades of completeness vs.
+  purity. MJ agrees, and views the problem in the context of ensuring
+  the DM system doesn't choke up even at high false-positive rates that
+  we may expect in Commissioning or early ops.
+
+  (At this point we've decided we've veered off into implementation
+   details too much, and need to get back to the document)
+
+* Ashish Mabhabal adds some very useful comments about transients. He
+  worries that we won't be producing catalogs derived from direct
+  imaging (as opposed to difference images) as a part of Level 1. He's
+  concerned that slowly varying sources, or low flux level variability
+  will be missed. He'll try to come up with a set of concrete use cases
+  where diffim would not suffice.
+
+  Ashish further points out that follow-up campaigns can take more than
+  30 days, and it'd be useful to be able to "pin" images with an object
+  being followed up so that it doesn't get expired from the disk cache
+  (and has to be accessed from tape). MJ agrees, thinks this should be
+  easy.
+
+  Ashish asks about the size of postage stamps included with alerts and
+  whether they can be compressed. He worries about the data rate.
+
+  Regarding the light-curve features/metrics, we currently plan for
+  Richards et al. (2011) periodic and non-periodic metrics. Ashish
+  thinks this is a reasonable starting point, but that it may change as
+  we learn more about variability. Also, the metrics one wants to
+  compute may depend on the length of the light curve. MJ agrees, and
+  thinks that whatever we end up with in the end is likely to be _less_
+  big or complex than Richards' metrics (which is why the latter are a
+  good baseline to design the system).
+
+  Finally, we discussed what data releases should be kept available and
+  loaded into the database (as opposed to offloaded to mass storage).
+  The document proposes we only keep the current and penultimate
+  data release loaded into the database. All previous data releases
+  will be available as bulk downloads (eg., FITS tables). Everyone
+  agrees this is suboptimal (it'd be great to have all DRs loaded!), but
+  space constraints prevent us from doing so. Ashish then brought up
+  the question of keeping DR1 (he thinks it's a good idea, and will
+  try to find some examples from CRTS and Palomar-QUEST where it was
+  helpful). After some discussion we all seemed to agree that the
+  primary reason to have older data releases is to be able to observe
+  the evolution of measurements as the same data is processed with
+  newer (and hopefully better) software. That would really argue for
+  keeping not necessarily DR1, but a smaller overlapping fraction
+  (say, 5%?) of *all* prior data releases.
+
+* We adjourned at 10am, after lots of good input. Mario will incorporate
+  it into the document and send out another version. The document will
+  be externally reviewed next week, and the plan is to send it to the
+  reviewers no later than Friday (optimally, tomorrow).
+
+Thanks everyone!,
+-- 
+Mario Juric,
+Data Mgmt. Project Scientist, Large Synoptic Survey Telescope
+Web   :  http://www.cfa.harvard.edu/~mjuric/
+Phone :  +1 617 744 9003       PGP: ~mjuric/crypto/public.key
+_______________________________________________
+LSST-sc mailing list
+LSST-sc@lsstcorp.org
+http://listserv.lsstcorp.org/mailman/listinfo/lsst-sc
