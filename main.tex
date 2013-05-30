@@ -14,6 +14,7 @@
 \usepackage{comment}
 
 \excludecomment{changelog}
+\excludecomment{todo}
 
 \newcommand\x         {\hbox{$\times$}}
 \newcommand\othername {\hbox{$\dots$}}
@@ -56,9 +57,9 @@
 
 \title{Large Synoptic Survey Telescope \\
 Data Products Definition Document \\
-{\em \bf (*** DRAFT ***)}}
+{\small \bf [To become LSE-163 following review and CCB approval]}}
 \author{
-    Mario Juri\'c\footnote{Corresponding author, \textless\href{mailto:mjuric@lsst.org}{mjuric@lsst.org}\textgreater.},
+    Mario Juri\'c\footnote{Please direct comments to \textless\href{mailto:mjuric@lsst.org}{mjuric@lsst.org}\textgreater.},
     R. H. Lupton, T. Axelrod, G.P. Dubois-Felsmann, \\    
     \v{Z}. Ivezi\'c, A.C. Becker, J. Becla,  M. Freemon, J. Kantor, \\
     K-T Lim, D. Shaw, M. Strauss, {\em and} J.A. Tyson \vspace{1.2ex} \\
@@ -70,9 +71,11 @@ Data Products Definition Document \\
 \pagestyle{headings}
 
 \begin{abstract}
-This document describes the data products to be produced by the Large Synoptic Survey Telescope (LSST). It also desribes the capabilities and resources that will be made available to end-users at the LSST data center (also known as "Level 3").
+This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
 
-This is an {\bf internal draft} and a work in progress. {\bf It should not be circulated widely until this notice is removed.}
+The LSST will deliver three levels of data products and services. {\bf Level 1} (nightly) data products will include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects. Their primary purpose is to enable rapid follow-up of time-domain events. {\bf Level 2} (annual) data products will include well calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science. {\bf Level 3} (user-created) data product services will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. LSST will also devote 10\% of observing time to programs with special cadence. Their data products will be created using the same software and hardware as Levels 1 and 2. All data products will be made available using user-friendly databases and web services.
+
+%This is an {\bf internal draft} and a work in progress. {\bf It should not be circulated widely until this notice is removed.}
 \end{abstract}
 
 \clearpage
@@ -116,7 +119,7 @@ LSST Data Management will perform two, somewhat overlapping in scientific intent
 \begin{enumerate}
 \item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in {\bf Level 1} data products. Level 1 products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical {\em objects} are called {\em sources}. The reader is cautioned that this nomenclature is not universal: some surveys call {\em detections} what LSST calls {\em sources}, and use the term {\em sources} for what LSST calls {\em objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called call ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects {\em inside} and {\em outside} of the Solar System.}). The catalogs will entered into the {\bf \DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted standards within 60 seconds of observation. Level 1 data products are discussed in \S~\ref{sec:level1}.
 
-\item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are {\bf Level 2} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of charcterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called {\em snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a {\em visit}.}), \Sources\footnote{When written in bold monospace type (i.e., {\tt \textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Level 2 processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Level 1 data products (see \S \ref{sec:l1dbreproc}). In contrast to the \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Level 2 data products are discussed in \S~\ref{sec:level2}.
+\item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are {\bf Level 2} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called {\em snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a {\em visit}.}), \Sources\footnote{When written in bold monospace type (i.e., {\tt \textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Level 2 processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Level 1 data products (see \S \ref{sec:l1dbreproc}). In contrast to the \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Level 2 data products are discussed in \S~\ref{sec:level2}.
 \end{enumerate}
  
 The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as {\em event alerts} within 60 seconds of end of visit acquisition. The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
@@ -153,7 +156,7 @@ For fluxes, we recognize that a substantial fraction of astronomers will just wa
 
 Because flux measurements on difference images (Level 1 data products; \S~\ref{sec:level1}) are performed against a template, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. Eg. given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.
 
-We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defuned so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
+We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
 \begin{equation}
     m_{AB} = -2.5 \log_{10}(f/{\rm maggie})}
 \end{equation}
@@ -230,7 +233,7 @@ The following is a high-level description of steps which will occur during regul
 
 In addition to the processing described above, a smaller sample of sources detected on difference images {\em below} the nominal $S/N=5$ threshold will be measured and stored, in order to enable monitoring of difference image analysis quality.
 
-Also, the system will have the ability to measure and alert on a limited\footnote{It will be sized for no less than $\sim 10\%$ of average \DIASource per visit rate.} number of sources detected below the nominal threshold for which additional criteria are satisfied. For example, a $S/N = 3$ source detection near a gravitational keyhole may be highly significant in assessing the danger posed by a potentially hazadous asteroid. The project will define the initial set of criteria by the start of Operations.
+Also, the system will have the ability to measure and alert on a limited\footnote{It will be sized for no less than $\sim 10\%$ of average \DIASource per visit rate.} number of sources detected below the nominal threshold for which additional criteria are satisfied. For example, a $S/N = 3$ source detection near a gravitational keyhole may be highly significant in assessing the danger posed by a potentially hazardous asteroid. The project will define the initial set of criteria by the start of Operations.
 
 \subsubsection{Solar System Object Processing}
 \label{sec:ssProcessing}
@@ -247,7 +250,7 @@ The following will occur during regular Solar System object processing (in dayti
 \subsection{Level 1 Catalogs}
 \label{sec:level1db}
 
-The described alert processing design relies on the \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources, \DIAObjects, and \SSObjects, populated in the course of difference image and Solar System object processing\footnote{The latter is also colloquially known as {\em DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (queryable) immediately\footnote{No later than the moment of issuance of any event alert that may refer to it.}.
+The described alert processing design relies on the \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources, \DIAObjects, and \SSObjects, populated in the course of difference image and Solar System object processing\footnote{The latter is also colloquially known as {\em DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) immediately\footnote{No later than the moment of issuance of any event alert that may refer to it.}.
 \\
 
 This database is {\em only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \DB and the \Objects in the \DR database. There is no direct \DIASource-to-\Object match. The adopted data model emphasizes that {\em having a \DIASource be positionally coincident with an \Object does not imply it is physically related to it}. Absent other information, the least presumptuous data model relationship is one of {\em positional association}, not {\em physical identity}.
@@ -452,7 +455,7 @@ oeCov & double[21] & various & Covariance matrix for \texttt{oe} \\
 
 arc & float & days & Arc of observation. \\
 
-orbFitLnL & float & ~ & Natural log of the likelohood of the orbital elements fit. \\
+orbFitLnL & float & ~ & Natural log of the likelihood of the orbital elements fit. \\
 
 nOrbFit & int16 & ~ & Number of observations used in the fit. \\
 
@@ -574,7 +577,7 @@ With each alert, we attempt to include as much information known to LSST about t
 \subsubsection{Receiving and Filtering the Alerts}
 \label{sec:eventbrokers}
 
-Alerts will be transmitted in \VOEvent format, using standard IVOA protocols (eg., VOEvent Transport Protocol; VTP\footnote{VOEvent Transport Protocl is currently an IVOA Note, but we understand work is under way to finalize and bring it up to full IVOA Recommendation status.}. As a very high rate of alerts is expected, approaching $\sim 2$ million per night, we plan for public VOEvent Event Brokers\footnote{These brokers are envisioned to be operated as a public service by third parties who will have signed MOUs with LSST. An example may be the VAO (or its successor).} to be the primary end-points of LSST's event streams. End-users will use these brokers to classify and filter events for subsets fitting their science goals. End-users will {\em not} be able to subscribe to full, unfiltered, alert streams coming directly from LSST\footnote{This is due to finite network bandwidth available: for example, a 100 end-users subscribing to a $\sim 100$ Mbps stream (the peak full stream data rate at end of the first year of operations) would require 10Gbps WAN connection from the archive center, just to serve the alerts.}.
+Alerts will be transmitted in \VOEvent format, using standard IVOA protocols (eg., VOEvent Transport Protocol; VTP\footnote{VOEvent Transport Protocol is currently an IVOA Note, but we understand work is under way to finalize and bring it up to full IVOA Recommendation status.}. As a very high rate of alerts is expected, approaching $\sim 2$ million per night, we plan for public VOEvent Event Brokers\footnote{These brokers are envisioned to be operated as a public service by third parties who will have signed MOUs with LSST. An example may be the VAO (or its successor).} to be the primary end-points of LSST's event streams. End-users will use these brokers to classify and filter events for subsets fitting their science goals. End-users will {\em not} be able to subscribe to full, unfiltered, alert streams coming directly from LSST\footnote{This is due to finite network bandwidth available: for example, a 100 end-users subscribing to a $\sim 100$ Mbps stream (the peak full stream data rate at end of the first year of operations) would require 10Gbps WAN connection from the archive center, just to serve the alerts.}.
 
 To directly serve the end-users, LSST will provide a basic, limited capacity, alert filtering service. This service will run at the LSST U.S. Archive Center (at NCSA). It will let astronomers create simple filters that limit what alerts are ultimately forwarded to them\footnote{More specifically, to their VTP clients. Typically, a user will use the Science User Interface (the web portal to LSST Archive Center) to set up the filters, and use their VTP client to receive the filtered \VOEvent stream.}. These {\em user defined filters} will be possible to specify using an SQL-like declarative language, or short snippets of (likely Python) code. For example, here's what a filter may look like:
 \begin{verbatim}
@@ -999,7 +1002,7 @@ Required calibration data, processing metadata, and all necessary image processi
 
 All calibration frames (darks, flats, biases, fringe, etc.) will be preserved and made available for download as FITS files.
 
-All auxilliary telescope data, both raw (images with spectra) and processed (calibrated spectra, derived atmosphere models), will be preserved and made available for download.
+All auxiliary telescope data, both raw (images with spectra) and processed (calibrated spectra, derived atmosphere models), will be preserved and made available for download.
 
 \subsubsection{Coadded Images}
 \label{sec:coadds}
@@ -1165,7 +1168,7 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 
 \begin{itemize}
 \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
-\item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the "Level 3 environment"), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/framworks does not guarantee that the code is of production quality).
+\item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the "Level 3 environment"), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
 \item If the original code was written in another language or another data processing framework, the project will have the resources to rewrite it to required LSST standards.
 \item Taking on a new Level 2 DP means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new L2DP through DR11.
 \end{itemize}
@@ -1179,17 +1182,19 @@ LSST Survey Specifications (LSST SRD, \S~3.4) specify that 90\% of LSST observin
 
 The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special" regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
 
-The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the {\em constraints} on these data products, given the adopted Level 1/2/3 architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertize.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
+The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the {\em constraints} on these data products, given the adopted Level 1/2/3 architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertise.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
 \\
 
 Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence. The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Level 1 data products.
 
 For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main" (Level 1 and 2) databases. The system will, however, allow for simple federation with Level 1/2/3 data products (i.e., cross-queries and joins).
 
-As a concrete example, a data product complement for a ``deep drilling" field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds" (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours, and iv) special deep templates, built using the best recently acquired seeing data, produced on a forthnightly cadence.
+As a concrete example, a data product complement for a ``deep drilling" field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds" (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
 \\
 
 Note that the data rights and access rules apply just as they would for for Level 1/2/3. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
+
+\begin{todo}
 
 \clearpage
 
@@ -1221,5 +1226,7 @@ Note that the data rights and access rules apply just as they would for for Leve
 %    \item ID sizes
 
 \end{itemize}
+
+\end{todo}
 
 \end{document}
