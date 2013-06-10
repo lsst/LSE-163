@@ -475,18 +475,25 @@ MOID & float[2] & AU & Minimum orbit intersection distances\footnote{\url{http:/
 
 moidLon & double[2] & degrees & MOID longitudes. \\
 
-H & float[6] & mag & Mean absolute magnitude, per band. \\
+H & float[6] & mag & Mean absolute magnitude, per band (Muinonen et al. 2010 magnitude-phase system). \\
 
-G & float[6] & mag & Fitted slope parameter, per band\footnote{The slope parameter for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs, and add it later in Operations. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data.} \\
+${\rm G_1}$ & float[6] & mag & $G_1$ slope parameter, per band (Muinonen et al. 2010 magnitude-phase system). \\
 
-hErr & float[6] & mag & Uncertainty in estimate of H \\
+${\rm G_2}$ & float[6] & mag & $G_2$ slope parameter, per band (Muinonen et al. 2010 magnitude-phase system). \\
 
-gErr & float[6] & mag & Uncertainty in estimate of G \\
+hErr & float[6] & mag & Uncertainty of H estimate.\\
+
+g1Err & float[6] & mag & Uncertainty of $G_1$ estimate. \\
+
+g2Err & float[6] & mag & Uncertainty of $G_2$ estimate. \\
 
 flags & bit[64] & bit & Flags \\ \hline
 
 \end{longtable}
 \end{center}
+
+The $G_1$ and $G_2$ parameters for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs and add it later in Operations, or provide two-parameter $G_{12}$ fits. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data. The design of the data management system is insensitive to this decision, making it possible to postpone it to Commissioning to ensure it follows the standard community practice at that time.
+\\
 
 The LSST database will provide functions to compute the phase (Sun-Asteroid-Earth) angle $\alpha$ for every observation, as well as the reduced, $H(\alpha)$, and absolute, $H$, asteroid magnitudes in LSST bands.
 
