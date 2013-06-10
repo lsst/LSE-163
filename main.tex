@@ -723,13 +723,14 @@ Forced photometry will be performed on all visits, for all \Objects. The measure
 \subsubsection{Crowded Field Photometry}
 
 A fraction of LSST imaging will cover areas of high object (mostly stellar) density. These include the Galactic plane, the Large and Small Magellanic Clouds, and a number of globular clusters (among others).
-
-LSST does {\em not} plan to build or deploy algorithms specifically designed for crowded field photometry. {\bf \em Processing these areas using specialist crowded field photometry codes is left to the users as a Level 3 task (see \S~\ref{sec:level3})}.
-
-Nevertheless, LSST image processing and measurement software, although primarily designed to operate in non-crowded regions, is expected to perform well in areas of crowding. The current LSST applications development plan envisions making the deblender aware of Galactic longitude and latitude, and permitting it to use that information as a prior when deciding how to deblend objects. While not guaranteed to reach the accuracy or completeness of purpose-built crowded field photometry codes, we expect this approach will yield acceptable results even in areas of moderately high crowding.
 \\
 
-Note that this discussion only pertains to processing of {\em direct images}. Data products derived from {\em difference images} (i.e., Level 1) are expected to work well even in highly crowded regions.
+% LSST does {\em not} plan to build or deploy algorithms specifically designed for crowded field photometry. {\bf \em Processing these areas using specialist crowded field photometry codes is left to the users as a Level 3 task (see \S~\ref{sec:level3})}.
+
+LSST image processing and measurement software, although primarily designed to operate in non-crowded regions, is expected to perform well in areas of crowding. The current LSST applications development plan envisions making the deblender aware of Galactic longitude and latitude, and permitting it to use that information as a prior when deciding how to deblend objects. While not guaranteed to reach the accuracy or completeness of purpose-built crowded field photometry codes, we expect this approach will yield acceptable results even in areas of moderately high crowding.
+\\
+
+Note that this discussion only pertains to processing of {\em direct images}. Crowding is not expected to significantly impact the quality of data products derived from {\em difference images} (i.e., Level 1).
 
 \subsection{The Level 2 Catalogs}
 
