@@ -147,6 +147,14 @@ Nevertheless, all these databases will follow certain naming and other conventio
 For all catalogs data, we will employ a convention where estimates of standard errors have the suffix {\tt Err}, while the estimates of inherent widths of distribution (or functions in general) have the suffix {\tt Sigma}\footnote{Given $N$ measurements, standard errors scale as $N^{-1/2}$, while widths remain constant.}. The latter are defined as the square roots of the second moment about the quoted value of the quantity at hand.
 
 Unless noted otherwise, maximum likelihood values will be quoted for all fitted parameters (measurements). Together with covariances, these let the end-user apply whatever prior they deem appropriate when computing posteriors\footnote{There's a tacit assumption that a Gaussian is a reasonably good description of the likelihood surface around the ML peak.}. Where appropriate, multiple independent samples from the likelihood may be provided to characterize departures from Gaussianity.
+
+We will provide values of log likelihood for the fitted parameters. These can be used to assess the model fit quality. If the errors of measured quantities are normally distributed, the likelihood is related to the $\chi^2$ as:
+%
+\begin{equation}
+    L = \left(\prod_{k}\frac{1}{\sigma_k \sqrt{2 \pi}}\right) \exp \left[\frac{\chi^2}{2}\right]
+\end{equation}
+%
+which can be used to convert between the two.
 \\
 
 For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by providing additional pre-computed columns, taking care to name them appropriately so as to minimize accidental incorrect usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may represent the maximum likelihood value.
@@ -398,6 +406,8 @@ pm & float[2] & mas/yr & Proper motion vector\footnote{High proper-motion or par
 parallax & float & mas & Parallax \\ 
 
 pmParallaxCov & float[6] & various & Proper motion - parallax covariances. \\ 
+
+pmParallaxLnL & float & ~ & Natural log of the likelihood of the linear proper motion-paralax fit\footnote{{\tt radec}, {\tt pm}, and {\tt parllax} will all be simultaneously fitted for. {\tt positionMotionLnL} is the logarithm of the likelihod of their maximum-likelihood estimates.}. \\
 
 psFlux & float[ugrizy] & nmgy & Weighted mean point-source model magnitude. \\ 
 
