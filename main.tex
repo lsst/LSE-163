@@ -341,6 +341,10 @@ fpFlux & float & nmgy & Calibrated flux for point source model measured on the v
 
 fpFluxSigma & float & nmgy & Estimated uncertainty of \texttt{fpFlux}. \\ 
 
+diffFlux & float & nmgy & Calibrated flux for point source model centered on {\tt radec} but measured on the difference of snaps comprising this visit\footnote{This flux can be used to detect sources changing on timescales comparable to snap exposure length ($\sim 15$~sec).}. \\ 
+
+diffFluxSigma & float & nmgy & Estimated uncertainty of \texttt{diffFlux}. \\ 
+
 %fpSky & float & nmgy/asec$^{2}$ & Estimated sky background at the position (centroid) of the object. \\ 
 
 %fpSkySigma & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpSky}. \\ 
