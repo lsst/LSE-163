@@ -593,9 +593,12 @@ Each alert (a \VOEvent packet) will at least include the following:
     \item All previous \DIASource records
     \end{itemize}
 % \item Flags (isSolarSystemObject, isArtefact, etc.)
-\item $30\times 30$ pixel cut-out of the difference image (10 bytes/pixel, FITS MEF)
-\item $30\times 30$ pixel cut-out of the template image (10 bytes/pixel, FITS MEF)
+\item Cut-out of the difference image centered on the \DIASource (10 bytes/pixel, FITS MEF)
+\item Cut-out of the template image centered on the \DIASource (10 bytes/pixel, FITS MEF)
 \end{itemize}
+
+The cutouts will be sized so as to encompass the entire footprint of the detected source, but be no smaller than $30 \times 30$ pixels. The provided images will comprise of a flux (32 bit float), variance (32 bit float), and mask (16 bit flags) planes, and include metadata necessary for further processing (e.g., WCS, zero point, PSF, etc.).
+\\
 
 The items above are meant to represent the {\em information} transmitted with each alert; the content of the alert packet itself will be formatted to confirm to \VOEvent (or other relevant) standard. Where the existing standard is inadequate for LSST needs, LSST will propose extensions and work with the community to reach a common solution.
 
