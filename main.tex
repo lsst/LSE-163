@@ -228,8 +228,8 @@ At the end of the difference image analysis of each visit, we will issue time do
 The following is a high-level description of steps which will occur during regular difference image analysis:
 \begin{enumerate}
 \item A visit is acquired and reduced to a single {\em visit image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps}, etc.).
-\item The visit image is differenced against the appropriate template and \DIASources are detected.
-\item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^{\rm nd}$ moments, as well as a fit to a trailed source model.} of the DIASource are measured on the difference image. PSF photometry is performed on the visit image at the position of the \DIASource to obtain a measure of the absolute flux. No deblending will be attempted.
+\item The visit image is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.
+\item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^{\rm nd}$ moments, as well as a fit to a trailed source model.} of the DIASource are measured on the difference image. PSF photometry is performed on the visit image at the position of the \DIASource to obtain a measure of the absolute flux.
 \item The \DB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).
 \item Otherwise, the associated \DIAObject measurements will be updated with new data. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.
@@ -308,6 +308,8 @@ ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\
 diaObjectId & uint64 & ~ & ID of the \DIAObject this source was associated with, if any. \\ 
 
 ssObjectId & uint64 & ~ & ID of the \SSObject this source has been linked to, if any. \\ 
+
+parentSourceId & uint64 & ~ & ID of the parent \Source this object has been deblended from, if any. \\
 
 midPointTai & double & time & Time of mid-exposure for this DIASource. \\ 
 
