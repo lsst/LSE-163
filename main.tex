@@ -331,7 +331,7 @@ trailFlux & float & nmgy & Calibrated flux for a trailed source model\footnote{A
 
 trailLength & float & arcsec & Maximum likelihood fit of trail length\footnote{Note that we'll likely measure trailRow and trailCol, and transform to trailLength/trailAngle (or trailRa/trailDec) for storage in the database. A stretch goal is to retain both.}$^,$\footnote{TBD: Do we need a separate trailCentroid? It's unlikely that we do, but one may wish to prove it.}. \\ 
 
-trailAngle & float & degrees & Maximum likelihood fit of the angle between the meridian through the centroid and the trail direction (bearing). \\ 
+trailAngle & float & degrees & Maximum likelihood fit of the angle between the meridian through the centroid and the trail direction (bearing, direction of motion). \\ 
 
 trailLnL & float & ~ & Natural $log$ likelihood of the observed data given the trailed source model. \\ 
 
@@ -368,6 +368,10 @@ extendedness & float & ~ & A measure of extendedness, computed using a combinati
 flags & bit[64] & bit & Flags \\ \hline
 \end{longtable}
 \end{center}
+
+Some fast-moving, trailed, sources may be due to passages of nearby asteroids. Their trails may exhibit significant curvature. For trails longer than a certain treshold (to be determined by start of Operations), we will fit a curved trail model which will be included with the alert (but likely stored in a separate table).
+
+% While we do not measure the curvature directly, it can be inferred by examining the length of the trail, the trailed model covariance matrices, and the adaptive shape measures. Once curvature is suspected, the users may fit curved trail models to the cutout provided with the alert.
 
 \begin{changelog}
 Notes about changes with respect to the previous baseline:
