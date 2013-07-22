@@ -149,13 +149,13 @@ For all catalogs data, we will employ a convention where estimates of standard e
 
 Unless noted otherwise, maximum likelihood values will be quoted for all fitted parameters (measurements). Together with covariances, these let the end-user apply whatever prior they deem appropriate when computing posteriors\footnote{There's a tacit assumption that a Gaussian is a reasonably good description of the likelihood surface around the ML peak.}. Where appropriate, multiple independent samples from the likelihood may be provided to characterize departures from Gaussianity.
 
-We will provide values of log likelihood for the fitted parameters. These can be used to assess the model fit quality. If the errors of measured quantities are normally distributed, the likelihood is related to the $\chi^2$ as:
+We will provide values of log likelihood, the $\chi^2$ for the fitted parameters, and the number of data points used in the fit. Database functions (or precomputed columns) will be provided for frequently used combinations of these quantities (e.g., $\chi^2/dof$). These can be used to assess the model fit quality. Note that, if the errors of measured quantities are normally distributed, the likelihood is related to the $\chi^2$ as:
 %
 \begin{equation}
-    L = \left(\prod_{k}\frac{1}{\sigma_k \sqrt{2 \pi}}\right) \exp \left[\frac{\chi^2}{2}\right]
+    L = \left(\prod_{k}\frac{1}{\sigma_k \sqrt{2 \pi}}\right) \exp \left[- \frac{\chi^2}{2}\right]
 \end{equation}
 %
-which can be used to convert between the two.
+where the index $k$ runs over all data points included in the fit.
 \\
 
 For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by providing additional pre-computed columns, taking care to name them appropriately so as to minimize accidental incorrect usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may represent the maximum likelihood value.
@@ -330,15 +330,23 @@ psFluxSigma & float & nmgy & Estimated uncertainty of \texttt{psFlux}. \\
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
+psChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+
+psN & int & ~ & The number of data points (pixels) used to fit the model. \\
+
 trailFlux & float & nmgy & Calibrated flux for a trailed source model\footnote{A {\em Trailed Source Model} attempts to fit a (PSF-convolved) model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). Roughly, it's a fit to a PSF-convolved line. The primary use case is to characterize fast-moving Solar System objects.}$^,$\footnote{This model does not fit for the {\em direction} of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity, and is not clearly justified by increased MOPS performance given the added information.}. Note this actually measures the flux {\em difference} between the template and the visit image. \\ 
 
 trailLength & float & arcsec & Maximum likelihood fit of trail length\footnote{Note that we'll likely measure trailRow and trailCol, and transform to trailLength/trailAngle (or trailRa/trailDec) for storage in the database. A stretch goal is to retain both.}$^,$\footnote{TBD: Do we need a separate trailCentroid? It's unlikely that we do, but one may wish to prove it.}. \\ 
 
 trailAngle & float & degrees & Maximum likelihood fit of the angle between the meridian through the centroid and the trail direction (bearing, direction of motion). \\ 
 
+trailCov & float[6] & various & Covariance matrix of trailed source model parameters. \\ 
+
 trailLnL & float & ~ & Natural $log$ likelihood of the observed data given the trailed source model. \\ 
 
-trailCov & float[6] & various & Covariance matrix of trailed source model parameters. \\ 
+trailChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+
+trailN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
 fpFlux & float & nmgy & Calibrated flux for point source model measured on the visit image centered at the centroid measured on the difference image (forced photometry flux) \\ 
 
@@ -420,6 +428,10 @@ pmParallaxCov & float[6] & various & Proper motion - parallax covariances. \\
 
 pmParallaxLnL & float & ~ & Natural log of the likelihood of the linear proper motion-paralax fit\footnote{{\tt radec}, {\tt pm}, and {\tt parllax} will all be simultaneously fitted for. {\tt positionMotionLnL} is the logarithm of the likelihod of their maximum-likelihood estimates.}. \\
 
+pmParallaxChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+
+pmParallaxN & int & ~ & The number of data points used to fit the model. \\
+
 psFlux & float[ugrizy] & nmgy & Weighted mean point-source model magnitude. \\ 
 
 psFluxErr & float[ugrizy] & nmgy & Standard error of {\tt psFlux}  \\ 
@@ -448,7 +460,7 @@ nearbyObj   & uint64[3] & ~ & Closest \Objects in \DR. \\
 
 nearbyObjDist   & float[3] & arcsec & Distances to \texttt{nearbyObj}. \\
 
-nearbyObjLnL   & float[3] & ~ &  Natural $\log$ likelihood that the observed \DIAObject is the same object as the nearby \Object. \\
+nearbyObjLnP   & float[3] & ~ &  Natural $\log$ of the probability that the observed \DIAObject is the same as the nearby \Object\footnote{This quantity will be computed by marginalizing over the product of position and proper motion error ellipses of the \Object and \DIAObject, assuming a flat prior.}. \\
 
 flags & bit[64] & bit & Flags \\ \hline
 
@@ -480,7 +492,9 @@ arc & float & days & Arc of observation. \\
 
 orbFitLnL & float & ~ & Natural log of the likelihood of the orbital elements fit. \\
 
-nOrbFit & int16 & ~ & Number of observations used in the fit. \\
+orbFitChi2 & float & ~ & \chi$^2$ statistic of the orbital elements fit. \\
+
+orbFitN & int & ~ & The number of data points (observations) used to fit the orbital elements. \\
 
 MOID & float[2] & AU & Minimum orbit intersection distances\footnote{\url{http://www2.lowell.edu/users/elgb/moid.html}} \\
 
@@ -804,6 +818,10 @@ psCov & float[66] & various & Point-source model covariance matrix\footnote{Not 
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
+psChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+
+psN & int & ~ & The number of data points (pixels) used to fit the model. \\
+
 
 bdRadec & double[2] & degrees & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk", we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object at time {\tt radecTai}, in each band. \\
 
@@ -820,6 +838,10 @@ bdReD & float & arcsec & B+D model: Effective radius of the exponential profile 
 bdCov & float[171] & various & B+D model covariance matrix\footnote{See {\tt psCov} for notes on precision of variances/covariances.}. \\ 
 
 bdLnL & float & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\ 
+
+bdChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+
+bdN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
 bdSamples & float[19][200] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
 
@@ -941,6 +963,10 @@ psXY & float[2] & pixels & Point source model: $(column, row)$ position of the o
 psCov & float[6] & various & Point-source model covariance matrix\footnote{Not all elements of the covariance matrix will be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim 1$\% ).}. \\ 
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
+
+psChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+
+psN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
 psRadec & double[2] & degrees & Point source model: $(\alpha, \delta)$ position of the object, transformed from {\tt psXY} \\
 
