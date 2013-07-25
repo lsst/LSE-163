@@ -733,6 +733,15 @@ To enable science cases depending on observations of non-variable objects in the
 
 \end{itemize}
 
+\subsubsection{Supporting Science Cases Requiring Full Posteriors}
+
+Science cases sensitive to systematics, departures of likelihood from Gaussianity, or requiring user-specified priors, demand knowledge of the shape of the likelihood function beyond a simple Gaussian approximation around the ML value. The estimate of bulge-disk model parameters and the estimate of photometric redshifts are two examples where knowledge of the full posterior is likely to be needed for LSST science cases.
+
+We currently plan to provide this information in two ways: a) by providing independent samples from the likelihood function (in the case of the bulge-disk model), and b) by providing parametric estimates of the likelihood function (for the photometric redshifts). As will be shown in Table~\ref{tbl:objectTable}, the current allocation is $\sim 200$ samples (on average) for the bulge-disk model, and $\sim 100$ parameters for the photo-Z likelihood distributions, per object.
+\\
+
+The methods of storing likelihood functions (or samples thereof) will continue to be developed and optimized throughout Construction and Commissioning. The key limitation, on the amount of data needed to be stored, can be overcome by compression techniques. For example, simply noticing that not more than $\sim 0.5$\% accuracy is needed for sample values allows one to increase the number of samples by a factor of $4$. More advanced techniques, such as PCA analysis of the likelihoods across the entire catalog, may allow us to store even more, providing a better estimate of the shape of the likelihood function. In that sense, what is presented in Table~\ref{tbl:objectTable} should be thought of as a {\bf \em conservative estimate}, which we plan to improve upon as development continues in Construction.
+
 \subsubsection{Source Characterization}
 \label{sec:sourceMeas}
 
@@ -788,7 +797,7 @@ These convey {\em what} data will be recorded in each table, rather than the det
 
 \begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\DIASource Table]{Level 2 Catalog \Object Table
+\caption[\Object Table]{Level 2 Catalog \Object Table\label{tbl:objectTable}
 } \\
 
 \hline \multicolumn{1}{c}{\bf Name} & \multicolumn{1}{c}{\bf Type} & \multicolumn{1}{c}{\bf Unit} & \multicolumn{1}{c}{\bf Description} \\ \hline
