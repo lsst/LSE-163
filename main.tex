@@ -160,6 +160,16 @@ where the index $k$ runs over all data points included in the fit.
 
 For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by providing additional pre-computed columns, taking care to name them appropriately so as to minimize accidental incorrect usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may represent the maximum likelihood value.
 
+\subsection{Image Characterization Data}
+
+Raw images will be processed to remove instrumental signature and characterize their properties, including backgrounds (both due to night sky and astrophysical), the point spread function and its variation, photometric zero-point model, and the world coordinate system (WCS).
+
+That characterization is crucial for deriving LSST catalogs and understanding the images. It will be kept and made available to the users. The exact format used to store these (meta)data will depend on the final adopted algorithm in consultation with the scientific community to ensure the formats in which these data are served are maximally useful.
+
+Each processed image\footnote{It is also frequently referred to as {\em calibrated exposure}}, including the coadds, will record information on pixel variance (the ``variance plane"), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and usefullness of each pixel in estimating the flux density recorded in that area of the sky.
+
+This information will be per-pixel, and potentially unwieldy to use for certain science cases. We plan to investigate approximate schemes for storing masks based on geometry (e.g., similar to Mangle or STOMP), {\em in addition} to storing them on a per pixel basis.
+
 \subsection{Fluxes and Magnitudes}
 \label{sec:fluxes}
 
@@ -356,9 +366,9 @@ diffFlux & float & nmgy & Calibrated flux for point source model centered on {\t
 
 diffFluxSigma & float & nmgy & Estimated uncertainty of \texttt{diffFlux}. \\ 
 
-%fpSky & float & nmgy/asec$^{2}$ & Estimated sky background at the position (centroid) of the object. \\ 
+fpSky & float & nmgy/asec$^{2}$ & Estimated sky background at the position (centroid) of the object. \\ 
 
-%fpSkySigma & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpSky}. \\ 
+fpSkySigma & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpSky}. \\ 
 
 %grayExtinction & float & nmgy & Applied photometric extinction correction (gray component) \\ 
 
@@ -965,6 +975,10 @@ ssObjectId & uint64 & ~ & ID of the \SSObject this source has been linked to, if
 
 parentSourceId & uint64 & ~ & ID of the parent \Source this source has been deblended from, if any. \\
 
+sky & float & nmgy/asec$^{2}$ & Estimated sky background at the position (centroid) of the source. \\ 
+
+skySigma & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{sky}. \\ 
+
 psFlux & float & nmgy & Calibrated point source model flux.\\ 
 
 psXY & float[2] & pixels & Point source model: $(column, row)$ position of the object on the CCD. \\
@@ -1104,7 +1118,7 @@ We {\em \bf will} retain smaller sections of all generated coadds, to support qu
 
 Over 10 years of operations, LSST will produce eleven data releases: two for the first year of survey operations, and one every subsequent year. Each data release will include reprocessing of all data from the start of the survey, up to the cutoff date for that release.
 
-The contents of data releases are expected to range from XX PB (DR1) to $\sim 70$ PB for DR11 (this includes the raw images, retained coadds, and catalogs). Given that scale, it is not feasible to keep all data releases loaded and accessible at all times.
+The contents of data releases are expected to range from a few PB (DR1) to $\sim 70$ PB for DR11 (this includes the raw images, retained coadds, and catalogs). Given that scale, it is not feasible to keep all data releases loaded and accessible at all times.
 
 Instead, {\bf \em only the contents of the most recent data release, and the penultimate data release will be kept on fast storage and with catalogs loaded into the database}. Statistics collected by prior surveys (eg., SDSS) show that users nearly always prefer accessing the most recent data release, but sometimes may use the penultimate one (this is especially true just after the publication of a new data release). Older releases are used rarely.
 
@@ -1188,7 +1202,7 @@ These processing resources can be available for use in any clearly LSST-related 
 \subsection{Level 3 Programming Environment and Framework}
 \label{sec:l3framework}
 
-As a part of the Level 3 Programming Environment and Framework, the LSST will make available the LSST software stack to users, to aid in the analyses of LSST data.
+As a part of the Level 3 Programming Environment and Framework, the LSST will make available the LSST software stack to users, to aid in the analyses of LSST data. This includes all code implementing the core processing algorithms (image characterization and manipulation, building of coadds, image differencing, object detection, object characterization, moving object detection, etc.), the middleware necessary to run those codes at large scale, as well as the LSST database management system.
 
 These analyses could be done on LSST-owned systems (i.e., on the Level 3 processing resources) but also on a variety of supported external systems.  We will aim to support common personal Unix flavors (for example, common distributions of Linux and Mac OS X) as well as commonly used cluster and HPC environments.  The vision is to enable relatively straightforward use of major national systems such as XSEDE or Open Science Grid, as well as some common commercial cloud environments.  The decision of which environments to support will be under configuration control and we will seek advice from the user community.  We cannot commit to too many flavors.  In-kind contributions of customizations for other environments will be welcome and may provide a role for national labs.
 
