@@ -726,9 +726,9 @@ To enable science cases depending on observations of non-variable objects in the
 %
 \begin{itemize}
     \item {\em Point source model fit}. The observed object is modeled as a point source with finite proper motion and parallax and constant flux (allowed to be different in each band). This model is a good description for stars and other unresolved sources. Its 11 parameters will be simultaneously constrained using information from all available observations in all bands\footnote{The fitting procedure will account for differential chromatic refraction.}.
-    \item {\em Bulge-disk model fit}. The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies\footnote{We may reconsider this choice if a better suited parametrization is discovered while LSST is in Construction.}. The object is assumed not to move\footnote{I.e., have zero proper motion.}. The components share the same ellipticity and center. One effective radius is fit for each component (that is, the radius is {\em not} a function of band). The central surface brightness is allowed to vary from band to band. There are a total of 18 free parameters, which will be simultaneously constrained using information from all available epochs and bands. Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted to limit the range of its sampling.
+    \item {\em Bulge-disk model fit}. The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies\footnote{We may reconsider this choice if a better suited parametrization is discovered while LSST is in Construction.}. The object is assumed not to move\footnote{I.e., have zero proper motion.}. The components share the same ellipticity and center. The model is independently fit to each band. There are a total of 8 free parameters, which will be simultaneously constrained using information from all available epochs for each band. Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted to limit the range of its sampling.
 
-   In addition to the maximum likelihood values of fitted parameters and their covariance matrix, a number (currently planned to be $\sim 200$, on average) of independent samples from the likelihood function will be provided. These will enable use-cases sensitive to departures from the Gaussian approximation.
+   In addition to the maximum likelihood values of fitted parameters and their covariance matrix, a number (currently planned to be $\sim 200$, on average) of independent samples from the likelihood function will be provided. These will enable use-cases sensitive to departures from the Gaussian approximation, with shear measurement being the primary use case. A permissible descope, in case of insufficient storage, will be not to sample the posteror for u and y bands.
 
     \item {\em Standard colors}. Colors of the object in ``standard seeing" (for example, the third quartile expected survey seeing in the $i$ band, $\sim 0.8"$) will be measured. These colors are guaranteed to be seeing-insensitive,  suitable for estimation of photometric redshifts\footnote{The problem of optimal determination of photometric redshift is the subject of intense research. The approach we're taking here is conservative, following contemporary practices. As new insights develop, we will revisit the issue.}.
 
@@ -842,27 +842,27 @@ psChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
 psN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
 
-bdRadec & double[2] & degrees & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk", we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object at time {\tt radecTai}, in each band. \\
+bdRadec & double[2][ugrizy] & ~ & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk", we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object at time {\tt radecTai}, in each band. \\
 
-bdEllip & float[2] & ~ & B+D model: Ellipticity $(e_1, e_2)$ of the object. \\
+bdEllip & float[2][ugrizy] & ~ & B+D model: Ellipticity $(e_1, e_2)$ of the object. \\
 
 bdFluxB & float[ugrizy] & nmgy & B+D model: Integrated flux of the de Vaucouleurs component. \\
 
 bdFluxD & float[ugrizy] & nmgy & B+D model: Integrated flux of the exponential component. \\
 
-bdReB & float & arcsec & B+D model: Effective radius of the de Vaucouleurs profile component. \\
+bdReB & float[ugrizy] & arcsec & B+D model: Effective radius of the de Vaucouleurs profile component. \\
 
-bdReD & float & arcsec & B+D model: Effective radius of the exponential profile component. \\
+bdReD & float[ugrizy] & arcsec & B+D model: Effective radius of the exponential profile component. \\
 
-bdCov & float[171] & various & B+D model covariance matrix\footnote{See {\tt psCov} for notes on precision of variances/covariances.}. \\ 
+bdCov & float[36][ugrizy] & ~ & B+D model covariance matrix\footnote{See {\tt psCov} for notes on precision of variances/covariances.}. \\ 
 
-bdLnL & float & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\ 
+bdLnL & float[ugrizy] & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\ 
 
-bdChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+bdChi2 & float[ugrizy] & ~ & \chi$^2$ statistic of the model fit. \\
 
-bdN & int & ~ & The number of data points (pixels) used to fit the model. \\
+bdN & int[ugrizy] & ~ & The number of data points (pixels) used to fit the model. \\
 
-bdSamples & float[19][200] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
+bdSamples & float16[9][200][ugrizy] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
 
 stdColor & float[5] & mag & Color of the object measured in ``standard seeing". While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-Z determinations.\\
 
