@@ -62,9 +62,10 @@ Data Products Definition Document \\
 {\small \bf [To become LSE-163 pending review and CCB approval]}}
 \author{
     Mario Juri\'c\footnote{Please direct comments to \textless\href{mailto:mjuric@lsst.org}{mjuric@lsst.org}\textgreater.},
-    R. H. Lupton, T. Axelrod, G.P. Dubois-Felsmann, \\    
-    \v{Z}. Ivezi\'c, A.C. Becker, J. Becla,  A.J. Connolly, M. Freemon, \\
-     J. Kantor, K-T Lim, D. Shaw, M. Strauss, {\em and} J.A. Tyson \vspace{1.2ex} \\
+    R.H. Lupton, T. Axelrod, J.F. Bosch, \\
+    G.P. Dubois-Felsmann, \v{Z}. Ivezi\'c, A.C. Becker, J. Becla,  \\ 
+     A.J. Connolly, M. Freemon, J. Kantor, K-T Lim, D. Shaw, \\
+     M. Strauss, {\em and} J.A. Tyson \vspace{1.2ex} \\
     {\em for the LSST Project}
 }
 
@@ -289,7 +290,7 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 
 \vspace{2em}
 
-In the sections to follow, we present the {\em conceptual schemas} for the most important \DB tables. These convey {\em what} data will be recorded in each table, rather than the details of {\em how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named {\tt band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
+In the sections to follow, we present the {\em conceptual schemas} for the most important \DB tables. These convey {\em what} data will be recorded in each table, rather than the details of {\em how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named {\tt band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
 \subsubsection{\DIASource Table}
 
