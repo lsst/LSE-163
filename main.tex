@@ -15,6 +15,7 @@
 
 \excludecomment{changelog}
 \excludecomment{todo}
+\excludecomment{openissues}
 
 \newcommand\x         {\hbox{$\times$}}
 \newcommand\othername {\hbox{$\dots$}}
@@ -653,6 +654,7 @@ To directly serve the end-users, LSST will provide a basic, limited capacity, al
 
 We emphasize that this LSST-provided capability will be limited, and is {\em not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could. For example, we do not plan to provide any classification (eg., ``is the light curve consistent with an RR Lyra?", or ``a Type Ia SN?"). No information beyond what is contained in the \VOEvent packet will be available to user-defined filters (eg., no cross-matches to other catalogs). The complexity and run time of user defined filters will be limited by available resources. Execution latency will not be guaranteed. The number of \VOEvents transmitted to each user per user will be limited as well (eg., at least up to $\sim 20$ per visit per user, dynamically throttled depending on load). Finally, the total number of simultaneous subscribers is likely to be limited -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
 
+\begin{openissues}
 \subsection{Open Issues}
 
 What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are possible. The estimate of the time by which a decision should be made is noted in parentheses.
@@ -668,6 +670,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
     \item {\em When should we (if ever) stop performing forced photometry on positions of \DIAObjects?} Depending on the rate of false positives, unidentified artifacts, or unrecognized Solar System objects, the number of forced measurements may dramatically grow over time. (OPERATIONS)
 
 \end{itemize}
+\end{openissues}
 
 \clearpage
 
@@ -1129,6 +1132,7 @@ Older releases will be archived to mass storage (tape). The users {\bf \em will 
 
 All raw data used to generate any public data product (raw exposures, calibration frames, telemetry, configuration metadata, etc.) will be kept and made available for download.
 
+\begin{openissues}
 \subsection{Open Issues}
 
 What follows is a (non-exhaustive) list of issues, technical and scientific, that are still being discussed and where changes are possible. The estimate of the time by which a decision should be made is noted in parentheses.
@@ -1149,6 +1153,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
     \item {\em Do we need multiple estimates of object centroids?} The document currently assumes that the model-independent centroiding algorithm, the point source model fit, and the extended source model fit, don't necessarily need to agree on the location of the center of an object. This is true in general. However, it has been pointed out that when they do not agree, the associated flux measurement is meaningless anyway. (OPERATIONS)
 
 \end{itemize}
+\end{openissues}
 
 \clearpage
 
