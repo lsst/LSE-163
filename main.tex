@@ -179,7 +179,7 @@ Because flux measurements on difference images (Level 1 data products; \S~\ref{s
 
 We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
 \begin{equation}
-    m_{AB} = -2.5 \log_{10}(f/{\rm maggie})}
+    m_{AB} = -2.5 \log_{10}(f/{\rm maggie})
 \end{equation}
 
 We chose to use maggies (as opposed to, say, Jansky) to allow the user to differentiate between two distinct sources of photometric calibration error: the error in relative (internal) calibration of the survey, and the error in absolute calibration that depends on the knowledge of absolute flux of photometric standards.
@@ -240,7 +240,7 @@ At the end of the difference image analysis of each visit, we will issue time do
 
 The following is a high-level description of steps which will occur during regular difference image analysis:
 \begin{enumerate}
-\item A visit is acquired and reduced to a single {\em visit image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps}, etc.).
+\item A visit is acquired and reduced to a single {\em visit image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).
 \item The visit image is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.
 \item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^{\rm nd}$ moments, as well as a fit to a trailed source model.} of the DIASource are measured on the difference image. PSF photometry is performed on the visit image at the position of the \DIASource to obtain a measure of the absolute flux.
 \item The \DB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.
@@ -342,7 +342,7 @@ psFluxSigma & float & nmgy & Estimated uncertainty of \texttt{psFlux}. \\
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
-psChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
@@ -356,7 +356,7 @@ trailCov & float[6] & various & Covariance matrix of trailed source model parame
 
 trailLnL & float & ~ & Natural $log$ likelihood of the observed data given the trailed source model. \\ 
 
-trailChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+trailChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 trailN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
@@ -440,7 +440,7 @@ pmParallaxCov & float[6] & various & Proper motion - parallax covariances. \\
 
 pmParallaxLnL & float & ~ & Natural log of the likelihood of the linear proper motion-paralax fit\footnote{{\tt radec}, {\tt pm}, and {\tt parllax} will all be simultaneously fitted for. {\tt positionMotionLnL} is the logarithm of the likelihod of their maximum-likelihood estimates.}. \\
 
-pmParallaxChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+pmParallaxChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 pmParallaxN & int & ~ & The number of data points used to fit the model. \\
 
@@ -504,7 +504,7 @@ arc & float & days & Arc of observation. \\
 
 orbFitLnL & float & ~ & Natural log of the likelihood of the orbital elements fit. \\
 
-orbFitChi2 & float & ~ & \chi$^2$ statistic of the orbital elements fit. \\
+orbFitChi2 & float & ~ & $\chi^2$ statistic of the orbital elements fit. \\
 
 orbFitN & int & ~ & The number of data points (observations) used to fit the orbital elements. \\
 
@@ -841,7 +841,7 @@ psCov & float[66] & various & Point-source model covariance matrix\footnote{Not 
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
-psChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
@@ -862,7 +862,7 @@ bdCov & float[36][ugrizy] & ~ & B+D model covariance matrix\footnote{See {\tt ps
 
 bdLnL & float[ugrizy] & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\ 
 
-bdChi2 & float[ugrizy] & ~ & \chi$^2$ statistic of the model fit. \\
+bdChi2 & float[ugrizy] & ~ & $\chi^2$ statistic of the model fit. \\
 
 bdN & int[ugrizy] & ~ & The number of data points (pixels) used to fit the model. \\
 
@@ -991,7 +991,7 @@ psCov & float[6] & various & Point-source model covariance matrix\footnote{Not a
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\ 
 
-psChi2 & float & ~ & \chi$^2$ statistic of the model fit. \\
+psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psN & int & ~ & The number of data points (pixels) used to fit the model. \\
 
