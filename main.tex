@@ -59,16 +59,17 @@
 \newcommand{\VOEvents}{\code{VOEvents}\xspace}
 \newcommand{\transSNR}{5\xspace}
 
-\title{Large Synoptic Survey Telescope \\
+\title{\vskip -1in Large Synoptic Survey Telescope \\
 Data Products Definition Document \\
 {\small \bf LSST Document LSE-163}}
 \author{
-    Mario Juri\'c\footnote{Please direct comments to \textless\href{mailto:mjuric@lsst.org}{mjuric@lsst.org}\textgreater.},
-    R.H. Lupton, T. Axelrod, J.F. Bosch, \\
-    G.P. Dubois-Felsmann, \v{Z}. Ivezi\'c, A.C. Becker, J. Becla,  \\ 
-     A.J. Connolly, M. Freemon, J. Kantor, K-T Lim, D. Shaw, \\
-     M. Strauss, {\em and} J.A. Tyson \vspace{1.2ex} \\
-    {\em for the LSST Project}
+{\small M. Juri\'c}\footnote{Please direct comments to \textless\href{mailto:mjuric@lsst.org}{mjuric@lsst.org}\textgreater.}, 
+{\small T. Axelrod, A.C. Becker, J. Becla, J.F. Bosch, D. Ciardi, } \\
+{\small A.J. Connolly,  G.P. Dubois-Felsmann, F. Economou, M. Freemon, } \\
+{\small M. Gelman, M. Graham, \v{Z}. Ivezi\'c, T. Jenness,  J. Kantor, S. Krughoff, } \\
+{\small K-T Lim,  R.H. Lupton, F. Mueller, D. Nidever, D. Petravick, D. Shaw, } \\
+{\small C. Slater, M. Strauss, J. Swinbank, J.A. Tyson, M. Wood-Vasey {\em and} X. Wu} \vspace{1.2ex} \\
+{\small {\em for the LSST Project}}
 }
 
 \begin{document}
@@ -129,7 +130,7 @@ conceptually, counts proportional to photon flux entering the
 telescope pupil (in reality, there are many additional optical, pixel and
 bandpass effects, including random counting noise and various subtle 
 systematic errors, that are treated during subsequent processing). 
-This single-visit image processed by the ISR is called "calibrated
+This single-visit image processed by the ISR is called a "calibrated
 exposure" and its main data structures include counts, their variance and 
 various masks, all defined on per pixel basis. After the ISR step is
 completed, the pixel values and their variance are not modified any more. 
@@ -172,16 +173,10 @@ a point source model, a trailed point source model, and a point source dipole mo
 
 \subsection{Classes of LSST Data Products}
 
-\B{The main LSST data products are illustrated in Figure~\ref{fig:Detail0}.} 
+\B{The main LSST data products are illustrated in Figure~\ref{fig:Detail0} (see Appendix for 
+a conceptual design of pipelines which will produce these data products).} 
 LSST Data Management will perform two, somewhat overlapping in scientific intent, types of image analyses:
 
-\begin{enumerate}
-\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in {\bf Level 1} data products. Level 1 products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical {\em objects} are called {\em sources}. The reader is cautioned that this nomenclature is not universal: some surveys call {\em detections} what LSST calls {\em sources}, and use the term {\em sources} for what LSST calls {\em objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called call ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects {\em inside} and {\em outside} of the Solar System.}). The catalogs will be entered into the {\bf \DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted 
-standards\footnote{For example, VOEvent, see http://ls.st/4tt} within 60 seconds of observation. Level 1 data products are discussed in \S~\ref{sec:level1}.
-
-\item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are {\bf Level 2} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called {\em snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a {\em visit}.}), \Sources\footnote{When written in bold monospace type (i.e., {\tt \textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Level 2 processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Level 1 data products (see \S \ref{sec:l1dbreproc}). In contrast to the ``living'' \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Level 2 data products are discussed in \S~\ref{sec:level2}.
-\end{enumerate}
- 
 
 \begin{figure}[!t]
     \centering
@@ -190,6 +185,15 @@ standards\footnote{For example, VOEvent, see http://ls.st/4tt} within 60 seconds
     \vskip -0.7in 
     \caption{Overview of data products produced by LSST Imaging Processing Science Pipelines.\label{fig:Detail0}}    
 \end{figure}
+
+
+\begin{enumerate}
+\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in {\bf Level 1} data products. Level 1 products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical {\em objects} are called {\em sources}. The reader is cautioned that this nomenclature is not universal: some surveys call {\em detections} what LSST calls {\em sources}, and use the term {\em sources} for what LSST calls {\em objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called call ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects {\em inside} and {\em outside} of the Solar System.}). The catalogs will be entered into the {\bf \DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted 
+standards\footnote{For example, VOEvent, see http://ls.st/4tt} within 60 seconds of observation. Level 1 data products are discussed in \S~\ref{sec:level1}.
+
+\item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are {\bf Level 2} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called {\em snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a {\em visit}.}), \Sources\footnote{When written in bold monospace type (i.e., {\tt \textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Level 2 processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Level 1 data products (see \S \ref{sec:l1dbreproc}). In contrast to the ``living'' \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Level 2 data products are discussed in \S~\ref{sec:level2}.
+\end{enumerate}
+ 
 
 The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as {\em event alerts} within 60 seconds of end of visit acquisition. The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process. 
 
@@ -201,109 +205,6 @@ Recognizing the diversity of astronomical community needs, and the need for spec
 
 Finally, LSST Survey Specifications (\S~3.4 of LSST SRD) prescribe that 90\% of LSST observing time be spent in the so-called ``universal cadence" mode of surveying the sky. These observations will result in Level 1 and 2 data products discussed above. The remaining 10\% of observing time will be devoted to {\bf special programs}, designed to obtain improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special" regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. The data products for these programs will be generated using the same processing software and hardware and possess the general characteristics of Level 1 and 2 data products, but may be performed on a somewhat different cadence. They will be discussed in \S~\ref{sec:specialProgs}.
 
-
-\begin{figure}[!t]
-    \centering
-    \vskip -0.1in 
-    \includegraphics[scale=0.515, angle=270]{gliffy/LSSTimageProcessingDetail1}
-    \vskip -0.1in 
-    \caption{Illustration of the conceptual design of LSST science pipelines for imaging processing.\label{fig:Detail1}}    
-\end{figure}
-
-
-\subsection{Conceptual Design of Science Pipelines} 
-
-
-\begin{figure}[!t]
-    \centering
-    \vskip -1.1in 
-    \includegraphics[scale=0.505, angle=270]{gliffy/SingleVisitProcessing}
-    \vskip -1.1in 
-    \caption{Illustration of the conceptual algorithm design for Single Visit Processing pipeline.\label{fig:Pipe1}}    
-\end{figure}
-
-\B{
-A high-level conceptual overview of the LSST image processing science pipelines is illustrated
-in Figure~\ref{fig:Detail1}. The pipeline definitions presented here are driven by their inputs,
-outputs and processing steps; they do {\it not} describe exact boundaries in the actual implemention
-code, execution, or development responsibilities within the Project. 
-Processing from pipelines marked with 1, 2, and 5-8 is executed every day when new data are taken 
-to produce Level 1 Data Products. Annual Data Release processing includes pipelines 1-6 and 8
-(everything except Alert production). These main conceptual steps in LSST image processing 
-include the following pipelines (enumeration in this list corresponds to enumeration in Figure~\ref{fig:Detail1}
-but note that these steps can be interleaved in the actual processing flow):
-\begin{enumerate}
-\item {\it Single Visit Processing} pipeline (Figure~\ref{fig:Pipe1}) produces calibrated and 
-characterized single-visit images from raw snaps. The main processing steps include instrumental
-signature removal, background estimation, source detection, deblending and measurements, 
-point spread function estimation, and astrometric and photometric calibration. 
-\item {\it Image Coaddition} pipeline (Figure~\ref{fig:Pipes234}) produces coadded images
-of different flavors (optimized for depth, seeing, etc.) from an ensemble of single-visit images. 
-\item {\it Coadded Image Analysis} pipeline (Figure~\ref{fig:Pipes234}) defines the \Object list 
-and performs initial measurements on coadded images. 
-\item {\it Multi-epoch Object Characterization} pipeline (Figure~\ref{fig:Pipes234}) fits a library 
-of image models to a set of Footprints of an \Object family, measures additional quantities (e.g.,
-the profile surface brightness in a series of annuli) not captured by those models, and performs 
-Forced Photometry. All these measurements are performed on single-visit images (direct and 
-difference images) and for all \Objects. 
-\item {\it Image Differencing} pipeline (Figure~\ref{fig:Pipes567}) produces difference images 
-from a single-visit and coadded (template) images. 
-\item {\it Difference Image Analysis} pipeline (Figure~\ref{fig:Pipes567}) updates 
-\DIAObject and \SSObject lists with new \DIASources detected on processed difference image, 
-fits a library of image models to Footprints of these \DIASources, and for all \DIAObjects 
-overlapping the difference image it performs Forced Photometry and recomputes summary quantities. 
-During nightly Level 1 processing, this pipeline also performs Forced Photometry
-for all new \DIAObjects on difference images from the last 30 days. 
-\item {\it Alert Generation and Distribution} pipeline (Figure~\ref{fig:Pipes567}) uses updated 
-\DIAObjects and \DIASources to generate and distribute \Alerts (which also include postage stamp
-images of the \DIASource in difference image and coadded template image). 
-\item {\it Moving Object Processing} pipeline (MOPS, Figure~\ref{fig:Pipe8})) combines all 
-un-associated \DIASources into plausible \SSObjects and estimates their orbital parameters. 
-The three main pipeline stages include associating new \DIASources with known \SSObjects,
-discovering new \SSObjects, and orbit refinement and management. 
-\end{enumerate} 
-
-Further details about the pipeline design and implementation are available from the LSST document LDM-151. 
-}
-
-
-\begin{figure}[!th]
-    \centering
-    \vskip -0.2in 
-    \includegraphics[scale=0.535]{gliffy/CoaddedImageProcessing}
-    \vskip -0.2in 
-    \caption{Illustration of the conceptual algorithm design for Image Coaddition, Coadded Image Analysis,
-     and Multi-epoch Object Characterization pipelines.\label{fig:Pipes234}}    
-\end{figure}
-
-
-
-\begin{figure}[!th]
-    \centering
-    \vskip -0.3in 
-%    \hskip -0.8in
-    \includegraphics[scale=0.555, angle=0]{gliffy/DifferenceImageProcessing}
-    \vskip -0.1in 
-    \caption{Illustration of the conceptual algorithm  design for Image Differencing, Difference Image 
-                      Analysis, and Alert Generation and Distribution pipelines. \label{fig:Pipes567}}    
-\end{figure}
-
-\begin{figure}[!t]
-    \centering
-    \vskip -2.3in 
-%    \hskip -0.2in
-    \includegraphics[scale=0.50, angle=270]{gliffy/MOPS-Level0}
-    \vskip -0.1in 
-    \caption{Illustration of the conceptual algorithm design for Moving Object Processing System. \label{fig:Pipe8}}    
-\end{figure}
-
-
-
-
-
-
-
-\clearpage
 
 \section{General Considerations}
 
@@ -869,6 +770,7 @@ Each alert (a \VOEvent packet) will at least include the following:
     \item The \DIASource record that triggered the alert
     \item The entire \DIAObject (or \SSObject) record
     \item All previous \DIASource records
+    \item \B{A matching \DIAObject from the latest Data Release, if it exists, and its \DIASource records}
     \end{itemize}
 % \item Flags (isSolarSystemObject, isArtefact, etc.)
 \item Cut-out of the difference image centered on the \DIASource (10 bytes/pixel, FITS MEF)
@@ -970,10 +872,15 @@ bullet 7 is pipeline 4, {\em Multi-epoch Object Characterization}):
     \item {\em Coadd creation}: Deep, seeing optimized, and short-period per-band coadds are created in $ugrizy$ bands, as well as deeper, multi-color, coadds\footnote{We'll denote the ``band" of the multi-color coadd as 'M'.}. Transient sources (including Solar System objects, explosive transients, etc), will be rejected from the coadds. See \S~\ref{sec:coadds} for details.
     \item {\em Coadd source detection}. Sources will be detected on all coadds generated in the previous step. The source detection algorithm will detect regions of connected pixels, known as {\em footprints}, above the nominal $S/N$ threshold in the {\em PSF-likelihood image} of the visit. \B{An appropriate algorithm will be run to also detect extended low surface brightness objects
 (eg., binned detection algorithm from SDSS).}  Each footprint may have one or more {\em peaks}, and the collection of these peaks (and their membership in the footprints) are the output of this stage. 
-    \item {\em Association and deblending}. The next stage in the pipeline, which we will for simplicity just call {\em the deblender}, will synthesize a list of unique objects. In doing so it will consider the catalogs of \Sources and \CoaddSources, catalogs of \DIASources, \DIAObjects and \SSObjects detected on difference images, and objects from external catalogs.
-    
+    \item {\em Association and deblending}. The next stage in the pipeline, which we will for simplicity just call {\em the deblender}, will synthesize a list of unique objects. In doing so it will consider the catalogs of \CoaddSources, catalogs of \DIASources, \DIAObjects and \SSObjects detected on difference images, and objects from external 
+catalogs\footnote{\B{Note that \Sources are not considered when generating the \Object list (given the large
+number of visits in each band, the false positives close to the faint end would increase the complexity of
+association and deblending algorithms). It is possible for intermittent sources that are detected just above 
+the faint detection limit of single visits to be undetected in coaddds, and thus to not have a matching \Object. 
+To enable easy identification of such \Sources, the nearest \Object associated with each \Source, if any, will be recorded.}}.
+
     The deblender will make use of all information available at this stage, including the knowledge of peak positions, bands, time, time variability (from Level 1), Galactic longitude and latitude, etc. The output of this stage is a list of uncharacterized \Objects\footnote{Depending on the exact implementation of the deblender, this stage may also attach significant metadata (eg, deblended footprints and pixel-weight maps) to each deblended \Object record.}. 
-    \item \B{{\em Coadd object characterization}.  Object properties such as adaptive moments and aperture fluxes will be measured on the coadds.  These will be stored in additional columns in the \Object table.  Models fit in multi-epoch object characterization will also be fit first to the coadds to initialize the more expensive multi-epoch fitting.} 
+    \item \B{{\em Coadd object characterization}.  Object properties such as adaptive moments and aperture fluxes will be measured on the coadds.  These will be stored in additional columns in the \Object table.  Models fit in multi-epoch object characterization will also be fit first to the coadds and stored.} 
     \item {\em Multi-epoch object characterization}. A set of predefined model fits and measurements will be performed on each of the \Objects identified in the previous step, {\it taking all available multi-epoch data into account}. Model fits will be performed using {\em MultiFit}-type algorithms. Rather than coadding a set of images and measuring object characteristics on the coadd, MultiFit simultaneously fits PSF-convolved models to the objects multiple observations. This reduces systematic errors, improves the overall $S/N$, and allows for fitting of time-dependent quantities degenerate with shape on the coadds (for example, the proper motion). The models we plan to fit will {\em not} allow for flux variability (see the next item).
     \item {\em Forced Photometry}. Source fluxes will be measured on every visit, with the position, motion, shape, and the deblending parameters characterized in the previous step kept fixed. 
 \B{Measurements will be performed on both direct images and difference images.}
@@ -1006,7 +913,7 @@ In addition to the maximum likelihood values of fitted parameters and their cova
 
     \item {\em Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured in standard seeing using self-similar elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and {\em homogenized}, convolved to a canonical circular PSF\footnote{This is an attempt to derive a definition of elliptical apertures that does not depend on seeing. For example, for a large galaxy, the correction to standard seeing will introduce little change to measured ellipticity. Corrected apertures for small galaxies will tend to be circular (due to smearing by the PSF). In the intermediate regime, this method results in derived apertures that are relatively seeing-independent. Note that this is only the case for {\em apertures}; the measured flux will still be seeing dependent and it is up to the user to take this into account.}. The radii will be computed independently for each band. Fluxes will be computed in each band, by integrating the light within some multiple of {\em the radius measured in the canonical band}\footnote{The shape of the aperture in all bands will be set by the profile of the galaxy in the canonical band alone. This procedure ensures that the color measured by comparing the flux in different bands is measured through a consistent aperture. See \url{http://www.sdss.org/dr7/algorithms/photometry.html} for details.} (most likely the $i$ band). Radii enclosing 50\% and 90\% of light will be provided.
     \item {\em Aperture surface brightness}. Aperture surface brightness will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures, in standard seeing.
-\item {\em Variability characterization}. Two groups of parameters will be provided, designed to characterize periodic and aperiodic variability features (Richards et al. 2011). \B{These parameters will be computed using flux measurements performed on difference images.}
+\item {\em Variability characterization}. Parameters will be provided, designed to characterize periodic and aperiodic variability features (Richards et al. 2011), in each bandpass. 
 We caution that the exact features in use when LSST begins operations are likely to be different compared to the baseline described here; this is to be expected given the rapid pace of research in time domain astronomy. However, their {\em number} is unlikely to grow beyond the present estimate.
 \end{itemize}
 
@@ -1562,8 +1469,8 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 \begin{itemize}
 \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
 \item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the "Level 3 environment"), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
-\item If the original code was written in another language or another data processing framework, the project will 
-\R{have the resources to rewrite} \B{consider rewriting} it to required LSST standards.
+\item If the original code was written in another language or another data processing framework, the project 
+\R{will have the resources to rewrite} \B{may consider rewriting} it to required LSST standards.
 \item Taking on a new Level 2 DP means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new L2DP through DR11.
 \end{itemize}
 
@@ -1587,6 +1494,114 @@ As a concrete example, a data product complement for a ``deep drilling" field de
 \\
 
 Note that the data rights and access rules apply just as they would for for Level 1/2/3. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
+
+
+
+
+\clearpage
+\section{\bf Appendix: Conceptual Pipeline Design \label{sec:scipi}} 
+
+
+\B{
+A high-level conceptual overview of the LSST image processing science pipelines is illustrated
+in Figure~\ref{fig:Detail1}. The pipeline definitions presented here are driven by their inputs,
+outputs and processing steps; they do {\it not} describe exact boundaries in the actual implemention
+code, execution, or development responsibilities within the Project. 
+Processing from pipelines marked with 1, 2, and 5-8 is executed every day when new data are taken 
+to produce Level 1 Data Products. Annual Data Release processing includes pipelines 1-6 and 8
+(everything except Alert production). These main conceptual steps in LSST image processing 
+include the following pipelines (enumeration in this list corresponds to enumeration in Figure~\ref{fig:Detail1}
+but note that these steps can be interleaved in the actual processing flow):
+\begin{enumerate}
+\item {\it Single Visit Processing} pipeline (Figure~\ref{fig:Pipe1}) produces calibrated and 
+characterized single-visit images from raw snaps. The main processing steps include instrumental
+signature removal, background estimation, source detection, deblending and measurements, 
+point spread function estimation, and astrometric and photometric calibration. 
+\item {\it Image Coaddition} pipeline (Figure~\ref{fig:Pipes234}) produces coadded images
+of different flavors (optimized for depth, seeing, etc.) from an ensemble of single-visit images. 
+\item {\it Coadded Image Analysis} pipeline (Figure~\ref{fig:Pipes234}) defines the \Object list 
+and performs initial measurements on coadded images. 
+\item {\it Multi-epoch Object Characterization} pipeline (Figure~\ref{fig:Pipes234}) fits a library 
+of image models to a set of Footprints of an \Object family, measures additional quantities (e.g.,
+the profile surface brightness in a series of annuli) not captured by those models, and performs 
+Forced Photometry. All these measurements are performed on single-visit images (direct and 
+difference images) and for all \Objects. 
+\item {\it Image Differencing} pipeline (Figure~\ref{fig:Pipes567}) produces difference images 
+from a single-visit and coadded (template) images. 
+\item {\it Difference Image Analysis} pipeline (Figure~\ref{fig:Pipes567}) updates 
+\DIAObject and \SSObject lists with new \DIASources detected on processed difference image, 
+fits a library of image models to Footprints of these \DIASources, and for all \DIAObjects 
+overlapping the difference image it performs Forced Photometry and recomputes summary quantities. 
+During nightly Level 1 processing, this pipeline also performs Forced Photometry
+for all new \DIAObjects on difference images from the last 30 days. 
+\item {\it Alert Generation and Distribution} pipeline (Figure~\ref{fig:Pipes567}) uses updated 
+\DIAObjects and \DIASources to generate and distribute \Alerts (which also include postage stamp
+images of the \DIASource in difference image and coadded template image). 
+\item {\it Moving Object Processing} pipeline (MOPS, Figure~\ref{fig:Pipe8})) combines all 
+un-associated \DIASources into plausible \SSObjects and estimates their orbital parameters. 
+The three main pipeline stages include associating new \DIASources with known \SSObjects,
+discovering new \SSObjects, and orbit refinement and management. 
+\end{enumerate} 
+
+Further details about the pipeline design and implementation are available from the LSST 
+document\footnote{See http://ls.st/LDM-151} LDM-151. 
+}
+
+
+
+\begin{figure}[!t]
+    \centering
+    \vskip -0.1in 
+    \includegraphics[scale=0.515, angle=270]{gliffy/LSSTimageProcessingDetail1}
+    \vskip -0.1in 
+    \caption{Illustration of the conceptual design of LSST science pipelines for imaging processing.\label{fig:Detail1}}    
+\end{figure}
+
+
+\begin{figure}[!t]
+    \centering
+    \vskip -1.1in 
+    \includegraphics[scale=0.505, angle=270]{gliffy/SingleVisitProcessing}
+    \vskip -1.1in 
+    \caption{Illustration of the conceptual algorithm design for Single Visit Processing pipeline.\label{fig:Pipe1}}    
+\end{figure}
+
+\begin{figure}[!th]
+    \centering
+    \vskip -0.2in 
+    \includegraphics[scale=0.535]{gliffy/CoaddedImageProcessing}
+    \vskip -0.2in 
+    \caption{Illustration of the conceptual algorithm design for Image Coaddition, Coadded Image Analysis,
+     and Multi-epoch Object Characterization pipelines.\label{fig:Pipes234}}    
+\end{figure}
+
+
+
+\begin{figure}[!th]
+    \centering
+    \vskip -0.3in 
+%    \hskip -0.8in
+    \includegraphics[scale=0.555, angle=0]{gliffy/DifferenceImageProcessing}
+    \vskip -0.1in 
+    \caption{Illustration of the conceptual algorithm  design for Image Differencing, Difference Image 
+                      Analysis, and Alert Generation and Distribution pipelines. \label{fig:Pipes567}}    
+\end{figure}
+
+\begin{figure}[!t]
+    \centering
+    \vskip -2.3in 
+%    \hskip -0.2in
+    \includegraphics[scale=0.50, angle=270]{gliffy/MOPS-Level0}
+    \vskip -0.1in 
+    \caption{Illustration of the conceptual algorithm design for Moving Object Processing System. \label{fig:Pipe8}}    
+\end{figure}
+
+
+
+
+
+
+
 
 \begin{todo}
 
@@ -1747,3 +1762,46 @@ The remaining work in Tucson is to
   calibration product pipelines. We’ll probably use scipi-wg time on Thu for QA pipeline
   discussion, and Fri time for progress on calibration pipelines, as well as discussions
   started by Jim today  
+
+
+
+
+KT (from Tucson): 
+p. 6: is called "calibrated exposure" -> is called a "calibrated exposure"
+
+Section 2.4: move entire section and diagrams to appendix, add forward
+reference to LDM-151 for further details on implementation
+
+(Mario) Need to define DIAForcedSource table
+
+Forced DIASources used to update summaries in DIAObjects? Yes
+
+p. 44: fit first to the coadds to initialize the more expensive multi-epoch
+fitting -> fit first to the coadds and stored
+
+p. 48: Remove "Two groups of" as well as blue sentence.  Consider saying
+explicitly that these variability parameters are per-band.
+
+p. 69: will consider rewriting -> may consider rewriting
+
+----
+We will also associate DIASources against the DIAObjects from the latest
+DRP and include any match plus its DRP DIASources (and their contents)
+in the Alert.  We will still associate against the Live L1 DB and
+include the DIAObject match (possibly just-created) from there along
+with its associated DIASources.
+
+We will include an extract of the measurements of (all three) Objects in
+the Alert as well.
+
+We can save space in L1DB by rolling *versions* of DIAObjects older than
+some date to tape (but never the most recent version of a DIAObject,
+even if that is old).
+
+DRP DIAObjects will look like L1 DIAObjects (although the exact code may
+differ from L1).
+
+Sources are an independent table, not fundamentally associated with
+Objects.  Remove Sources from bullet 5 on p. 44; add a footnote
+mentioning this.  Nearest Object may be recorded with the Source as a
+convenience.
