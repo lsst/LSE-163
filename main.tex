@@ -188,7 +188,7 @@ LSST Data Management will perform two, somewhat overlapping in scientific intent
 
 
 \begin{enumerate}
-\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in {\bf Level 1} data products. Level 1 products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical {\em objects} are called {\em sources}. The reader is cautioned that this nomenclature is not universal: some surveys call {\em detections} what LSST calls {\em sources}, and use the term {\em sources} for what LSST calls {\em objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called call ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects {\em inside} and {\em outside} of the Solar System.}). The catalogs will be entered into the {\bf \DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted 
+\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in {\bf Level 1} data products. Level 1 products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical {\em objects} are called {\em sources}. The reader is cautioned that this nomenclature is not universal: some surveys call {\em detections} what LSST calls {\em sources}, and use the term {\em sources} for what LSST calls {\em objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects {\em inside} and {\em outside} of the Solar System.}). The catalogs will be entered into the {\bf \DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted 
 standards\footnote{For example, VOEvent, see http://ls.st/4tt} within 60 seconds of observation. Level 1 data products are discussed in \S~\ref{sec:level1}.
 
 \item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are {\bf Level 2} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called {\em snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a {\em visit}.}), \Sources\footnote{When written in bold monospace type (i.e., {\tt \textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Level 2 processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Level 1 data products (see \S \ref{sec:l1dbreproc}). In contrast to the ``living'' \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Level 2 data products are discussed in \S~\ref{sec:level2}.
@@ -348,14 +348,14 @@ Also, the system will have the ability to measure and alert on a limited\footnot
 \B{A gravitational keyhole is a region of space where Earth's gravity would modify the orbit of a passing asteroid 
 such that the asteroid would collide with the Earth in the future.}} 
 may be highly significant in assessing the danger posed by a potentially hazardous asteroid. 
-The project will define the initial set of criteria by the start of Operations.
+The initial set of criteria will be defined by the start of LSST operations.
 
 \subsubsection{Solar System Object Processing}
 \label{sec:ssProcessing}
 
 The following will occur during regular Solar System object processing (in daytime\footnote{Note that there {\em is no strict bound on when daytime Solar System processing must finish}, just that, averaged over some reasonable timescale (eg., a month), a night's worth of observing is processed within 24 hours. Nights rich in moving objects may take longer to process, while nights with less will finish more quickly. In other words, the requirement is on {\em throughput}, not latency.}, after a night of observing; see Figure~\ref{fig:Pipe8}):
 \begin{enumerate}
-\item The orbits and physical properties of all \SSObjects re-observed on the previous night are recomputed. External orbit catalogs (or observations) are used to improve orbit estimates. Updated data are entered to the \SSObjects table. 
+\item The orbits and physical properties of all \SSObjects re-observed on the previous night are recomputed. External orbit catalogs (or observations) are also used to improve orbit estimates. Updated data are entered to the \SSObjects table. 
 \item All \DIASources detected on the previous night, that have {\em not} been matched at a high confidence level to a known \Object,
 \DIAObject, \SSObject, or an artifact, are analyzed for potential pairs, forming {\em tracklets}.
 \item The collection of tracklets collected over the past 30 days is searched for subsets forming {\em tracks} consistent with being on the same Keplerian orbit around the Sun.
@@ -650,7 +650,7 @@ orbFitLnL & float & ~ & Natural log of the likelihood of the orbital elements fi
 
 orbFitChi2 & float & ~ & $\chi^2$ statistic of the orbital elements fit. \\
 
-orbFitN & int & ~ & The number of data points (observations) used to fit the orbital elements. \\
+orbFitNdata & int & ~ & The number of data points (observations) used to fit the orbital elements. \\
 
 MOID & float[2] & AU & Minimum orbit intersection distances\footnote{\url{http://www2.lowell.edu/users/elgb/moid.html}} \\
 
@@ -1593,7 +1593,7 @@ document\footnote{See http://ls.st/LDM-151} LDM-151.
 %    \hskip -0.2in
     \includegraphics[scale=0.50, angle=270]{gliffy/MOPS-Level0}
     \vskip -0.1in 
-    \caption{Illustration of the conceptual algorithm design for Moving Object Processing System. \label{fig:Pipe8}}    
+    \caption{Illustration of the conceptual algorithm design for the Moving Object Processing Software pipeline. \label{fig:Pipe8}}    
 \end{figure}
 
 
