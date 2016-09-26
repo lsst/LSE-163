@@ -1,0 +1,21 @@
+sudo: true
+language: python
+matrix:
+  include:
+    - python: "3.5"
+      env: LTD_MASON_BUILD=true
+before_install:
+  - "sudo apt-get update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended latexmk poppler-utils latex-xcolor"
+install:
+  - pip install -r requirements.txt
+  - pip install "ltd-mason>=0.2,<0.3"
+script:
+  - make
+after_success:
+  - ltd-mason-travis --html-dir _build
+env:
+  global:
+    - LTD_MASON_BUILD=false  # disable builds in regular text matrix
+    - LTD_MASON_PRODUCT="lse-163"
+    - secure: "t8Joa3+gMC0bRyNkw2of90isZjSFHryudCPA97GrgV4XH3tANgTobFi53SaVpWjKj7083QWTBYg0EZ2WiGbNEhda+IZr+UmUBeEtDmglIm1bwMuZ27V7hJrWiDVL/DEVt6uWnB2hbpjDQ/iKzyVr9RM5OKUxE/qXgFipZ5a4sSBB3I9kVUsXGZ581igUXAgStr7t36R3Tux2t84JeH9i3B0eq5s98Ox3F+30Pg+Fz/7e9pePpTHNRhJOjBr3G1hG9Lot1oBkoX6tfQt1yRLxJnb1pqQ0DU+pFqZ6e9aEc2rVZrw3kGQbC5DUP9FpxbBflJPQyz/6qnAmwgm9jeCgUWWgS2Ld2G5TG1Js89ADIt6RTYl6BsXgKNM4rAZUvNfVcr60M5gIXn4uulFP+dNbE80UMBpExA6uvmUyPf6bPTbNcCSUsPpJNnEOJO02fkX2vinBnkF3u0xKtObFnoqRvy3KCrXgECp0YB6tiZU0EkM2zci9+VYugwizv0LJBBlNeQSyivB1IXu/CQdUUi/X5GieMArcm0agAOgCMBldjRHHVHaEgCRNUgducPT0ts3hldyjcH642xHwgf2Pz5pkg/8f0lpqLllIJ8btCdjeegZTT0Kuf0cWfmknK+EYeap3Wivqub5YY3+axk/RMfHynPkYNjpDDdfPxPx5p+43CKI="
+    - secure: "SC81g9qoIZTRqLFIoaxp4uDCIW6tF7ZblGwwTo3HBctR579M5GgOT3+6eeVPPh1rTnTlg187PDI+4yfJTpAllKy0kOWROeCuiLDKcXdxw9Qx/Nb4Ju7+S3aa4NjyFOjuEIqQK6ApWKqwD5+gaWjWCt6P/EwA7gGxe9PFT+E7TicvDLskuD+4/V1pZ5S2GmR2cyGHWiPlADajNFxm6O8AwORQ4zO8mK3MFBg2dZboPTJ9cHLgTtiqYCWigop0rS4a8JgghGS/H/+Cp8MlRuVAPpaWdpbX4sx1GbKBgi/FFtM/BMv8tnCTVkYMIAgTwic/uxO6wXWhKoJOr8U9ZcJ0zHTOkrJPj2AVtUzA4JjD1f828ff8gAUmYAufmddnPES565vg13+oAyMFR3MvFgPMmb3OD8+df157QGWguNL35HUSuwN9CkWd9JCZ7zjNoyLDyDkiX/Exq3T6n3wWkHG31qlXc/poqs+bFr5HiIOQ9q+p+VKas01BIMH4MX2idYDv5vkfvVT7vuX4rr6FW6yx2MF3xWCM7iQoq8ToXg7ztslphWYCCEcGBIyv2di9UrbhbNVw6KI4D8+5jvfpqlBYJUTOmeiaNwUvo7DfzY7T/sguw4uUtBWFCTzhpUvuJejS/ZwhOmfir4FYr2Lmr4QA0gs2w/fqh6z0/SLjfvGtFHo="

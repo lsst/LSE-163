@@ -1,8 +1,9 @@
 DEADJOE
-main.aux
-main.bbl
-main.blg
-main.log
-main.out
-main.synctex.gz
-main.toc
+dpdd.aux
+dpdd.bbl
+dpdd.blg
+dpdd.log
+dpdd.out
+dpdd.synctex.gz
+dpdd.toc
+_build
