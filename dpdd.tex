@@ -12,6 +12,7 @@
 \usepackage{longtable}
 \usepackage{hyperref}
 \usepackage{comment}
+\usepackage{natbib}
 
 \excludecomment{changelog}
 \excludecomment{todo}
@@ -63,6 +64,13 @@
 \newcommand{\reqnum}[1]{\marginpar{\tiny DPDD-#1}}
 \newcommand{\req}[1]{\marginpar{\tiny #1}}
 \newcommand{\dmreq}[1]{\req{DMS-REQ-#1}}
+
+%% Journal abbreviations
+\newcommand{\icarus}{Icarus}
+\newcommand{\apj}{ApJ}
+\newcommand{\aj}{AJ}
+
+\bibliographystyle{aasjournal}
 
 \title{\vskip -1in Large Synoptic Survey Telescope \\
 Data Products Definition Document \\
@@ -117,7 +125,7 @@ Though under strict change control\footnote{LSST Docushare handle for this docum
 % Note: paragraph lifted from Zeljko's overview paper
 LSST will be a large, wide-field ground-based optical telescope system
 designed to obtain multiple images covering the sky that is visible from Cerro Pach\'{o}n in Northern Chile. The current baseline design, with an 8.4m (6.7m effective) primary mirror, a 9.6 deg$^2$ field of view, and a 3.2 Gigapixel camera, will allow about 10,000 square degrees of sky to be covered every night using pairs of 15-second exposures, with typical 5$\sigma$ depth for point sources of $r\sim24.5$ (AB). The system is designed to yield high image quality as well as superb astrometric  and photometric accuracy. The total survey area will include $\sim$30,000 deg$^2$ with $\delta<+34.5^\circ$, and will be imaged multiple times in six bands, $ugrizy$, covering the wavelength range 320--1050 nm. For a more detailed, but still concise,
-summary of LSST, please see the LSST Overview paper\footnote{arXiv:0805.2366, \url{http://ls.st/2m9}}.
+summary of LSST, please see the LSST Overview paper \citep{2008arXiv0805.2366I}\footnote{\url{http://ls.st/2m9}}.
 
 The project is scheduled to  begin the regular survey operations at the start of next decade. About 90\% of the observing time will be devoted to a deep-wide-fast survey mode which will uniformly observe a 18,000 deg$^2$ region about 1000 times (summed over all six bands) during the anticipated 10 years of operations, and yield a coadded map to $r\sim27.5$. These data will result in catalogs including over $38$ billion stars and galaxies, that will serve the majority of the primary science programs. The remaining 10\% of the observing time will be allocated to special projects such as a Very Deep and Fast time domain survey\footnote{Informally known as ``Deep Drilling Fields".}.
 
@@ -534,7 +542,7 @@ fpBkgdErr & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpBkgd}. 
 
 %nonGrayExtinction & float & nmgy & Applied photometric extinction correction (color-dependent component) \\
 
-Ixx & float & nmgy asec$^{2}$  & Adaptive second moment of the source intensity. See Bernstein \& Jarvis (2002) for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & nmgy asec$^{2}$  & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
 Iyy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
@@ -640,9 +648,9 @@ fpFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of {
 
 % lcChar   & float[$6\times{}M$] & ~ & Light-curve characterization summary statistics (eg., 2nd moments, etc.). The exact contents, and an appropriate value of M, are to be determined in consultation with time-domain experts. \\
 
-lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from light-curves using generalized Lomb-Scargle periodogram (Table~4, Richards et al. 2011)\footnote{The exact features in use when LSST begins operations are likely to be different compared to the baseline described here. This is to be expected given the rapid pace of research in time domain astronomy. However, the {\em number} of computed features is unlikely to grow beyond the present estimate.}. \\
+lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from light-curves using generalized Lomb-Scargle periodogram \citep[Table~4,][]{2011ApJ...733...10R}\footnote{The exact features in use when LSST begins operations are likely to be different compared to the baseline described here. This is to be expected given the rapid pace of research in time domain astronomy. However, the {\em number} of computed features is unlikely to grow beyond the present estimate.}. \\
 
-lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from light-curves (Table~5, Richards et al. 2011). \\
+lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from light-curves \citep[Table~5,][]{2011ApJ...733...10R}. \\
 
 nearbyObj   & uint64[3] & ~ & Closest \Objects in \DR. \\
 
@@ -690,11 +698,11 @@ MOID & float[2] & AU & Minimum orbit intersection distances\footnote{\url{http:/
 
 moidLon & double[2] & degrees & MOID longitudes. \\
 
-H & float[6] & mag & Mean absolute magnitude, per band (Muinonen et al. 2010 magnitude-phase system). \\
+H & float[6] & mag & Mean absolute magnitude, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
 
-${\rm G_1}$ & float[6] & mag & $G_1$ slope parameter, per band (Muinonen et al. 2010 magnitude-phase system). \\
+${\rm G_1}$ & float[6] & mag & $G_1$ slope parameter, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
 
-${\rm G_2}$ & float[6] & mag & $G_2$ slope parameter, per band (Muinonen et al. 2010 magnitude-phase system). \\
+${\rm G_2}$ & float[6] & mag & $G_2$ slope parameter, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
 
 hErr & float[6] & mag & Uncertainty of H estimate.\\
 
@@ -857,7 +865,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
     \item {\em Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Level 1 database will {\em not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.). (FDR)
     \item {\em Should we associate alerts with external catalogs?}. LSST will have a copy of many external catalogs (or parts thereof), and could in principle provide limited positional association. Right now, it's up to the downstream brokers to perform such associations. (CONSTRUCTION)
     \item {\em Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs). (CONSTRUCTION)
-    \item {\em What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have currently baselined the Richards et al. (2011) feature set. (COMMISSIONING)
+    \item {\em What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have currently baselined the \citet{2011ApJ...733...10R} feature set. (COMMISSIONING)
     \item {\em Should we choose {\tt nearbyObj}s differently?} One proposal is to find the brightest \Object within $XX$ arcsec (with $XX \sim 10$arcsec), and the total number of \Objects within $XX$ arcsec. (COMMISSIONING)
     \item {\em Should the postage stamps provided with the alerts be binned, and by what factor?} The thought is that a human user may have an easier time performing a final by-eye check with larger postage stamps. (COMMISSIONING)
     \item {\em When should we (if ever) stop performing forced photometry on positions of \DIAObjects?} Depending on the rate of false positives, unidentified artifacts, or unrecognized Solar System objects, the number of forced measurements may dramatically grow over time. (OPERATIONS)
@@ -975,7 +983,7 @@ In addition to the maximum likelihood values of fitted parameters and their cova
 
     \item {\em Aperture surface brightness}. Aperture surface brightness will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures, in standard seeing. \dmreq{0276}
 
-    \item {\em Variability characterization}. Parameters will be provided, designed to characterize periodic and aperiodic variability features (Richards et al. 2011), in each bandpass.
+    \item {\em Variability characterization}. Parameters will be provided, designed to characterize periodic and aperiodic variability features \citep{2011ApJ...733...10R}, in each bandpass.
     We caution that the exact features in use when LSST begins operations are likely to be different compared to the baseline described here; this is to be expected given the rapid pace of research in time domain astronomy. However, their {\em number} is unlikely to grow beyond the present estimate. \dmreq{0276}
 \end{itemize}
 
@@ -1129,7 +1137,7 @@ stdColor & float[5] & mag & Color of the object measured in ``standard seeing". 
 
 stdColorErr & float[5] & mag & Uncertainty of {\tt stdColor}. \\
 
-Ixx & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. See Bernstein \& Jarvis (2002) for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
 Iyy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
@@ -1192,9 +1200,9 @@ apMeanSbSigma & float[6][{\tt apNann}] & nmgy/as$^2$ & Standard deviation of {\t
 
 extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments, or from a likelihood ratio of point/B+D source models (exact algorithm TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
 
-lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from difference image-based light-curves using generalized Lomb-Scargle periodogram (Table~4, Richards et al. 2011).\\
+lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from difference image-based light-curves using generalized Lomb-Scargle periodogram \citep[Table~4,][]{2011ApJ...733...10R}.\\
 
-lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from difference image-based light-curves (Table~5, Richards et al. 2011). \\
+lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from difference image-based light-curves \citep[Table~5,][]{2011ApJ...733...10R}. \\
 
 photoZ & float[2~\x~100] & ~ & Photometric redshift likelihood samples -- pairs of ($z$, $logL$) -- computed using a to-be-determined published and widely accepted algorithm at the time of LSST Commissioning. \\
 
@@ -1263,7 +1271,7 @@ psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
-Ixx & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. See Bernstein \& Jarvis (2002) for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
 Iyy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
@@ -1575,7 +1583,7 @@ As a concrete example, a data product complement for a ``deep drilling" field de
 
 Note that the data rights and access rules apply just as they would for for Level 1/2/3. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
 
-
+\bibliography{dpdd}
 
 
 \clearpage
