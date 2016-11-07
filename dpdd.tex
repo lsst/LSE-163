@@ -421,7 +421,12 @@ In the sections to follow, we present the {\em conceptual schemas} for the most 
 
 \subsubsection{\DIASource Table}
 
-This is a table of sources detected at $transSNR \geq \transSNR$ \req{transSNR} on difference images\footnote{This requirement is specified in the LSST SRD.}\req{LSR-REQ-0101} (\DIASources). On average, the LSST SRD expects $\sim 2000$ \DIASources per visit ($\sim 2{\rm M}$ per night; 20,000 per deg$^2$ of the sky per hour). \annotate{Where does SRD say 2000 per visit?}
+This is a table of sources detected at $transSNR \geq \transSNR$ \req{transSNR} on difference images\footnote{This requirement is specified in the LSST SRD.}\req{LSR-REQ-0101} (\DIASources).
+\R{On average, the LSST SRD expects $\sim 2000$ \DIASources per visit ($\sim 2{\rm M}$ per night; 20,000 per deg$^2$ of the sky per hour).}
+\B{
+On average, the LSST SRD expects $\sim 10,000$ \DIASources per visit ($\sim 10{\rm M}$ per night; 100,000 per deg$^2$ of the sky per hour).
+}
+\req{transN}
 
 Some $transSNR \geq \transSNR$ sources will not be caused by observed astrophysical phenomena, but by artifacts (bad columns, diffraction spikes, etc.). The difference image analysis software will attempt to identify and flag these as such.
 
@@ -828,7 +833,7 @@ With each alert, we attempt to include as much information known to LSST about t
 
 \annotate{KeyNumbers page says 10 million per night.}
 
-Alerts will be transmitted in \VOEvent format, using standard IVOA protocols (eg., VOEvent Transport Protocol; VTP\footnote{VOEvent Transport Protocol is currently an IVOA Note, but we understand work is under way to finalize and bring it up to full IVOA Recommendation status.}. As a very high rate of alerts is expected, approaching $\sim 2$ million per night, we plan for public VOEvent Event Brokers\footnote{These brokers are envisioned to be operated as a public service by third parties who will have signed MOUs with LSST.} to be the primary end-points of LSST's event streams. End-users will use these brokers to classify and filter events for subsets fitting their science goals. End-users will {\em not} be able to subscribe to full, unfiltered, alert streams coming directly from LSST\footnote{This is due to finite network bandwidth available: for example, a 100 end-users subscribing to a $\sim 100$ Mbps stream (the peak full stream data rate at end of the first year of operations) would require 10Gbps WAN connection from the archive center, just to serve the alerts.}.
+Alerts will be transmitted in \VOEvent format, using standard IVOA protocols (eg., VOEvent Transport Protocol; VTP\footnote{VOEvent Transport Protocol is currently an IVOA Note, but we understand work is under way to finalize and bring it up to full IVOA Recommendation status.}. As a very high rate of alerts is expected, approaching $\sim 10$ million per night, we plan for public VOEvent Event Brokers\footnote{These brokers are envisioned to be operated as a public service by third parties who will have signed MOUs with LSST.} to be the primary end-points of LSST's event streams. End-users will use these brokers to classify and filter events for subsets fitting their science goals. End-users will {\em not} be able to subscribe to full, unfiltered, alert streams coming directly from LSST\footnote{This is due to finite network bandwidth available: for example, a 100 end-users subscribing to a $\sim 100$ Mbps stream (the peak full stream data rate at end of the first year of operations) would require 10Gbps WAN connection from the archive center, just to serve the alerts.}.
 
 \annotate{Which requirement talks about the alert filtering service? LSR-REQ-0026}
 \req{LSR-REQ-0026}
