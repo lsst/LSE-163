@@ -362,8 +362,8 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).\dmreq{0274}
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Level 1 processing is
-rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc. \annotate{The requirements need to be updated to match the 12 month cut off. We do not have this value anywhere in DMSR.}\dmreq{0274}
-\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for one or more \Objects positionally close to the \DIAObject, out to some maximum radius\footnote{Eg., a few arcseconds.}. The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
+rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\req{diaCharacterizationCutoff}
+\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies.\req{diaNearbyMaxObj} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
 event alert (see below).\dmreq{0271}\dmreq{0002}
 \item An alert is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \SSObject ID or \DIAObject ID\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata (IDs and database names).}, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.), {\em including the full light curves}. See Section \ref{sec:voEventContents} for a more complete enumeration. \annotate{Is \emph{full light curve} here distinct from the 1 year limit above?}\dmreq{0274}
 \item For all \DIAObjects overlapping the field of view, including those that have an associated
@@ -589,9 +589,7 @@ Notes about changes with respect to the previous baseline:
 
 \subsubsection{\DIAObject Table}
 
-\annotate{The table here indicates 3 objects for association but DMS-REQ-0271 does not put a limit on the number, simply stating within TBD arcsec.}
-
-\dmreq{0271}\dmreq{0272}\req{diaNearbyObjRadius}
+\dmreq{0271}\dmreq{0272}\req{diaNearbyMaxObj}
 
 \begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
@@ -654,11 +652,11 @@ lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from light-curves 
 
 lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from light-curves \citep[Table~5,][]{2011ApJ...733...10R}. \\
 
-nearbyObj   & uint64[3] & ~ & Closest \Objects in \DR. \\
+nearbyObj   & uint64[6] & ~ & Closest \Objects (3 stars and 3 galaxies) in \DR.\footnote{\color{magenta} This is a change in the size of this table. I assume we do not need to include star/galaxy classification.} \\
 
-nearbyObjDist   & float[3] & arcsec & Distances to \texttt{nearbyObj}. \\
+nearbyObjDist   & float[6] & arcsec & Distances to \texttt{nearbyObj}. \\
 
-nearbyObjLnP   & float[3] & ~ &  Natural $\log$ of the probability that the observed \DIAObject is the same as the nearby \Object\footnote{This quantity will be computed by marginalizing over the product of position and proper motion error ellipses of the \Object and \DIAObject, assuming an appropriate prior.}. \\
+nearbyObjLnP   & float[6] & ~ &  Natural $\log$ of the probability that the observed \DIAObject is the same as the nearby \Object\footnote{This quantity will be computed by marginalizing over the product of position and proper motion error ellipses of the \Object and \DIAObject, assuming an appropriate prior.}. \\
 
 flags & bit[64] & bit & Various useful flags. \\ \hline
 
