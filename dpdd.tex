@@ -133,7 +133,7 @@ The LSST will be operated in fully automated survey mode. The images acquired by
 
 \vspace{1em}
 
-The {\em broad}, {\em high-level}, requirements for LSST Data Products are given by the {\em LSST Science Requirements Document}\footnote{LSST Document Handle LPM-17, available at \url{http://ls.st/srd}} (SRD). This document lays out the {\em specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST SRD through the {\em LSST System Requirements Document} (the LSR; LSE-29) and the {\em LSST Observatory System Specifications} (OSS; LSE-30), to the {\em LSST Data Management System Requirements} (DMSR; LSE-61), the UML model, and the database schema.
+The {\em broad}, {\em high-level}, requirements for LSST Data Products are given by the {\em LSST Science Requirements Document}\footnote{LSST Document Handle LPM-17\nocite{LPM-17}, available at \url{http://ls.st/srd}} (SRD). This document lays out the {\em specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST SRD through the {\em LSST System Requirements Document} (the LSR; LSE-29\nocite{LSE-29}) and the {\em LSST Observatory System Specifications} (OSS; LSE-30\nocite{LSE-30}), to the {\em LSST Data Management System Requirements} (DMSR; LSE-61\nocite{LSE-61}), the UML model, and the database schema.
 
 
 \subsection{General Image Processing Concepts for LSST}
@@ -416,7 +416,7 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 
 \vspace{2em}
 
-In the sections to follow, we present the {\em conceptual schemas} for the most important \DB tables. These convey {\em what} data will be recorded in each table, rather than the details of {\em how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \B{is defined in the \texttt{cat} package and documented in \href{http://ls.st/LDM-153}{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named {\tt band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
+In the sections to follow, we present the {\em conceptual schemas} for the most important \DB tables. These convey {\em what} data will be recorded in each table, rather than the details of {\em how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \B{is defined in the \texttt{cat} package and documented in \href{http://ls.st/LDM-153}{LDM-153}\nocite{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named {\tt band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
 \subsubsection{\DIASource Table}
 
@@ -1624,7 +1624,7 @@ discovering new \SSObjects, and orbit refinement and management.
 \end{enumerate}
 
 Further details about the pipeline design and implementation are available from the LSST
-document\footnote{See \url{http://ls.st/LDM-151}} LDM-151.
+document\footnote{See \url{http://ls.st/LDM-151}} LDM-151\nocite{LDM-151}.
 
 \begin{figure}[!t]
     \centering
