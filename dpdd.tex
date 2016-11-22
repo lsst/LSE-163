@@ -124,7 +124,7 @@ LSST will be a large, wide-field ground-based optical telescope system
 designed to obtain multiple images covering the sky that is visible from Cerro Pach\'{o}n in Northern Chile. The current baseline design, with an 8.4m (6.7m effective) primary mirror, a 9.6 deg$^2$ field of view, and a 3.2 Gigapixel camera, will allow about 10,000 square degrees of sky to be covered every night using pairs of 15-second exposures, with typical 5$\sigma$ depth for point sources of $r\sim24.5$ (AB). The system is designed to yield high image quality as well as superb astrometric  and photometric accuracy. The total survey area will include $\sim$30,000 deg$^2$ with $\delta<+34.5^\circ$, and will be imaged multiple times in six bands, $ugrizy$, covering the wavelength range 320--1050 nm. For a more detailed, but still concise,
 summary of LSST, please see the LSST Overview paper \citep{2008arXiv0805.2366I}\footnote{\url{http://ls.st/2m9}}.
 
-The project is scheduled to  begin the regular survey operations at the start of next decade. About 90\% of the observing time will be devoted to a deep-wide-fast survey mode which will uniformly observe a 18,000 deg$^2$ region about 1000 times (summed over all six bands) during the anticipated 10 years of operations, and yield a coadded map to $r\sim27.5$. These data will result in catalogs including over $38$ billion stars and galaxies, that will serve the majority of the primary science programs. The remaining 10\% of the observing time will be allocated to special projects such as a Very Deep and Fast time domain survey\footnote{Informally known as ``Deep Drilling Fields".}.
+The project is scheduled to  begin the regular survey operations at the start of next decade. About 90\% of the observing time will be devoted to a deep-wide-fast survey mode which will uniformly observe a 18,000 deg$^2$ region about 1000 times (summed over all six bands) during the anticipated 10 years of operations, and yield a coadded map to $r\sim27.5$. These data will result in catalogs including over $38$ billion stars and galaxies, that will serve the majority of the primary science programs. The remaining 10\% of the observing time will be allocated to special projects such as a Very Deep and Fast time domain survey\footnote{Informally known as ``Deep Drilling Fields''.}.
 
 The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction ({\em templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
 
@@ -142,8 +142,8 @@ conceptually, counts proportional to photon flux entering the
 telescope pupil (in reality, there are many additional optical, pixel and
 bandpass effects, including random counting noise and various subtle
 systematic errors, that are treated during subsequent processing).
-This single-visit image processed by the ISR is called a \B{``Processed Visit Image''} \R{"calibrated
-exposure"} and its main data structures include counts, their variance and
+This single-visit image processed by the ISR is called a \B{``Processed Visit Image''} \R{``calibrated
+exposure''} and its main data structures include counts, their variance and
 various masks, all defined on per pixel basis. After the ISR step is
 completed, the pixel values and their variance are not modified any more.
 These single-visit images are used downstream to produce coadded and difference
@@ -162,7 +162,7 @@ Some objects that vary in brightness can be detectable for only a short period o
 (e.g., supernovae and other cosmic explosions).
 
 The image interpretation model separates time-independent model
-component from a temporally changing component (``DC" and ``AC",
+component from a temporally changing component (``DC'' and ``AC'',
 respectively). Discrete DC sources are {\it not} operationally nor astrophysically
 associated with discrete AC sources even when they are spatially coincident.
 
@@ -213,14 +213,14 @@ Recognizing the diversity of astronomical community needs, and the need for spec
 
 \vspace{1em}
 
-Finally, LSST Survey Specifications (\S~3.4 of LSST SRD) prescribe that 90\% of LSST observing time be spent in the so-called ``universal cadence" mode of surveying the sky. These observations will result in Level 1 and 2 data products discussed above. The remaining 10\% of observing time will be devoted to {\bf special programs}, designed to obtain improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special" regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. The data products for these programs will be generated using the same processing software and hardware and possess the general characteristics of Level 1 and 2 data products, but may be performed on a somewhat different cadence. They will be discussed in \S~\ref{sec:specialProgs}.
+Finally, LSST Survey Specifications (\S~3.4 of LSST SRD) prescribe that 90\% of LSST observing time be spent in the so-called ``universal cadence'' mode of surveying the sky. These observations will result in Level 1 and 2 data products discussed above. The remaining 10\% of observing time will be devoted to {\bf special programs}, designed to obtain improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. The data products for these programs will be generated using the same processing software and hardware and possess the general characteristics of Level 1 and 2 data products, but may be performed on a somewhat different cadence. They will be discussed in \S~\ref{sec:specialProgs}.
 
 
 \section{General Considerations}
 
 Most LSST data products will consist of images and/or catalogs. The catalogs will be stored and offered to the users as {\em relational databases} which they will be able to query. This approach was shown to work well by prior large surveys, for example the Sloan Digital Sky Survey (SDSS).
 
-Different data products will generally be stored in different databases. For example, Level 1 data products will be stored in a {\em Level 1 database}. Level 2 ``universal cadence" products will be stored in a {\em Level 2 database} database. The products for special programs may be stored in many different databases, depending on the nature of the program.
+Different data products will generally be stored in different databases. For example, Level 1 data products will be stored in a {\em Level 1 database}. Level 2 ``universal cadence'' products will be stored in a {\em Level 2 database} database. The products for special programs may be stored in many different databases, depending on the nature of the program.
 
 Nevertheless, all these databases will follow certain naming and other conventions. We discuss these in the subsections to follow.
 
@@ -230,13 +230,10 @@ Nevertheless, all these databases will follow certain naming and other conventio
 
 For all catalogs data, we will employ a convention where estimates of standard errors have the suffix {\tt Err}, while the estimates of inherent widths of distribution (or functions in general) have the suffix {\tt Sigma}\footnote{Given $N$ measurements, standard errors scale as $N^{-1/2}$, while widths remain constant.}. The latter are defined as the square roots of the second moment about the quoted value of the quantity at hand.
 
-\annotate{The following paragraph would be a requirement if it didn't have the ``unless noted otherwise'' clause. DMSR only mentions that likelihood will be provided in a single catalog. Maybe say \emph{Where applicable} instead? Also ``covariance'' mentioned nowhere in DMSR.}
-
+\dmreq{0333}
 Unless noted otherwise, maximum likelihood values (called likelihood for simplicity) will be quoted for all fitted parameters (measurements). Together with covariances, these let the end-user apply whatever prior they deem appropriate when computing posteriors\footnote{There's a tacit assumption that a Gaussian is a reasonably good description of the likelihood surface around the ML peak.}. Where appropriate, multiple independent samples from the likelihood may be provided to characterize departures from Gaussianity.
 
-\annotate{The first two sentences are requirements}
-
-\reqnum{10}We will provide values of log likelihood, the $\chi^2$ for the fitted parameters, and the number of data points used in the fit. \reqnum{20}Database functions (or precomputed columns) will be provided for frequently used combinations of these quantities (e.g., $\chi^2/dof$). These can be used to assess the model fit quality. Note that, {\it if the errors of measured quantities are normally distributed,} the likelihood is related to the $\chi^2$ as:
+We will provide values of log likelihood, the $\chi^2$ for the fitted parameters, and the number of data points used in the fit. \dmreq{0331}Database functions (or precomputed columns) will be provided for frequently used combinations of these quantities (e.g., $\chi^2/dof$). These can be used to assess the model fit quality. Note that, {\it if the errors of measured quantities are normally distributed,} the likelihood is related to the $\chi^2$ as:
 %
 \begin{equation}
     L = \left(\prod_{k}\frac{1}{\sigma_k \sqrt{2 \pi}}\right) \exp \left[- \frac{\chi^2}{2}\right]
@@ -252,19 +249,15 @@ For completeness, $\chi^2$ is defined as:
 where $\bar{x}$ is the mean value of $x_k$.
 \\
 
-\annotate{``We will..provide additional pre-computed columns'' sounds like a requirement}
-
-For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by \reqnum{30}providing additional pre-computed columns, taking care to name them appropriately so as to minimize accidental incorrect usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may represent the maximum likelihood value.
+For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by \dmreq{0331}providing additional pre-computed columns, taking care to name them appropriately so as to minimize accidental incorrect usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may represent the maximum likelihood value.
 
 \subsection{Image Characterization Data}
 
-\annotate{I can't find mention of background characterization for visits in DMSR.}
-
-Raw images will be processed to \dmreq{0069}remove instrumental signature and characterize their properties, including backgrounds (both due to night sky and astrophysical), \dmreq{0070}the point spread function and its variation, \dmreq{0029}photometric zero-point model, and the \dmreq{0030}world coordinate system (WCS).
+Raw images will be processed to \dmreq{0069}remove instrumental signature and characterize their properties, \dmreq{0327}including backgrounds (both due to night sky and astrophysical), \dmreq{0070}the point spread function and its variation, \dmreq{0029}photometric zero-point model, and the \dmreq{0030}world coordinate system (WCS).
 
 That characterization is crucial for deriving LSST catalogs and understanding the images. It will be kept and made available to the users. The exact format used to store these (meta)data will depend on the final adopted algorithm in consultation with the scientific community to ensure the formats in which these data are served are maximally useful.
 
-\dmreq{0072}Each processed image\footnote{It is also frequently referred to as {\em calibrated exposure}\B{, from the Butler product type of \texttt{calexp}}.}, including the coadds, will record information on pixel variance (the ``variance plane"), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and usefullness of each pixel in estimating the flux density recorded in that area of the sky.
+\dmreq{0072}Each processed image\footnote{It is also frequently referred to as {\em calibrated exposure}\B{, from the Butler product type of \texttt{calexp}}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and usefullness of each pixel in estimating the flux density recorded in that area of the sky.
 
 This information will be per-pixel, and potentially unwieldy to use for certain science cases. We plan to investigate approximate schemes for storing masks based on geometry (e.g., similar to Mangle or STOMP), {\em in addition} to storing them on a per pixel basis.
 
@@ -284,7 +277,7 @@ We chose to use maggies (as opposed to, say, Jansky) to allow the user to differ
 \annotate{DMSR states magnitudes will be provided just for DIAObject and SSObject. Jy not mentioned in DMSR: ``flux'' is mentioned but there is no explicit statement that Jy and mgy will be provided for flux measurements.}
 
 \vspace{1em}
-Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual" or ``computed" columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
+Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
 
 \subsection{Uniqueness of IDs across database versions}
 
@@ -328,7 +321,7 @@ The latter method would probably be limited to nightly granularity, unless there
 
 Level 1 data products are a result of difference image analysis (DIA; \S \ref{sec:dia}). They include the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The SRD considers Solar System object orbit catalog to be a Level 2 data product (LSST SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Level 1.} (\SSObject), and related, broadly defined, metadata (including eg., cut-outs\footnote{Small, $30 \times 30$, sub-images at the position of a detected source. Also known as {\em postage stamps.}}).
 
-\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\req{transSNR} defined in the SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim {\rm deg}/{\rm day}$, or ``dipole-like", if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
+\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\req{transSNR} defined in the SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim {\rm deg}/{\rm day}$, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
 we expect about one such false positive per CCD (of the order 200,000 per typical night). The expected number of false
 positives due to background fluctuations is a very strong function of adopted $transSNR$: a change of $transSNR$ by 0.5
@@ -401,7 +394,7 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 \begin{itemize}
 \item {\em A supernova in a galaxy.} The matched object in the \Object table will be the galaxy, which is a distinct astrophysical object. We want to keep the information related to the supernova (eg., colors, the light curve) separate from those measurements for the galaxy.
 \item {\em An asteroid occulting a star.} If associated with the star on first apparition, the association would need to be dissolved when the source is recognized as an asteroid (perhaps even as early as a day later).
-\item {\em A supernova on top of a pair of blended galaxies.} It is not clear in general to which galaxy this \DIASource would ``belong". That in itself is a research question.
+\item {\em A supernova on top of a pair of blended galaxies.} It is not clear in general to which galaxy this \DIASource would ``belong''. That in itself is a research question.
 \end{itemize}
 
 \vspace{1ex}
@@ -570,8 +563,8 @@ While we do not measure the curvature directly, it can be inferred by examining 
 Notes about changes with respect to the previous baseline:
 \begin{itemize}
 \item I removed the \texttt{astromRefr*} columns. These will depend on the SED (color) of the object, and the color won't be know when the object is discovered. It may be better to provide a UDF to compute the refraction given a \DIAObject record.
-\item Removed "small galaxy" model fits. We don't plan to do galaxy model fits on difference images.
-\item Removed "canonical small galaxy" model fits. See above.
+\item Removed ``small galaxy'' model fits. We don't plan to do galaxy model fits on difference images.
+\item Removed ``canonical small galaxy'' model fits. See above.
 \item Removed galExtinction: this should be a UDF using extinction maps
 \item I removed the aperture correction column.
 \item gray/nonGray extinction columns removed. May be implemented as an UDF.
@@ -604,7 +597,7 @@ radecCov & float[3] & various & \texttt{radec} covariance matrix. \\
 
 radecTai & double & time & Time at which the object was at a position \texttt{radec}. \\
 
-pm & float[2] & mas/yr & Proper motion vector\footnote{High proper-motion or parallax objects will appear as ``dipoles" in difference images. Great care will have to be taken not to misidentify these as subtraction artifacts.}. \\
+pm & float[2] & mas/yr & Proper motion vector\footnote{High proper-motion or parallax objects will appear as ``dipoles'' in difference images. Great care will have to be taken not to misidentify these as subtraction artifacts.}. \\
 
 parallax & float & mas & Trigonometric arallax. \\
 
@@ -789,7 +782,7 @@ Difference image analysis will use the appropriate template given the time of ob
 
 \subsubsection{Information Contained in Each Alert}
 
-For each detected \DIASource, LSST will emit an ``Event Alert" within 60 seconds\req{OTT1} of the end of visit (defined as the end of image readout from the LSST Camera). These alerts will be issued in \VOEvent format\footnote{Or some other format that is broadly accepted and used by the community at the start of LSST commissioning.}, and should be readable by \VOEvent-compliant clients.\dmreq{0002}
+For each detected \DIASource, LSST will emit an ``Event Alert'' within 60 seconds\req{OTT1} of the end of visit (defined as the end of image readout from the LSST Camera). These alerts will be issued in \VOEvent format\footnote{Or some other format that is broadly accepted and used by the community at the start of LSST commissioning.}, and should be readable by \VOEvent-compliant clients.\dmreq{0002}
 
 \annotate{DMSR does not specify the format or bit depth of the cut out images. This list assumes the entire history of the object record. DMSR does not explicitly say there will be cutouts for template and DIASource. Should mention PSF required (changing for each alert) in DMS-REQ-0274 discussion.}
 
@@ -843,7 +836,7 @@ To directly serve the end-users, LSST will provide a basic, limited capacity, al
         return nn.dist < 2. * nn.Re
 \end{verbatim}
 
-We emphasize that this LSST-provided capability will be limited, and is {\em not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could. For example, we do not plan to provide any classification (eg., ``is the light curve consistent with an RR Lyra?", or ``a Type Ia SN?"). No information beyond what is contained in the \VOEvent packet will be available to user-defined filters (eg., no cross-matches to other catalogs). The complexity and run time of user defined filters will be limited by available resources. Execution latency will not be guaranteed. The number of \VOEvents transmitted to each user per user will be limited as well (eg., at least up to $\sim 20$ per visit per user, dynamically throttled depending on load). Finally, the total number of simultaneous subscribers is likely to be limited -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
+We emphasize that this LSST-provided capability will be limited, and is {\em not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could. For example, we do not plan to provide any classification (eg., ``is the light curve consistent with an RR Lyra?'', or ``a Type Ia SN?''). No information beyond what is contained in the \VOEvent packet will be available to user-defined filters (eg., no cross-matches to other catalogs). The complexity and run time of user defined filters will be limited by available resources. Execution latency will not be guaranteed. The number of \VOEvents transmitted to each user per user will be limited as well (eg., at least up to $\sim 20$ per visit per user, dynamically throttled depending on load). Finally, the total number of simultaneous subscribers is likely to be limited -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
 
 \annotate{This ``20'' looks like a number that should be in the requirements. Do we want a spec for minimum number of simultaneous users?}
 
@@ -880,11 +873,11 @@ Level 2 data products result from direct image\footnote{As opposed to {\em diffe
 
 Similarly to Level 1 catalogs of \DIAObjects and \DIASources, \Objects in the Level 2 catalog\dmreq{0275} represent the astrophysical phenomena (stars, galaxies, quasars, etc.), while \Sources represent their single-epoch observations. \Sources are independently detected and measured in single epoch exposures and recorded in the \Source table.\dmreq{0267}
 
-The master list of \Objects in Level 2 will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds.\dmreq{0034} We plan to build coadds designed to maximize depth ({\em ``deep coadds"})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing ({\em ``best seeing coadds"}), unless
+The master list of \Objects in Level 2 will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds.\dmreq{0034} We plan to build coadds designed to maximize depth ({\em ``deep coadds''})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing ({\em ``best seeing coadds''}), unless
 algorithms will enable these two to be the same. \annotate{DMS-REQ-0279 covers deep and best seeing coadds in the discussion.}
 We will also build a series of {\em short-period} (eg. yearly, or multi-year) coadds.
 \annotate{How do these short-period coadds relate to template coadds? There does not seem to be an explicit requirement for short-period coadds.}
-The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands ({\em ``multi-color coadds"}).\dmreq{0281} {\bf \em Not all of these will be preserved} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as Level 3 tasks (\S~\ref{sec:level3}).
+The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands ({\em ``multi-color coadds''}).\dmreq{0281} {\bf \em Not all of these will be preserved} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as Level 3 tasks (\S~\ref{sec:level3}).
 \annotate{The requirements do not have anything to say about the archival status of coadds.}
 
 \dmreq{0275}
@@ -920,7 +913,7 @@ bullet 7 is pipeline 4, {\em Multi-epoch Object Characterization}):
 \begin{enumerate}
     \item {\em Single Visit Processing}: Raw exposures are reduced to \B{Processed Visit Images} \R{\em calibrated visit exposures}, and \Sources are independently detected, deblended, and measured on all visits. Their measurements (instrumental fluxes and shapes) are stored in the \Source table.\dmreq{0267}
     \item {\em Relative calibration}: The survey is internally calibrated, both photometrically and astrometrically. Relative zero point and astrometric corrections are computed for every visit. \dmreq{0029} \dmreq{0030} Sufficient data is kept to reconstruct the normalized system response function $\phi_b(\lambda)$ (see Eq.~5, SRD) at every position in the focal plane at the time of each visit as required by \S~3.3.4 of the SRD.
-    \item {\em Coadd creation}: Deep, seeing optimized, \dmreq{0279} and short-period per-band coadds \annotate{(Where does it say this?)} are created in $ugrizy$ bands, as well as deeper, multi-color, \dmreq{0281} coadds\footnote{We'll denote the ``band" of the multi-color coadd as 'M'.}. Transient sources (including Solar System objects, explosive transients, etc), will be rejected from the coadds. See \S~\ref{sec:coadds} for details.
+    \item {\em Coadd creation}: Deep, seeing optimized, \dmreq{0279} and short-period per-band coadds \annotate{(Where does it say this?)} are created in $ugrizy$ bands, as well as deeper, multi-color, \dmreq{0281} coadds\footnote{We'll denote the ``band'' of the multi-color coadd as 'M'.}. Transient sources (including Solar System objects, explosive transients, etc), will be rejected from the coadds. See \S~\ref{sec:coadds} for details.
     \item {\em Coadd source detection}. Sources will be detected on all coadds generated in the previous step.\dmreq{0277} The source detection algorithm will detect regions of connected pixels, known as {\em footprints}, above the nominal $S/N$ threshold in the {\em PSF-likelihood image} of the visit. An appropriate algorithm will be run to also detect extended low surface brightness objects
 (eg., binned detection algorithm from SDSS).  Each footprint may have one or more {\em peaks}, and the collection of these peaks (and their membership in the footprints) are the output of this stage.
     \item {\em Association and deblending}. \dmreq{0275} The next stage in the pipeline, which we will for simplicity just call {\em the deblender}, will synthesize a list of unique objects. In doing so it will consider the catalogs of \CoaddSources, catalogs of \DIASources, \DIAObjects and \SSObjects detected on difference images, and objects from external
@@ -941,7 +934,7 @@ This process of {\em forced photometry}, will result in the characterization of 
 \subsubsection{Object Characterization Measures}
 \label{sec:objchar}
 
-Properties of detected objects will be measured as a part of the object characterization step described in the previous section and stored in the \Object table. These measurements are designed to enable LSST ``static sky" science. This section discusses at a high level which properties will be measured and how those measurements will be performed. For a detailed list of quantities being fit/measured, see the table in \S~\ref{sec:objectTable}.
+Properties of detected objects will be measured as a part of the object characterization step described in the previous section and stored in the \Object table. These measurements are designed to enable LSST ``static sky'' science. This section discusses at a high level which properties will be measured and how those measurements will be performed. For a detailed list of quantities being fit/measured, see the table in \S~\ref{sec:objectTable}.
 
 All measurements discussed in this section deal with properties of {\em objects}, and will be performed on multi-epoch coadds, or by simultaneously fitting to all epochs. Measurements of sources in individual visits, independent of all others, are described in \S~\ref{sec:sourceMeas}.
 
@@ -963,7 +956,7 @@ We will also explore fitting the galaxy model simultaneously to all bands, with 
 
 In addition to the maximum likelihood values of fitted parameters and their covariance matrix, a number (currently planned to be $\sim 200$, on average\footnote{This choice of the number of independent samples will be verified during Construction.}) of independent samples from the likelihood function will be provided. These will enable use-cases sensitive to departures from the Gaussian approximation, with shear measurement being the primary use case. A permissible descope, in case of insufficient storage, will be not to sample the posterior for u and y bands.
 
-    \item {\em Standard colors}. \dmreq{0276} Colors of the object in ``standard seeing" (for example, the third quartile expected survey seeing in the $i$ band, $\sim 0.9"$) will be measured. These colors are guaranteed to be seeing-insensitive,  suitable for estimation of photometric redshifts\footnote{The problem of optimal determination of photometric redshift is the subject of intense research. The approach we're taking here is conservative, following contemporary practices. As new insights develop, we will revisit the issue.}.
+    \item {\em Standard colors}. \dmreq{0276} Colors of the object in ``standard seeing'' (for example, the third quartile expected survey seeing in the $i$ band, $\sim 0.9$\,arcsec) will be measured. These colors are guaranteed to be seeing-insensitive,  suitable for estimation of photometric redshifts\footnote{The problem of optimal determination of photometric redshift is the subject of intense research. The approach we're taking here is conservative, following contemporary practices. As new insights develop, we will revisit the issue.}.
 
     \item {\em Centroids}. Centroids will be computed independently for each band using an algorithm similar to that employed by SDSS. Information from all\footnote{Whenever we say {\em all}, it should be understood that this does not preclude reasonable data quality cuts to exclude data that would otherwise degrade the measurement.} epochs will be used to derive the estimate. These centroids will be used for adaptive moment, Petrosian, Kron, standard color, and aperture measurements. \dmreq{0276}
 
@@ -1101,7 +1094,7 @@ psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 psNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
 
-bdRadec & double[2][ugrizy] & ~ & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk", we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object, in each band. \\
+bdRadec & double[2][ugrizy] & ~ & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk'', we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object, in each band. \\
 
 bdEllip & float[2][ugrizy] & ~ & B+D model: Ellipticity $(e_1, e_2)$ of the object. \\
 
@@ -1123,7 +1116,7 @@ bdNdata & int[ugrizy] & ~ & The number of data points (pixels) used to fit the m
 
 bdSamples & float16[9][200][ugrizy] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim 3$ significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
 
-stdColor & float[5] & mag & Color of the object measured in ``standard seeing". While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-Z determinations.\\
+stdColor & float[5] & mag & Color of the object measured in ``standard seeing''. While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-Z determinations.\\
 
 stdColorErr & float[5] & mag & Uncertainty of {\tt stdColor}. \\
 
@@ -1368,14 +1361,14 @@ In course of Level 2 processing, multiple classes and numerous of coadds will be
 
                \item A set of {\em best seeing} coadds. One deep coadd will be created for each of the $ugrizy$ bands, using only the best seeing data (for example, using only the first quartile of the realized seeing distribution). These will be built to assist the deblending process. These coadds will be kept indefinitely and made available to the users. \dmreq{0330}
 
-               \item A set of {\em short-period} coadds. These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out" (or rejected) in full-depth coadds. {\bf We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources. \annotate{No requirement for this. I don't think DMS-REQ-0121 covers the "provide suficient metadata" statement.} \dmreq{0298}
+               \item A set of {\em short-period} coadds. These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. {\bf We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources. \annotate{No requirement for this. I don't think DMS-REQ-0121 covers the ``provide suficient metadata'' statement.} \dmreq{0298}
 
-        \item One (ugrizyM) set of PSF-matched coadds. These will be used to measure colors and shapes of objects at ``standard" seeing. {\bf \em We do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources. \annotate{I don't think there is a requirement for this.}
+        \item One (ugrizyM) set of PSF-matched coadds. These will be used to measure colors and shapes of objects at ``standard'' seeing. {\bf \em We do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources. \annotate{I don't think there is a requirement for this.}
     \end{itemize}
 
 The exact details of which coadds to build, and which ones to keep, can change during Construction without affecting the processing system design as the most expensive operations (raw image input and warping) are constant in the number of coadds produced. The data management system design {\em is} sensitive to the total {\em number and size} of coadds to be {\em kept} -- these are the relevant constraining variables.
 
-We reiterate that {\bf not all coadds will be kept and served to the public}\footnote{The coadds are a major cost driver for storage. LSST Data Management system is currently sized to keep and serve seven coadds, {\em ugrizyM}, over the full footprint of the survey.}, though sufficient metadata will be provided to users to recreate them on their own. Some coadds may be entirely ``virtual": for example, the PSF-matched coadds could be implemented as ad-hoc convolutions of postage stamps when the colors are measured. \annotate{The requirements only specify that Processed Visits and Difference Images are re-generated on demand, and then only in discussion sections.}
+We reiterate that {\bf not all coadds will be kept and served to the public}\footnote{The coadds are a major cost driver for storage. LSST Data Management system is currently sized to keep and serve seven coadds, {\em ugrizyM}, over the full footprint of the survey.}, though sufficient metadata will be provided to users to recreate them on their own. Some coadds may be entirely ``virtual'': for example, the PSF-matched coadds could be implemented as ad-hoc convolutions of postage stamps when the colors are measured. \annotate{The requirements only specify that Processed Visits and Difference Images are re-generated on demand, and then only in discussion sections.}
 
 We {\em \bf will} retain smaller sections of all generated coadds, to support quality assessment and targeted science. Retained sections may be positioned to cover areas of the sky of special interest such as overlaps with other surveys, nearby galaxies, large clusters, etc. \annotate{Not in requirements.}
 
@@ -1408,7 +1401,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
     \item {\em What is the definition of a crowded field?} This is related to the question of when is LSST photometry allowed to deviate from SRD specs due to crowding. (FDR)
 
-    \item {\em Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with "large" galaxy characterization. Measures like isophote twists, Gini coefficients, etc. This is now considered to be Level 3, but it's likely at least a portion of it belongs to Level 2 -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
+    \item {\em Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with ``large'' galaxy characterization. Measures like isophote twists, Gini coefficients, etc. This is now considered to be Level 3, but it's likely at least a portion of it belongs to Level 2 -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
 
     \item {\em Which coadds to we keep and serve to the public?} Probably non-PSF matched coadds with CoaddPsf (aka. StackFit PSF). PSF-matched coadds are another option and may be easier for the users to work with. (CONSTRUCTION)
 
@@ -1445,11 +1438,11 @@ Many scientists' work may involve using two or all three of them in concert, but
 \dmreq{0290}
 These are data products that are generated by users {\em on any computing resources anywhere} that are then brought to an LSST Data Access Center (DAC) and stored there. The hardware for these capabilities includes the physical storage and database server resources at the DAC to support them.
 
-For catalog data products, there is an expectation that they can be "federated" with the Level 1 (L1) and Level 2 (L2) catalogs to enable analyses combining them.  Essentially this means that either the user-supplied tables include keys from the L1/L2 catalogs that can be used for key-equality-based joins with them (example: a table of custom photometric redshifts for galaxies, with a column of object IDs that can be joined to the L2 Object catalog), or that there are columns that can be used for spatial (or temporal, or analogous) joins against L1/L2 tables. The latter implies that such L3 table's columns must be in the same coordinate system and units as the corresponding L1/L2 columns.
+For catalog data products, there is an expectation that they can be ``federated'' with the Level 1 (L1) and Level 2 (L2) catalogs to enable analyses combining them.  Essentially this means that either the user-supplied tables include keys from the L1/L2 catalogs that can be used for key-equality-based joins with them (example: a table of custom photometric redshifts for galaxies, with a column of object IDs that can be joined to the L2 Object catalog), or that there are columns that can be used for spatial (or temporal, or analogous) joins against L1/L2 tables. The latter implies that such L3 table's columns must be in the same coordinate system and units as the corresponding L1/L2 columns.
 \dmreq{0123}
 \dmreq{0124}
 
-There is no requirement that Level 3 data products (L3DPs) are derived from L1 or L2 other than that they be joinable with them.  For instance, a user might have a catalog of radio sources that they might want to bring into federation with the LSST catalogs. That can be thought of as a Level 3 Data Product as long as they have ``LSST-ized" it by ensuring compatibility of coordinate, time, measurement systems, etc.  Nevertheless, we do expect the majority of L3DPs to be derived from processed LSST data.
+There is no requirement that Level 3 data products (L3DPs) are derived from L1 or L2 other than that they be joinable with them.  For instance, a user might have a catalog of radio sources that they might want to bring into federation with the LSST catalogs. That can be thought of as a Level 3 Data Product as long as they have ``LSST-ized'' it by ensuring compatibility of coordinate, time, measurement systems, etc.  Nevertheless, we do expect the majority of L3DPs to be derived from processed LSST data.
 
 There could also be L3 image data products; for example, user-generated coadds with special selection criteria or stacking algorithms (eg. the so-called shift \& stack algorithm for detecting moving objects).
 \dmreq{0127}
@@ -1457,7 +1450,7 @@ There could also be L3 image data products; for example, user-generated coadds w
 Any L3DP may have access controls associated with it, restricting read access to just the owner, to a list of people, to a named group of people, or allowing open access.
 \annotate{I don't see a DMSR for access control.}
 
-The storage resources for L3DPs come out of the SRD requirement for 10\% of LSST data management capabilities to be devoted to user processing. In general, they are likely to be controlled by some form of a ``space allocation committee".  Users will probably have some small baseline automatic allocation, beyond which a SAC proposal is needed. The SAC may take into account scientific merit, length of time for which the storage is requested, and openness of the data to others, in setting its priorities.
+The storage resources for L3DPs come out of the SRD requirement for 10\% of LSST data management capabilities to be devoted to user processing. In general, they are likely to be controlled by some form of a ``space allocation committee''.  Users will probably have some small baseline automatic allocation, beyond which a SAC proposal is needed. The SAC may take into account scientific merit, length of time for which the storage is requested, and openness of the data to others, in setting its priorities.
 \dmreq{0119}
 
 It is to be decided whether users will be required to provide the code and/or documentation behind their L3DPs, or whether the SAC may include the availability of this supporting information in its prioritization.  Obviously if a user intends to make a L3DP public or publish it to a group it will be more important that supporting information be available.
@@ -1539,7 +1532,7 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 
 \begin{itemize}
 \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
-\item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the "Level 3 environment"), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
+\item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Level 3 environment''), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
 \item If the original code was written in another language or another data processing framework, the project may consider rewriting it to required LSST standards.
 \item Taking on a new Level 2 DP means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new L2DP through DR11.
 \end{itemize}
@@ -1550,11 +1543,11 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 \label{sec:specialProgs}
 
 \req{LSR-REQ-0075}
-LSST Survey Specifications (LSST SRD, \S~3.4) specify that 90\% of LSST observing time will be spend executing the so-called ``universal cadence". These observations will result in Level 1 and 2 data products described earlier in this document.
+LSST Survey Specifications (LSST SRD, \S~3.4) specify that 90\% of LSST observing time will be spend executing the so-called ``universal cadence''. These observations will result in Level 1 and 2 data products described earlier in this document.
 
 \annotate{DMS-REQ-0069 just states special programs are special in the discussion section.}
 
-The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special" regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
+The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
 
 The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the {\em constraints} on these data products, given the adopted Level 1/2/3 architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertise.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
 \\
@@ -1563,9 +1556,9 @@ Processing for special programs will make use of the same software stack and com
 
 \annotate{No requirement stated for separate databases.}
 
-For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main" (Level 1 and 2) databases. The system will, however, allow for simple federation with Level 1/2/3 data products (i.e., cross-queries and joins).
+For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main'' (Level 1 and 2) databases. The system will, however, allow for simple federation with Level 1/2/3 data products (i.e., cross-queries and joins).
 
-As a concrete example, a data product complement for a ``deep drilling" field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds" (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours\req{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
+As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours\req{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
 \\
 
 \annotate{Is this 24 hours L1PublicT? The above paragraph is speculation and not a requirement.}
