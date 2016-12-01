@@ -266,9 +266,9 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 
 \subsection{Fluxes and Magnitudes}
 \label{sec:fluxes}
-
+\dmreq{0043}
 Because flux measurements on difference images (Level 1 data products; \S~\ref{sec:level1}) are performed against a template
-and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.
+and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
 We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
 \begin{equation}
@@ -276,8 +276,6 @@ We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a li
 \end{equation}
 
 We chose to use maggies (as opposed to, say, Jansky) to allow the user to differentiate between two distinct sources of photometric calibration error: the error in relative (internal) calibration of the survey, and the error in absolute calibration that depends on the knowledge of absolute flux of photometric standards.
-
-\annotate{DMSR states magnitudes will be provided just for DIAObject and SSObject. Jy not mentioned in DMSR: ``flux'' is mentioned but there is no explicit statement that Jy and mgy will be provided for flux measurements.}
 
 \vspace{1em}
 Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
@@ -1355,7 +1353,7 @@ Older releases will be archived to mass storage (tape). The users \textbf{\emph{
 \dmreq{0077}\dmreq{0300}
 \\
 
-All raw data used to generate any public data product (raw exposures, calibration frames, telemetry, configuration metadata, etc.) will be kept and made available for download. \dmreq{0309}\dmreq{0298}
+All raw data used to generate any public data product (raw exposures, calibration frames, telemetry, configuration metadata, etc.) will be kept and made available for download. \dmreq{0309}\dmreq{0346}
 
 \begin{openissues}
 \subsection{Open Issues}
