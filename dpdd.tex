@@ -340,9 +340,9 @@ detected \DIASources\footnote{For observations on the Ecliptic near the oppositi
 The following is a high-level description of steps which will occur during regular \emph{nightly}
 difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \begin{enumerate}
-\item A visit is acquired and reduced to a single \emph{visit image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).\dmreq{0069}
-\item The visit image is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
-\item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^\mathrm{nd}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. PSF photometry is performed on the visit image at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
+\item A visit is acquired and reduced to a single \B{\emph{Processed}} \emph{\B{V}\R{v}isit \B{I}\R{i}mage} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).\dmreq{0069}
+\item The \B{Processed} \B{V}\R{v}isit \B{I}\R{i}mage is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
+\item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^\mathrm{nd}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. PSF photometry is performed on the \B{Processed} \B{V}\R{v}isit \B{I}\R{i}mage at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
 \item The \DB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.\dmreq{0273}\dmreq{0271}\dmreq{0285}
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).\dmreq{0274}
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
@@ -755,7 +755,7 @@ Older versions of the \DB\ produced during Data Release processing will be archi
 \subsubsection{Visit Images}
 \dmreq{0069}
 
-Raw and processed visit images will be made available for download no later than 24 hours\req{L1PublicT} from the end of visit acquisition.
+Raw and \B{P}\R{p}rocessed \B{V}\R{v}isit \B{I}\R{i}mages will be made available for download no later than 24 hours\req{L1PublicT} from the end of visit acquisition.
 
 The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days\req{l1CacheLifetime}, with slower access afterwards (minutes to hours).
 
@@ -1303,7 +1303,7 @@ flags & bit[8] & bit & Various useful flags. \\ \hline
 
 \dmreq{0065}
 
-Raw exposures, including individual snaps, and processed visit images will be made available for download as FITS files. They will be downloadable both through a human-friendly Science User Interface, as well as using machine-friendly APIs.
+Raw exposures, including individual snaps, and \B{P}\R{p}rocessed \B{V}\R{v}isit \B{I}\R{i}mages will be made available for download as FITS files. They will be downloadable both through a human-friendly Science User Interface, as well as using machine-friendly APIs.
 
 Required calibration data,\dmreq{0130} processing metadata,\dmreq{0298} and all necessary image processing software will be provided to enable the user to generate bitwise identical processed images from raw images\footnote{Assuming identically performing software and hardware configuration.}.\dmreq{0308}
 
