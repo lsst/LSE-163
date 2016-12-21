@@ -446,7 +446,7 @@ diaObjectId & uint64 & ~ & ID of the \DIAObject this source was associated with,
 
 ssObjectId & uint64 & ~ & ID of the \SSObject this source has been linked to, if any. \\
 
-parentSourceId & uint64 & ~ & ID of the parent \Source this object has been deblended from, if any. \\
+parent\B{Dia}SourceId & uint64 & ~ & ID of the parent \R{\Source}\B{\DIASource} this object has been deblended from, if any. \\
 
 midPointTai & double & time & Time of mid-exposure for this DIASource\footnote{The visit mid-exposure
 time generally depends on the position of the source relative to the shutter blade motion trajectory.}. \\
@@ -507,7 +507,7 @@ dipLength & float & arcsec & Maximum likelihood value for the lobe separation in
 
 dipAngle & float & degrees & Maximum likelihood fit of the angle between the meridian through the centroid and the dipole direction (bearing, from negative to positive lobe). \\
 
-dipCov & float[15] & various & Covariance matrix of dipole model parameters. \\
+dipCov & float[\R{15}\B{21}] & various & Covariance matrix of dipole model parameters. \\
 
 dipLnL & float & ~ & Natural $log$ likelihood of the observed data given the dipole source model. \\
 
@@ -624,7 +624,7 @@ psFluxNdata & int[ugrizy] & ~ & The number of data points used to compute \textt
 
 fpFluxMean & float[ugrizy] & nmgy & Weighted mean of forced photometry flux, \texttt{fpFlux}.\\
 
-fpFluxMeanErr & float[ugrizy] & nmgy & Standard error of \texttt{fpFlux}. \\
+fpFluxMeanErr & float[ugrizy] & nmgy & Standard error of \texttt{fpFlux}\B{\texttt{Mean}}. \\
 
 fpFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of \texttt{fpFlux}. \\
 
@@ -672,7 +672,7 @@ ssObjectId & uint64 & ~ & Unique identifier. \\
 
 oe & double[7] & various & Osculating orbital elements at epoch ($q$, $e$, $i$, $\Omega$, $\omega$, $M_0$, epoch). \\
 
-oeCov & double[21] & various & Covariance matrix for \texttt{oe}. \\
+oeCov & double[\R{21}\B{28}] & various & Covariance matrix for \texttt{oe}. \\
 
 arc & float & days & Arc of observation. \\
 
