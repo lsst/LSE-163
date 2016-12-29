@@ -535,19 +535,19 @@ fpBkgdErr & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpBkgd}. 
 
 %nonGrayExtinction & float & nmgy & Applied photometric extinction correction (color-dependent component) \\
 
-Ixx & float & nmgy asec$^{2}$  & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & \R{nmgy} asec$^{2}$  & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
-Iyy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Iyy & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Ixy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Ixy & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Icov & float[6] & nmgy$^{2}$ asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
+Icov & float[6] & \R{nmgy$^{2}$} asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
 
-IxxPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxxPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IyyPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IyyPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IxyPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxyPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
 extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments, or from a likelihood ratio of point/trailed source models (exact algorithm TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
 
@@ -1092,19 +1092,19 @@ stdColor & float[5] & mag & Color of the object measured in ``standard seeing''.
 
 stdColorErr & float[5] & mag & Uncertainty of \texttt{stdColor}. \\
 
-Ixx & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
-Iyy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Iyy & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Ixy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Ixy & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Icov & float[6] & nmgy$^{2}$ asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
+Icov & float[6] & \R{nmgy$^{2}$} asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
 
-IxxPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxxPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IyyPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IyyPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IxyPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxyPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
 m4 & float[ugrizy] & ~ & Fourth order adaptive moment. \\
 
@@ -1226,19 +1226,19 @@ psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
-Ixx & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
-Iyy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Iyy & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Ixy & float & nmgy asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Ixy & float & \R{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Icov & float[6] & nmgy$^{2}$ asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
+Icov & float[6] & \R{nmgy$^{2}$} asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
 
-IxxPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxxPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IyyPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IyyPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IxyPSF & float & nmgy asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxyPSF & float & \R{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
 
 apNann & int8 & ~ & Number of elliptical annuli (see below). \\
 
