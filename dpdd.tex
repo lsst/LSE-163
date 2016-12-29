@@ -322,7 +322,7 @@ The latter method would probably be limited to nightly granularity, unless there
 
 Level 1 data products are a result of difference image analysis (DIA; \S \ref{sec:dia}). They include the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The SRD considers Solar System object orbit catalog to be a Level 2 data product (LSST SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Level 1.} (\SSObject), and related, broadly defined, metadata (including eg., cut-outs\footnote{Small, $30 \times 30$, sub-images at the position of a detected source. Also known as \emph{postage stamps.}}).
 
-\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\req{transSNR} defined in the SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim \mathrm{deg}/\mathrm{day}$, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
+\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\req{transSNR} defined in the SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. \B{Detections with high probability of being instrumental non-astrophysical artifacts may be excluded.} Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim \mathrm{deg}/\mathrm{day}$, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
 we expect about one such false positive per CCD (of the order 200,000 per typical night). The expected number of false
 positives due to background fluctuations is a very strong function of adopted $transSNR$: a change of $transSNR$ by 0.5
@@ -416,7 +416,7 @@ On average, the LSST SRD expects
 $\sim 2000$ \DIASources per visit ($\sim 2\mathrm{M}$ per night; 20,000 per deg$^2$
 }
 \B{
-$\sim 10,000$ \DIASources per visit ($\sim 10\mathrm{M}$ per night; 100,000 per deg$^2$
+$\sim 10,000$ astrophysical \DIASources per visit ($\sim 10\mathrm{M}$ per night; 100,000 per deg$^2$
 }
 of the sky per hour).
 \req{transN}
