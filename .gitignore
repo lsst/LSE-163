@@ -6,4 +6,7 @@ dpdd.log
 dpdd.out
 dpdd.synctex.gz
 dpdd.toc
+dpdd.fdb_latexmk
+dpdd.fls
+dpdd.pdf
 _build
