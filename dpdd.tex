@@ -258,11 +258,11 @@ For fluxes, we recognize that a substantial fraction of astronomers will just wa
 
 Raw images will be processed to \dmreq{0069}remove instrumental signature and characterize their properties, \dmreq{0327}including backgrounds (both due to night sky and astrophysical), \dmreq{0070}the point spread function and its variation, \dmreq{0029}photometric zero-point model, and the \dmreq{0030}world coordinate system (WCS).
 
-That characterization is crucial for deriving LSST catalogs and understanding the images. It will be kept and made available to the users. The exact format used to store these (meta)data will depend on the final adopted algorithm in consultation with the scientific community to ensure the formats in which these data are served are maximally useful.
+That characterization is crucial for deriving LSST catalogs and understanding the images. It will be kept and made available to the users. The exact format used to store these (meta)data will depend on the final adopted algorithm in consultation with the scientific community to ensure the formats in which these data are served are maximally useful.\dmreq{0328}
 
 \dmreq{0072}Each processed image\footnote{It is also frequently referred to as \emph{calibrated exposure}\B{, from the Butler product type of \texttt{calexp}}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and usefullness of each pixel in estimating the flux density recorded in that area of the sky.
 
-This information will be per-pixel, and potentially unwieldy to use for certain science cases. We plan to investigate approximate schemes for storing masks based on geometry (e.g., similar to Mangle or STOMP), \emph{in addition} to storing them on a per pixel basis.
+This information will be per-pixel, and potentially unwieldy to use for certain science cases. We plan to investigate approximate schemes for storing masks based on geometry (e.g., similar to Mangle or STOMP), \emph{in addition} to storing them on a per pixel basis.\dmreq{0326}
 
 \subsection{Fluxes and Magnitudes}
 \label{sec:fluxes}
@@ -829,14 +829,14 @@ To directly serve the end-users, LSST will provide a basic, limited capacity, al
         return nn.dist < 2. * nn.Re
 \end{verbatim}
 
-We emphasize that this LSST-provided capability will be limited, and is \emph{not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could. 
-For example, we do not plan to provide any \B{\emph{exclusive}} classification \B{to a unique category of object}. 
+We emphasize that this LSST-provided capability will be limited, and is \emph{not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could.
+For example, we do not plan to provide any \B{\emph{exclusive}} classification \B{to a unique category of object}.
 Following the SRD specification, however, we will provide a limited number of pre-defined filters for a small number of object types of common interest.\dmreq{0348}
 These will answer non-exclusive questions such as ``is the light curve consistent with an RR Lyra?'', and will have potentially highly overlapping selections, designed to provide good completeness but perhaps only very modest purity.
-No information beyond what is contained in the \VOEvent packet will be available to the pre-defined or user-defined filters (e.g., no cross-matches to other catalogs). 
-The complexity and run time of user defined filters will be limited by available resources. 
-Execution latency will not be guaranteed. 
-The number of \VOEvents transmitted to each user per \R{user} \B{visit} will be limited as well (e.g., \R{at least up to $\sim 20$} \B{the equivalent of 20 full-size alert packets} per visit per user\req{numBrokerAlerts}\dmreq{0343}, dynamically throttled depending on load). 
+No information beyond what is contained in the \VOEvent packet will be available to the pre-defined or user-defined filters (e.g., no cross-matches to other catalogs).
+The complexity and run time of user defined filters will be limited by available resources.
+Execution latency will not be guaranteed.
+The number of \VOEvents transmitted to each user per \R{user} \B{visit} will be limited as well (e.g., \R{at least up to $\sim 20$} \B{the equivalent of 20 full-size alert packets} per visit per user\req{numBrokerAlerts}\dmreq{0343}, dynamically throttled depending on load).
 Finally, the total number of simultaneous subscribers is likely to be limited\req{numBrokerUsers} -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
 
 \begin{openissues}
