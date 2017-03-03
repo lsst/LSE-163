@@ -64,6 +64,9 @@
 \newcommand{\reqnum}[1]{\marginpar{\tiny DPDD-#1}}
 \newcommand{\req}[1]{\marginpar{\tiny #1}}
 \newcommand{\dmreq}[1]{\req{DMS-REQ-#1}}
+\newcommand{\lsrreq}[1]{\req{LSR-REQ-#1}}
+\newcommand{\ossreq}[1]{\req{OSS-REQ-#1}}
+\newcommand{\reqparam}[1]{\req{#1}}
 
 %% Journal abbreviations
 \newcommand{\icarus}{Icarus}
@@ -205,7 +208,7 @@ standards\footnote{For example, VOEvent, see \url{http://ls.st/4tt}} within 60 s
 \end{enumerate}
 
 
-The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\req{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
+The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
 
 \vspace{1em}
 
@@ -319,7 +322,7 @@ The latter method would probably be limited to nightly granularity, unless there
 
 Level 1 data products are a result of difference image analysis (DIA; \S \ref{sec:dia}). They include the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The SRD considers Solar System object orbit catalog to be a Level 2 data product (LSST SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Level 1.} (\SSObject), and related, broadly defined, metadata (including eg., cut-outs\footnote{Small, $30 \times 30$, sub-images at the position of a detected source. Also known as \emph{postage stamps.}}).
 
-\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\req{transSNR} defined in the SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. \B{Detections with high probability of being instrumental non-astrophysical artifacts may be excluded.} Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim \mathrm{deg}/\mathrm{day}$, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
+\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\reqparam{transSNR} defined in the SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. \B{Detections with high probability of being instrumental non-astrophysical artifacts may be excluded.} Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim \mathrm{deg}/\mathrm{day}$, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
 we expect about one such false positive per CCD (of the order 200,000 per typical night). The expected number of false
 positives due to background fluctuations is a very strong function of adopted $transSNR$: a change of $transSNR$ by 0.5
@@ -347,17 +350,17 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).\dmreq{0274}
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Level 1 processing is
-rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\req{diaCharacterizationCutoff}
-\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for \R{one or more \Objects positionally close to the \DIAObject,} \B{the three nearest stars and three nearest galaxies to the \DIAObject in \Objects}\req{diaNearbyObjMaxStar}\req{diaNearbyObjMaxGalaxy} out to some maximum radius.\req{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
+rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
+\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for \R{one or more \Objects positionally close to the \DIAObject,} \B{the three nearest stars and three nearest galaxies to the \DIAObject in \Objects}\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
 event alert (see below).\dmreq{0271}\dmreq{0002}
 \item An alert is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \SSObject ID or \DIAObject ID\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata (IDs and database names).}, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.), \emph{including the full light curves \B{of the \SSObject or \DIAObject}}\B{, including all other \DIASources linked with the \SSObject or \DIAObject. The science content associated with the DR Objects will not be included}. See Section \ref{sec:voEventContents} for a more complete enumeration.
 \dmreq{0274}
 \item For all \DIAObjects overlapping the field of view, including those that have an associated
 new \DIASource from this visit, forced photometry will be performed on difference image (point source photometry only). Those measurements will be stored as appropriately flagged \DIASources\footnote{For the purposes of this document, we're treating the \DIASources generated by forced photometry or precovery measurements to be the same as \DIASources detected in difference images (but flagged appropriately). In the logical schema, these may be divided into two separate tables.}.  No alerts will be issued for these \DIASources.\dmreq{0317}
-\item Within 24 hours of discovery\req{L1PublicT}, \emph{precovery} PSF forced photometry will be performed on any difference image overlapping the position of new \DIAObjects taken within the past 30 days\req{precoveryWindow}, and added to the database. Alerts will not be issued with precovery photometry information.\dmreq{0287}
+\item Within 24 hours of discovery\reqparam{L1PublicT}, \emph{precovery} PSF forced photometry will be performed on any difference image overlapping the position of new \DIAObjects taken within the past 30 days\reqparam{precoveryWindow}, and added to the database. Alerts will not be issued with precovery photometry information.\dmreq{0287}
 \end{enumerate}
 
-In addition to the processing described above, a smaller sample of sources detected on difference images \emph{below} the nominal $transSNR = \transSNR$ \req{transSNR} threshold will be measured and stored, in order to enable monitoring of difference image analysis quality.\dmreq{0270}
+In addition to the processing described above, a smaller sample of sources detected on difference images \emph{below} the nominal $transSNR = \transSNR$ \reqparam{transSNR} threshold will be measured and stored, in order to enable monitoring of difference image analysis quality.\dmreq{0270}
 
 Also, the system will have the ability to measure and alert on a limited\footnote{It will be sized for no less than $\sim 10\%$ of average \DIASource per visit rate.} number of sources detected below the nominal threshold for which additional criteria are satisfied. For example, a $transSNR = 3$ source detection near a gravitational keyhole\footnote{
 A gravitational keyhole is a region of space where Earth's gravity would modify the orbit of a passing asteroid
@@ -407,7 +410,7 @@ In the sections to follow, we present the \emph{conceptual schemas} for the most
 
 \subsubsection{\DIASource Table}
 
-This is a table of sources detected at $transSNR \geq \transSNR$ \req{transSNR} on difference images\footnote{This requirement is specified in the LSST SRD.}\req{LSR-REQ-0101} (\DIASources).
+This is a table of sources detected at $transSNR \geq \transSNR$ \reqparam{transSNR} on difference images\footnote{This requirement is specified in the LSST SRD.}\lsrreq{0101} (\DIASources).
 On average, the LSST SRD expects
 \R{
 $\sim 2000$ \DIASources per visit ($\sim 2\mathrm{M}$ per night; 20,000 per deg$^2$
@@ -416,7 +419,7 @@ $\sim 2000$ \DIASources per visit ($\sim 2\mathrm{M}$ per night; 20,000 per deg$
 $\sim 10,000$ astrophysical \DIASources per visit ($\sim 10\mathrm{M}$ per night; 100,000 per deg$^2$
 }
 of the sky per hour).
-\req{transN}
+\reqparam{transN}
 
 Some $transSNR \geq \transSNR$ sources will not be caused by observed astrophysical phenomena, but by artifacts (bad columns, diffraction spikes, etc.). The difference image analysis software will attempt to identify and flag these as such.
 
@@ -577,7 +580,7 @@ Notes about changes with respect to the previous baseline:
 
 \subsubsection{\DIAObject Table}
 
-\dmreq{0271}\dmreq{0272}\req{diaNearbyMaxObj}
+\dmreq{0271}\dmreq{0272}\reqparam{diaNearbyMaxObj}
 
 \begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
@@ -724,7 +727,7 @@ Notes about changes with respect to the previous baseline:
 
 When a new \DIASource is detected, it's useful to perform PSF photometry at the location of the new source on images taken prior to discovery. These are colloquially known as \emph{precovery measurements}\footnote{When Solar System objects are concerned, precovery has a slightly different meaning: predicting the positions of newly identified \SSObjects on previously acquired visits, and associating with them the \DIASources consistent with these predictions.}.\dmreq{0287}\dmreq{0286} Performing precovery in real time over all previously acquired visits is too I/O intensive to be feasible. We therefore plan the following:
 \begin{enumerate}
-\item For all newly discovered objects, perform precovery PSF photometry on visits taken over the previous 30 days\req{precoveryWindow}\footnote{We will be maintaining a cache of $30$ days of processed images to support this feature.}.
+\item For all newly discovered objects, perform precovery PSF photometry on visits taken over the previous 30 days\reqparam{precoveryWindow}\footnote{We will be maintaining a cache of $30$ days of processed images to support this feature.}.
 \item Make available a ``precovery service'' to request precovery for a limited number of \DIASources across all previous visits, and make it available within 24 hours of the request. Web interface and machine-accessible APIs will be provided.\dmreq{0341}
 \end{enumerate}
 
@@ -746,7 +749,7 @@ There will be three main advantages of \DB produced during Data Release processi
 i) even the oldest data will be processed with the latest software,
 ii) astrometric and photometric calibration will be better, and
 iii) there will be no 12-month limit on the width of data window used to computed associated \DIAObject
-measurements (proper motions, centroids, light curves, etc.). \req{diaCharacterizationCutoff}
+measurements (proper motions, centroids, light curves, etc.). \reqparam{diaCharacterizationCutoff}
 
 Older versions of the \DB\ produced during Data Release processing will be archived following the same rules as for the \DR{}s. The most recent DR, and the penultimate data release will be kept on disk and loaded into the database.\dmreq{0077} Others will be archived to tape and made available as bulk downloads.\dmreq{0300} See \S~\ref{sec:retention} for more detail.
 
@@ -755,17 +758,17 @@ Older versions of the \DB\ produced during Data Release processing will be archi
 \subsubsection{Visit Images}
 \dmreq{0069}
 
-Raw and \B{P}\R{p}rocessed \B{V}\R{v}isit \B{I}\R{i}mages will be made available for download no later than 24 hours\req{L1PublicT} from the end of visit acquisition.
+Raw and \B{P}\R{p}rocessed \B{V}\R{v}isit \B{I}\R{i}mages will be made available for download no later than 24 hours\reqparam{L1PublicT} from the end of visit acquisition.
 
-The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days\req{l1CacheLifetime}, with slower access afterwards (minutes to hours).
+The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days\reqparam{l1CacheLifetime}, with slower access afterwards (minutes to hours).
 
 \subsubsection{Difference Images}
 \label{sec:diffims}
 \dmreq{0010}
 
-Complete difference images will be made available for download no later than 24 hours\req{L1PublicT} from the end of visit acquisition.
+Complete difference images will be made available for download no later than 24 hours\reqparam{L1PublicT} from the end of visit acquisition.
 
-The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days\req{l1CacheLifetime}, with slower access afterwards (minutes to hours).
+The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days\reqparam{l1CacheLifetime}, with slower access afterwards (minutes to hours).
 
 \subsubsection{Image Differencing Templates}
 \label{sec:templates}
@@ -779,7 +782,7 @@ Difference image analysis will use the appropriate template given the time of ob
 
 \subsubsection{Information Contained in Each Alert}
 
-For each detected \DIASource, LSST will emit an ``Event Alert'' within 60 seconds\req{OTT1} of the end of visit (defined as the end of image readout from the LSST Camera). These alerts will be issued in \VOEvent format\footnote{Or some other format that is broadly accepted and used by the community at the start of LSST commissioning.}, and should be readable by \VOEvent-compliant clients.\dmreq{0002}
+For each detected \DIASource, LSST will emit an ``Event Alert'' within 60 seconds\reqparam{OTT1} of the end of visit (defined as the end of image readout from the LSST Camera). These alerts will be issued in \VOEvent format\footnote{Or some other format that is broadly accepted and used by the community at the start of LSST commissioning.}, and should be readable by \VOEvent-compliant clients.\dmreq{0002}
 
 \vspace{1em}
 Each alert (a \VOEvent packet) will at least include the following:
@@ -833,8 +836,8 @@ These will answer non-exclusive questions such as ``is the light curve consisten
 No information beyond what is contained in the \VOEvent packet will be available to the pre-defined or user-defined filters (e.g., no cross-matches to other catalogs).
 The complexity and run time of user defined filters will be limited by available resources.
 Execution latency will not be guaranteed.
-The number of \VOEvents transmitted to each user per \R{user} \B{visit} will be limited as well (e.g., \R{at least up to $\sim 20$} \B{the equivalent of 20 full-size alert packets} per visit per user\req{numBrokerAlerts}\dmreq{0343}, dynamically throttled depending on load).
-Finally, the total number of simultaneous subscribers is likely to be limited\req{numBrokerUsers} -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
+The number of \VOEvents transmitted to each user per \R{user} \B{visit} will be limited as well (e.g., \R{at least up to $\sim 20$} \B{the equivalent of 20 full-size alert packets} per visit per user\reqparam{numBrokerAlerts}\dmreq{0343}, dynamically throttled depending on load).
+Finally, the total number of simultaneous subscribers is likely to be limited\reqparam{numBrokerUsers} -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
 
 \begin{openissues}
 \subsection{Open Issues}
@@ -1389,7 +1392,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 \label{sec:level3}
 
 \emph{Level 3 capabilities} are envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for Level 3 is established in \S~3.5 of the LSST SRD.
-\req{OSS-REQ-0140}
+\ossreq{0140}
 \\
 
 Level 3 capabilities include three separate deliverables:
@@ -1508,7 +1511,7 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 \section{Data Products for Special Programs}
 \label{sec:specialProgs}
 
-\req{LSR-REQ-0075}
+\lsrreq{0075}
 LSST Survey Specifications (LSST SRD, \S~3.4) specify that 90\% of LSST observing time will be spend executing the so-called ``universal cadence''. These observations will result in Level 1 and 2 data products described earlier in this document.
 
 The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
@@ -1516,11 +1519,11 @@ The remaining 10\% of observing time will be devoted to special programs, obtain
 The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the \emph{constraints} on these data products, given the adopted Level 1/2/3 architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertise.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
 \\
 
-Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence.\dmreq{0320} The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Level 1 data products.\dmreq{0321}\dmreq{0344}\req{OTT1}
+Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence.\dmreq{0320} The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Level 1 data products.\dmreq{0321}\dmreq{0344}\reqparam{OTT1}
 
 For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main'' (Level 1 and 2) databases. The system will, however, allow for simple federation with Level 1/2/3 data products (i.e., cross-queries and joins).\dmreq{0322}
 
-As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours\req{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
+As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours\reqparam{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
 \\
 
 Note that the data rights and access rules apply just as they would for for Level 1/2/3. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
@@ -1561,7 +1564,7 @@ from a single-visit and coadded (template) images.
 fits a library of image models to Footprints of these \DIASources, and for all \DIAObjects
 overlapping the difference image it performs Forced Photometry and recomputes summary quantities.
 During nightly Level 1 processing, this pipeline also performs Forced Photometry
-for all new \DIAObjects on difference images from the last 30 days\req{precoveryWindow}.
+for all new \DIAObjects on difference images from the last 30 days\reqparam{precoveryWindow}.
 \item \textit{Alert Generation and Distribution} pipeline (Figure~\ref{fig:Pipes567}) uses updated
 \DIAObjects and \DIASources to generate and distribute \Alerts (which also include postage stamp
 images of the \DIASource in difference image and coadded template image).
