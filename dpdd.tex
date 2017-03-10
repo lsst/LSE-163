@@ -133,7 +133,7 @@ The LSST will be operated in fully automated survey mode. The images acquired by
 
 \vspace{1em}
 
-The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document}\footnote{LSST Document Handle LPM-17\nocite{LPM-17}, available at \url{http://ls.st/srd}} (SRD). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST SRD through the \emph{LSST System Requirements Document} (the LSR; LSE-29\nocite{LSE-29}) and the \emph{LSST Observatory System Specifications} (OSS; LSE-30\nocite{LSE-30}), to the \emph{LSST Data Management System Requirements} (DMSR; LSE-61\nocite{LSE-61}), the UML model, and the database schema.
+The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document}\footnote{LSST Document Handle LPM-17 \cite{LPM-17}, available at \url{http://ls.st/srd}} (SRD). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST SRD through the \emph{LSST System Requirements Document} (the LSR; LSE-29 \cite{LSE-29}) and the \emph{LSST Observatory System Specifications} (OSS; LSE-30 \cite{LSE-30}), to the \emph{LSST Data Management System Requirements} (DMSR; LSE-61 \cite{LSE-61}), the UML model, and the database schema (LDM-153 \cite{LDM-153}).
 
 
 \subsection{General Image Processing Concepts for LSST}
@@ -406,7 +406,7 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 
 \vspace{2em}
 
-In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \B{is defined in the \texttt{cat} package and documented in \href{http://ls.st/LDM-153}{LDM-153}\nocite{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
+In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \B{is defined in the \texttt{cat} package and documented in \href{http://ls.st/LDM-153}{LDM-153} \cite{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
 \subsubsection{\DIASource Table}
 
@@ -1328,7 +1328,7 @@ All auxiliary telescope data, both raw (images with spectra) and processed (cali
 \subsubsection{Coadded Images}
 \label{sec:coadds}
 
-In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{\B{See LDM-151\nocite{LDM-151} for more details.}}:
+In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{\B{See LDM-151 \cite{LDM-151} for more details.}}:
     \begin{itemize}
         \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color coadd.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
 
@@ -1576,7 +1576,7 @@ discovering new \SSObjects, and orbit refinement and management.
 \end{enumerate}
 
 Further details about the pipeline design and implementation are available from the LSST
-document\footnote{See \url{http://ls.st/LDM-151}} LDM-151\nocite{LDM-151}.
+document\footnote{See \url{http://ls.st/LDM-151}} LDM-151 \cite{LDM-151}.
 
 \begin{figure}[!t]
     \centering
