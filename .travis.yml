@@ -9,7 +9,9 @@ before_install:
 install:
   - pip install -r requirements.txt
   - pip install "ltd-mason>=0.2,<0.3"
+  - git clone https://github.com/lsst/lsst-texmf.git
 script:
+  - export TEXMFLOCAL=lsst-texmf/texmf
   - make
 after_success:
   - ltd-mason-travis --html-dir _build

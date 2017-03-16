@@ -3,7 +3,7 @@
 %
 % Maintained by Mario Juric <mjuric@lsst.org>
 %
-\documentclass[12pt]{article}
+\documentclass[SE,lsstdraft,toc]{lsstdoc}
 
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
@@ -31,85 +31,59 @@
 \def\comm#1           {\texttt{(COMMENT: #1)}}
 \def\kms   {\hbox{km s$^{-1}$}}
 
-\usepackage[usenames]{color}
 \newcommand{\G}[1]{{\color{green} #1}}
 \newcommand{\B}[1]{{\color{blue} #1}}
 \newcommand{\R}[1]{{\color{red} #1}}
-\newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\annotate}[1]{{\color{magenta}\large\textbf{\emph{#1}}}}
 
-\usepackage{xspace}
-\newcommand{\Alert}{\code{Alert}\xspace}
-\newcommand{\Alerts}{\code{Alerts}\xspace}
-\newcommand{\DIASource}{\code{DIASource}\xspace}
-\newcommand{\DIASources}{\code{DIASources}\xspace}
-\newcommand{\DIAObject}{\code{DIAObject}\xspace}
-\newcommand{\DIAObjects}{\code{DIAObjects}\xspace}
-\newcommand{\DB}{{Level 1 database}\xspace}
-\newcommand{\DR}{{Level 2 database}\xspace}
-\newcommand{\Object}{\code{Object}\xspace}
-\newcommand{\Objects}{\code{Objects}\xspace}
-\newcommand{\Source}{\code{Source}\xspace}
-\newcommand{\Sources}{\code{Sources}\xspace}
-\newcommand{\ForcedSource}{\code{ForcedSource}\xspace}
-\newcommand{\ForcedSources}{\code{ForcedSources}\xspace}
-\newcommand{\CoaddSource}{\code{CoaddSource}\xspace}
-\newcommand{\CoaddSources}{\code{CoaddSources}\xspace}
-\newcommand{\SSObject}{\code{SSObject}\xspace}
-\newcommand{\SSObjects}{\code{SSObjects}\xspace}
-\newcommand{\VOEvent}{\code{VOEvent}\xspace}
-\newcommand{\VOEvents}{\code{VOEvents}\xspace}
-\newcommand{\transSNR}{5\xspace}
-
 \newcommand{\reqnum}[1]{\marginpar{\tiny DPDD-#1}}
-\newcommand{\req}[1]{\marginpar{\tiny #1}}
-\newcommand{\dmreq}[1]{\req{DMS-REQ-#1}}
-\newcommand{\lsrreq}[1]{\req{LSR-REQ-#1}}
-\newcommand{\ossreq}[1]{\req{OSS-REQ-#1}}
-\newcommand{\reqparam}[1]{\req{#1}}
+\newcommand{\marginreq}[1]{\marginpar{\tiny #1}}
+\newcommand{\dmreq}[1]{\marginreq{DMS-REQ-#1}}
+\newcommand{\lsrreq}[1]{\marginreq{LSR-REQ-#1}}
+\newcommand{\ossreq}[1]{\marginreq{OSS-REQ-#1}}
+\newcommand{\reqparam}[1]{\marginreq{#1}}
 
 %% Journal abbreviations
-\newcommand{\icarus}{Icarus}
-\newcommand{\apj}{ApJ}
-\newcommand{\aj}{AJ}
-
 \bibliographystyle{aasjournal}
 
-\title{\vskip -1in Large Synoptic Survey Telescope \\
-Data Products Definition Document \\
-{\small \bf LSST Document LSE-163}}
+\title[DPDD]{Data Products Definition Document}
+
 \author{
-{\small M. Juri\'c}\footnote{Please direct comments to \textless\href{mailto:mjuric@lsst.org}{mjuric@lsst.org}\textgreater.},
-{\small T. Axelrod, A.C. Becker, J. Becla, J.F. Bosch, D. Ciardi, } \\
-{\small A.J. Connolly,  G.P. Dubois-Felsmann, F. Economou, M. Freemon, } \\
-{\small M. Gelman, M. Graham, \v{Z}. Ivezi\'c, T. Jenness,  J. Kantor, S. Krughoff, } \\
-{\small K-T Lim,  R.H. Lupton, F. Mueller, D. Nidever, D. Petravick, D. Shaw, } \\
-{\small C. Slater, M. Strauss, J. Swinbank, J.A. Tyson, M. Wood-Vasey \emph{and} X. Wu} \vspace{1.2ex} \\
-{\small \emph{for the LSST Project}}
+M. Juri\'c,
+T.~Axelrod, A.C.~Becker, J.~Becla, J.F.~Bosch, D.~Ciardi,
+A.J.~Connolly,  G.P.~Dubois-Felsmann, F.~Economou, M.~Freemon,
+M.~Gelman, M.~Graham, \v{Z}.~Ivezi\'c, T.~Jenness,  J.~Kantor, K.S.~Krughoff,
+K-T~Lim,  R.H.~Lupton, F.~Mueller, D.~Nidever, D.~Petravick, D. Shaw,
+C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-Vasey, and X.~Wu
 }
 
-\begin{document}
+\date{\today}
 
-\date{September 26, 2016}
+\setDocRef{LSE-163}
+\setDocRevision{TBD}
+\setDocStatus{draft}
 
-\maketitle
-\pagestyle{headings}
-
-\begin{abstract}
+\setDocAbstract{%
 This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
 
 The LSST will deliver three levels of data products and services. \textbf{Level 1} (nightly) data products will include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects. Their primary purpose is to enable rapid follow-up of time-domain events. \textbf{Level 2} (annual) data products will include well calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science. \textbf{Level 3} (user-created) data product services will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. LSST will also devote 10\% of observing time to programs with special cadence. Their data products will be created using the same software and hardware as Levels 1 and 2. All data products will be made available using user-friendly databases and web services.
 
 %This is an \textbf{internal draft} and a work in progress. \textbf{It should not be circulated widely until this notice is removed.}
-\end{abstract}
+}
 
-\clearpage
+%
+%   Revision history
+%
+% OLDEST FIRST: VERSION, DATE, DESCRIPTION, OWNER NAME
+\setDocChangeRecord{%
+\addtohist{1}{2013-10-07}{Initial release}{Mario Juric}
+\addtohist{2}{2016-09-26}{Implementation of LCR-758 Update Data Products Definition Document, LSE-163}{Gregory Dubois-Felsmann (LCR), Tim Jenness (document), Robert McKercher (Docushare)}
+}
 
-\tableofcontents
+\begin{document}
+\maketitle
 
-\clearpage
-
-\section{Preface}
+\section*{Preface}
 
 The purpose of this document is to describe the data products produced by the Large Synoptic Survey Telescope (LSST).
 \\
@@ -117,9 +91,10 @@ The purpose of this document is to describe the data products produced by the La
 To a future LSST user, it should clarify what catalogs, image data, software, and services they can expect from LSST. To LSST builders, it provides direction on how to flow down the LSST System Requirements Document to system design, sizing, budget and schedule as they pertain to the data products.
 \\
 
-Though under strict change control\footnote{LSST Docushare handle for this document is \texttt{LSE-163}.}, this is a \textbf{\emph{living document}}. LSST will undergo a period of construction  and commissioning lasting no less than seven years, followed by a decade of survey operations. To ensure their continued scientific adequacy, the designs and plans for LSST Data Products will be periodically reviewed and updated.
+Though under strict change control, this is a \textbf{\emph{living document}}. LSST will undergo a period of construction  and commissioning lasting no less than seven years, followed by a decade of survey operations. To ensure their continued scientific adequacy, the designs and plans for LSST Data Products will be periodically reviewed and updated.
 
 \clearpage
+\pagenumbering{arabic}
 
 \section{Introduction}
 
@@ -136,7 +111,7 @@ The LSST will be operated in fully automated survey mode. The images acquired by
 
 \vspace{1em}
 
-The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document}\footnote{LSST Document Handle LPM-17\nocite{LPM-17}, available at \url{http://ls.st/srd}} (SRD). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST SRD through the \emph{LSST System Requirements Document} (the LSR; LSE-29\nocite{LSE-29}) and the \emph{LSST Observatory System Specifications} (OSS; LSE-30\nocite{LSE-30}), to the \emph{LSST Data Management System Requirements} (DMSR; LSE-61\nocite{LSE-61}), the UML model, and the database schema.
+The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document}\footnote{LSST Document Handle LPM-17 \cite{LPM-17}, available at \url{http://ls.st/srd}} (SRD). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST SRD through the \emph{LSST System Requirements Document} (the LSR; LSE-29 \cite{LSE-29}) and the \emph{LSST Observatory System Specifications} (OSS; LSE-30 \cite{LSE-30}), to the \emph{LSST Data Management System Requirements} (DMSR; LSE-61 \cite{LSE-61}), the UML model, and the database schema (LDM-153 \cite{LDM-153}).
 
 
 \subsection{General Image Processing Concepts for LSST}
@@ -409,7 +384,7 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 
 \vspace{2em}
 
-In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \B{is defined in the \texttt{cat} package and documented in \href{http://ls.st/LDM-153}{LDM-153}\nocite{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
+In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \B{is defined in the \texttt{cat} package and documented in \href{http://ls.st/LDM-153}{LDM-153} \cite{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
 \subsubsection{\DIASource Table}
 
@@ -431,10 +406,8 @@ Unless noted otherwise, all \DIASource quantities (fluxes, centroids, etc.) are 
 
 \dmreq{0269}
 
-\begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\DIASource Table]{\DIASource Table
-} \\
+\caption[\DIASource Table]{\DIASource Table} \\
 
 \hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
 \endhead
@@ -564,7 +537,6 @@ from the source and image characterization, as well as the information on the Te
 
 flags & bit[64] & bit & Various useful flags.  \\ \hline
 \end{longtable}
-\end{center}
 
 Some fast-moving, trailed, sources may be due to passages of nearby asteroids. Their trails may exhibit significant curvature.
 While we do not measure the curvature directly, it can be inferred by examining the length of the trail, the trailed model covariance matrices, and the adaptive shape measures. Once curvature is suspected, the users may fit curved trail models to the cutout provided with the alert.
@@ -586,7 +558,6 @@ Notes about changes with respect to the previous baseline:
 
 \dmreq{0271}\dmreq{0272}\reqparam{diaNearbyMaxObj}
 
-\begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
 \caption[\DIAObject Table]{\DIAObject Table} \\
 
@@ -656,13 +627,11 @@ nearbyObjLnP   & float[\R{3}\B{6}] & ~ &  Natural $\log$ of the probability that
 flags & bit[64] & bit & Various useful flags. \\ \hline
 
 \end{longtable}
-\end{center}
 
 \subsubsection{\SSObject Table}
 
 \dmreq{0273}
 
-\begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
 \caption[\SSObject Table]{\SSObject Table} \\
 
@@ -708,7 +677,6 @@ g2Err & float[6] & mag & Uncertainty of $G_2$ estimate. \\
 flags & bit[64] & bit & Various useful flags. \\ \hline
 
 \end{longtable}
-\end{center}
 
 The $G_1$ and $G_2$ parameters for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs and add it later in Operations, or provide two-parameter $G_{12}$ fits. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data. The design of the data management system is insensitive to this decision, making it possible to postpone it to Commissioning to ensure it follows the standard community practice at that time.
 \\
@@ -1030,7 +998,6 @@ These convey \emph{what} data will be recorded in each table, rather than the de
 \label{sec:objectTable}
 \dmreq{0275}
 
-\begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
 \caption[\Object Table]{Level 2 Catalog \Object Table\label{tbl:objectTable}
 } \\
@@ -1175,10 +1142,6 @@ photoZ & float[2~\x~100] & ~ & Photometric redshift likelihood samples -- pairs 
 
 flags & bit[128] & bit & Various useful flags. \\ \hline
 \end{longtable}
-\end{center}
-
-
-
 
 
 \subsubsection{\Source Table}
@@ -1186,7 +1149,6 @@ flags & bit[128] & bit & Various useful flags. \\ \hline
 
 \Source measurements are performed independently on individual visits. They're designed to enable relative astrometric and photometric calibration, variability studies of high signal-to-noise objects, and studies of high SNR objects that vary in position and/or shape (eg., comets).\dmreq{0267}
 
-\begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
 \caption[\Source Table]{Level 2 Catalog \Source Table
 } \\
@@ -1263,17 +1225,12 @@ extendedness & float & ~ & A measure of extendedness, computed using a combinati
 
 flags & bit[64] & bit & Various useful flags. \\ \hline
 \end{longtable}
-\end{center}
-
-
-
 
 
 \subsubsection{\ForcedSource Table}
 \label{sec:forcedSourceTable}
 \dmreq{0268}
 
-\begin{center}
 \begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
 \caption[\ForcedSource Table]{Level 2 Catalog \ForcedSource Table
 } \\
@@ -1307,9 +1264,6 @@ psDiffFluxErr & float & nmgy & Point source model flux error,  stored to 1\% pre
 
 flags & bit[8] & bit & Various useful flags. \\ \hline
 \end{longtable}
-\end{center}
-
-
 
 
 \subsection{Level 2 Image Products}
@@ -1331,7 +1285,7 @@ All auxiliary telescope data, both raw (images with spectra) and processed (cali
 \subsubsection{Coadded Images}
 \label{sec:coadds}
 
-In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{\B{See LDM-151\nocite{LDM-151} for more details.}}:
+In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{\B{See LDM-151 \cite{LDM-151} for more details.}}:
     \begin{itemize}
         \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color coadd.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
 
@@ -1536,6 +1490,7 @@ Note that the data rights and access rules apply just as they would for for Leve
 
 
 \clearpage
+\appendix
 \section{Appendix: Conceptual Pipeline Design \label{sec:scipi}}
 
 A high-level conceptual overview of the LSST image processing science pipelines is illustrated
@@ -1579,7 +1534,7 @@ discovering new \SSObjects, and orbit refinement and management.
 \end{enumerate}
 
 Further details about the pipeline design and implementation are available from the LSST
-document\footnote{See \url{http://ls.st/LDM-151}} LDM-151\nocite{LDM-151}.
+document\footnote{See \url{http://ls.st/LDM-151}} LDM-151 \cite{LDM-151}.
 
 \begin{figure}[!t]
     \centering
