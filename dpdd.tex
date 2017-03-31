@@ -232,7 +232,6 @@ For completeness, $\chi^2$ is defined as:
 \end{equation}
 %
 where $\bar{x}$ is the mean value of $x_k$.
-\\
 
 For fluxes, we recognize that a substantial fraction of astronomers will just want the posteriors marginalized over all other parameters, trusting the LSST experts to select an appropriate prior\footnote{It's likely that most cases will require just the expectation value alone.}. For example, this is nearly always the case when constructing color-color or color-magnitude diagrams. We will support these use cases by \dmreq{0331}providing additional pre-computed columns, taking care to name them appropriately so as to minimize accidental incorrect usage. For example, a column named \texttt{gFlux} may be the expectation value of the g-band flux, while \texttt{gFluxML} may represent the maximum likelihood value.
 
@@ -367,7 +366,6 @@ The following will occur during regular Solar System object processing (in dayti
 \label{sec:level1db}
 
 The described alert processing design relies on the ``living'' \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing\footnote{The latter is also colloquially known as \emph{DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) immediately\footnote{No later than the moment of issuance of any event alert that may refer to it.}.\dmreq{0312}
-\\
 
 This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \DB and the \Objects in the \DR database. There is no direct \DIASource-to-\Object match:
 in general, a time-domain object is not necessarily the same astrophysical object as a static-sky object, even if the two are
@@ -683,7 +681,6 @@ flags & bit[64] & bit & Various useful flags. \\ \hline
 \end{longtable}
 
 The $G_1$ and $G_2$ parameters for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs and add it later in Operations, or provide two-parameter $G_{12}$ fits. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data. The design of the data management system is insensitive to this decision, making it possible to postpone it to Commissioning to ensure it follows the standard community practice at that time.
-\\
 
 The LSST database will provide functions to compute the phase (Sun-Asteroid-Earth) angle $\alpha$ for every observation, as well as the reduced, $H(\alpha)$, and absolute, $H$, asteroid magnitudes in LSST bands.\dmreq{0323}
 
@@ -779,7 +776,6 @@ Each alert (a \VOEvent packet) will at least include the following:
 \end{itemize}
 
 The variable-size cutouts will be sized so as to encompass the entire footprint of the detected source, but be no smaller than $30 \times 30$ pixels. The provided images will comprise of a flux (32 bit float), variance (32 bit float), and mask (16 bit flags) planes, and include metadata necessary for further processing (e.g., WCS, zero point, PSF, etc.).
-\\
 
 The items above are meant to represent the \emph{information} transmitted with each alert; the content of the alert packet itself will be formatted to confirm to \VOEvent (or other relevant) standard. Where the existing standard is inadequate for LSST needs, LSST will propose extensions and work with the community to reach a common solution.
 
@@ -879,7 +875,7 @@ pipeline 2, \emph{Image Coaddition}, bullets 4-6 map to pipeline 3, \emph{Coadde
 bullet 7 is pipeline 4, \emph{Multi-epoch Object Characterization}):
 \begin{enumerate}
     \item \emph{Single Visit Processing}: Raw exposures are reduced to \newtext{Processed Visit Images} \oldtext{\emph{calibrated visit exposures}}, and \Sources are independently detected, deblended, and measured on all visits. Their measurements (instrumental fluxes and shapes) are stored in the \Source table.\dmreq{0267}
-    \item \emph{Relative calibration}: The survey is internally calibrated, both photometrically and astrometrically. Relative zero point and astrometric corrections are computed for every visit. \dmreq{0029} \dmreq{0030} Sufficient data is kept to reconstruct the normalized system response function $\phi_b(\lambda)$ (see Eq.~5, SRD) at every position in the focal plane at the time of each visit as required by \S~3.3.4 of the SRD.
+    \item \emph{Relative calibration}: The survey is internally calibrated, both photometrically and astrometrically. Relative zero point and astrometric corrections are computed for every visit.\dmreq{0029} \dmreq{0030} Sufficient data is kept to reconstruct the normalized system response function $\phi_b(\lambda)$ (see Eq.~5, SRD) at every position in the focal plane at the time of each visit as required by \S~3.3.4 of the SRD.
     \item \emph{Coadd creation}: Deep, seeing optimized, \dmreq{0279} and short-period per-band coadds\dmreq{0337} are created in $ugrizy$ bands, as well as deeper, multi-color, \dmreq{0281} coadds\footnote{We'll denote the ``band'' of the multi-color coadd as 'M'.}. Transient sources (including Solar System objects, explosive transients, etc), will be rejected from the coadds. See \S~\ref{sec:coadds} for details.
     \item \emph{Coadd source detection}. Sources will be detected on all coadds generated in the previous step.\dmreq{0277} The source detection algorithm will detect regions of connected pixels, known as \emph{footprints}, above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit. An appropriate algorithm will be run to also detect extended low surface brightness objects
 (eg., binned detection algorithm from SDSS).\dmreq{0349}  Each footprint may have one or more \emph{peaks}, and the collection of these peaks (and their membership in the footprints) are the output of this stage.
@@ -937,7 +933,6 @@ In addition to the maximum likelihood values of fitted parameters and their cova
 Science cases sensitive to systematics, departures of likelihood from Gaussianity, or requiring user-specified priors, demand knowledge of the shape of the likelihood function beyond a simple Gaussian approximation around the ML value. The estimate of bulge-disk model parameters and the estimate of photometric redshifts are two examples where knowledge of the full posterior is likely to be needed for LSST science cases.\dmreq{0046}\dmreq{0276}
 
 We currently plan to provide this information in two ways: a) by providing independent samples from the likelihood function (in the case of the bulge-disk model), and b) by providing parametric estimates of the likelihood function (for the photometric redshifts). As will be shown in Table~\ref{tbl:objectTable}, the current allocation is $\sim 200$ samples (on average) for the bulge-disk model, and $\sim 100$ parameters for describing the photo-Z likelihood distributions, per object.
-\\
 
 \dmreq{0333}
 The methods of storing likelihood functions (or samples thereof) will continue to be developed and optimized throughout Construction and Commissioning. The key limitation, on the amount of data needed to be stored, can be overcome by compression techniques. For example, simply noticing that not more than $\sim 0.5$\% accuracy is needed for sample values allows one to increase the number of samples by a factor of $4$. More advanced techniques, such as PCA analysis of the likelihoods across the entire catalog, may allow us to store even more, providing a better estimate of the shape of the likelihood function. In that sense, what is presented in Table~\ref{tbl:objectTable} should be thought of as a \textbf{\emph{conservative estimate}}, which we plan to improve upon as development continues in Construction.
@@ -946,7 +941,6 @@ The methods of storing likelihood functions (or samples thereof) will continue t
 \label{sec:sourceMeas}
 
 Sources will be detected on individual visits as well as the coadds. Sources detected on coadds will primarily serve as inputs to the construction of the master object list as described in \S~\ref{sec:level2dp}, and may support other LSST science cases as seen fit by the users (for example, searches for objects whose shapes vary over time). \dmreq{0277}\dmreq{0267}
-\\
 
 The following \Source properties are planned to be measured:
 %
@@ -982,12 +976,10 @@ The measured fluxes will be stored in the \ForcedSources table. Due to space con
 \subsubsection{Crowded Field Photometry}
 
 A fraction of LSST imaging will cover areas of high object (mostly stellar) density. These include the Galactic plane, the Large and Small Magellanic Clouds, and a number of globular clusters (among others).
-\\
 
 % LSST does \emph{not} plan to build or deploy algorithms specifically designed for crowded field photometry. \textbf{\emph{Processing these areas using specialist crowded field photometry codes is left to the users as a Level 3 task (see \S~\ref{sec:level3})}}.
 
 LSST image processing and measurement software, although primarily designed to operate in non-crowded regions, is expected to perform well in areas of crowding. The current LSST applications development plan envisions making the deblender aware of Galactic longitude and latitude, and permitting it to use that information as a prior when deciding how to deblend objects. While not guaranteed to reach the accuracy or completeness of purpose-built crowded field photometry codes, we expect this approach will yield acceptable results even in areas of moderately high crowding.
-\\
 
 Note that this discussion only pertains to processing of \emph{direct images}. Crowding is not expected to significantly impact the quality of data products derived from \emph{difference images} (i.e., Level 1).
 
@@ -1321,7 +1313,6 @@ To assist with data quality monitoring and assessment \textbf{\emph{small, overl
 
 Older releases will be archived to mass storage (tape). The users \textbf{\emph{will not be able to perform database queries against archived releases}}. They will be made available as bulk downloads in some common format (for example, FITS binary tables). Database software and data loading scripts will be provided for users who wish to set up a running copy of an older (or current) data release database on their systems.
 \dmreq{0077}\dmreq{0300}
-\\
 
 All raw data used to generate any public data product (raw exposures, calibration frames, telemetry, configuration metadata, etc.) will be kept and made available for download. \dmreq{0309}\dmreq{0346}
 
@@ -1355,7 +1346,6 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 \emph{Level 3 capabilities} are envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for Level 3 is established in \S~3.5 of the LSST SRD.
 \ossreq{0140}
-\\
 
 Level 3 capabilities include three separate deliverables:
 %
@@ -1479,14 +1469,12 @@ LSST Survey Specifications (LSST SRD, \S~3.4) specify that 90\% of LSST observin
 The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
 
 The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the \emph{constraints} on these data products, given the adopted Level 1/2/3 architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertise.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
-\\
 
 Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence.\dmreq{0320} The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Level 1 data products.\dmreq{0321}\dmreq{0344}\reqparam{OTT1}
 
 For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main'' (Level 1 and 2) databases. The system will, however, allow for simple federation with Level 1/2/3 data products (i.e., cross-queries and joins).\dmreq{0322}
 
 As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim 24$ hours\reqparam{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
-\\
 
 Note that the data rights and access rules apply just as they would for for Level 1/2/3. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
 
