@@ -26,6 +26,38 @@
 
 \newcommand{\lsstdoc}[1]{{\color{blue}\citell{#1}}}
 
+% Environment for displaying the schema tables in
+% a consistent manner. Two arguments are the
+% caption and short caption that differ for each table.
+% The third argument is the label to use for the table
+\newenvironment{schema}[3]{%
+\setlength\LTleft{0pt}
+\setlength\LTright{\fill}
+\begin{longtable}{p{0.2\textwidth}p{0.14\textwidth}p{0.14\textwidth}p{0.41\textwidth}}
+
+% First header has a caption with a label
+\caption[#1]{#2\label{#3}}\\
+
+\hline \textbf{Name} & \textbf{Type} & \textbf{Unit} & \textbf{Description}\\ \hline
+\endfirsthead
+
+% Subsequent headers have the caption but no label
+\caption[#1]{#2}\\
+
+\hline \textbf{Name} & \textbf{Type} & \textbf{Unit} & \textbf{Description}\\ \hline
+\endhead
+
+\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
+\endfoot
+
+\hline\hline
+\endlastfoot
+}{%
+\hline
+\end{longtable}
+}
+
+
 \title[DPDD]{Data Products Definition Document}
 
 \author{
@@ -386,17 +418,7 @@ Unless noted otherwise, all \DIASource quantities (fluxes, centroids, etc.) are 
 
 \dmreq{0269}
 
-\begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\DIASource Table]{\DIASource Table} \\
-
-\hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
-\endfoot
-
-\hline\hline
-\endlastfoot
+\begin{schema}{\DIASource Table}{\DIASource Table}{tbl:diasourceTable}
 
 diaSourceId & uint64 & ~ & Unique source identifier \\
 
@@ -515,8 +537,8 @@ from the source and image characterization, as well as the information on the Te
 (e.g., ghost maps, defect maps, etc.).
 \\
 
-flags & bit[64] & bit & Various useful flags.  \\ \hline
-\end{longtable}
+flags & bit[64] & bit & Various useful flags.  \\
+\end{schema}
 
 Some fast-moving, trailed, sources may be due to passages of nearby asteroids. Their trails may exhibit significant curvature.
 While we do not measure the curvature directly, it can be inferred by examining the length of the trail, the trailed model covariance matrices, and the adaptive shape measures. Once curvature is suspected, the users may fit curved trail models to the cutout provided with the alert.
@@ -538,17 +560,7 @@ Notes about changes with respect to the previous baseline:
 
 \dmreq{0271}\dmreq{0272}\reqparam{diaNearbyMaxObj}
 
-\begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\DIAObject Table]{\DIAObject Table} \\
-
-\hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
-\endfoot
-
-\hline\hline
-\endlastfoot
+\begin{schema}{\DIAObject Table}{\DIAObject Table}{tbl:diaobjectTable}
 
 diaObjectId & uint64 & ~ & Unique identifier. \\
 
@@ -604,25 +616,15 @@ nearbyObjDist   & float[\oldtext{3}\newtext{6}] & arcsec & Distances to \texttt{
 
 nearbyObjLnP   & float[\oldtext{3}\newtext{6}] & ~ &  Natural $\log$ of the probability that the observed \DIAObject is the same as the nearby \Object\footnote{This quantity will be computed by marginalizing over the product of position and proper motion error ellipses of the \Object and \DIAObject, assuming an appropriate prior.}. \\
 
-flags & bit[64] & bit & Various useful flags. \\ \hline
+flags & bit[64] & bit & Various useful flags. \\
 
-\end{longtable}
+\end{schema}
 
 \subsubsection{\SSObject Table}
 
 \dmreq{0273}
 
-\begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\SSObject Table]{\SSObject Table} \\
-
-\hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
-\endfoot
-
-\hline\hline
-\endlastfoot
+\begin{schema}{\SSObject Table}{\SSObject Table}{tbl:ssobjectTable}
 
 ssObjectId & uint64 & ~ & Unique identifier. \\
 
@@ -654,9 +656,9 @@ g1Err & float[6] & mag & Uncertainty of $G_1$ estimate. \\
 
 g2Err & float[6] & mag & Uncertainty of $G_2$ estimate. \\
 
-flags & bit[64] & bit & Various useful flags. \\ \hline
+flags & bit[64] & bit & Various useful flags. \\
 
-\end{longtable}
+\end{schema}
 
 The $G_1$ and $G_2$ parameters for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs and add it later in Operations, or provide two-parameter $G_{12}$ fits. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data. The design of the data management system is insensitive to this decision, making it possible to postpone it to Commissioning to ensure it follows the standard community practice at that time.
 
@@ -972,24 +974,8 @@ These convey \emph{what} data will be recorded in each table, rather than the de
 \label{sec:objectTable}
 \dmreq{0275}
 
-\begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\Object Table]{Level 2 Catalog \Object Table\label{tbl:objectTable}
-} \\
+\begin{schema}{\Object Table}{Level 2 Catalog \Object Table}{tbl:objectTable}
 
-\hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
-\endfirsthead
-
-\caption[\Object Table]{Level 2 Catalog \Object Table}\\
-
-\hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
- \endhead
-\endhead
-
-\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
-\endfoot
-
-\hline\hline
-\endlastfoot
 
 objectId & uint64 & ~ & Unique object identifier \\
 
@@ -1114,8 +1100,8 @@ lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from differ
 
 photoZ & float[2~\x~100] & ~ & Photometric redshift likelihood samples -- pairs of ($z$, $logL$) -- computed using a to-be-determined published and widely accepted algorithm at the time of LSST Commissioning. \\
 
-flags & bit[128] & bit & Various useful flags. \\ \hline
-\end{longtable}
+flags & bit[128] & bit & Various useful flags. \\
+\end{schema}
 
 
 \subsubsection{\Source Table}
@@ -1123,18 +1109,7 @@ flags & bit[128] & bit & Various useful flags. \\ \hline
 
 \Source measurements are performed independently on individual visits. They're designed to enable relative astrometric and photometric calibration, variability studies of high signal-to-noise objects, and studies of high SNR objects that vary in position and/or shape (eg., comets).\dmreq{0267}
 
-\begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\Source Table]{Level 2 Catalog \Source Table
-} \\
-
-\hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
-\endfoot
-
-\hline\hline
-\endlastfoot
+\begin{schema}{\Source Table}{Level 2 Catalog \Source Table}{tbl:sourceTable}
 
 sourceId & uint64 & ~ & Unique source identifier\footnote{It would be optimal if the source ID is globally unique across all releases. Whether that's realized will depend on technological and space constraints.} \\
 
@@ -1197,26 +1172,15 @@ apMeanSbSigma & float[\texttt{apNann}] & nmgy & Standard deviation of \texttt{ap
 extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments
 (exact algorithm TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
 
-flags & bit[64] & bit & Various useful flags. \\ \hline
-\end{longtable}
+flags & bit[64] & bit & Various useful flags. \\
+\end{schema}
 
 
 \subsubsection{\ForcedSource Table}
 \label{sec:forcedSourceTable}
 \dmreq{0268}
 
-\begin{longtable}{p{3cm}p{2cm}p{2cm}p{5cm}}
-\caption[\ForcedSource Table]{Level 2 Catalog \ForcedSource Table
-} \\
-
-\hline \multicolumn{1}{c}\textbf{Name} & \multicolumn{1}{c}\textbf{Type} & \multicolumn{1}{c}\textbf{Unit} & \multicolumn{1}{c}\textbf{Description} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
-\endfoot
-
-\hline\hline
-\endlastfoot
+\begin{schema}{\ForcedSource Table}{Level 2 Catalog \ForcedSource Table}{tbl:forcedsourceTable}
 
 objectId & uint64 & ~ & Unique object identifier \\
 
@@ -1236,8 +1200,8 @@ psDiffFluxErr & float & nmgy & Point source model flux error,  stored to 1\% pre
 
 % bdFluxErr & float & nmgy & Bulge+disk model flux error, stored to 1\% precision.\\
 
-flags & bit[8] & bit & Various useful flags. \\ \hline
-\end{longtable}
+flags & bit[8] & bit & Various useful flags. \\
+\end{schema}
 
 
 \subsection{Level 2 Image Products}
