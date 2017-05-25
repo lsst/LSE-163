@@ -6,7 +6,7 @@ matrix:
     - python: "3.5"
       env: LTD_MASON_BUILD=true
 before_install:
-  - "sudo apt-get update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended latexmk poppler-utils latex-xcolor lmodern texlive-xetex texlive-generic-recommended texlive-math-extra"
+  - "sudo apt-get update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended latexmk poppler-utils latex-xcolor lmodern texlive-xetex texlive-generic-recommended texlive-math-extra texlive-full"
 install:
   - pip install -r requirements.txt
   - pip install "ltd-mason>=0.2,<0.3"
