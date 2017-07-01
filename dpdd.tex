@@ -116,8 +116,8 @@ The project is scheduled to  begin the regular survey operations at the start of
 
 The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction (\emph{templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
 
-The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document}\footnote{\oldtext{LSST Document Handle \lsstdoc{LPM-17}, available at \url{http://ls.st/srd}}} (\SRD; \lsstdoc{LPM-17}). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST \SRD through the \emph{LSST System Requirements Document} (the \LSR; \lsstdoc{LSE-29}) and the \emph{LSST Observatory System Specifications} (\OSS; \lsstdoc{LSE-30}), to the \emph{LSST Data Management System Requirements} (\DMSR; \lsstdoc{LSE-61}), the UML model (\appsUMLdomain), and the database schema (\lsstdoc{LDM-153}).
-\newtext{Throughout this document margin notes are used to provide linkage to formal LSST requirements and parameters associated with the nearby text.}
+The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document} (\SRD; \lsstdoc{LPM-17}). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST \SRD through the \emph{LSST System Requirements Document} (the \LSR; \lsstdoc{LSE-29}) and the \emph{LSST Observatory System Specifications} (\OSS; \lsstdoc{LSE-30}), to the \emph{LSST Data Management System Requirements} (\DMSR; \lsstdoc{LSE-61}), the UML model (\appsUMLdomain), and the database schema (\lsstdoc{LDM-153}).
+Throughout this document margin notes are used to provide linkage to formal LSST requirements and parameters associated with the nearby text.
 
 \subsection{General Image Processing Concepts for LSST}
 
@@ -128,8 +128,7 @@ conceptually, counts proportional to photon flux entering the
 telescope pupil (in reality, there are many additional optical, pixel and
 bandpass effects, including random counting noise and various subtle
 systematic errors, that are treated during subsequent processing).
-This single-visit image processed by the ISR is called a \newtext{``Processed Visit Image''} \oldtext{``calibrated
-exposure''} and its main data structures include counts, their variance and
+This single-visit image processed by the ISR is called a ``Processed Visit Image'' and its main data structures include counts, their variance and
 various masks, all defined on per pixel basis. After the ISR step is
 completed, the pixel values and their variance are not modified any more.
 These single-visit images are used downstream to produce coadded and difference
@@ -238,7 +237,7 @@ Raw images will be processed to \dmreq{0069}remove instrumental signature and ch
 
 That characterization is crucial for deriving LSST catalogs and understanding the images. It will be kept and made available to the users. The exact format used to store these (meta)data will depend on the final adopted algorithm in consultation with the scientific community to ensure the formats in which these data are served are maximally useful.\dmreq{0328}
 
-\dmreq{0072}Each processed image\footnote{It is also frequently referred to as \emph{calibrated exposure}\newtext{, from the Butler product type of \texttt{calexp}}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and usefullness of each pixel in estimating the flux density recorded in that area of the sky.
+\dmreq{0072}Each processed image\footnote{It is also frequently referred to as \emph{calibrated exposure}, from the Butler product type of \texttt{calexp}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and usefullness of each pixel in estimating the flux density recorded in that area of the sky.
 
 This information will be per-pixel, and potentially unwieldy to use for certain science cases. We plan to investigate approximate schemes for storing masks based on geometry (e.g., similar to Mangle or STOMP), \emph{in addition} to storing them on a per pixel basis.\dmreq{0326}
 
@@ -306,7 +305,7 @@ The latter method would probably be limited to nightly granularity, unless there
 
 Level 1 data products are a result of difference image analysis (DIA; \S \ref{sec:dia}). They include the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Level 2 data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Level 1.} (\SSObject), and related, broadly defined, metadata (including eg., cut-outs\footnote{Small, $30 \times 30$, sub-images at the position of a detected source. Also known as \emph{postage stamps.}}).
 
-\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\reqparam{transSNR} defined in the \SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. \newtext{Detections with high probability of being instrumental non-astrophysical artifacts may be excluded.} Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim \mathrm{deg}/\mathrm{day}$, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
+\DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\reqparam{transSNR} defined in the \SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Detections with high probability of being instrumental non-astrophysical artifacts may be excluded. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim \mathrm{deg}/\mathrm{day}$, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
 we expect about one such false positive per CCD (of the order 200,000 per typical night). The expected number of false
 positives due to background fluctuations is a very strong function of adopted $transSNR$: a change of $transSNR$ by 0.5
@@ -327,17 +326,17 @@ detected \DIASources\footnote{For observations on the Ecliptic near the oppositi
 The following is a high-level description of steps which will occur during regular \emph{nightly}
 difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \begin{enumerate}
-\item A visit is acquired and reduced to a single \newtext{\emph{Processed}} \emph{\newtext{V}\oldtext{v}isit \newtext{I}\oldtext{i}mage} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).\dmreq{0069}
-\item The \newtext{Processed} \newtext{V}\oldtext{v}isit \newtext{I}\oldtext{i}mage is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
-\item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^\mathrm{nd}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. PSF photometry is performed on the \newtext{Processed} \newtext{V}\oldtext{v}isit \newtext{I}\oldtext{i}mage at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
+\item A visit is acquired and reduced to a single \emph{Processed Visit Image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).\dmreq{0069}
+\item The Processed Visit Image is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
+\item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^\mathrm{nd}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. PSF photometry is performed on the Processed Visit Image at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
 \item The \DB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.\dmreq{0273}\dmreq{0271}\dmreq{0285}
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).\dmreq{0274}
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Level 1 processing is
 rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
-\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for \oldtext{one or more \Objects positionally close to the \DIAObject,} \newtext{the three nearest stars and three nearest galaxies to the \DIAObject in \Objects}\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
+\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
 event alert (see below).\dmreq{0271}\dmreq{0002}
-\item An alert is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \SSObject ID or \DIAObject ID\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata (IDs and database names).}, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.), \emph{including \oldtext{the full light curves} \newtext{all}} \newtext{\DIASources from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject}. \newtext{The science content associated with the \DR \Objects will not be included.} See Section \ref{sec:voEventContents} for a more complete enumeration.
+\item An alert is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \SSObject ID or \DIAObject ID\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata (IDs and database names).}, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.), \emph{including all} \DIASources from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
 \dmreq{0274}
 \item For all \DIAObjects overlapping the field of view, including those that have an associated
 new \DIASource from this visit, forced photometry will be performed on difference image (point source photometry only). Those measurements will be stored as appropriately flagged \DIASources\footnote{For the purposes of this document, we're treating the \DIASources generated by forced photometry or precovery measurements to be the same as \DIASources detected in difference images (but flagged appropriately). In the logical schema, these may be divided into two separate tables.}.  No alerts will be issued for these \DIASources.\dmreq{0317}
@@ -360,7 +359,7 @@ The following will occur during regular Solar System object processing (in dayti
 \item The orbits and physical properties of all \SSObjects re-observed on the previous night are recomputed. External orbit catalogs (or observations) are also used to improve orbit estimates.\dmreq{0288} Updated data are entered to the \SSObjects table.\dmreq{0273}
 \item All \DIASources detected on the previous night, that have \emph{not} been matched at a high confidence level to a known \Object,
 \DIAObject, \SSObject, or an artifact, are analyzed for potential pairs, forming \emph{tracklets}.
-\item The collection of tracklets collected over the past 30 days\footnote{\newtext{The exact time period is a design and computational question discussed in \lsstdoc{LDM-156}.}} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
+\item The collection of tracklets collected over the past 30 days\footnote{The exact time period is a design and computational question discussed in \lsstdoc{LDM-156}.} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
 \item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \SSObject record. \DIAObjects ``orphaned'' by this unlinking are deleted.\footnote{Some \DIAObjects may only be left with forced photometry measurements at their location (since all \DIAObjects are force-photometered on previous and subsequent visits);  these will be kept but flagged as such.}.
 \item Precovery linking is attempted for all \SSObjects whose orbits were updated in this process.\dmreq{0286} Where successful, \SSObjects (orbits) are recomputed as needed.
 \end{enumerate}
@@ -386,19 +385,14 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 
 % There are three ``core'' tables in the \DB: the \DIASource table, with information about detected and/or measured \DIASources, \DIAObject table, with summary information about \DIAObjects derived from the associated \DIASources, and the \SSObject table (short for \textbf{Solar System Object}\footnote{This is what we used to call a ``Moving Object''. This name is potentially confusing, as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects in an out of the Solar System.}) holding derived orbits and associated Solar System Object-specific information.
 
-In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \newtext{is defined in the \texttt{cat} package and documented in \lsstdoc{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
+In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema is defined in the \texttt{cat} package and documented in \lsstdoc{LDM-153} and can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
 \subsubsection{\DIASource Table}
 
 This is a table of sources detected at $transSNR \geq \transSNR$ \reqparam{transSNR} on difference images\footnote{This requirement is specified in the LSST \SRD.}\lsrreq{0101} (\DIASources).
 On average, the LSST \SRD expects
-\oldtext{
-$\sim 2000$ \DIASources per visit ($\sim 2\mathrm{M}$ per night; 20,000 per deg$^2$
-}
-\newtext{
 up to
-$\sim 10,000$ astrophysical \DIASources per visit ($\sim 10\mathrm{M}$ per night; 100,000 per deg$^2$
-}
+$\sim$10,000 astrophysical \DIASources per visit ($\sim$10M per night; 100,000 per deg$^2$
 of the sky per hour).
 \reqparam{transN}
 
@@ -418,7 +412,7 @@ diaObjectId & uint64 & ~ & ID of the \DIAObject this source was associated with,
 
 ssObjectId & uint64 & ~ & ID of the \SSObject this source has been linked to, if any. \\
 
-parent\newtext{Dia}SourceId & uint64 & ~ & ID of the parent \oldtext{\Source}\newtext{\DIASource} this object has been deblended from, if any. \\
+parentDiaSourceId & uint64 & ~ & ID of the parent \DIASource this object has been deblended from, if any. \\
 
 midPointTai & double & time & Time of mid-exposure for this DIASource\footnote{The visit mid-exposure
 time generally depends on the position of the source relative to the shutter blade motion trajectory.}. \\
@@ -479,7 +473,7 @@ dipLength & float & arcsec & Maximum likelihood value for the lobe separation in
 
 dipAngle & float & degrees & Maximum likelihood fit of the angle between the meridian through the centroid and the dipole direction (bearing, from negative to positive lobe). \\
 
-dipCov & float[\oldtext{15}\newtext{21}] & various & Covariance matrix of dipole model parameters. \\
+dipCov & float[21] & various & Covariance matrix of dipole model parameters. \\
 
 dipLnL & float & ~ & Natural $log$ likelihood of the observed data given the dipole source model. \\
 
@@ -504,19 +498,19 @@ fpBkgdErr & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpBkgd}. 
 
 %nonGrayExtinction & float & nmgy & Applied photometric extinction correction (color-dependent component) \\
 
-Ixx & float & \oldtext{nmgy} asec$^{2}$  & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & asec$^{2}$  & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
-Iyy & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Iyy & float & asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Ixy & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Ixy & float & asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Icov & float[6] & \oldtext{nmgy$^{2}$} asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
+Icov & float[6] & asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
 
-IxxPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxxPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IyyPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IyyPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IxyPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxyPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
 extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments, or from a likelihood ratio of point/trailed source models (exact algorithm TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
 
@@ -584,7 +578,7 @@ psFluxNdata & int[ugrizy] & ~ & The number of data points used to compute \textt
 
 fpFluxMean & float[ugrizy] & nmgy & Weighted mean of forced photometry flux, \texttt{fpFlux}.\\
 
-fpFluxMeanErr & float[ugrizy] & nmgy & Standard error of \texttt{fpFlux}\newtext{\texttt{Mean}}. \\
+fpFluxMeanErr & float[ugrizy] & nmgy & Standard error of \texttt{fpFluxMean}. \\
 
 fpFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of \texttt{fpFlux}. \\
 
@@ -600,11 +594,11 @@ lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from light-curves 
 
 lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from light-curves \citep[Table~5,][]{2011ApJ...733...10R}. \\
 
-nearbyObj   & uint64[\oldtext{3}\newtext{6}] & ~ & Closest \Objects\ \newtext{(3 stars and 3 galaxies)} in \DR.\footnote{\color{magenta} This is a change in the size of this table. I assume we do not need to include star/galaxy classification.} \\
+nearbyObj   & uint64[6] & ~ & Closest \Objects\ (3 stars and 3 galaxies) in \DR.\\
 
-nearbyObjDist   & float[\oldtext{3}\newtext{6}] & arcsec & Distances to \texttt{nearbyObj}. \\
+nearbyObjDist   & float[6] & arcsec & Distances to \texttt{nearbyObj}. \\
 
-nearbyObjLnP   & float[\oldtext{3}\newtext{6}] & ~ &  Natural $\log$ of the probability that the observed \DIAObject is the same as the nearby \Object\footnote{This quantity will be computed by marginalizing over the product of position and proper motion error ellipses of the \Object and \DIAObject, assuming an appropriate prior.}. \\
+nearbyObjLnP   & float[6] & ~ &  Natural $\log$ of the probability that the observed \DIAObject is the same as the nearby \Object\footnote{This quantity will be computed by marginalizing over the product of position and proper motion error ellipses of the \Object and \DIAObject, assuming an appropriate prior.}. \\
 
 flags & bit[64] & bit & Various useful flags. \\
 
@@ -620,7 +614,7 @@ ssObjectId & uint64 & ~ & Unique identifier. \\
 
 oe & double[7] & various & Osculating orbital elements at epoch ($q$, $e$, $i$, $\Omega$, $\omega$, $M_0$, epoch). \\
 
-oeCov & double[\oldtext{21}\newtext{28}] & various & Covariance matrix for \texttt{oe}. \\
+oeCov & double[28] & various & Covariance matrix for \texttt{oe}. \\
 
 arc & float & days & Arc of observation. \\
 
@@ -699,7 +693,7 @@ Older versions of the \DB\ produced during Data Release processing will be archi
 \subsubsection{Visit Images}
 \dmreq{0069}
 
-Raw and \newtext{P}\oldtext{p}rocessed \newtext{V}\oldtext{v}isit \newtext{I}\oldtext{i}mages will be made available for download no later than 24 hours\reqparam{L1PublicT} from the end of visit acquisition.
+Raw and Processed Visit Images will be made available for download no later than 24 hours\reqparam{L1PublicT} from the end of visit acquisition.
 
 The images will remain accessible with low-latency (seconds from request to start of download) for at least 30 days\reqparam{l1CacheLifetime}, with slower access afterwards (minutes to hours).
 
@@ -734,8 +728,8 @@ Each alert (a \VOEvent packet) will at least include the following:
     \begin{itemize}
     \item The \DIASource record that triggered the alert
     \item The entire \DIAObject (or \SSObject) record
-    \item \oldtext{All p}\newtext{P}revious \newtext{12 months of} \DIASource records\reqparam{diaCharacterizationCutoff}
-    \item \oldtext{A matching \DIAObject} \newtext{Matching \Object IDs} from the latest Data Release, if \oldtext{it} \newtext{they} exist\oldtext{s}, and \oldtext{its} \newtext{12 months of their} \DIASource records
+    \item Previous 12 months of \DIASource records\reqparam{diaCharacterizationCutoff}
+    \item Matching \Object IDs from the latest Data Release, if they exist, and 12 months of their \DIASource records
     \end{itemize}
 % \item Flags (isSolarSystemObject, isArtefact, etc.)
 \item Cut-out of the difference image centered on the \DIASource (10 bytes/pixel, FITS MEF)
@@ -751,7 +745,7 @@ With each alert, we attempt to include as much information known to LSST about t
 \subsubsection{Receiving and Filtering the Alerts}
 \label{sec:eventbrokers}
 
-Alerts will be transmitted in \VOEvent format, using standard IVOA protocols\dmreq{0002} (e.g., VOEvent Transport Protocol; VTP\footnote{VOEvent Transport Protocol is currently an IVOA Note, but we understand work is under way to finalize and bring it up to full IVOA Recommendation status.}. As a very high rate of alerts is expected, approaching \oldtext{$\sim 2$} \newtext{$\sim 10$} million per night, we plan for public VOEvent Event Brokers\footnote{These brokers are envisioned to be operated as a public service by third parties who will have signed MOUs with LSST.} to be the primary end-points of LSST's event streams. End-users will use these brokers to classify and filter events for subsets fitting their science goals. End-users will \emph{not} be able to subscribe to full, unfiltered, alert streams coming directly from LSST\footnote{This is due to finite network bandwidth available: for example, 100 end-users subscribing to a $\sim 100$ Mbps stream (the peak full stream data rate at end of the first year of operations) would require 10Gbps WAN connection from the archive center, just to serve the alerts.}.
+Alerts will be transmitted in \VOEvent format, using standard IVOA protocols\dmreq{0002} (e.g., VOEvent Transport Protocol; VTP\footnote{VOEvent Transport Protocol is currently an IVOA Note, but we understand work is under way to finalize and bring it up to full IVOA Recommendation status.}). As a very high rate of alerts is expected, approaching $\sim$10 million per night, we plan for public VOEvent Event Brokers\footnote{These brokers are envisioned to be operated as a public service by third parties who will have signed MOUs with LSST.} to be the primary end-points of LSST's event streams. End-users will use these brokers to classify and filter events for subsets fitting their science goals. End-users will \emph{not} be able to subscribe to full, unfiltered, alert streams coming directly from LSST\footnote{This is due to finite network bandwidth available: for example, 100 end-users subscribing to a $\sim 100$ Mbps stream (the peak full stream data rate at end of the first year of operations) would require 10Gbps WAN connection from the archive center, just to serve the alerts.}.
 
 To directly serve the end-users, LSST will provide a basic, limited capacity, alert filtering service.\dmreq{0342} This service will run at the LSST U.S. Archive Center (at NCSA). It will let astronomers create simple filters that limit what alerts are ultimately forwarded to them\footnote{More specifically, to their VTP clients. Typically, a user will use the Science User Interface (the web portal to LSST Archive Center) to set up the filters, and use their VTP client to receive the filtered \VOEvent stream.}. These \emph{user defined filters} will be possible to specify using an SQL-like declarative language, or short snippets of (likely Python) code. For example, here's what a filter may look like:
 
@@ -771,13 +765,13 @@ To directly serve the end-users, LSST will provide a basic, limited capacity, al
 
 
 We emphasize that this LSST-provided capability will be limited, and is \emph{not} intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could.
-For example, we do not plan to provide any \newtext{\emph{exclusive}} classification \newtext{to a unique category of object} \oldtext{(eg., ``is the light curve consistent with an RR Lyra?'', or ``a Type Ia SN?'')}.
-\newtext{Following the \SRD specification, however, we will provide a limited number of pre-defined filters for a small number of object types of common interest.\dmreq{0348}
-These will answer non-exclusive questions such as ``is the light curve consistent with an RR Lyra?'', and will have potentially highly overlapping selections, designed to provide good completeness but perhaps only very modest purity.}
+For example, we do not plan to provide any \emph{exclusive} classification to a unique category of object.
+Following the \SRD specification, however, we will provide a limited number of pre-defined filters for a small number of object types of common interest.\dmreq{0348}
+These will answer non-exclusive questions such as ``is the light curve consistent with an RR Lyra?'', and will have potentially highly overlapping selections, designed to provide good completeness but perhaps only very modest purity.
 No information beyond what is contained in the \VOEvent packet will be available to the pre-defined or user-defined filters (e.g., no cross-matches to other catalogs).
 The complexity and run time of user defined filters will be limited by available resources.
 Execution latency will not be guaranteed.
-The number of \VOEvents transmitted to each user per \oldtext{user} \newtext{visit} will be limited as well (e.g., \oldtext{at least up to $\sim 20$} \newtext{the equivalent of 20 full-size alert packets} per visit per user\reqparam{numBrokerAlerts}\dmreq{0343}, dynamically throttled depending on load).
+The number of \VOEvents transmitted to each user per visit will be limited as well (e.g., the equivalent of 20 full-size alert packets per visit per user\reqparam{numBrokerAlerts}\dmreq{0343}, dynamically throttled depending on load).
 Finally, the total number of simultaneous subscribers is likely to be limited\reqparam{numBrokerUsers} -- in case of overwhelming interest, a TAC-like proposal process may be instituted.
 
 \begin{openissues}
@@ -805,11 +799,11 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 \subsection{Overview}
 
-Level 2 data products result from direct image\footnote{As opposed to \emph{difference image}, for Level 1.} analysis. They're designed to enable \emph{static sky} science (eg., studies of galaxy evolution, or weak lensing), and time-domain science that is not time sensitive (eg. statistical investigations of variability). They include image products (reduced single-epoch exposures, called \newtext{\emph{Processed Visit Images} or, sometimes,} \emph{calibrated exposures},\dmreq{0069} and coadds\dmreq{0279}\dmreq{0281}), and catalog products (tables of objects\dmreq{0275}, sources\dmreq{0267}, their measured properties\dmreq{0276}, and related metadata).
+Level 2 data products result from direct image\footnote{As opposed to \emph{difference image}, for Level 1.} analysis. They're designed to enable \emph{static sky} science (eg., studies of galaxy evolution, or weak lensing), and time-domain science that is not time sensitive (eg. statistical investigations of variability). They include image products (reduced single-epoch exposures, called \emph{Processed Visit Images} or, sometimes, \emph{calibrated exposures},\dmreq{0069} and coadds\dmreq{0279}\dmreq{0281}), and catalog products (tables of objects\dmreq{0275}, sources\dmreq{0267}, their measured properties\dmreq{0276}, and related metadata).
 
 Similarly to Level 1 catalogs of \DIAObjects and \DIASources, \Objects in the Level 2 catalog\dmreq{0275} represent the astrophysical phenomena (stars, galaxies, quasars, etc.), while \Sources represent their single-epoch observations. \Sources are independently detected and measured in single epoch exposures and recorded in the \Source table.\dmreq{0267}
 
-The master list of \Objects in Level 2 will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds \newtext{(\CoaddSources)}.\dmreq{0275} We plan to build coadds designed to maximize depth (\emph{``deep coadds''})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing (\emph{``best seeing coadds''}), unless
+The master list of \Objects in Level 2 will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds (\CoaddSources).\dmreq{0275} We plan to build coadds designed to maximize depth (\emph{``deep coadds''})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing (\emph{``best seeing coadds''}), unless
 algorithms will enable these two to be the same.\dmreq{0330}
 We will also build a series of \emph{short-period} (eg. yearly, or multi-year) coadds.\dmreq{0337}
 The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands (\emph{``multi-color coadds''}).\dmreq{0281} \textbf{\emph{Not all of these will be preserved}} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as Level 3 tasks (\S~\ref{sec:level3}).\dmreq{0311}
@@ -841,7 +835,7 @@ The following is a high-level description of steps which will occur during regul
 pipeline 2, \emph{Image Coaddition}, bullets 4-6 map to pipeline 3, \emph{Coadded Image Analysis}, and
 bullet 7 is pipeline 4, \emph{Multi-epoch Object Characterization}):
 \begin{enumerate}
-    \item \emph{Single Visit Processing}: Raw exposures are reduced to \newtext{Processed Visit Images} \oldtext{\emph{calibrated visit exposures}}, and \Sources are independently detected, deblended, and measured on all visits. Their measurements (instrumental fluxes and shapes) are stored in the \Source table.\dmreq{0267}
+    \item \emph{Single Visit Processing}: Raw exposures are reduced to Processed Visit Images, and \Sources are independently detected, deblended, and measured on all visits. Their measurements (instrumental fluxes and shapes) are stored in the \Source table.\dmreq{0267}
     \item \emph{Relative calibration}: The survey is internally calibrated, both photometrically and astrometrically. Relative zero-point and astrometric corrections are computed for every visit.\dmreq{0029} \dmreq{0030} Sufficient data is kept to reconstruct the normalized system response function $\phi_b(\lambda)$ (see Eq.~5, \SRD) at every position in the focal plane at the time of each visit as required by \S~3.3.4 of the \SRD.
     \item \emph{Coadd creation}: Deep, seeing optimized, \dmreq{0279} and short-period per-band coadds\dmreq{0337} are created in $ugrizy$ bands, as well as deeper, multi-color, \dmreq{0281} coadds\footnote{We'll denote the ``band'' of the multi-color coadd as 'M'.}. Transient sources (including Solar System objects, explosive transients, etc), will be rejected from the coadds. See \S~\ref{sec:coadds} for details.
     \item \emph{Coadd source detection}. Sources will be detected on all coadds generated in the previous step.\dmreq{0277} The source detection algorithm will detect regions of connected pixels, known as \emph{footprints}, above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit. An appropriate algorithm will be run to also detect extended low surface brightness objects
@@ -912,7 +906,7 @@ The following \Source properties are planned to be measured:
 \begin{itemize}
     \item \emph{Static point source model fit}. The source is modeled as a static point source. There are a total of 3 free parameters ($\alpha$, $\delta$, flux). This model is a good description of stars and other unresolved sources. \dmreq{0267}
 
-    \item \emph{Centroids}. Centroids \newtext{are currently planned to} \oldtext{will} be computed using an algorithm similar to that employed by SDSS. These centroids will be used for adaptive moment and aperture magnitude measurements. \dmreq{0267}
+    \item \emph{Centroids}. Centroids are currently planned to be computed using an algorithm similar to that employed by SDSS. These centroids will be used for adaptive moment and aperture magnitude measurements. \dmreq{0267}
 
     \item \emph{Adaptive moments}. Adaptive moments will be computed. The moments of the PSF realized at the position of the object will be provided as well. \dmreq{0267}
 
@@ -951,7 +945,7 @@ Note that this discussion only pertains to processing of \emph{direct images}. C
 \subsection{The Level 2 Catalogs}
 
 This section presents the contents of key Level 2 catalog tables. As was the case for Level 1 (see \S~\ref{sec:level1db}), here we present the \emph{conceptual schemas} for the most important Level 2 tables (the \Object, \Source, and \ForcedSource tables).
-\newtext{The tables themselves are defined in \lsstdoc{LDM-153}\footnote{\newtext{The SQL definition itself can be found in the \texttt{cat} package.}}.}
+The tables themselves are defined in \lsstdoc{LDM-153}\footnote{The SQL definition itself can be found in the \texttt{cat} package.}.
 
 These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL. Secondly, the tables to be presented are normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \Source table to the table with exposure metadata, there's no column named \texttt{band} in the \Source table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.\dmreq{0332}
 
@@ -1016,19 +1010,19 @@ stdColor & float[5] & mag & Color of the object measured in ``standard seeing''.
 
 stdColorErr & float[5] & mag & Uncertainty of \texttt{stdColor}. \\
 
-Ixx & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
-Iyy & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Iyy & float & asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Ixy & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Ixy & float & asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Icov & float[6] & \oldtext{nmgy$^{2}$} asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
+Icov & float[6] & asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
 
-IxxPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxxPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IyyPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IyyPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IxyPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxyPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
 m4 & float[ugrizy] & ~ & Fourth order adaptive moment. \\
 
@@ -1134,19 +1128,19 @@ psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
-Ixx & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
+Ixx & float & asec$^{2}$ & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
-Iyy & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Iyy & float & asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Ixy & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment of the source intensity. \\
+Ixy & float & asec$^{2}$ & Adaptive second moment of the source intensity. \\
 
-Icov & float[6] & \oldtext{nmgy$^{2}$} asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
+Icov & float[6] & asec$^{4}$ & \texttt{Ixx}, \texttt{Iyy}, \texttt{Ixy} covariance matrix. \\
 
-IxxPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxxPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IyyPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IyyPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
-IxyPSF & float & \oldtext{nmgy} asec$^{2}$ & Adaptive second moment for the PSF. \\
+IxyPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
 apNann & int8 & ~ & Number of elliptical annuli (see below). \\
 
@@ -1195,7 +1189,7 @@ flags & bit[8] & bit & Various useful flags. \\
 
 \dmreq{0065}
 
-Raw exposures, including individual snaps, and \newtext{P}\oldtext{p}rocessed \newtext{V}\oldtext{v}isit \newtext{I}\oldtext{i}mages will be made available for download as FITS files. They will be downloadable both through a human-friendly Science User Interface, as well as using machine-friendly APIs.
+Raw exposures, including individual snaps, and Processed Visit Images will be made available for download as FITS files. They will be downloadable both through a human-friendly Science User Interface, as well as using machine-friendly APIs.
 
 Required calibration data,\dmreq{0130} processing metadata,\dmreq{0298} and all necessary image processing software will be provided to enable the user to generate bitwise identical processed images from raw images\footnote{Assuming identically performing software and hardware configuration.}.\dmreq{0308}
 
@@ -1208,13 +1202,13 @@ All auxiliary telescope data, both raw (images with spectra) and processed (cali
 \subsubsection{Coadded Images}
 \label{sec:coadds}
 
-In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{\newtext{See \lsstdoc{LDM-151} for more details.}}:
+In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{See \lsstdoc{LDM-151} for more details.}:
     \begin{itemize}
         \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color coadd.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
 
         The six per-band coadds will be kept indefinitely and made available to the users.\dmreq{0334} \emph{Their primary purpose is to enable the end-users to apply alternative object characterization algorithms, perform studies of diffuse structures, and for visualization}.
 
-               \item A set of \emph{best seeing} coadds. One deep coadd will be created for each of the $ugrizy$ bands, using only the best seeing data (for example, using only the first quartile of the realized seeing distribution). These will be built to assist the deblending process. These coadds will be kept indefinitely and made available to the users. \dmreq{0330}\dmreq{0334} \oldtext{We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.}
+               \item A set of \emph{best seeing} coadds. One deep coadd will be created for each of the $ugrizy$ bands, using only the best seeing data (for example, using only the first quartile of the realized seeing distribution). These will be built to assist the deblending process. These coadds will be kept indefinitely and made available to the users. \dmreq{0330}\dmreq{0334}
 
                \item A set of \emph{short-period} coadds.\dmreq{0337} These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. \textbf{We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.\dmreq{0298}\dmreq{0311}
 
@@ -1453,7 +1447,7 @@ discovering new \SSObjects, and orbit refinement and management.
 \end{enumerate}
 
 Further details about the pipeline design and implementation are available from the LSST
-document\footnote{\oldtext{See \url{http://ls.st/LDM-151}}} \lsstdoc{LDM-151}.
+document \lsstdoc{LDM-151}.
 
 \begin{figure}[!t]
     \centering
