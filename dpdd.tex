@@ -376,9 +376,9 @@ Therefore, adopted data model emphasizes that \emph{having a \DIASource be posit
 
 This may seem odd at first: for example, in a simple case of a variable star, matching individual \DIASources to \Objects is exactly what an astronomer would want. That approach, however, fails in the following scenarios:
 \begin{itemize}
-\item \emph{A supernova in a galaxy.} The matched object in the \Object table will be the galaxy, which is a distinct astrophysical object. We want to keep the information related to the supernova (eg., colors, the light curve) separate from those measurements for the galaxy.
-\item \emph{An asteroid occulting a star.} If associated with the star on first apparition, the association would need to be dissolved when the source is recognized as an asteroid (perhaps even as early as a day later).
-\item \emph{A supernova on top of a pair of blended galaxies.} It is not clear in general to which galaxy this \DIASource would ``belong''. That in itself is a research question.
+    \item \emph{A supernova in a galaxy.} The matched object in the \Object table will be the galaxy, which is a distinct astrophysical object. We want to keep the information related to the supernova (eg., colors, the light curve) separate from those measurements for the galaxy.
+    \item \emph{An asteroid occulting a star.} If associated with the star on first apparition, the association would need to be dissolved when the source is recognized as an asteroid (perhaps even as early as a day later).
+    \item \emph{A supernova on top of a pair of blended galaxies.} It is not clear in general to which galaxy this \DIASource would ``belong''. That in itself is a research question.
 \end{itemize}
 
 \DIASource-to-\Object matches can still be emulated via a two-step relation (\DIASource-\DIAObject-\Object). For ease of use, views or pre-built table with these matches will be offered to the end-users.\dmreq{0324}
@@ -530,13 +530,13 @@ While we do not measure the curvature directly, it can be inferred by examining 
 \begin{changelog}
 Notes about changes with respect to the previous baseline:
 \begin{itemize}
-\item I removed the \texttt{astromRefr*} columns. These will depend on the SED (color) of the object, and the color won't be know when the object is discovered. It may be better to provide a UDF to compute the refraction given a \DIAObject record.
-\item Removed ``small galaxy'' model fits. We don't plan to do galaxy model fits on difference images.
-\item Removed ``canonical small galaxy'' model fits. See above.
-\item Removed galExtinction: this should be a UDF using extinction maps
-\item I removed the aperture correction column.
-\item gray/nonGray extinction columns removed. May be implemented as an UDF.
-\item TODO: See what other fields SDSS has. Also see what fields PanSTARRS has. Collect input from SCs.
+    \item I removed the \texttt{astromRefr*} columns. These will depend on the SED (color) of the object, and the color won't be know when the object is discovered. It may be better to provide a UDF to compute the refraction given a \DIAObject record.
+    \item Removed ``small galaxy'' model fits. We don't plan to do galaxy model fits on difference images.
+    \item Removed ``canonical small galaxy'' model fits. See above.
+    \item Removed galExtinction: this should be a UDF using extinction maps
+    \item I removed the aperture correction column.
+    \item gray/nonGray extinction columns removed. May be implemented as an UDF.
+    \item TODO: See what other fields SDSS has. Also see what fields PanSTARRS has. Collect input from SCs.
 \end{itemize}
 \end{changelog}
 
@@ -651,12 +651,12 @@ The LSST database will provide functions to compute the phase (Sun-Asteroid-Eart
 \begin{changelog}
 Notes about changes with respect to the previous baseline:
 \begin{itemize}
-\item Though many columns have been removed, we should maintain roughly the equivalent extra columns in the sizing model as some may re-appear internally (eg., MOPS-specific columns). This is true in general for all tables.
-\item Removed all asteroid shape-related columns; determining these is outside of the scope of the Project.
-\item Removed taxonomy related columns; determining these is outside of the scope of the Project.
-\item Removed \texttt{albedo} -- I don't believe albedo can be determined solely from LSST data. More likely, we will need to assume a particular value. If this value is not universal, this column will need to be put back in.
-\item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (eg., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes. Deriving phase-corrected light curves is left as a Level 3 task.
-\item Removed a number of other MOPS-specific columns. These are algorithm-specific and should not be a part of the baseline, outward-facing, schema\footnote{Because we may change the algorithm and they may disappear; the scientists should not be relying on them being there.}. They will need to be documented and added back into the physical schema, for sizing purposes.
+    \item Though many columns have been removed, we should maintain roughly the equivalent extra columns in the sizing model as some may re-appear internally (eg., MOPS-specific columns). This is true in general for all tables.
+    \item Removed all asteroid shape-related columns; determining these is outside of the scope of the Project.
+    \item Removed taxonomy related columns; determining these is outside of the scope of the Project.
+    \item Removed \texttt{albedo} -- I don't believe albedo can be determined solely from LSST data. More likely, we will need to assume a particular value. If this value is not universal, this column will need to be put back in.
+    \item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (eg., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes. Deriving phase-corrected light curves is left as a Level 3 task.
+    \item Removed a number of other MOPS-specific columns. These are algorithm-specific and should not be a part of the baseline, outward-facing, schema\footnote{Because we may change the algorithm and they may disappear; the scientists should not be relying on them being there.}. They will need to be documented and added back into the physical schema, for sizing purposes.
 \end{itemize}
 \end{changelog}
 
@@ -722,18 +722,18 @@ For each detected \DIASource, LSST will emit an ``Event Alert'' within 60 second
 Each alert (a \VOEvent packet) will at least include the following:
 
 \begin{itemize}
-\item \emph{alertID}: An ID uniquely identifying this alert. It can also be used to execute a query against the \DB as it existed when this alert was issued.\dmreq{0274}
-\item \emph{\DB ID}   %: For example, \texttt{DR5L1}
-\item Science Data:
+    \item \emph{alertID}: An ID uniquely identifying this alert. It can also be used to execute a query against the \DB as it existed when this alert was issued.\dmreq{0274}
+    \item \emph{\DB ID}   %: For example, \texttt{DR5L1}
+    \item Science Data:
     \begin{itemize}
-    \item The \DIASource record that triggered the alert
-    \item The entire \DIAObject (or \SSObject) record
-    \item Previous 12 months of \DIASource records\reqparam{diaCharacterizationCutoff}
-    \item Matching \Object IDs from the latest Data Release, if they exist, and 12 months of their \DIASource records
+        \item The \DIASource record that triggered the alert
+        \item The entire \DIAObject (or \SSObject) record
+        \item Previous 12 months of \DIASource records\reqparam{diaCharacterizationCutoff}
+        \item Matching \Object IDs from the latest Data Release, if they exist, and 12 months of their \DIASource records
     \end{itemize}
-% \item Flags (isSolarSystemObject, isArtefact, etc.)
-\item Cut-out of the difference image centered on the \DIASource (10 bytes/pixel, FITS MEF)
-\item Cut-out of the template image centered on the \DIASource (10 bytes/pixel, FITS MEF)
+    % \item Flags (isSolarSystemObject, isArtefact, etc.)
+    \item Cut-out of the difference image centered on the \DIASource (10 bytes/pixel, FITS MEF)
+    \item Cut-out of the template image centered on the \DIASource (10 bytes/pixel, FITS MEF)
 \end{itemize}
 
 The variable-size cutouts will be sized so as to encompass the entire footprint of the detected source, but be no smaller than $30 \times 30$ pixels. The provided images will comprise of a flux (32 bit float), variance (32 bit float), and mask (16 bit flags) planes, and include metadata necessary for further processing (e.g., WCS, zero-point, PSF, etc.).
@@ -1203,17 +1203,18 @@ All auxiliary telescope data, both raw (images with spectra) and processed (cali
 \label{sec:coadds}
 
 In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{See \lsstdoc{LDM-151} for more details.}:
-    \begin{itemize}
-        \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color coadd.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
 
-        The six per-band coadds will be kept indefinitely and made available to the users.\dmreq{0334} \emph{Their primary purpose is to enable the end-users to apply alternative object characterization algorithms, perform studies of diffuse structures, and for visualization}.
+\begin{itemize}
+    \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color coadd.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
 
-               \item A set of \emph{best seeing} coadds. One deep coadd will be created for each of the $ugrizy$ bands, using only the best seeing data (for example, using only the first quartile of the realized seeing distribution). These will be built to assist the deblending process. These coadds will be kept indefinitely and made available to the users. \dmreq{0330}\dmreq{0334}
+    The six per-band coadds will be kept indefinitely and made available to the users.\dmreq{0334} \emph{Their primary purpose is to enable the end-users to apply alternative object characterization algorithms, perform studies of diffuse structures, and for visualization}.
 
-               \item A set of \emph{short-period} coadds.\dmreq{0337} These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. \textbf{We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.\dmreq{0298}\dmreq{0311}
+    \item A set of \emph{best seeing} coadds. One deep coadd will be created for each of the $ugrizy$ bands, using only the best seeing data (for example, using only the first quartile of the realized seeing distribution). These will be built to assist the deblending process. These coadds will be kept indefinitely and made available to the users. \dmreq{0330}\dmreq{0334}
 
-        \item One (ugrizyM) set of PSF-matched coadds.\dmreq{0335} These will be used to measure colors and shapes of objects at ``standard'' seeing. \textbf{\emph{We do not plan to keep and make these coadds available}}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.
-    \end{itemize}
+    \item A set of \emph{short-period} coadds.\dmreq{0337} These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. \textbf{We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.\dmreq{0298}\dmreq{0311}
+
+    \item One (ugrizyM) set of PSF-matched coadds.\dmreq{0335} These will be used to measure colors and shapes of objects at ``standard'' seeing. \textbf{\emph{We do not plan to keep and make these coadds available}}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.
+\end{itemize}
 
 The exact details of which coadds to build, and which ones to keep, can change during Construction without affecting the processing system design as the most expensive operations (raw image input and warping) are constant in the number of coadds produced. The data management system design \emph{is} sensitive to the total \emph{number and size} of coadds to be \emph{kept} -- these are the relevant constraining variables.
 
@@ -1373,10 +1374,10 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 \subsection{Migration of Level 3 data products to Level 2}
 
 \begin{itemize}
-\item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
-\item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Level 3 environment''), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
-\item If the original code was written in another language or another data processing framework, the project may consider rewriting it to required LSST standards.
-\item Taking on a new Level 2 DP means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new L2DP through DR11.
+    \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
+    \item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Level 3 environment''), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
+    \item If the original code was written in another language or another data processing framework, the project may consider rewriting it to required LSST standards.
+    \item Taking on a new Level 2 DP means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new L2DP through DR11.
 \end{itemize}
 
 \clearpage
