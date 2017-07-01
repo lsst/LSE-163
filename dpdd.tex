@@ -193,11 +193,7 @@ standards\footnote{For example, VOEvent, see \url{http://ls.st/4tt}} within 60 s
 
 The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
 
-\vspace{1em}
-
 Recognizing the diversity of astronomical community needs, and the need for specialized processing not part of the automatically generated Level 1 and 2 products, LSST plans to devote 10\% of its data management system capabilities to enabling the creation, use, and federation of \textbf{Level 3} (user-created) data products. Level 3 capabilities will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for Level 3 is established in \S~3.5 of the LSST \SRD. Their details are discussed in \S~\ref{sec:level3} of this document.
-
-\vspace{1em}
 
 Finally, LSST Survey Specifications (\S~3.4 of LSST \SRD) prescribe that 90\% of LSST observing time be spent in the so-called ``universal cadence'' mode of surveying the sky. These observations will result in Level 1 and 2 data products discussed above. The remaining 10\% of observing time will be devoted to \textbf{special programs}, designed to obtain improved coverage of interesting regions of observational parameter space. Examples include very deep ($r \sim 26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. The data products for these programs will be generated using the same processing software and hardware and possess the general characteristics of Level 1 and 2 data products, but may be performed on a somewhat different cadence. They will be discussed in \S~\ref{sec:specialProgs}.
 
@@ -259,7 +255,6 @@ We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a li
 
 We chose to use maggies (as opposed to, say, Jansky) to allow the user to differentiate between two distinct sources of photometric calibration error: the error in relative (internal) calibration of the survey, and the error in absolute calibration that depends on the knowledge of absolute flux of photometric standards.
 
-\vspace{1em}
 Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
 
 \subsection{Uniqueness of IDs across database versions}
@@ -387,12 +382,9 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 \item \emph{A supernova on top of a pair of blended galaxies.} It is not clear in general to which galaxy this \DIASource would ``belong''. That in itself is a research question.
 \end{itemize}
 
-\vspace{1ex}
 \DIASource-to-\Object matches can still be emulated via a two-step relation (\DIASource-\DIAObject-\Object). For ease of use, views or pre-built table with these matches will be offered to the end-users.\dmreq{0324}
 
 % There are three ``core'' tables in the \DB: the \DIASource table, with information about detected and/or measured \DIASources, \DIAObject table, with summary information about \DIAObjects derived from the associated \DIASources, and the \SSObject table (short for \textbf{Solar System Object}\footnote{This is what we used to call a ``Moving Object''. This name is potentially confusing, as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects in an out of the Solar System.}) holding derived orbits and associated Solar System Object-specific information.
-
-\vspace{2em}
 
 In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema \newtext{is defined in the \texttt{cat} package and documented in \lsstdoc{LDM-153} and} can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
@@ -691,8 +683,6 @@ In what we've described so far, the ``living'' \DB is continually being added to
 
 This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. This argues for periodic \emph{reprocessing} of the Level 1 data set. \dmreq{0313}\dmreq{0325}
 
-\vspace{1em}
-
 We plan to reprocess all image differencing-derived data (the \DB), at the same time we perform the annual Level 2 data release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins. The images will be reprocessed using a single version of the image differencing and measurement software, resulting in a consistent data set.
 
 There will be three main advantages of \DB produced during Data Release processing, compared to
@@ -735,7 +725,6 @@ Difference image analysis will use the appropriate template given the time of ob
 
 For each detected \DIASource, LSST will emit an ``Event Alert'' within 60 seconds\reqparam{OTT1} of the end of visit (defined as the end of image readout from the LSST Camera). These alerts will be issued in \VOEvent format\footnote{Or some other format that is broadly accepted and used by the community at the start of LSST commissioning.}, and should be readable by \VOEvent-compliant clients.\dmreq{0002}
 
-\vspace{1em}
 Each alert (a \VOEvent packet) will at least include the following:
 
 \begin{itemize}
@@ -818,8 +807,6 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 Level 2 data products result from direct image\footnote{As opposed to \emph{difference image}, for Level 1.} analysis. They're designed to enable \emph{static sky} science (eg., studies of galaxy evolution, or weak lensing), and time-domain science that is not time sensitive (eg. statistical investigations of variability). They include image products (reduced single-epoch exposures, called \newtext{\emph{Processed Visit Images} or, sometimes,} \emph{calibrated exposures},\dmreq{0069} and coadds\dmreq{0279}\dmreq{0281}), and catalog products (tables of objects\dmreq{0275}, sources\dmreq{0267}, their measured properties\dmreq{0276}, and related metadata).
 
-\vspace{1em}
-
 Similarly to Level 1 catalogs of \DIAObjects and \DIASources, \Objects in the Level 2 catalog\dmreq{0275} represent the astrophysical phenomena (stars, galaxies, quasars, etc.), while \Sources represent their single-epoch observations. \Sources are independently detected and measured in single epoch exposures and recorded in the \Source table.\dmreq{0267}
 
 The master list of \Objects in Level 2 will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds \newtext{(\CoaddSources)}.\dmreq{0275} We plan to build coadds designed to maximize depth (\emph{``deep coadds''})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing (\emph{``best seeing coadds''}), unless
@@ -880,8 +867,6 @@ This process of \emph{forced photometry}, will result in the characterization of
 Properties of detected objects will be measured as a part of the object characterization step described in the previous section and stored in the \Object table. These measurements are designed to enable LSST ``static sky'' science. This section discusses at a high level which properties will be measured and how those measurements will be performed. For a detailed list of quantities being fit/measured, see the table in \S~\ref{sec:objectTable}.
 
 All measurements discussed in this section deal with properties of \emph{objects}, and will be performed on multi-epoch coadds, or by simultaneously fitting to all epochs. Measurements of sources in individual visits, independent of all others, are described in \S~\ref{sec:sourceMeas}.
-
-\vspace{1em}
 
 To enable science cases depending on observations of non-variable objects in the LSST-observed sky, we plan to measure the following using the MultiFit approach:
 %
