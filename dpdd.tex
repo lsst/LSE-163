@@ -15,7 +15,6 @@
 \newcommand\x         {\hbox{$\times$}}
 
 \newcommand{\annotate}[1]{{\color{magenta}\large\textbf{\emph{#1}}}}
-\newcommand{\lsstdoc}[1]{{\color{blue}\citeds{#1}}}
 
 % Environment for displaying the schema tables in
 % a consistent manner. Two arguments are the
@@ -116,7 +115,7 @@ The project is scheduled to  begin the regular survey operations at the start of
 
 The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction (\emph{templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
 
-The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document} (\SRD; \lsstdoc{LPM-17}). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST \SRD through the \emph{LSST System Requirements Document} (the \LSR; \lsstdoc{LSE-29}) and the \emph{LSST Observatory System Specifications} (\OSS; \lsstdoc{LSE-30}), to the \emph{LSST Data Management System Requirements} (\DMSR; \lsstdoc{LSE-61}), the UML model (\appsUMLdomain), and the database schema (\lsstdoc{LDM-153}).
+The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document} (\SRD; \citeds{LPM-17}). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST \SRD through the \emph{LSST System Requirements Document} (the \LSR; \citeds{LSE-29}) and the \emph{LSST Observatory System Specifications} (\OSS; \citeds{LSE-30}), to the \emph{LSST Data Management System Requirements} (\DMSR; \citeds{LSE-61}), the UML model (\appsUMLdomain), and the database schema (\citeds{LDM-153}).
 Throughout this document margin notes are used to provide linkage to formal LSST requirements and parameters associated with the nearby text.
 
 \subsection{General Image Processing Concepts for LSST}
@@ -359,7 +358,7 @@ The following will occur during regular Solar System object processing (in dayti
 \item The orbits and physical properties of all \SSObjects re-observed on the previous night are recomputed. External orbit catalogs (or observations) are also used to improve orbit estimates.\dmreq{0288} Updated data are entered to the \SSObjects table.\dmreq{0273}
 \item All \DIASources detected on the previous night, that have \emph{not} been matched at a high confidence level to a known \Object,
 \DIAObject, \SSObject, or an artifact, are analyzed for potential pairs, forming \emph{tracklets}.
-\item The collection of tracklets collected over the past 30 days\footnote{The exact time period is a design and computational question discussed in \lsstdoc{LDM-156}.} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
+\item The collection of tracklets collected over the past 30 days\footnote{The exact time period is a design and computational question discussed in \citeds{LDM-156}.} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
 \item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \SSObject record. \DIAObjects ``orphaned'' by this unlinking are deleted.\footnote{Some \DIAObjects may only be left with forced photometry measurements at their location (since all \DIAObjects are force-photometered on previous and subsequent visits);  these will be kept but flagged as such.}.
 \item Precovery linking is attempted for all \SSObjects whose orbits were updated in this process.\dmreq{0286} Where successful, \SSObjects (orbits) are recomputed as needed.
 \end{enumerate}
@@ -385,7 +384,7 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 
 % There are three ``core'' tables in the \DB: the \DIASource table, with information about detected and/or measured \DIASources, \DIAObject table, with summary information about \DIAObjects derived from the associated \DIASources, and the \SSObject table (short for \textbf{Solar System Object}\footnote{This is what we used to call a ``Moving Object''. This name is potentially confusing, as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects in an out of the Solar System.}) holding derived orbits and associated Solar System Object-specific information.
 
-In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema is defined in the \texttt{cat} package and documented in \lsstdoc{LDM-153} and can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
+In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema is defined in the \texttt{cat} package and documented in \citeds{LDM-153} and can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
 \subsubsection{\DIASource Table}
 
@@ -945,7 +944,7 @@ Note that this discussion only pertains to processing of \emph{direct images}. C
 \subsection{The Level 2 Catalogs}
 
 This section presents the contents of key Level 2 catalog tables. As was the case for Level 1 (see \S~\ref{sec:level1db}), here we present the \emph{conceptual schemas} for the most important Level 2 tables (the \Object, \Source, and \ForcedSource tables).
-The tables themselves are defined in \lsstdoc{LDM-153}\footnote{The SQL definition itself can be found in the \texttt{cat} package.}.
+The tables themselves are defined in \citeds{LDM-153}\footnote{The SQL definition itself can be found in the \texttt{cat} package.}.
 
 These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL. Secondly, the tables to be presented are normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \Source table to the table with exposure metadata, there's no column named \texttt{band} in the \Source table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.\dmreq{0332}
 
@@ -1202,7 +1201,7 @@ All auxiliary telescope data, both raw (images with spectra) and processed (cali
 \subsubsection{Coadded Images}
 \label{sec:coadds}
 
-In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{See \lsstdoc{LDM-151} for more details.}:
+In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{See \citeds{LDM-151} for more details.}:
 
 \begin{itemize}
     \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color coadd.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
@@ -1448,7 +1447,7 @@ discovering new \SSObjects, and orbit refinement and management.
 \end{enumerate}
 
 Further details about the pipeline design and implementation are available from the LSST
-document \lsstdoc{LDM-151}.
+document \citeds{LDM-151}.
 
 \begin{figure}[!t]
     \centering
