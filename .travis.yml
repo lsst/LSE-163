@@ -1,24 +1,19 @@
 sudo: true
-language: python
 dist: trusty
-matrix:
-  include:
-    - python: "3.5"
-      env: LTD_MASON_BUILD=true
+services:
+  - docker
+language: python
+python:
+  - '3.5'
 before_install:
-  - "sudo apt-get update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended latexmk poppler-utils latex-xcolor lmodern texlive-xetex texlive-generic-recommended texlive-math-extra texlive-full"
-install:
-  - pip install -r requirements.txt
-  - pip install "ltd-mason>=0.2,<0.3"
-  - git clone https://github.com/lsst/lsst-texmf.git
+  - "pip install 'lander>=0.1.0,<0.2'"
 script:
-  - export TEXMFLOCAL=lsst-texmf/texmf
-  - make
-after_success:
-  - ltd-mason-travis --html-dir _build
+  # Compile PDF using containerized lsst-texmf
+  - "docker run --rm -v `pwd`:/workspace -w /workspace lsstsqre/lsst-texmf:latest sh -c 'make'"
+  # Deploy website. See https://github.com/lsst-sqre/lander for CLI options
+  - "lander --pdf dpdd.pdf --upload --lsstdoc dpdd.tex --env=travis --ltd-product lse-163"
 env:
   global:
-    - LTD_MASON_BUILD=false  # disable builds in regular text matrix
-    - LTD_MASON_PRODUCT="lse-163"
-    - secure: "t8Joa3+gMC0bRyNkw2of90isZjSFHryudCPA97GrgV4XH3tANgTobFi53SaVpWjKj7083QWTBYg0EZ2WiGbNEhda+IZr+UmUBeEtDmglIm1bwMuZ27V7hJrWiDVL/DEVt6uWnB2hbpjDQ/iKzyVr9RM5OKUxE/qXgFipZ5a4sSBB3I9kVUsXGZ581igUXAgStr7t36R3Tux2t84JeH9i3B0eq5s98Ox3F+30Pg+Fz/7e9pePpTHNRhJOjBr3G1hG9Lot1oBkoX6tfQt1yRLxJnb1pqQ0DU+pFqZ6e9aEc2rVZrw3kGQbC5DUP9FpxbBflJPQyz/6qnAmwgm9jeCgUWWgS2Ld2G5TG1Js89ADIt6RTYl6BsXgKNM4rAZUvNfVcr60M5gIXn4uulFP+dNbE80UMBpExA6uvmUyPf6bPTbNcCSUsPpJNnEOJO02fkX2vinBnkF3u0xKtObFnoqRvy3KCrXgECp0YB6tiZU0EkM2zci9+VYugwizv0LJBBlNeQSyivB1IXu/CQdUUi/X5GieMArcm0agAOgCMBldjRHHVHaEgCRNUgducPT0ts3hldyjcH642xHwgf2Pz5pkg/8f0lpqLllIJ8btCdjeegZTT0Kuf0cWfmknK+EYeap3Wivqub5YY3+axk/RMfHynPkYNjpDDdfPxPx5p+43CKI="
-    - secure: "SC81g9qoIZTRqLFIoaxp4uDCIW6tF7ZblGwwTo3HBctR579M5GgOT3+6eeVPPh1rTnTlg187PDI+4yfJTpAllKy0kOWROeCuiLDKcXdxw9Qx/Nb4Ju7+S3aa4NjyFOjuEIqQK6ApWKqwD5+gaWjWCt6P/EwA7gGxe9PFT+E7TicvDLskuD+4/V1pZ5S2GmR2cyGHWiPlADajNFxm6O8AwORQ4zO8mK3MFBg2dZboPTJ9cHLgTtiqYCWigop0rS4a8JgghGS/H/+Cp8MlRuVAPpaWdpbX4sx1GbKBgi/FFtM/BMv8tnCTVkYMIAgTwic/uxO6wXWhKoJOr8U9ZcJ0zHTOkrJPj2AVtUzA4JjD1f828ff8gAUmYAufmddnPES565vg13+oAyMFR3MvFgPMmb3OD8+df157QGWguNL35HUSuwN9CkWd9JCZ7zjNoyLDyDkiX/Exq3T6n3wWkHG31qlXc/poqs+bFr5HiIOQ9q+p+VKas01BIMH4MX2idYDv5vkfvVT7vuX4rr6FW6yx2MF3xWCM7iQoq8ToXg7ztslphWYCCEcGBIyv2di9UrbhbNVw6KI4D8+5jvfpqlBYJUTOmeiaNwUvo7DfzY7T/sguw4uUtBWFCTzhpUvuJejS/ZwhOmfir4FYr2Lmr4QA0gs2w/fqh6z0/SLjfvGtFHo="
+    # LSST the Docs credentials
+    - secure: "M2z9x6vZZhP+U75ZeMdrh3UExP79DdEhr+YLe3g19R/i3gTWBtvmVtDSHFvZLUy2yXSGiJHXN+akTjI3pBjGA/MV9DCMiYxkpZioPjOmtQB5tWrJp2d3Z/qpQB+gNxcTXcitW8OXrfb1ysl8XbSNic+FekT+7F58CJtJRhQ3jrydFZTZU+MDdS1BvLiuiX4qU6GwBHIHwvz9cqk63aUc4/pj5J/Sc6pxz2SW1I0xH3D+VgcX8EJbX30naLy58Dv+Db0j9c7u1VPvgpMIXQrxcXuZugBEo7EME/ARQiIJLmRFS+9BAG0u1bDx81ocgcBNVc0mG5khFBExobi0a0XHI1ZlFkXaGvO8M7/ADq2JzJaqhz/71HitdqegInHBmvH+vUM9KPfvhD+c6Y6nbmucINypu6/qMSoPh5cwTRNsUDu3jJnH639efnGDX/rNCP1JD7eXiZm90e+pKEdGZorG8JUuaMhVwXnYlrJ7oShNM8qdu20x/ZlDznzmk6CnD9/54otS7/bH/PcJcHFoeTOtYFuJ+dV1Prnrd97VXAaO0HPw3OpQ0RSslaNnuOtt7IKZhZ9B1KLWWYnKWMlkIYwjIXgRtGLfHpsrmZ+Fpy7ED4UYV6O+K3B+OGkBhCNMZt689RlRzLO4OU+q9WE/AUIZJc78jN5iUsMfd1QvP8nf/VU="
+    - secure: "vtmqb7zX/E5gu7dlV7HE2AzRqkHrs86+wDqO8SUGQzwi7KX98NByhSlYHEwda4CbrSpy6rI1O/9I2xNeWLz2pjWZB53pLX1QCejuJoubF9wUrSHygBKb89OSS+nMErNo+rBCB1E7V6YjFsZyG0DR2Xkt8ZX53Bc3aYmGaE6AprxckytS5bFh7YvJ0dct49N/FRaCaveRMB0bU7YP+RhvMAHow4m+rV+H+36B3dWW4pWmJB80h1JGUMTmbxWKTI0uiQkOfA2zR74w52f1Hg0+KGSIGyMt9FEpcMNR3cGQ1ymVoka7qcyY58Kmxh2tCsXdqygfpVpNlHNex5jCqIUg/SYPvaShbGXGh2J9GdZ1SBuTL05yaaW5sQSMBFKF530DY55MLaEtJ71ELEudwpn4iHfTJkxULNU4U4fvVagd7NdfE0gWHciVmyuoxkb4kfyH0Qv1NtTs/MAr6Z1ykT8ZECevw3474Pwma+aKcUUwD9cE8Ipk6WpMjcd9uZuZmGfSYTdxPp1WPdOIb49L53yey3unjb4HGEWXl31t3zCKLyj8sW5xpybRsoLahzlKC2JqfV9skokinYu0lgUpIcHFQH56iKWRtNWdRudTFH5yBTP8pYIvizvJPQqveRAmf5TUmFhXKzAGhzVPVpzjlevI/t/21pqS0RFg5bTmPd9BXGM="

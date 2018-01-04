@@ -1,11 +1,7 @@
 dpdd.pdf:  dpdd.tex gliffy/*.pdf
 	latexmk -bibtex -pdf -f dpdd.tex
 
-.PHONY: web
-web: dpdd.pdf
-	python deployment/builder.py --template deployment/index.jinja2 --pdf dpdd.pdf --build-dir _build
-
-.DEFAULT_GOAL := web
+.DEFAULT_GOAL := dpdd.pdf
 
 .PHONY: clean
 clean:
