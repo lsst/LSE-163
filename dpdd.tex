@@ -81,6 +81,7 @@ The LSST will deliver three levels of data products and services. \textbf{Level 
 \addtohist{1}{2013-10-07}{Initial release}{Mario Juric}
 \addtohist{2}{2016-09-26}{Implementation of LCR-758 Update Data Products Definition Document, LSE-163}{Gregory Dubois-Felsmann (LCR), Tim Jenness (document), Robert McKercher (Docushare)}
 \addtohist{3.0}{2017-07-03}{Implementation of LCR-962. Reference LSE-61 requirements. Minor clean ups.}{Tim Jenness}
+\addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
 }
 
 \begin{document}
@@ -116,6 +117,7 @@ The project is scheduled to  begin the regular survey operations at the start of
 The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction (\emph{templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
 
 The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document} (\SRD; \citeds{LPM-17}). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST \SRD through the \emph{LSST System Requirements Document} (the \LSR; \citeds{LSE-29}) and the \emph{LSST Observatory System Specifications} (\OSS; \citeds{LSE-30}), to the \emph{LSST Data Management System Requirements} (\DMSR; \citeds{LSE-61}), the UML model (\appsUMLdomain), and the database schema (\citeds{LDM-153}).
+The \OSS explicitly ties this document to the requirements flow down through requirements OSS-REQ-0126 (Level 1), OSS-REQ-0133 (Level 2), OSS-REQ-0139 (Level 3), OSS-REQ-0391 (general conventions), and OSS-REQ-0392 (special programs).
 Throughout this document margin notes are used to provide linkage to formal LSST requirements and parameters associated with the nearby text.
 
 \subsection{General Image Processing Concepts for LSST}
