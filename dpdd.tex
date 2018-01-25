@@ -68,7 +68,7 @@ C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-Vasey, and X.~Wu
 \setDocAbstract{%
 This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
 
-The LSST will deliver three levels of data products and services. \textbf{Prompt} (Level 1) data products will include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects. Their primary purpose is to enable rapid follow-up of time-domain events. \textbf{Data Release} (Level 2) data products will include well calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science. \textbf{User Generated} (Level 3) data product services will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. LSST will also devote 10\% of observing time to programs with special cadence. Their data products will be created using the same software and hardware as Levels 1 and 2. All data products will be made available using user-friendly databases and web services.
+The LSST will deliver three levels of data products and services. \textbf{Prompt} (Level 1) data products will include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects. Their primary purpose is to enable rapid follow-up of time-domain events. \textbf{Data Release} (Level 2) data products will include well calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science. \textbf{User Generated} (Level 3) data product services will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. LSST will also devote 10\% of observing time to programs with special cadence. Their data products will be created using the same software and hardware as Prompt (Level 1) and Data Release (Level 2) products. All data products will be made available using user-friendly databases and web services.
 
 %This is an \textbf{internal draft} and a work in progress. \textbf{It should not be circulated widely until this notice is removed.}
 }
@@ -82,6 +82,7 @@ The LSST will deliver three levels of data products and services. \textbf{Prompt
 \addtohist{2}{2016-09-26}{Implementation of LCR-758 Update Data Products Definition Document, LSE-163}{Gregory Dubois-Felsmann (LCR), Tim Jenness (document), Robert McKercher (Docushare)}
 \addtohist{3.0}{2017-07-03}{Implementation of LCR-962. Reference LSE-61 requirements. Minor clean ups.}{Tim Jenness}
 \addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
+\addtohist{3.x}{2018-01-24}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature.}{Ranpal Gill}
 }
 
 \begin{document}
@@ -117,7 +118,7 @@ The project is scheduled to  begin the regular survey operations at the start of
 The LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction (\emph{templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
 
 The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document} (\SRD; \citeds{LPM-17}). This document lays out the \emph{specifics} of what the data products will comprise of, how those data will be generated, and when. It serves to inform the flow-down from the LSST \SRD through the \emph{LSST System Requirements Document} (the \LSR; \citeds{LSE-29}) and the \emph{LSST Observatory System Specifications} (\OSS; \citeds{LSE-30}), to the \emph{LSST Data Management System Requirements} (\DMSR; \citeds{LSE-61}), the UML model (\appsUMLdomain), and the database schema (\citeds{LDM-153}).
-The \OSS explicitly ties this document to the requirements flow down through requirements OSS-REQ-0126 (Level 1), OSS-REQ-0133 (Level 2), OSS-REQ-0139 (Level 3), OSS-REQ-0391 (general conventions), and OSS-REQ-0392 (special programs).
+The \OSS explicitly ties this document to the requirements flow down through requirements OSS-REQ-0126 Prompt, OSS-REQ-0133 Data Release, OSS-REQ-0139 User Generated, OSS-REQ-0391 (general conventions), and OSS-REQ-0392 (special programs).
 Throughout this document margin notes are used to provide linkage to formal LSST requirements and parameters associated with the nearby text.
 
 \subsection{General Image Processing Concepts for LSST}
@@ -184,25 +185,25 @@ LSST Data Management will perform two, somewhat overlapping in scientific intent
 
 
 \begin{enumerate}
-\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in \textbf{Level 1} data products. Level 1 products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical \emph{objects} are called \emph{sources}. The reader is cautioned that this nomenclature is not universal: some surveys call \emph{detections} what LSST calls \emph{sources}, and use the term \emph{sources} for what LSST calls \emph{objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects \emph{inside} and \emph{outside} of the Solar System.}). The catalogs will be entered into the \textbf{\DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted
-standards\footnote{For example, VOEvent, see \url{http://ls.st/4tt}} within 60 seconds of observation. Level 1 data products are discussed in \S~\ref{sec:level1}.
+\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in \textbf{Prompt} data products. Prompt products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical \emph{objects} are called \emph{sources}. The reader is cautioned that this nomenclature is not universal: some surveys call \emph{detections} what LSST calls \emph{sources}, and use the term \emph{sources} for what LSST calls \emph{objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects \emph{inside} and \emph{outside} of the Solar System.}). The catalogs will be entered into the \textbf{\DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted
+standards\footnote{For example, VOEvent, see \url{http://ls.st/4tt}} within 60 seconds of observation. Prompt data products are discussed in \S~\ref{sec:level1}.
 
-\item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are \textbf{Level 2} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called \emph{snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a \emph{visit}.}), \Sources\footnote{When written in bold monospace type (i.e., \texttt{\textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Level 2 processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Level 1 data products (see \S \ref{sec:l1dbreproc}). In contrast to the ``living'' \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Level 2 data products are discussed in \S~\ref{sec:level2}.
+\item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are \textbf{Data Release} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called \emph{snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a \emph{visit}.}), \Sources\footnote{When written in bold monospace type (i.e., \texttt{\textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Data Release processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Prompt data products (see \S \ref{sec:l1dbreproc}). In contrast to the ``living'' \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Data Release data products are discussed in \S~\ref{sec:level2}.
 \end{enumerate}
 
 
 The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
 
-Recognizing the diversity of astronomical community needs, and the need for specialized processing not part of the automatically generated Level 1 and 2 products, LSST plans to devote 10\% of its data management system capabilities to enabling the creation, use, and federation of \textbf{Level 3} (user-created) data products. Level 3 capabilities will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for Level 3 is established in \S~3.5 of the LSST \SRD. Their details are discussed in \S~\ref{sec:level3} of this document.
+Recognizing the diversity of astronomical community needs, and the need for specialized processing not part of the automatically generated Prompt and Data Release products, LSST plans to devote 10\% of its data management system capabilities to enabling the creation, use, and federation of \textbf{User Generated} data products. User Generated product capabilities will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for User Generated products is established in \S~3.5 of the LSST \SRD. Their details are discussed in \S~\ref{sec:level3} of this document.
 
-Finally, LSST Survey Specifications (\S~3.4 of LSST \SRD) prescribe that 90\% of LSST observing time be spent in the so-called ``universal cadence'' mode of surveying the sky. These observations will result in Level 1 and 2 data products discussed above. The remaining 10\% of observing time will be devoted to \textbf{special programs}, designed to obtain improved coverage of interesting regions of observational parameter space. Examples include very deep ($r\sim26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. The data products for these programs will be generated using the same processing software and hardware and possess the general characteristics of Level 1 and 2 data products, but may be performed on a somewhat different cadence. They will be discussed in \S~\ref{sec:specialProgs}.
+Finally, LSST Survey Specifications (\S~3.4 of LSST \SRD) prescribe that 90\% of LSST observing time be spent in the so-called ``universal cadence'' mode of surveying the sky. These observations will result in Prompt and Data Release data products discussed above. The remaining 10\% of observing time will be devoted to \textbf{special programs}, designed to obtain improved coverage of interesting regions of observational parameter space. Examples include very deep ($r\sim26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. The data products for these programs will be generated using the same processing software and hardware and possess the general characteristics of Prompt and Data Release data products, but may be performed on a somewhat different cadence. They will be discussed in \S~\ref{sec:specialProgs}.
 
 
 \section{General Considerations}
 
 Most LSST data products will consist of images and/or catalogs. The catalogs will be stored and offered to the users as \emph{relational databases} which they will be able to query. This approach was shown to work well by prior large surveys, for example the Sloan Digital Sky Survey (SDSS).
 
-Different data products will generally be stored in different databases. For example, Level 1 data products will be stored in a \emph{Level 1 database}. Level 2 ``universal cadence'' products will be stored in a \emph{Level 2 database} database. The products for special programs may be stored in many different databases, depending on the nature of the program.
+Different data products will generally be stored in different databases. For example, Prompt data products will be stored in a \emph{Prompt database}. Data Release ``universal cadence'' products will be stored in a \emph{Data Release database}. The products for special programs may be stored in many different databases, depending on the nature of the program.
 
 Nevertheless, all these databases will follow certain naming and other conventions. We discuss these in the subsections to follow.
 
@@ -245,7 +246,7 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 \subsection{Fluxes and Magnitudes}
 \label{sec:fluxes}
 \dmreq{0043}
-Because flux measurements on difference images (Level 1 data products; \S~\ref{sec:level1}) are performed against a template
+Because flux measurements on difference images (Prompt data products; \S~\ref{sec:level1}) are performed against a template
 and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
 We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
@@ -267,7 +268,7 @@ For example, DR4 and DR5 (or any other) release will share no identical \Object,
 \subsection{Repeatability of Queries}
 \dmreq{0291}
 
-We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Level 1 catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
+We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Prompt product catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
 
 The exact implementation of this requirement is left to the LSST Data Management database team. One possibility may be to make the key tables (nearly) append-only, with each row having two timestamps -- \texttt{createdTai} and \texttt{deletedTai}, so that queries may be limited by a \code{WHERE} clause:
 %
@@ -299,12 +300,12 @@ The latter method would probably be limited to nightly granularity, unless there
 
 \clearpage
 
-\section{Level 1 Data Products}
+\section{Prompt Data Products}
 \label{sec:level1}
 
 \subsection{Overview}
 
-Level 1 data products are a result of difference image analysis (DIA; \S \ref{sec:dia}). They include the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Level 2 data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Level 1.} (\SSObject), and related, broadly defined, metadata (including eg., cut-outs\footnote{Small, $30 \times 30$, sub-images at the position of a detected source. Also known as \emph{postage stamps.}}).
+Prompt data products are a result of difference image analysis (DIA; \S \ref{sec:dia}). They include the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Data Release data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Prompt products.} (\SSObject), and related, broadly defined, metadata (including eg., cut-outs\footnote{Small, $30 \times 30$, sub-images at the position of a detected source. Also known as \emph{postage stamps.}}).
 
 \DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\reqparam{transSNR} defined in the \SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Detections with high probability of being instrumental non-astrophysical artifacts may be excluded. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim$deg/day, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
@@ -319,7 +320,7 @@ Clusters of \DIASources detected on visits taken at different times are associat
 At the end of the difference image analysis of each visit, we will issue time domain event alerts for all newly %discovered
 detected \DIASources\footnote{For observations on the Ecliptic near the opposition Solar System objects will dominate the \DIASource counts and (until they're recognized as such) overwhelm the explosive transient signal. It will therefore be advantageous to quickly identify the majority of Solar System objects early in the survey.}.
 
-\subsection{Level 1 Data Processing}
+\subsection{Prompt Data Processing}
 
 \subsubsection{Difference Image Analysis}
 \label{sec:dia}
@@ -333,7 +334,7 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item The \DB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.\dmreq{0273}\dmreq{0271}\dmreq{0285}
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).\dmreq{0274}
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
-collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Level 1 processing is
+collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Prompt processing is
 rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
 \item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
 event alert (see below).\dmreq{0271}\dmreq{0002}
@@ -365,7 +366,7 @@ The following will occur during regular Solar System object processing (in dayti
 \item Precovery linking is attempted for all \SSObjects whose orbits were updated in this process.\dmreq{0286} Where successful, \SSObjects (orbits) are recomputed as needed.
 \end{enumerate}
 
-\subsection{Level 1 Catalogs}
+\subsection{Prompt Catalogs}
 \label{sec:level1db}
 
 The described alert processing design relies on the ``living'' \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing\footnote{The latter is also colloquially known as \emph{DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) immediately\footnote{No later than the moment of issuance of any event alert that may refer to it.}.\dmreq{0312}
@@ -656,7 +657,7 @@ Notes about changes with respect to the previous baseline:
     \item Removed all asteroid shape-related columns; determining these is outside of the scope of the Project.
     \item Removed taxonomy related columns; determining these is outside of the scope of the Project.
     \item Removed \texttt{albedo} -- I don't believe albedo can be determined solely from LSST data. More likely, we will need to assume a particular value. If this value is not universal, this column will need to be put back in.
-    \item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (eg., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes. Deriving phase-corrected light curves is left as a Level 3 task.
+    \item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (eg., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes. Deriving phase-corrected light curves is left as a User Generated task.
     \item Removed a number of other MOPS-specific columns. These are algorithm-specific and should not be a part of the baseline, outward-facing, schema\footnote{Because we may change the algorithm and they may disappear; the scientists should not be relying on them being there.}. They will need to be documented and added back into the physical schema, for sizing purposes.
 \end{itemize}
 \end{changelog}
@@ -671,14 +672,14 @@ When a new \DIASource is detected, it's useful to perform PSF photometry at the 
 
 The former should satisfy the most common use cases (eg., SNe), while the latter will provide an opportunity for more extensive yet timely precovery of targets of special interest.
 
-\subsubsection{Reprocessing the Level 1 Data Set}
+\subsubsection{Reprocessing the Prompt Data Set}
 \label{sec:l1dbreproc}
 
 In what we've described so far, the ``living'' \DB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
 
-This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. This argues for periodic \emph{reprocessing} of the Level 1 data set. \dmreq{0313}\dmreq{0325}
+This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. This argues for periodic \emph{reprocessing} of the Prompt data set. \dmreq{0313}\dmreq{0325}
 
-We plan to reprocess all image differencing-derived data (the \DB), at the same time we perform the annual Level 2 data release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins. The images will be reprocessed using a single version of the image differencing and measurement software, resulting in a consistent data set.
+We plan to reprocess all image differencing-derived data (the \DB), at the same time we perform the annual Data Release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins. The images will be reprocessed using a single version of the image differencing and measurement software, resulting in a consistent data set.
 
 There will be three main advantages of \DB produced during Data Release processing, compared to
 ``living'' \DB:
@@ -689,7 +690,7 @@ measurements (proper motions, centroids, light curves, etc.). \reqparam{diaChara
 
 Older versions of the \DB\ produced during Data Release processing will be archived following the same rules as for the \DR{}s. The most recent DR, and the penultimate data release will be kept on disk and loaded into the database.\dmreq{0077} Others will be archived to tape and made available as bulk downloads.\dmreq{0300} See \S~\ref{sec:retention} for more detail.
 
-\subsection{Level 1 Image Products}
+\subsection{Prompt Image Products}
 
 \subsubsection{Visit Images}
 \dmreq{0069}
@@ -782,9 +783,9 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 \begin{itemize}
     \item \emph{Should we measure on individual snaps (or their difference)?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period? Is it technically feasible? (FDR)
-    \item \emph{Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Level 1 database will \emph{not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.). (FDR)
+    \item \emph{Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Prompt database will \emph{not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.). (FDR)
     \item \emph{Should we associate alerts with external catalogs?}. LSST will have a copy of many external catalogs (or parts thereof), and could in principle provide limited positional association. Right now, it's up to the downstream brokers to perform such associations. (CONSTRUCTION)
-    \item \emph{Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Level 2 catalogs). (CONSTRUCTION)
+    \item \emph{Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Data Release catalogs). (CONSTRUCTION)
     \item \emph{What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have currently baselined the \citet{2011ApJ...733...10R} feature set. (COMMISSIONING)
     \item \emph{Should we choose \texttt{nearbyObj}s differently?} One proposal is to find the brightest \Object within $XX$ arcsec (with $XX \sim$10\,arcsec), and the total number of \Objects within $XX$ arcsec. (COMMISSIONING)
     \item \emph{Should the postage stamps provided with the alerts be binned, and by what factor?} The thought is that a human user may have an easier time performing a final by-eye check with larger postage stamps. (COMMISSIONING)
@@ -795,22 +796,22 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 \clearpage
 
-\section{Level 2 Data Products}
+\section{Data Release Data Products}
 \label{sec:level2}
 
 \subsection{Overview}
 
-Level 2 data products result from direct image\footnote{As opposed to \emph{difference image}, for Level 1.} analysis. They're designed to enable \emph{static sky} science (eg., studies of galaxy evolution, or weak lensing), and time-domain science that is not time sensitive (eg. statistical investigations of variability). They include image products (reduced single-epoch exposures, called \emph{Processed Visit Images} or, sometimes, \emph{calibrated exposures},\dmreq{0069} and coadds\dmreq{0279}\dmreq{0281}), and catalog products (tables of objects\dmreq{0275}, sources\dmreq{0267}, their measured properties\dmreq{0276}, and related metadata).
+Data Release data products result from direct image\footnote{As opposed to \emph{difference image}, for Prompt products.} analysis. They're designed to enable \emph{static sky} science (eg., studies of galaxy evolution, or weak lensing), and time-domain science that is not time sensitive (eg. statistical investigations of variability). They include image products (reduced single-epoch exposures, called \emph{Processed Visit Images} or, sometimes, \emph{calibrated exposures},\dmreq{0069} and coadds\dmreq{0279}\dmreq{0281}), and catalog products (tables of objects\dmreq{0275}, sources\dmreq{0267}, their measured properties\dmreq{0276}, and related metadata).
 
-Similarly to Level 1 catalogs of \DIAObjects and \DIASources, \Objects in the Level 2 catalog\dmreq{0275} represent the astrophysical phenomena (stars, galaxies, quasars, etc.), while \Sources represent their single-epoch observations. \Sources are independently detected and measured in single epoch exposures and recorded in the \Source table.\dmreq{0267}
+Similarly to Prompt catalogs of \DIAObjects and \DIASources, \Objects in the Data Release catalog\dmreq{0275} represent the astrophysical phenomena (stars, galaxies, quasars, etc.), while \Sources represent their single-epoch observations. \Sources are independently detected and measured in single epoch exposures and recorded in the \Source table.\dmreq{0267}
 
-The master list of \Objects in Level 2 will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds (\CoaddSources).\dmreq{0275} We plan to build coadds designed to maximize depth (\emph{``deep coadds''})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing (\emph{``best seeing coadds''}), unless
+The master list of \Objects in the Data Release will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds (\CoaddSources).\dmreq{0275} We plan to build coadds designed to maximize depth (\emph{``deep coadds''})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing (\emph{``best seeing coadds''}), unless
 algorithms will enable these two to be the same.\dmreq{0330}
 We will also build a series of \emph{short-period} (eg. yearly, or multi-year) coadds.\dmreq{0337}
-The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands (\emph{``multi-color coadds''}).\dmreq{0281} \textbf{\emph{Not all of these will be preserved}} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as Level 3 tasks (\S~\ref{sec:level3}).\dmreq{0311}
+The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands (\emph{``multi-color coadds''}).\dmreq{0281} \textbf{\emph{Not all of these will be preserved}} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as Data Release tasks (\S~\ref{sec:level3}).\dmreq{0311}
 
 \dmreq{0275}
-The deblender will be run simultaneously on the catalog of peaks\footnote{The source detection algorithm we plan to employ finds regions of connected pixels above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit (or coadd). These regions are called \emph{footprints}. Each footprint may have one or more \emph{peaks}, and it is these peaks that the deblender will use to infer the number and positions of objects blended in each footprint.} detected in the coadds, the \DIAObject catalog from the \DB, and one or more external catalogs.  It will use the knowledge of peak positions, bands, time, time variability (from Level 1 and the single-epoch \Source detections), inferred motion, Galactic longitude and latitude, and other available information to produce a master list of deblended \Objects. Metadata on why and how a particular \Object was deblended will be kept.
+The deblender will be run simultaneously on the catalog of peaks\footnote{The source detection algorithm we plan to employ finds regions of connected pixels above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit (or coadd). These regions are called \emph{footprints}. Each footprint may have one or more \emph{peaks}, and it is these peaks that the deblender will use to infer the number and positions of objects blended in each footprint.} detected in the coadds, the \DIAObject catalog from the \DB, and one or more external catalogs.  It will use the knowledge of peak positions, bands, time, time variability (from Prompt products and the single-epoch \Source detections), inferred motion, Galactic longitude and latitude, and other available information to produce a master list of deblended \Objects. Metadata on why and how a particular \Object was deblended will be kept.
 
 \dmreq{0276}
 The properties of \Objects, including their exact positions, motions, parallaxes, and shapes, will be characterized by MultiFit-type algorithms\footnote{``MultiFit algorithms'' are those that fit a PSF-convolved model (so-called ``forward modeling'')  to all multi-epoch observations of an object. This approach is in contrast to measurement techniques where multi-epoch images are coadded first, and the properties are measured from the coadded pixels.}.
@@ -818,7 +819,7 @@ The properties of \Objects, including their exact positions, motions, parallaxes
 Finally, to enable studies of variability, the fluxes of all \Objects will be measured on individual visits (using both
 direct and difference images), with their shape parameters and deblending resolutions kept constant. This process is known as \emph{forced photometry} (see \S~\ref{sec:forcedPhotL2}), and the flux measurements will be stored in the \ForcedSource table.\dmreq{0268}
 
-\subsection{Level 2 Data Processing}
+\subsection{Data Release Data Processing}
 \label{sec:level2dp}
 
 % commented out by ZI: we have now new figures
@@ -829,9 +830,9 @@ direct and difference images), with their shape parameters and deblending resolu
 %\end{figure}
 
 Figures~\ref{fig:Pipe1} and \ref{fig:Pipes234}
-present a high-level overview of the Level 2 data processing workflow\footnote{Note that some LSST documents refer to \emph{Data Release Processing}, which includes both Level 1 reprocessing (see \S~\ref{sec:l1dbreproc}), and the Level 2 processing described here.}. Logically\footnote{The actual implementation may parallelize these steps as much as possible.}, the processing begins with single-visit image reduction and source measurement, followed by global astrometric and photometric calibration, coadd creation, detection on coadds, association and deblending, object characterization, and forced photometry measurements.
+present a high-level overview of the Data Release data processing workflow\footnote{Note that some LSST documents refer to \emph{Data Release Processing}, which includes both Prompt reprocessing (see \S~\ref{sec:l1dbreproc}), and the Data Release processing described here.}. Logically\footnote{The actual implementation may parallelize these steps as much as possible.}, the processing begins with single-visit image reduction and source measurement, followed by global astrometric and photometric calibration, coadd creation, detection on coadds, association and deblending, object characterization, and forced photometry measurements.
 
-The following is a high-level description of steps which will occur during regular Level 2 data processing
+The following is a high-level description of steps which will occur during regular Data Release data processing
 (bullets 1 and 2 below map to pipeline 1, \emph{Single Visit Processing}, in Figure~\ref{fig:Pipe1}, bullet 3 is
 pipeline 2, \emph{Image Coaddition}, bullets 4-6 map to pipeline 3, \emph{Coadded Image Analysis}, and
 bullet 7 is pipeline 4, \emph{Multi-epoch Object Characterization}):
@@ -848,7 +849,7 @@ association and deblending algorithms). It is possible for intermittent sources 
 the faint detection limit of single visits to be undetected in coaddds, and thus to not have a matching \Object.
 To enable easy identification of such \Sources, the nearest \Object associated with each \Source, if any, will be recorded.}.\dmreq{0034}
 
-    The deblender will make use of all information available at this stage, including the knowledge of peak positions, bands, time, time variability (from Level 1), Galactic longitude and latitude, etc. The output of this stage is a list of uncharacterized \Objects\footnote{Depending on the exact implementation of the deblender, this stage may also attach significant metadata (eg, deblended footprints and pixel-weight maps) to each deblended \Object record.}.
+    The deblender will make use of all information available at this stage, including the knowledge of peak positions, bands, time, time variability (from Prompt products), Galactic longitude and latitude, etc. The output of this stage is a list of uncharacterized \Objects\footnote{Depending on the exact implementation of the deblender, this stage may also attach significant metadata (eg, deblended footprints and pixel-weight maps) to each deblended \Object record.}.
     \item \emph{Coadd object characterization}.  Object properties such as adaptive moments and aperture fluxes will be measured on the coadds.  These will be stored in additional columns in the \Object table.  Models fit in multi-epoch object characterization will also be fit first to the coadds and stored. \dmreq{0276}
     \item \emph{Multi-epoch object characterization}. A set of predefined model fits and measurements will be performed on each of the \Objects identified in the previous step, \textit{taking all available multi-epoch data into account}. Model fits will be performed using \emph{MultiFit}-type algorithms. Rather than coadding a set of images and measuring object characteristics on the coadd, MultiFit simultaneously fits PSF-convolved models to the objects multiple observations. This reduces systematic errors, improves the overall $S/N$, and allows for fitting of time-dependent quantities degenerate with shape on the coadds (for example, the proper motion). The models we plan to fit will \emph{not} allow for flux variability (see the next item). \dmreq{0275}
     \item \emph{Forced Photometry}. Source fluxes will be measured on every visit, with the position, motion, shape, and the deblending parameters characterized in the previous step kept fixed.
@@ -919,7 +920,7 @@ The following \Source properties are planned to be measured:
 
 \end{itemize}
 
-Note that we do \emph{not} plan to fit extended source Bulge+Disk models to individual \Sources, nor measure per-visit Petrosian or Kron fluxes. These are object properties that are not expected to vary in time\footnote{Objects that \emph{do} change shape with time would, obviously, be of particular interest. Aperture fluxes provided in the \Source table should suffice to detect these. Further per-visit shape characterization can be performed as a Level 3 task.}, and will be better characterized by MultiFit (in the \Object table).
+Note that we do \emph{not} plan to fit extended source Bulge+Disk models to individual \Sources, nor measure per-visit Petrosian or Kron fluxes. These are object properties that are not expected to vary in time\footnote{Objects that \emph{do} change shape with time would, obviously, be of particular interest. Aperture fluxes provided in the \Source table should suffice to detect these. Further per-visit shape characterization can be performed as a User Generated task.}, and will be better characterized by MultiFit (in the \Object table).
 %including the so-called star-galaxy separation (estimation of the probability that a source is resolved, given the PSF).
 For example, although a simple extendedness characterization is present in the Source table, star-galaxy separation (an estimate of the probability that a source is resolved, given the PSF) will be better characterized by MultiFit.
 
@@ -941,11 +942,11 @@ A fraction of LSST imaging will cover areas of high object (mostly stellar) dens
 
 LSST image processing and measurement software, although primarily designed to operate in non-crowded regions, is expected to perform well in areas of crowding. The current LSST applications development plan envisions making the deblender aware of Galactic longitude and latitude, and permitting it to use that information as a prior when deciding how to deblend objects. While not guaranteed to reach the accuracy or completeness of purpose-built crowded field photometry codes, we expect this approach will yield acceptable results even in areas of moderately high crowding.
 
-Note that this discussion only pertains to processing of \emph{direct images}. Crowding is not expected to significantly impact the quality of data products derived from \emph{difference images} (i.e., Level 1).
+Note that this discussion only pertains to processing of \emph{direct images}. Crowding is not expected to significantly impact the quality of data products derived from \emph{difference images} (i.e., Prompt products).
 
-\subsection{The Level 2 Catalogs}
+\subsection{The Data Release Catalogs}
 
-This section presents the contents of key Level 2 catalog tables. As was the case for Level 1 (see \S~\ref{sec:level1db}), here we present the \emph{conceptual schemas} for the most important Level 2 tables (the \Object, \Source, and \ForcedSource tables).
+This section presents the contents of key Data Release catalog tables. As was the case for Prompt Products (see \S~\ref{sec:level1db}), here we present the \emph{conceptual schemas} for the most important Data Release tables (the \Object, \Source, and \ForcedSource tables).
 The tables themselves are defined in \citeds{LDM-153}\footnote{The SQL definition itself can be found in the \texttt{cat} package.}.
 
 These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL. Secondly, the tables to be presented are normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \Source table to the table with exposure metadata, there's no column named \texttt{band} in the \Source table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.\dmreq{0332}
@@ -954,7 +955,7 @@ These convey \emph{what} data will be recorded in each table, rather than the de
 \label{sec:objectTable}
 \dmreq{0275}
 
-\begin{schema}{\Object Table}{Level 2 Catalog \Object Table}{tbl:objectTable}
+\begin{schema}{\Object Table}{Data Release Catalog \Object Table}{tbl:objectTable}
 
 
 objectId & uint64 & ~ & Unique object identifier \\
@@ -1089,7 +1090,7 @@ flags & bit[128] & bit & Various useful flags. \\
 
 \Source measurements are performed independently on individual visits. They're designed to enable relative astrometric and photometric calibration, variability studies of high signal-to-noise objects, and studies of high SNR objects that vary in position and/or shape (eg., comets).\dmreq{0267}
 
-\begin{schema}{\Source Table}{Level 2 Catalog \Source Table}{tbl:sourceTable}
+\begin{schema}{\Source Table}{Data Release Catalog \Source Table}{tbl:sourceTable}
 
 sourceId & uint64 & ~ & Unique source identifier\footnote{It would be optimal if the source ID is globally unique across all releases. Whether that's realized will depend on technological and space constraints.} \\
 
@@ -1160,7 +1161,7 @@ flags & bit[64] & bit & Various useful flags. \\
 \label{sec:forcedSourceTable}
 \dmreq{0268}
 
-\begin{schema}{\ForcedSource Table}{Level 2 Catalog \ForcedSource Table}{tbl:forcedsourceTable}
+\begin{schema}{\ForcedSource Table}{Data Release Catalog \ForcedSource Table}{tbl:forcedsourceTable}
 
 objectId & uint64 & ~ & Unique object identifier \\
 
@@ -1184,7 +1185,7 @@ flags & bit[8] & bit & Various useful flags. \\
 \end{schema}
 
 
-\subsection{Level 2 Image Products}
+\subsection{Data Release Image Products}
 
 \subsubsection{Visit Images}
 
@@ -1203,7 +1204,7 @@ All auxiliary telescope data, both raw (images with spectra) and processed (cali
 \subsubsection{Coadded Images}
 \label{sec:coadds}
 
-In course of Level 2 processing, multiple classes and numerous of coadds will be created\footnote{See \citeds{LDM-151} for more details.}:
+In the course of Data Release processing, multiple classes and numerous coadds will be created\footnote{See \citeds{LDM-151} for more details.}:
 
 \begin{itemize}
     \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands, plus a seventh, deeper, multi-color coadd.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
@@ -1212,9 +1213,9 @@ In course of Level 2 processing, multiple classes and numerous of coadds will be
 
     \item A set of \emph{best seeing} coadds. One deep coadd will be created for each of the $ugrizy$ bands, using only the best seeing data (for example, using only the first quartile of the realized seeing distribution). These will be built to assist the deblending process. These coadds will be kept indefinitely and made available to the users. \dmreq{0330}\dmreq{0334}
 
-    \item A set of \emph{short-period} coadds.\dmreq{0337} These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. \textbf{We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.\dmreq{0298}\dmreq{0311}
+    \item A set of \emph{short-period} coadds.\dmreq{0337} These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. \textbf{We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 products or other resources.\dmreq{0298}\dmreq{0311}
 
-    \item One (ugrizyM) set of PSF-matched coadds.\dmreq{0335} These will be used to measure colors and shapes of objects at ``standard'' seeing. \textbf{\emph{We do not plan to keep and make these coadds available}}. We will retain and provide sufficient metadata for users to re-create them using Level 3 or other resources.
+    \item One (ugrizyM) set of PSF-matched coadds.\dmreq{0335} These will be used to measure colors and shapes of objects at ``standard'' seeing. \textbf{\emph{We do not plan to keep and make these coadds available}}. We will retain and provide sufficient metadata for users to re-create them using Level 3 products or other resources.
 \end{itemize}
 
 The exact details of which coadds to build, and which ones to keep, can change during Construction without affecting the processing system design as the most expensive operations (raw image input and warping) are constant in the number of coadds produced. The data management system design \emph{is} sensitive to the total \emph{number and size} of coadds to be \emph{kept} -- these are the relevant constraining variables.
@@ -1249,7 +1250,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
     \item \emph{What is the definition of a crowded field?} This is related to the question of when is LSST photometry allowed to deviate from \SRD specs due to crowding. (FDR)
 
-    \item \emph{Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with ``large'' galaxy characterization. Measures like isophote twists, Gini coefficients, etc. This is now considered to be Level 3, but it's likely at least a portion of it belongs to Level 2 -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
+    \item \emph{Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with ``large'' galaxy characterization. Measures like isophote twists, Gini coefficients, etc. This is now considered to be Level 3 products, but it's likely at least a portion of it belongs to Data Release -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
 
     \item \emph{Which coadds to we keep and serve to the public?} Probably non-PSF matched coadds with CoaddPsf (aka. StackFit PSF). PSF-matched coadds are another option and may be easier for the users to work with. (CONSTRUCTION)
 
@@ -1264,7 +1265,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 \clearpage
 
-\section{Level 3 Data Products and Capabilities}
+\section{User Generated Data Products and Capabilities}
 \label{sec:level3}
 
 \emph{Level 3 capabilities} are envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for Level 3 is established in \S~3.5 of the LSST \SRD.
@@ -1280,34 +1281,34 @@ Level 3 capabilities include three separate deliverables:
 %
 Many scientists' work may involve using two or all three of them in concert, but they can each be used independently. We describe each one of them in the subsections to follow.
 
-\subsection{Level 3 Data Products and Associated Storage Resources}
+\subsection{User Generated Data Products and Associated Storage Resources}
 
 \dmreq{0290}
 These are data products that are generated by users \emph{on any computing resources anywhere} that are then brought to an LSST Data Access Center (DAC) and stored there. The hardware for these capabilities includes the physical storage and database server resources at the DAC to support them.
 
-For catalog data products, there is an expectation that they can be ``federated'' with the Level 1 (L1) and Level 2 (L2) catalogs to enable analyses combining them.  Essentially this means that either the user-supplied tables include keys from the L1/L2 catalogs that can be used for key-equality-based joins with them (example: a table of custom photometric redshifts for galaxies, with a column of object IDs that can be joined to the L2 Object catalog), or that there are columns that can be used for spatial (or temporal, or analogous) joins against L1/L2 tables. The latter implies that such L3 table's columns must be in the same coordinate system and units as the corresponding L1/L2 columns.
+For catalog data products, there is an expectation that they can be ``federated'' with the Prompt and Data Release catalogs to enable analyses combining them.  Essentially this means that either the user-supplied tables include keys from the Prompt/Data Release catalogs that can be used for key-equality-based joins with them (example: a table of custom photometric redshifts for galaxies, with a column of object IDs that can be joined to the Data Release Object catalog), or that there are columns that can be used for spatial (or temporal, or analogous) joins against Prompt/Data Release tables. The latter implies that such User Generated product table's columns must be in the same coordinate system and units as the corresponding Prompt/Data Release columns.
 \dmreq{0123}
 \dmreq{0124}
 
-There is no requirement that Level 3 data products (L3DPs) are derived from L1 or L2 other than that they be joinable with them.  For instance, a user might have a catalog of radio sources that they might want to bring into federation with the LSST catalogs. That can be thought of as a Level 3 Data Product as long as they have ``LSST-ized'' it by ensuring compatibility of coordinate, time, measurement systems, etc.  Nevertheless, we do expect the majority of L3DPs to be derived from processed LSST data.
+There is no requirement that User Generated data products are derived from Prompt or Data Release products other than that they be joinable with them.  For instance, a user might have a catalog of radio sources that they might want to bring into federation with the LSST catalogs. That can be thought of as a User Generated Data Product as long as they have ``LSST-ized'' it by ensuring compatibility of coordinate, time, measurement systems, etc.  Nevertheless, we do expect the majority of User Generated data products to be derived from processed LSST data.
 
-There could also be L3 image data products; for example, user-generated coadds with special selection criteria or stacking algorithms (eg. the so-called shift \& stack algorithm for detecting moving objects).
+There could also be User Generated image data products; for example, user-generated coadds with special selection criteria or stacking algorithms (eg. the so-called shift \& stack algorithm for detecting moving objects).
 \dmreq{0127}
 
-Any L3DP may have access controls associated with it, restricting read access to just the owner, to a list of people, to a named group of people, or allowing open access.\dmreq{0340}
+Any User Generated data products may have access controls associated with it, restricting read access to just the owner, to a list of people, to a named group of people, or allowing open access.\dmreq{0340}
 
-The storage resources for L3DPs come out of the \SRD requirement for 10\% of LSST data management capabilities to be devoted to user processing. In general, they are likely to be controlled by some form of a ``space allocation committee''.  Users will probably have some small baseline automatic allocation, beyond which a SAC proposal is needed. The SAC may take into account scientific merit, length of time for which the storage is requested, and openness of the data to others, in setting its priorities.
+The storage resources for User Generated data products come out of the \SRD requirement for 10\% of LSST data management capabilities to be devoted to user processing. In general, they are likely to be controlled by some form of a ``space allocation committee''.  Users will probably have some small baseline automatic allocation, beyond which a SAC proposal is needed. The SAC may take into account scientific merit, length of time for which the storage is requested, and openness of the data to others, in setting its priorities.
 \dmreq{0119}
 
-It is to be decided whether users will be required to provide the code and/or documentation behind their L3DPs, or whether the SAC may include the availability of this supporting information in its prioritization.  Obviously if a user intends to make a L3DP public or publish it to a group it will be more important that supporting information be available.
+It is to be decided whether users will be required to provide the code and/or documentation behind their User Generated data products, or whether the SAC may include the availability of this supporting information in its prioritization.  Obviously if a user intends to make a User Generated data products public or publish it to a group it will be more important that supporting information be available.
 
-Level 3 data products that are found to be generally useful can be migrated to Level 2.
-This is a fairly complex process that ultimately involves the project taking responsibility for supporting and running LSST-style code that implements the algorithm necessary to produce the data product (it's not just relabeling an existing L3DP as L2).  The project will provide necessary support for such migrations.
+User Generated data products that are found to be generally useful can be migrated to Data Release products.
+This is a fairly complex process that ultimately involves the project taking responsibility for supporting and running LSST-style code that implements the algorithm necessary to produce the data product (it's not just relabeling an existing User Generated data product as a Data Release data product).  The project will provide necessary support for such migrations.
 
 \subsection{Level 3 Processing Resources}
 \dmreq{0119}
 
-These are project-owned computing resources located at the DACs.  They are available for allocation to all users with LSST data rights.  They may be used for any computation that involves the LSST data and advances LSST-related science. The distinctive feature of these computing resources is that they are located with excellent I/O connections to the image and catalog datasets at Level 1 and Level 2. There may be other co-located but \emph{not} project-owned, resources available at the LSST DACs\footnote{For example, the U.S. DAC will be located at the National Petascale Facility building at NCSA, adjacent to the Blue Waters supercomputer.}; their use is beyond the scope of this document, except to note that reasonable provisions will be made to ensure it \emph{is} possible to use them to process large quantities of LSST data.
+These are project-owned computing resources located at the DACs.  They are available for allocation to all users with LSST data rights.  They may be used for any computation that involves the LSST data and advances LSST-related science. The distinctive feature of these computing resources is that they are located with excellent I/O connections to the image and catalog datasets for Prompt and Data Release products. There may be other co-located but \emph{not} project-owned, resources available at the LSST DACs\footnote{For example, the U.S. DAC will be located at the National Petascale Facility building at NCSA, adjacent to the Blue Waters supercomputer.}; their use is beyond the scope of this document, except to note that reasonable provisions will be made to ensure it \emph{is} possible to use them to process large quantities of LSST data.
 
 Level 3 processing resources will, at least, include systems that can carry out traditional batch-style processing, probably similarly configured to those LSST will be using for the bulk of data release production processing.  It is to be determined whether any other flavors of hardware would be provided, such as large-memory machines; this is likely to be driven by the project need (or lack thereof) for such resources.
 
@@ -1331,7 +1332,7 @@ These analyses could be done on LSST-owned systems (i.e., on the Level 3 process
 
 The Level 3 environment is intended, when put to fullest use, to allow users to run their own productions-like runs on bulk image and/or catalog data, with mechanisms for creating and tracking large groups of jobs in a batch system.
 
-The Level 3 environment, in asymptopia, has a great deal in common with the environment that the Project will use to build the Level 2 data releases. It is distinct, however, as supporting it as a tool meant for the end-users imposes additional requirements:
+The Level 3 environment, in asymptopia, has a great deal in common with the environment that the Project will use to build the Data Releases. It is distinct, however, as supporting it as a tool meant for the end-users imposes additional requirements:
 %
 \begin{itemize}
     \item In order to be successful as a \emph{user} computing environment, it needs to be easy to use. Experience with prior projects\footnote{For example, BaBar.} has shown that if the production computing environment is not envisioned from the start as being shared with users, it will likely evolve into an experts-only tool that is too complicated, or too work-hardened, to serve users well.
@@ -1372,13 +1373,13 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 %
 %Obviously there is a continuum from the extreme "!L3env" case of using no LSST code at all in the analysis, to the maximum "L3env" case of using virtually the entire stack, from afw through the process control middleware.
 
-\subsection{Migration of Level 3 data products to Level 2}
+\subsection{Migration of User Generated data products to Data Release products}
 
 \begin{itemize}
     \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
-    \item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Level 3 environment''), it will be easier to migrate it to Level 2 (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
+    \item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Level 3 environment''), it will be easier to migrate it to a Data Release product (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
     \item If the original code was written in another language or another data processing framework, the project may consider rewriting it to required LSST standards.
-    \item Taking on a new Level 2 DP means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new L2DP through DR11.
+    \item Taking on a new Data Release data product means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new Data Release data product through DR11.
 \end{itemize}
 
 \clearpage
@@ -1387,19 +1388,19 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 \label{sec:specialProgs}
 
 \lsrreq{0075}
-LSST Survey Specifications (LSST \SRD, \S~3.4) specify that 90\% of LSST observing time will be spend executing the so-called ``universal cadence''. These observations will result in Level 1 and 2 data products described earlier in this document.
+LSST Survey Specifications (LSST \SRD, \S~3.4) specify that 90\% of LSST observing time will be spend executing the so-called ``universal cadence''. These observations will result in Prompt and Data Release data products described earlier in this document.
 
 The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r\sim26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
 
-The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the \emph{constraints} on these data products, given the adopted Level 1/2/3 architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertise.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
+The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the \emph{constraints} on these data products, given the adopted Prompt/Data Release/User Generated architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertise.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
 
-Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence.\dmreq{0320} The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Level 1 data products.\dmreq{0321}\dmreq{0344}\reqparam{OTT1}
+Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence.\dmreq{0320} The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Prompt data products.\dmreq{0321}\dmreq{0344}\reqparam{OTT1}
 
-For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main'' (Level 1 and 2) databases. The system will, however, allow for simple federation with Level 1/2/3 data products (i.e., cross-queries and joins).\dmreq{0322}
+For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main'' (Prompt and Data Release) databases. The system will, however, allow for simple federation with Prompt/Data Release/User Generated data products (i.e., cross-queries and joins).\dmreq{0322}
 
-As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Level 1-like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim$24 hours\reqparam{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
+As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Prompt -like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim$24 hours\reqparam{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
 
-Note that the data rights and access rules apply just as they would for for Level 1/2/3. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
+Note that the data rights and access rules apply just as they would for Prompt/Data Release/User Generated. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
 
 \bibliography{dpdd,lsst,refs_ads}
 
@@ -1413,7 +1414,7 @@ in Figure~\ref{fig:Detail1}. The pipeline definitions presented here are driven 
 outputs and processing steps; they do \textit{not} describe exact boundaries in the actual implemention
 code, execution, or development responsibilities within the Project.
 Processing from pipelines marked with 1, 2, and 5-8 is executed every day when new data are taken
-to produce Level 1 Data Products. Annual Data Release processing includes pipelines 1-6 and 8
+to produce Prompt Data Products. Annual Data Release processing includes pipelines 1-6 and 8
 (everything except Alert production). These main conceptual steps in LSST image processing
 include the following pipelines (enumeration in this list corresponds to enumeration in Figure~\ref{fig:Detail1}
 but note that these steps can be interleaved in the actual processing flow):
@@ -1437,7 +1438,7 @@ from a single-visit and coadded (template) images.
 \DIAObject and \SSObject lists with new \DIASources detected on processed difference image,
 fits a library of image models to Footprints of these \DIASources, and for all \DIAObjects
 overlapping the difference image it performs Forced Photometry and recomputes summary quantities.
-During nightly Level 1 processing, this pipeline also performs Forced Photometry
+During nightly Prompt processing, this pipeline also performs Forced Photometry
 for all new \DIAObjects on difference images from the last 30 days\reqparam{precoveryWindow}.
 \item \textit{Alert Generation and Distribution} pipeline (Figure~\ref{fig:Pipes567}) uses updated
 \DIAObjects and \DIASources to generate and distribute \Alerts (which also include postage stamp
