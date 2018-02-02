@@ -239,7 +239,7 @@ Raw images will be processed to \dmreq{0069}remove instrumental signature and ch
 
 That characterization is crucial for deriving LSST catalogs and understanding the images. It will be kept and made available to the users. The exact format used to store these (meta)data will depend on the final adopted algorithm in consultation with the scientific community to ensure the formats in which these data are served are maximally useful.\dmreq{0328}
 
-\dmreq{0072}Each processed image\footnote{It is also frequently referred to as \emph{calibrated exposure}, from the Butler product type of \texttt{calexp}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and usefullness of each pixel in estimating the flux density recorded in that area of the sky.
+\dmreq{0072}Each processed image\footnote{It is also frequently referred to as \emph{calibrated exposure}, from the Butler product type of \texttt{calexp}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and use fullness of each pixel in estimating the flux density recorded in that area of the sky.
 
 This information will be per-pixel, and potentially unwieldy to use for certain science cases. We plan to investigate approximate schemes for storing masks based on geometry (e.g., similar to Mangle or STOMP), \emph{in addition} to storing them on a per pixel basis.\dmreq{0326}
 
@@ -558,7 +558,7 @@ radecTai & double & time & Time at which the object was at a position \texttt{ra
 
 pm & float[2] & mas/yr & Proper motion vector\footnote{High proper-motion or parallax objects will appear as ``dipoles'' in difference images. Great care will have to be taken not to misidentify these as subtraction artifacts.}. \\
 
-parallax & float & mas & Trigonometric arallax. \\
+parallax & float & mas & Trigonometric parallax. \\
 
 pmParallaxCov & float[6] & various & Proper motion - parallax covariances. \\
 
@@ -1213,9 +1213,9 @@ In the course of Data Release processing, multiple classes and numerous coadds w
 
     \item A set of \emph{best seeing} coadds. One deep coadd will be created for each of the $ugrizy$ bands, using only the best seeing data (for example, using only the first quartile of the realized seeing distribution). These will be built to assist the deblending process. These coadds will be kept indefinitely and made available to the users. \dmreq{0330}\dmreq{0334}
 
-    \item A set of \emph{short-period} coadds.\dmreq{0337} These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. \textbf{We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using Level 3 products or other resources.\dmreq{0298}\dmreq{0311}
+    \item A set of \emph{short-period} coadds.\dmreq{0337} These will comprise of multiple (ugrizyM) sets of yearly and multi-year coadds. Each of these sets will be created using only a subset of the data, and otherwise share the characteristics of the deep coadds described above. These are designed to enable detection of long-term variable or moving\footnote{For example, nearby high proper motion stars.} objects that would be ``washed out'' (or rejected) in full-depth coadds. \textbf{We \em do not plan to keep and make these coadds available}. We will retain and provide sufficient metadata for users to re-create them using  the Science Platform or other resources.\dmreq{0298}\dmreq{0311}
 
-    \item One (ugrizyM) set of PSF-matched coadds.\dmreq{0335} These will be used to measure colors and shapes of objects at ``standard'' seeing. \textbf{\emph{We do not plan to keep and make these coadds available}}. We will retain and provide sufficient metadata for users to re-create them using Level 3 products or other resources.
+    \item One (ugrizyM) set of PSF-matched coadds.\dmreq{0335} These will be used to measure colors and shapes of objects at ``standard'' seeing. \textbf{\emph{We do not plan to keep and make these coadds available}}. We will retain and provide sufficient metadata for users to re-create them using Science Platform  or other resources.
 \end{itemize}
 
 The exact details of which coadds to build, and which ones to keep, can change during Construction without affecting the processing system design as the most expensive operations (raw image input and warping) are constant in the number of coadds produced. The data management system design \emph{is} sensitive to the total \emph{number and size} of coadds to be \emph{kept} -- these are the relevant constraining variables.
@@ -1250,7 +1250,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
     \item \emph{What is the definition of a crowded field?} This is related to the question of when is LSST photometry allowed to deviate from \SRD specs due to crowding. (FDR)
 
-    \item \emph{Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with ``large'' galaxy characterization. Measures like isophote twists, Gini coefficients, etc. This is now considered to be Level 3 products, but it's likely at least a portion of it belongs to Data Release -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
+    \item \emph{Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with ``large'' galaxy characterization. Measures like isophote twists, Gini coefficients, etc. These are now considered to be  user generated products, but it's likely at least a portion of it belongs to Data Release -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
 
     \item \emph{Which coadds to we keep and serve to the public?} Probably non-PSF matched coadds with CoaddPsf (aka. StackFit PSF). PSF-matched coadds are another option and may be easier for the users to work with. (CONSTRUCTION)
 
@@ -1265,22 +1265,22 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 \clearpage
 
-\section{User Generated Data Products and Capabilities}
+\section{User Generated Data Products and the Science Platform}
 \label{sec:level3}
 
-\emph{Level 3 capabilities} are envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for Level 3 is established in \S~3.5 of the LSST \SRD.
+\emph{The Science Platform} is  envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for the Science Platform  is established in \S~3.5 of the LSST \SRD.
 \ossreq{0140}
 
-Level 3 capabilities include three separate deliverables:
-%
+The science platform is described in in \citeds{LSE-319}
+with more formal requirements in \citeds{LDM-554} and the design   is in \citeds{LDM-542}.
+
+Users will have access to the platform via logon granting them:
 \begin{enumerate}
-    \item Level 3 Data Products and associated storage resources
-    \item Level 3 processing resources, and
-    \item Level 3 programming environment and framework
+    \item Access to the Data Products and associated storage resources
+    \item processing resources, and
+    \item the LSST tools and processing  framework
 \end{enumerate}
 %
-Many scientists' work may involve using two or all three of them in concert, but they can each be used independently. We describe each one of them in the subsections to follow.
-
 \subsection{User Generated Data Products and Associated Storage Resources}
 
 \dmreq{0290}
@@ -1305,40 +1305,33 @@ It is to be decided whether users will be required to provide the code and/or do
 User Generated data products that are found to be generally useful can be migrated to Data Release products.
 This is a fairly complex process that ultimately involves the project taking responsibility for supporting and running LSST-style code that implements the algorithm necessary to produce the data product (it's not just relabeling an existing User Generated data product as a Data Release data product).  The project will provide necessary support for such migrations.
 
-\subsection{Level 3 Processing Resources}
+\subsection{Science Platform Processing Resources}
 \dmreq{0119}
 
 These are project-owned computing resources located at the DACs.  They are available for allocation to all users with LSST data rights.  They may be used for any computation that involves the LSST data and advances LSST-related science. The distinctive feature of these computing resources is that they are located with excellent I/O connections to the image and catalog datasets for Prompt and Data Release products. There may be other co-located but \emph{not} project-owned, resources available at the LSST DACs\footnote{For example, the U.S. DAC will be located at the National Petascale Facility building at NCSA, adjacent to the Blue Waters supercomputer.}; their use is beyond the scope of this document, except to note that reasonable provisions will be made to ensure it \emph{is} possible to use them to process large quantities of LSST data.
 
-Level 3 processing resources will, at least, include systems that can carry out traditional batch-style processing, probably similarly configured to those LSST will be using for the bulk of data release production processing.  It is to be determined whether any other flavors of hardware would be provided, such as large-memory machines; this is likely to be driven by the project need (or lack thereof) for such resources.
+The Science Platform will include access to systems that can carry out traditional batch-style processing, probably similarly configured to those LSST will be using for the bulk of data release production processing.  It is to be determined whether any other flavors of hardware would be provided, such as large-memory machines; this is likely to be driven by the project need (or lack thereof) for such resources.
 
-There will be a time allocation committee (TAC) for these resources.  Every LSST-data-rights user may get a small default allocation (enough to run test jobs).  Substantial allocations will require a scientific justification.  Priorities will be based on the science case and, perhaps, also on whether the results of the processing will be released to a larger audience.  Requests must specify what special flavors of computing will be needed (e.g., GPUs, large memory, etc.).
+There will  be a resource  allocation committee (RAC) for these resources.  Every LSST-data-rights user may get a small default allocation (enough to run test jobs).  Substantial allocations will require a scientific justification.  Priorities will be based on the science case and, perhaps, also on whether the results of the processing will be released to a larger audience.  Requests must specify what special flavors of computing will be needed (e.g., GPUs, large memory, etc.).
 
 A fairly standard job control environment (like Condor), will be available, and users will be permitted to work with it at a low, generic level. They will not be required to use the higher levels of the LSST process control middleware (but they may; see \S~\ref{sec:l3framework}).
 
 These processing resources can be available for use in any clearly LSST-related scientific work.  It is not strictly required that they be used to process LSST data, in this context.  For instance, it could be acceptable to run special types of cosmological simulations that are in direct support of an LSST analysis, \emph{if the closeness to the data makes the LSST facility uniquely suitable for such work}. The TAC will take into account in its decisions whether proposed work makes good use of the enhanced I/O bandwidth available to LSST data on these systems.
 
-\subsection{Level 3 Programming Environment and Framework}
+\subsection{Science Platform Jupyter Aspect }
 \label{sec:l3framework}
 \dmreq{0125}
 \dmreq{0128}
 
-As a part of the Level 3 Programming Environment and Framework, the LSST will make available the LSST software stack to users, to aid in the analyses of LSST data. This includes all code implementing the core processing algorithms (image characterization and manipulation, building of coadds, image differencing, object detection, object characterization, moving object detection, etc.), the middleware necessary to run those codes at large scale, as well as the LSST database management system.
+The Science Platform will make available the LSST software stack to users, to aid in the analyses of LSST data. This includes all code implementing the core processing algorithms (image characterization and manipulation, building of coadds, image differencing, object detection, object characterization, moving object detection, etc.), the middleware necessary to run those codes at large scale, as well as the LSST database management system.
 \dmreq{0033}
 \dmreq{0032}
 \dmreq{0308}
 
-These analyses could be done on LSST-owned systems (i.e., on the Level 3 processing resources) but also on a variety of supported external systems.  We will aim to support common personal Unix flavors (for example, common distributions of Linux and Mac OS X) as well as commonly used cluster and HPC environments.  The vision is to enable relatively straightforward use of major national systems such as XSEDE or Open Science Grid, as well as some common commercial cloud environments.  The decision of which environments to support will be under configuration control and we will seek advice from the user community.  We cannot commit to too many flavors.  In-kind contributions of customizations for other environments will be welcome and may provide a role for national labs.
+These analyses could be done on LSST-owned systems (i.e., in the DAC) but also on a variety of supported external systems.  We will aim to support common personal Unix flavors (for example, common distributions of Linux and Mac OS X) as well as commonly used cluster and HPC environments.  The vision is to enable relatively straightforward use of major national systems such as XSEDE or Open Science Grid, as well as some common commercial cloud environments.  The decision of which environments to support will be under configuration control and we will seek advice from the user community.  We cannot commit to too many flavors.  In-kind contributions of customizations for other environments will be welcome and may provide a role for national labs.
 
-The Level 3 environment is intended, when put to fullest use, to allow users to run their own productions-like runs on bulk image and/or catalog data, with mechanisms for creating and tracking large groups of jobs in a batch system.
+The platform  is intended, when put to fullest use, to allow users to run their own productions-like runs on bulk image and/or catalog data, with mechanisms for creating and tracking large groups of jobs in a batch system.
 
-The Level 3 environment, in asymptopia, has a great deal in common with the environment that the Project will use to build the Data Releases. It is distinct, however, as supporting it as a tool meant for the end-users imposes additional requirements:
-%
-\begin{itemize}
-    \item In order to be successful as a \emph{user} computing environment, it needs to be easy to use. Experience with prior projects\footnote{For example, BaBar.} has shown that if the production computing environment is not envisioned from the start as being shared with users, it will likely evolve into an experts-only tool that is too complicated, or too work-hardened, to serve users well.
-    \item While it is desirable for the production computing to be portable to Grid, cloud, etc. resources, this option might not be exercised in practice and could atrophy.  For the user community, it's a far more central capability. Early community engagement is therefore key to developing and maintaining these capabilities.
-    \item Not all the capabilities of the LSST production environment need necessarily be exported to the users. LSST-specific capabilities associated with system administration, for instance, are not of interest to end-users.
-\end{itemize}
 
 %While the three "Level 3"s are often used together, all eight combinations make sense, so they are truly independent:
 %
@@ -1377,7 +1370,7 @@ The Level 3 environment, in asymptopia, has a great deal in common with the envi
 
 \begin{itemize}
     \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
-    \item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Level 3 environment''), it will be easier to migrate it to a Data Release product (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
+    \item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Science Platform''), it will be easier to migrate it to a Data Release product (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
     \item If the original code was written in another language or another data processing framework, the project may consider rewriting it to required LSST standards.
     \item Taking on a new Data Release data product means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new Data Release data product through DR11.
 \end{itemize}
@@ -1411,7 +1404,7 @@ Note that the data rights and access rules apply just as they would for Prompt/D
 
 A high-level conceptual overview of the LSST image processing science pipelines is illustrated
 in Figure~\ref{fig:Detail1}. The pipeline definitions presented here are driven by their inputs,
-outputs and processing steps; they do \textit{not} describe exact boundaries in the actual implemention
+outputs and processing steps; they do \textit{not} describe exact boundaries in the actual implementation
 code, execution, or development responsibilities within the Project.
 Processing from pipelines marked with 1, 2, and 5-8 is executed every day when new data are taken
 to produce Prompt Data Products. Annual Data Release processing includes pipelines 1-6 and 8
