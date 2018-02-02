@@ -245,7 +245,7 @@ Raw images will be processed to \dmreq{0069}remove instrumental signature and ch
 
 That characterization is crucial for deriving LSST catalogs and understanding the images. It will be kept and made available to the users. The exact format used to store these (meta)data will depend on the final adopted algorithm in consultation with the scientific community to ensure the formats in which these data are served are maximally useful.\dmreq{0328}
 
-\dmreq{0072}Each processed image\footnote{It is also frequently referred to as \emph{calibrated exposure}, from the Butler product type of \texttt{calexp}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and use fullness of each pixel in estimating the flux density recorded in that area of the sky.
+\dmreq{0072}Each processed image\footnote{It is also frequently referred to as \emph{calibrated exposure}, from the Butler product type of \texttt{calexp}.}, including the coadds, will record information on pixel variance (the ``variance plane''), as well as per-pixel masks (the ``mask plane''). These will allow the users to determine the validity and  usefullness  of each pixel in estimating the flux density recorded in that area of the sky.
 
 This information will be per-pixel, and potentially unwieldy to use for certain science cases. We plan to investigate approximate schemes for storing masks based on geometry (e.g., similar to Mangle or STOMP), \emph{in addition} to storing them on a per pixel basis.\dmreq{0326}
 
