@@ -200,7 +200,7 @@ standards\footnote{For example, VOEvent, see \url{http://ls.st/4tt}} within 60 s
 
 The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
 
-Recognizing the diversity of astronomical community needs, and the need for specialized processing not part of the automatically generated Prompt and Data Release products, LSST plans to devote 10\% of its data management system capabilities to enabling the creation, use, and federation of \textbf{User Generated} data products. User Generated product capabilities will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for User Generated products is established in \S~3.5 of the LSST \SRD. Their details are discussed in \S~\ref{sec:level3} of this document.
+Recognizing the diversity of astronomical community needs, and the need for specialized processing not part of the automatically generated Prompt and Data Release products, LSST plans to devote 10\% of its data management system capabilities to enabling the creation, use, and federation of \textbf{User Generated} data products. The \textbf{Science Platform}  will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for this is established in \S~3.5 of the LSST \SRD. Some  details are discussed in \S~\ref{sec:level3} of this document.
 
 Finally, LSST Survey Specifications (\S~3.4 of LSST \SRD) prescribe that 90\% of LSST observing time be spent in the so-called ``universal cadence'' mode of surveying the sky. These observations will result in Prompt and Data Release data products discussed above. The remaining 10\% of observing time will be devoted to \textbf{special programs}, designed to obtain improved coverage of interesting regions of observational parameter space. Examples include very deep ($r\sim26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. The data products for these programs will be generated using the same processing software and hardware and possess the general characteristics of Prompt and Data Release data products, but may be performed on a somewhat different cadence. They will be discussed in \S~\ref{sec:specialProgs}.
 
@@ -209,7 +209,7 @@ Finally, LSST Survey Specifications (\S~3.4 of LSST \SRD) prescribe that 90\% of
 
 Most LSST data products will consist of images and/or catalogs. The catalogs will be stored and offered to the users as \emph{relational databases} which they will be able to query. This approach was shown to work well by prior large surveys, for example the Sloan Digital Sky Survey (SDSS).
 
-Different data products will generally be stored in different databases. For example, Prompt data products will be stored in a \emph{Prompt database}. Data Release ``universal cadence'' products will be stored in a \emph{Data Release database}. The products for special programs may be stored in many different databases, depending on the nature of the program.
+Different data products will generally be stored in different databases. For example, Prompt data products will be stored in a \emph{Level 1 (Prompt) database}. Data Release ``universal cadence'' products will be stored in a \emph{Data Release database}. The products for special programs may be stored in many different databases, depending on the nature of the program.
 
 Nevertheless, all these databases will follow certain naming and other conventions. We discuss these in the subsections to follow.
 
@@ -663,7 +663,7 @@ Notes about changes with respect to the previous baseline:
     \item Removed all asteroid shape-related columns; determining these is outside of the scope of the Project.
     \item Removed taxonomy related columns; determining these is outside of the scope of the Project.
     \item Removed \texttt{albedo} -- I don't believe albedo can be determined solely from LSST data. More likely, we will need to assume a particular value. If this value is not universal, this column will need to be put back in.
-    \item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (eg., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes. Deriving phase-corrected light curves is left as a User Generated task.
+    \item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (eg., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes. Deriving phase-corrected light curves should now be done in the Science Platform.
     \item Removed a number of other MOPS-specific columns. These are algorithm-specific and should not be a part of the baseline, outward-facing, schema\footnote{Because we may change the algorithm and they may disappear; the scientists should not be relying on them being there.}. They will need to be documented and added back into the physical schema, for sizing purposes.
 \end{itemize}
 \end{changelog}
@@ -814,7 +814,7 @@ Similarly to Prompt catalogs of \DIAObjects and \DIASources, \Objects in the Dat
 The master list of \Objects in the Data Release will be generated by associating and deblending the list of single-epoch \DIASource detections and the lists of sources detected on coadds (\CoaddSources).\dmreq{0275} We plan to build coadds designed to maximize depth (\emph{``deep coadds''})\dmreq{0279} and coadds designed to achieve a good combination of depth and seeing (\emph{``best seeing coadds''}), unless
 algorithms will enable these two to be the same.\dmreq{0330}
 We will also build a series of \emph{short-period} (eg. yearly, or multi-year) coadds.\dmreq{0337}
-The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands (\emph{``multi-color coadds''}).\dmreq{0281} \textbf{\emph{Not all of these will be preserved}} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as Data Release tasks (\S~\ref{sec:level3}).\dmreq{0311}
+The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands (\emph{``multi-color coadds''}).\dmreq{0281} \textbf{\emph{Not all of these will be preserved}} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as pipeline tasks in the Science Platform (\S~\ref{sec:level3}).\dmreq{0311}
 
 \dmreq{0275}
 The deblender will be run simultaneously on the catalog of peaks\footnote{The source detection algorithm we plan to employ finds regions of connected pixels above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit (or coadd). These regions are called \emph{footprints}. Each footprint may have one or more \emph{peaks}, and it is these peaks that the deblender will use to infer the number and positions of objects blended in each footprint.} detected in the coadds, the \DIAObject catalog from the \DB, and one or more external catalogs.  It will use the knowledge of peak positions, bands, time, time variability (from Prompt products and the single-epoch \Source detections), inferred motion, Galactic longitude and latitude, and other available information to produce a master list of deblended \Objects. Metadata on why and how a particular \Object was deblended will be kept.
@@ -926,7 +926,7 @@ The following \Source properties are planned to be measured:
 
 \end{itemize}
 
-Note that we do \emph{not} plan to fit extended source Bulge+Disk models to individual \Sources, nor measure per-visit Petrosian or Kron fluxes. These are object properties that are not expected to vary in time\footnote{Objects that \emph{do} change shape with time would, obviously, be of particular interest. Aperture fluxes provided in the \Source table should suffice to detect these. Further per-visit shape characterization can be performed as a User Generated task.}, and will be better characterized by MultiFit (in the \Object table).
+Note that we do \emph{not} plan to fit extended source Bulge+Disk models to individual \Sources, nor measure per-visit Petrosian or Kron fluxes. These are object properties that are not expected to vary in time\footnote{Objects that \emph{do} change shape with time would, obviously, be of particular interest. Aperture fluxes provided in the \Source table should suffice to detect these. Further per-visit shape characterization can be performed using the Science Platform.}, and will be better characterized by MultiFit (in the \Object table).
 %including the so-called star-galaxy separation (estimation of the probability that a source is resolved, given the PSF).
 For example, although a simple extendedness characterization is present in the Source table, star-galaxy separation (an estimate of the probability that a source is resolved, given the PSF) will be better characterized by MultiFit.
 
@@ -1274,69 +1274,47 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 \section{User Generated Data Products and the Science Platform}
 \label{sec:level3}
 
-\emph{The Science Platform} is  envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for the Science Platform  is established in \S~3.5 of the LSST \SRD.
+\emph{The Science Platform} is  envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for this is established in \S~3.5 of the LSST \SRD.
 \ossreq{0140}
-
-The science platform is described in in \citeds{LSE-319}
+\dmreq{0125}
+\dmreq{0128}
+\dmreq{0033}
+\dmreq{0032}
+\dmreq{0308}
+The science platform vision is described in in \citeds{LSE-319}
 with more formal requirements in \citeds{LDM-554} and the design   is in \citeds{LDM-542}.
-
-Users will have access to the platform via logon granting them:
+The reader is referred to these documents for more information on the platform. As a non exhaustive summary
+authenticated and authorized users will have access to the platform granting them:
+\dmreq{0119}
 \begin{enumerate}
-    \item Access to the Data Products and associated storage resources
-    \item processing resources, and
-    \item the LSST tools and processing  framework
-\end{enumerate}
-%
-\subsection{User Generated Data Products and Associated Storage Resources}
-
+    \item Access to the Data Products  as described in this document
+    \item processing resources for image re processing etc.
+\dmreq{0127}
+    \item storage resources to hold processed image outputs, query outputs or uploaded catalogs etc.
 \dmreq{0290}
-These are data products that are generated by users \emph{on any computing resources anywhere} that are then brought to an LSST Data Access Center (DAC) and stored there. The hardware for these capabilities includes the physical storage and database server resources at the DAC to support them.
-
-For catalog data products, there is an expectation that they can be ``federated'' with the Prompt and Data Release catalogs to enable analyses combining them.  Essentially this means that either the user-supplied tables include keys from the Prompt/Data Release catalogs that can be used for key-equality-based joins with them (example: a table of custom photometric redshifts for galaxies, with a column of object IDs that can be joined to the Data Release Object catalog), or that there are columns that can be used for spatial (or temporal, or analogous) joins against Prompt/Data Release tables. The latter implies that such User Generated product table's columns must be in the same coordinate system and units as the corresponding Prompt/Data Release columns.
 \dmreq{0123}
 \dmreq{0124}
+    \item access control to the storage resources including groups  \dmreq{0340}
+    \item the LSST tools and processing  framework including the pipeline code \url{https://pipelines.lsst.io/}
+    \item a python based interface as provided by JupyterHub (or equivalent)
+     \item a fairly standard job control environment (like Condor).
+\end{enumerate}
 
-There is no requirement that User Generated data products are derived from Prompt or Data Release products other than that they be joinable with them.  For instance, a user might have a catalog of radio sources that they might want to bring into federation with the LSST catalogs. That can be thought of as a User Generated Data Product as long as they have ``LSST-ized'' it by ensuring compatibility of coordinate, time, measurement systems, etc.  Nevertheless, we do expect the majority of User Generated data products to be derived from processed LSST data.
+The platform  is intended, when put to fullest use, to allow users to run their own productions-like runs on bulk image and/or catalog data, with mechanisms for creating and tracking large groups of jobs in a batch system.
+%
 
-There could also be User Generated image data products; for example, user-generated coadds with special selection criteria or stacking algorithms (eg. the so-called shift \& stack algorithm for detecting moving objects).
-\dmreq{0127}
-
-Any User Generated data products may have access controls associated with it, restricting read access to just the owner, to a list of people, to a named group of people, or allowing open access.\dmreq{0340}
 
 The storage resources for User Generated data products come out of the \SRD requirement for 10\% of LSST data management capabilities to be devoted to user processing. In general, they are likely to be controlled by some form of a ``space allocation committee''.  Users will probably have some small baseline automatic allocation, beyond which a SAC proposal is needed. The SAC may take into account scientific merit, length of time for which the storage is requested, and openness of the data to others, in setting its priorities.
 \dmreq{0119}
 
-It is to be decided whether users will be required to provide the code and/or documentation behind their User Generated data products, or whether the SAC may include the availability of this supporting information in its prioritization.  Obviously if a user intends to make a User Generated data products public or publish it to a group it will be more important that supporting information be available.
 
-User Generated data products that are found to be generally useful can be migrated to Data Release products.
-This is a fairly complex process that ultimately involves the project taking responsibility for supporting and running LSST-style code that implements the algorithm necessary to produce the data product (it's not just relabeling an existing User Generated data product as a Data Release data product).  The project will provide necessary support for such migrations.
+The details of access rights and transitive rights for user generated products are dealt with in \citeds{LSE-349}.
 
-\subsection{Science Platform Processing Resources}
-\dmreq{0119}
 
-These are project-owned computing resources located at the DACs.  They are available for allocation to all users with LSST data rights.  They may be used for any computation that involves the LSST data and advances LSST-related science. The distinctive feature of these computing resources is that they are located with excellent I/O connections to the image and catalog datasets for Prompt and Data Release products. There may be other co-located but \emph{not} project-owned, resources available at the LSST DACs\footnote{For example, the U.S. DAC will be located at the National Petascale Facility building at NCSA, adjacent to the Blue Waters supercomputer.}; their use is beyond the scope of this document, except to note that reasonable provisions will be made to ensure it \emph{is} possible to use them to process large quantities of LSST data.
 
-The Science Platform will include access to systems that can carry out traditional batch-style processing, probably similarly configured to those LSST will be using for the bulk of data release production processing.  It is to be determined whether any other flavors of hardware would be provided, such as large-memory machines; this is likely to be driven by the project need (or lack thereof) for such resources.
 
-There will  be a resource  allocation committee (RAC) for these resources.  Every LSST-data-rights user may get a small default allocation (enough to run test jobs).  Substantial allocations will require a scientific justification.  Priorities will be based on the science case and, perhaps, also on whether the results of the processing will be released to a larger audience.  Requests must specify what special flavors of computing will be needed (e.g., GPUs, large memory, etc.).
 
-A fairly standard job control environment (like Condor), will be available, and users will be permitted to work with it at a low, generic level. They will not be required to use the higher levels of the LSST process control middleware (but they may; see \S~\ref{sec:l3framework}).
 
-These processing resources can be available for use in any clearly LSST-related scientific work.  It is not strictly required that they be used to process LSST data, in this context.  For instance, it could be acceptable to run special types of cosmological simulations that are in direct support of an LSST analysis, \emph{if the closeness to the data makes the LSST facility uniquely suitable for such work}. The TAC will take into account in its decisions whether proposed work makes good use of the enhanced I/O bandwidth available to LSST data on these systems.
-
-\subsection{Science Platform Jupyter Aspect }
-\label{sec:l3framework}
-\dmreq{0125}
-\dmreq{0128}
-
-The Science Platform will make available the LSST software stack to users, to aid in the analyses of LSST data. This includes all code implementing the core processing algorithms (image characterization and manipulation, building of coadds, image differencing, object detection, object characterization, moving object detection, etc.), the middleware necessary to run those codes at large scale, as well as the LSST database management system.
-\dmreq{0033}
-\dmreq{0032}
-\dmreq{0308}
-
-These analyses could be done on LSST-owned systems (i.e., in the DAC) but also on a variety of supported external systems.  We will aim to support common personal Unix flavors (for example, common distributions of Linux and Mac OS X) as well as commonly used cluster and HPC environments.  The vision is to enable relatively straightforward use of major national systems such as XSEDE or Open Science Grid, as well as some common commercial cloud environments.  The decision of which environments to support will be under configuration control and we will seek advice from the user community.  We cannot commit to too many flavors.  In-kind contributions of customizations for other environments will be welcome and may provide a role for national labs.
-
-The platform  is intended, when put to fullest use, to allow users to run their own productions-like runs on bulk image and/or catalog data, with mechanisms for creating and tracking large groups of jobs in a batch system.
 
 
 %While the three "Level 3"s are often used together, all eight combinations make sense, so they are truly independent:
@@ -1373,6 +1351,9 @@ The platform  is intended, when put to fullest use, to allow users to run their 
 %Obviously there is a continuum from the extreme "!L3env" case of using no LSST code at all in the analysis, to the maximum "L3env" case of using virtually the entire stack, from afw through the process control middleware.
 
 \subsection{Migration of User Generated data products to Data Release products}
+User Generated data products that are found to be generally useful can be migrated to Data Release products.
+This is a fairly complex process that ultimately involves the project taking responsibility for supporting and running LSST-style code that implements the algorithm necessary to produce the data product (it's not just relabeling an existing User Generated data product as a Data Release data product).  The project will provide necessary support for such migrations.
+
 
 \begin{itemize}
     \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
