@@ -93,6 +93,7 @@ In other project and requirements documentation, the old terminology will likely
 \addtohist{3.0}{2017-07-03}{Implementation of LCR-962. Reference LSE-61 requirements. Minor clean ups.}{Tim Jenness}
 \addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
 \addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
+\addtohist{3.3}{2018-02-28}{Implemented adoption of nano-jansky flux unit, added point estimates for photo-z, and a few minor edits.}{\v{Z}.~Ivezi\'{c}}
 }
 
 \begin{document}
@@ -258,14 +259,11 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 Because flux measurements on difference images (Prompt data products; \S~\ref{sec:level1}) are performed against a template
 and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
-We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
-\begin{equation}
-    m_{AB} = -2.5 \log_{10}(f/\mathrm{maggie})
-\end{equation}
+LSST fluxes are quoted in units of nano-jansky\footnote{For details, please see LSST Document-27758.} (1 nJy = $10^{−35}$ Wm$^{−2}$Hz$^{−1}$). We will provide estimates of the relative and absolute photometric calibration errors, and the 
+the normalized system response (for details see Section 3.3.4 in the LSST Science Requirements Document). 
 
-We chose to use maggies (as opposed to, say, Jansky) to allow the user to differentiate between two distinct sources of photometric calibration error: the error in relative (internal) calibration of the survey, and the error in absolute calibration that depends on the knowledge of absolute flux of photometric standards.
+We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns.}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
 
-Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
 
 \subsection{Uniqueness of IDs across database versions}
 
@@ -280,6 +278,7 @@ For example, DR4 and DR5 (or any other) release will share no identical \Object,
 We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Prompt product catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
 
 The exact implementation of this requirement is left to the LSST Data Management database team. One possibility may be to make the key tables (nearly) append-only, with each row having two timestamps -- \texttt{createdTai} and \texttt{deletedTai}, so that queries may be limited by a \code{WHERE} clause:
+
 %
 \begin{quote}
 \begin{lstlisting}[language=SQL]
@@ -292,7 +291,7 @@ or, more generally:
 %
 \begin{quote}
 \begin{lstlisting}[language=SQL,showstringspaces=false]
-SELECT * FROM DIASource WHERE "data is valid as of YYYY-MM-DD"
+SELECT * FROM DIASource WHERE 'data is valid as of YYYY-MM-DD'
 \end{lstlisting}
 \end{quote}
 %
@@ -306,6 +305,8 @@ SELECT * FROM DIASource
 \end{quote}
 %
 The latter method would probably be limited to nightly granularity, unless there's a mechanism to create virtual databases/views on-demand.
+
+
 
 \clearpage
 
@@ -436,14 +437,15 @@ xy & float[2] & pixels & Column and row of the centroid. \\
 
 xyCov & float[3] & various & Centroid covariance matrix. \\
 
-apFlux & float & nmgy & Calibrated aperture flux. Note that this actually measures
+apFlux & float & nJy\footnote{LSST fluxes are reported in nano-jansky (1 nJy = $10^{−35}$ Wm$^{−2}$Hz$^{−1}$). 
+See \S \ref{sec:fluxes} and LSST Document-27758 for details.} & Calibrated aperture flux. Note that this actually measures
 the flux \emph{difference} between the template and the visit image. \\
 
-apFluxErr & float & nmgy &  Estimated uncertainty of \texttt{apFlux}. \\
+apFluxErr & float & nJy &  Estimated uncertainty of \texttt{apFlux}. \\
 
 SNR & float & ~ & The signal-to-noise ratio at which this source was detected in the difference image.\footnote{This is not necessarily the same as apFlux/apFluxErr, as the flux measurement algorithm may be more accurate than the detection algorithm.} \\
 
-psFlux & float & nmgy\footnote{A ``maggie'', as introduced by SDSS, is a linear measure of flux in units of 3631 Jy; one maggie has an AB magnitude of 0, $m_{AB}=-2.5\log_{10}(\mathrm{maggie})$. ``nmgy'' is short for a nanomaggie (1 nmgy = 3.631 $\mu Jy$). For example, a flux of $0.158$~nmgy corresponds to AB magnitude of $24.5$. See \S \ref{sec:fluxes} for details.} & Calibrated flux for point source model. Note this actually measures the flux \emph{difference} between the template and the visit image. \\
+psFlux & float & nJy & Calibrated flux for point source model. Note this actually measures the flux \emph{difference} between the template and the visit image. \\
 
 psRadec & double[2] & degrees & Centroid for point source model. \\
 
@@ -455,7 +457,7 @@ psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
-trailFlux & float & nmgy & Calibrated flux for a trailed source model\footnote{A \emph{Trailed Source Model} attempts to fit a (PSF-convolved) model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). Roughly, it's a fit to a PSF-convolved line. The primary use case is to characterize fast-moving Solar System objects.}$^,$\footnote{This model does not fit for the \emph{direction} of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity, and is not clearly justified by increased MOPS performance given the added information.}. Note this actually measures the flux \emph{difference} between the template and the visit image. \\
+trailFlux & float & nJy & Calibrated flux for a trailed source model\footnote{A \emph{Trailed Source Model} attempts to fit a (PSF-convolved) model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). Roughly, it's a fit to a PSF-convolved line. The primary use case is to characterize fast-moving Solar System objects.}$^,$\footnote{This model does not fit for the \emph{direction} of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity, and is not clearly justified by increased MOPS performance given the added information.}. Note this actually measures the flux \emph{difference} between the template and the visit image. \\
 
 trailRadec & double[2] & degrees & Centroid for trailed source model. \\
 
@@ -471,11 +473,11 @@ trailChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 trailNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
-dipMeanFlux & float & nmgy & Maximum likelihood value for the mean absolute flux of the two lobes for a dipole model\footnote{A \emph{Dipole Model} attempts to fit a (PSF-convolved) model of two point sources, with fluxes
+dipMeanFlux & float & nJy & Maximum likelihood value for the mean absolute flux of the two lobes for a dipole model\footnote{A \emph{Dipole Model} attempts to fit a (PSF-convolved) model of two point sources, with fluxes
 of opposite signs, separated by a certain amount in some direction. The primary use case is to characterize moving stars and problems with image differencing (e.g., due to astrometric offsets).}.
 \\
 
-dipFluxDiff & float & nmgy & Maximum likelihood value for the difference of absolute fluxes of the two lobes for a dipole model.
+dipFluxDiff & float & nJy & Maximum likelihood value for the difference of absolute fluxes of the two lobes for a dipole model.
 \\
 
 dipRadec & double[2] & degrees & Centroid for dipole model. \\
@@ -492,22 +494,22 @@ dipChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 dipNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
-totFlux & float & nmgy & Calibrated flux for point source model measured on the visit image centered at the centroid measured on the difference image (forced photometry flux) \\
+totFlux & float & nJy & Calibrated flux for point source model measured on the visit image centered at the centroid measured on the difference image (forced photometry flux) \\
 
-totFluxErr & float & nmgy & Estimated uncertainty of \texttt{fpFlux}. \\
+totFluxErr & float & nJy & Estimated uncertainty of \texttt{totFlux}. \\
 
-diffFlux & float & nmgy & Calibrated flux for point source model centered on \texttt{radec} but measured on the difference of snaps comprising this visit\footnote{This flux can be used to detect sources changing on timescales comparable to snap exposure length ($\sim$15\,sec).}. \\
+diffFlux & float & nJy & Calibrated flux for point source model centered on \texttt{radec} but measured on the difference of snaps comprising this visit\footnote{This flux can be used to detect sources changing on timescales comparable to snap exposure length ($\sim$15\,sec).}. \\
 
-diffFluxErr & float & nmgy & Estimated uncertainty of \texttt{diffFlux}. \\
+diffFluxErr & float & nJy & Estimated uncertainty of \texttt{diffFlux}. \\
 
-fpBkgd & float & nmgy/asec$^{2}$ & Estimated background at the position (centroid) of the object in
+fpBkgd & float & nJy/asec$^{2}$ & Estimated background at the position (centroid) of the object in
 the template image. \\
 
-fpBkgdErr & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{fpBkgd}. \\
+fpBkgdErr & float & nJy/asec$^{2}$ & Estimated uncertainty of \texttt{fpBkgd}. \\
 
-%grayExtinction & float & nmgy & Applied photometric extinction correction (gray component) \\
+%grayExtinction & float & nJy & Applied photometric extinction correction (gray component) \\
 
-%nonGrayExtinction & float & nmgy & Applied photometric extinction correction (color-dependent component) \\
+%nonGrayExtinction & float & nJy & Applied photometric extinction correction (color-dependent component) \\
 
 Ixx & float & asec$^{2}$  & Adaptive second moment of the source intensity. See \citet{2002AJ....123..583B} for detailed discussion of all adaptive-moment related quantities\footnote{Or \url{http://ls.st/5f4} for a brief summary.}. \\
 
@@ -577,21 +579,21 @@ pmParallaxChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 pmParallaxNdata & int & ~ & The number of data points used to fit the model. \\
 
-psFluxMean & float[ugrizy] & nmgy & Weighted mean of point-source model flux, \texttt{psFlux}. \\
+psFluxMean & float[ugrizy] & nJy & Weighted mean of point-source model flux, \texttt{psFlux}. \\
 
-psFluxMeanErr & float[ugrizy] & nmgy & Standard error of \texttt{psFluxMean}.  \\
+psFluxMeanErr & float[ugrizy] & nJy & Standard error of \texttt{psFluxMean}.  \\
 
-psFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of \texttt{psFlux}. \\
+psFluxSigma & float[ugrizy] & nJy & Standard deviation of the distribution of \texttt{psFlux}. \\
 
 psFluxChi2 & float[ugrizy] & ~ & $\chi^2$ statistic for the scatter of \texttt{psFlux} around \texttt{psFluxMean}. \\
 
 psFluxNdata & int[ugrizy] & ~ & The number of data points used to compute \texttt{psFluxChi2}. \\
 
-fpFluxMean & float[ugrizy] & nmgy & Weighted mean of forced photometry flux, \texttt{fpFlux}.\\
+totFluxMean & float[ugrizy] & nJy & Weighted mean of forced photometry flux, \texttt{totFlux}.\\
 
-fpFluxMeanErr & float[ugrizy] & nmgy & Standard error of \texttt{fpFluxMean}. \\
+totFluxMeanErr & float[ugrizy] & nJy & Standard error of \texttt{totFluxMean}. \\
 
-fpFluxSigma & float[ugrizy] & nmgy & Standard deviation of the distribution of \texttt{fpFlux}. \\
+totFluxSigma & float[ugrizy] & nJy & Standard deviation of the distribution of \texttt{totFlux}. \\
 
 % lsPeriod  & float[ugrizy] & day & Period (the coordinate of the highest peak in Lomb-Scargle periodogram) \\
 
@@ -902,7 +904,7 @@ In addition to the maximum likelihood values of fitted parameters and their cova
 
 Science cases sensitive to systematics, departures of likelihood from Gaussianity, or requiring user-specified priors, demand knowledge of the shape of the likelihood function beyond a simple Gaussian approximation around the ML value. The estimate of bulge-disk model parameters and the estimate of photometric redshifts are two examples where knowledge of the full posterior is likely to be needed for LSST science cases.\dmreq{0046}\dmreq{0276}
 
-We currently plan to provide this information in two ways: a) by providing independent samples from the likelihood function (in the case of the bulge-disk model), and b) by providing parametric estimates of the likelihood function (for the photometric redshifts). As will be shown in Table~\ref{tbl:objectTable}, the current allocation is $\sim$200 samples (on average) for the bulge-disk model, and $\sim$100 parameters for describing the photo-Z likelihood distributions, per object.
+We currently plan to provide this information in two ways: a) by providing independent samples from the likelihood function (in the case of the bulge-disk model), and b) by providing parametric estimates of the likelihood function (for the photometric redshifts). As will be shown in Table~\ref{tbl:objectTable}, the current allocation is $\sim$200 samples (on average) for the bulge-disk model, and $\sim$100 parameters for describing the photo-z (photometric redshift) likelihood distributions, per object.
 
 \dmreq{0333}
 The methods of storing likelihood functions (or samples thereof) will continue to be developed and optimized throughout Construction and Commissioning. The key limitation, on the amount of data needed to be stored, can be overcome by compression techniques. For example, simply noticing that not more than $\sim$0.5\% accuracy is needed for sample values allows one to increase the number of samples by a factor of $4$. More advanced techniques, such as PCA analysis of the likelihoods across the entire catalog, may allow us to store even more, providing a better estimate of the shape of the likelihood function. In that sense, what is presented in Table~\ref{tbl:objectTable} should be thought of as a \textbf{\emph{conservative estimate}}, which we plan to improve upon as development continues in Construction.
@@ -984,7 +986,7 @@ psPm & float[2] & mas/yr & Point source model: Proper motion vector.\\
 
 psParallax & float & mas & Point source model: Parallax. \\
 
-psFlux & float[ugrizy] & nmgy & Point source model fluxes\footnote{Point source model assumes that fluxes are constant in each band. If the object is variable, \texttt{psFlux} will effectively be some estimate of the average flux.}.\\
+psFlux & float[ugrizy] & nJy & Point source model fluxes\footnote{Point source model assumes that fluxes are constant in each band. If the object is variable, \texttt{psFlux} will effectively be some estimate of the average flux.}.\\
 
 psCov & float[66] & various & Point-source model covariance matrix\footnote{Not all elements of the covariance matrix need to be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim$1\% ).}. \\
 
@@ -999,9 +1001,9 @@ bdRadec & double[2][ugrizy] & ~ & B+D model\footnote{Though we refer to this mod
 
 bdEllip & float[2][ugrizy] & ~ & B+D model: Ellipticity $(e_1, e_2)$ of the object. \\
 
-bdFluxB & float[ugrizy] & nmgy & B+D model: Integrated flux of the de Vaucouleurs component. \\
+bdFluxB & float[ugrizy] & nJy & B+D model: Integrated flux of the de Vaucouleurs component. \\
 
-bdFluxD & float[ugrizy] & nmgy & B+D model: Integrated flux of the exponential component. \\
+bdFluxD & float[ugrizy] & nJy & B+D model: Integrated flux of the exponential component. \\
 
 bdReB & float[ugrizy] & arcsec & B+D model: Effective radius of the de Vaucouleurs profile component. \\
 
@@ -1017,7 +1019,7 @@ bdNdata & int[ugrizy] & ~ & The number of data points (pixels) used to fit the m
 
 bdSamples & float16[9][200][ugrizy] & ~ & Independent samples of bulge+disk likelihood surface. All sampled quantities will be stored with at least $\sim$3 significant digits of precision. The number of samples will vary from object to object, depending on how well the object's likelihood function is approximated by a Gaussian.\\
 
-stdColor & float[5] & mag & Color of the object measured in ``standard seeing''. While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-Z determinations.\\
+stdColor & float[5] & mag & Color of the object measured in ``standard seeing''. While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-z determinations.\\
 
 stdColorErr & float[5] & mag & Uncertainty of \texttt{stdColor}. \\
 
@@ -1044,9 +1046,9 @@ petroRadErr & float[ugrizy] & arcsec & Uncertainty of \texttt{petroRad} \\
 
 petroBand & int8 & ~ & The band of the canonical \texttt{petroRad} \\
 
-petroFlux & float[ugrizy] & nmgy & Petrosian flux within a defined multiple of the canonical \texttt{petroRad} \\
+petroFlux & float[ugrizy] & nJy & Petrosian flux within a defined multiple of the canonical \texttt{petroRad} \\
 
-petroFluxErr & float[ugrizy] & nmgy & Uncertainty in \texttt{petroFlux} \\
+petroFluxErr & float[ugrizy] & nJy & Uncertainty in \texttt{petroFlux} \\
 
 petroRad50 & float[ugrizy] & arcsec & Radius containing 50\% of Petrosian flux. \\
 
@@ -1063,9 +1065,9 @@ kronRadErr & float[ugrizy] & arcsec & Uncertainty of \texttt{kronRad} \\
 
 kronBand & int8 & ~ & The band of the canonical \texttt{kronRad} \\
 
-kronFlux & float[ugrizy] & nmgy & Kron flux within a defined multiple of the canonical \texttt{kronRad} \\
+kronFlux & float[ugrizy] & nJy & Kron flux within a defined multiple of the canonical \texttt{kronRad} \\
 
-kronFluxErr & float[ugrizy] & nmgy & Uncertainty in \texttt{kronFlux} \\
+kronFluxErr & float[ugrizy] & nJy & Uncertainty in \texttt{kronFlux} \\
 
 kronRad50 & float[ugrizy] & arcsec & Radius containing 50\% of Kron flux. \\
 
@@ -1078,9 +1080,9 @@ kronRad90Err & float[ugrizy] & arcsec & Uncertainty of \texttt{kronRad90}. \\
 
 apNann & int8 & ~ & Number of elliptical annuli (see below). \\
 
-apMeanSb & float[6][\texttt{apNann}] & nmgy/as$^2$ & Mean surface brightness within an annulus\footnote{A database function will be provided to compute the area of each annulus, to enable the computation of aperture flux.}. \\
+apMeanSb & float[6][\texttt{apNann}] & nJy/asec$^2$ & Mean surface brightness within an annulus\footnote{A database function will be provided to compute the area of each annulus, to enable the computation of aperture flux.}. \\
 
-apMeanSbSigma & float[6][\texttt{apNann}] & nmgy/as$^2$ & Standard deviation of \texttt{apMeanSb}. \\
+apMeanSbSigma & float[6][\texttt{apNann}] & nJy/asec$^2$ & Standard deviation of \texttt{apMeanSb}. \\
 
 extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments, or from a likelihood ratio of point/B+D source models (exact algorithm TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
 
@@ -1088,7 +1090,12 @@ lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from difference im
 
 lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from difference image-based light-curves \citep[Table~5,][]{2011ApJ...733...10R}. \\
 
-photoZ & float[2~\x~100] & ~ & Photometric redshift likelihood samples -- pairs of ($z$, $logL$) -- computed using a to-be-determined published and widely accepted algorithm at the time of LSST Commissioning. \\
+
+photoZ & float[2~\x~95] & ~ & Photometric redshift likelihood samples -- pairs of ($z$, $logL$) -- computed using a to-be-determined published and widely accepted algorithm at the time of LSST Commissioning. \\
+
+photoZ\_pest & float[10] & ~ & Point estimates for photometric redshift\footnote{TBD but likely candidates
+are the mode, mean, standard deviation, skewness, kurtosis, and 1\%, 5\%, 25\%, 50\%, 75\%, and 99\% points
+from cumulative distribution.}, computed using photoZ. \\  
 
 flags & bit[128] & bit & Various useful flags. \\
 \end{schema}
@@ -1119,17 +1126,17 @@ radec & double[2] & arcsec & Calibrated ($\alpha$, $\delta$) of the source, tran
 
 radecCov & float[3] & arcsec & Covariance matrix for \texttt{radec}. \\
 
-apFlux & float & nmgy & Calibrated aperture flux. \\
+apFlux & float & nJy & Calibrated aperture flux. \\
 
-apFluxErr & float & nmgy &  Estimated uncertainty of \texttt{apFlux}. \\
+apFluxErr & float & nJy &  Estimated uncertainty of \texttt{apFlux}. \\
 
-sky & float & nmgy/asec$^{2}$ & Estimated background (sky) surface brightness at the position (centroid) of the source. \\
+sky & float & nJy/asec$^{2}$ & Estimated background (sky) surface brightness at the position (centroid) of the source. \\
 
-skyErr & float & nmgy/asec$^{2}$ & Estimated uncertainty of \texttt{sky}. \\
+skyErr & float & nJy/asec$^{2}$ & Estimated uncertainty of \texttt{sky}. \\
 
 psRadec & double[2] & degrees & Point source model: $(\alpha, \delta)$ position of the object. \\
 
-psFlux & float & nmgy & Calibrated point source model flux.\\
+psFlux & float & nJy & Calibrated point source model flux.\\
 
 psCov & float[6] & various & Point-source model covariance matrix\footnote{Not all elements of the covariance matrix will be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim$1\% ).}. \\
 
@@ -1155,9 +1162,9 @@ IxyPSF & float & asec$^{2}$ & Adaptive second moment for the PSF. \\
 
 apNann & int8 & ~ & Number of elliptical annuli (see below). \\
 
-apMeanSb & float[\texttt{apNann}] & nmgy & Mean surface brightness within an annulus. \\
+apMeanSb & float[\texttt{apNann}] & nJy & Mean surface brightness within an annulus. \\
 
-apMeanSbSigma & float[\texttt{apNann}] & nmgy & Standard deviation of \texttt{apMeanSb}. \\
+apMeanSbSigma & float[\texttt{apNann}] & nJy & Standard deviation of \texttt{apMeanSb}. \\
 
 extendedness & float & ~ & A measure of extendedness, computed using a combination of available moments
 (exact algorithm TBD). $extendedness=1$ implies a high degree of confidence that the source is extended. $extendedness=0$ implies a high degree of confidence that the source is point-like. \\
@@ -1178,17 +1185,17 @@ ccdVisitId & uint64 & ~ & ID of CCD and visit where this source was measured \\
 
 % psXY & float[2] & ~ & Location of the measurement, in pixel coordinates\footnote{The precision of the position has to be no greater than 1/100$^\mathrm{th}$ of a pixel. For a 4k$\times$4k CCD, \texttt{psXY} should require no more than 38 bits of storage (or 5 bytes, rounded up)}. \\
 
-psFlux & float & nmgy & Point source model flux on direct image, if performed.\\
+psFlux & float & nJy & Point source model flux on direct image, if performed.\\
 
-psFluxErr & float & nmgy & Point source model flux error,  stored to 1\% precision.\\
+psFluxErr & float & nJy & Point source model flux error,  stored to 1\% precision.\\
 
-psDiffFlux & float & nmgy & Point source model flux on difference image, if performed.\\
+psDiffFlux & float & nJy & Point source model flux on difference image, if performed.\\
 
-psDiffFluxErr & float & nmgy & Point source model flux error,  stored to 1\% precision.\\
+psDiffFluxErr & float & nJy & Point source model flux error,  stored to 1\% precision.\\
 
-% bdFlux & float & nmgy & Bulge+disk model flux.\\
+% bdFlux & float & nJy & Bulge+disk model flux.\\
 
-% bdFluxErr & float & nmgy & Bulge+disk model flux error, stored to 1\% precision.\\
+% bdFluxErr & float & nJy & Bulge+disk model flux error, stored to 1\% precision.\\
 
 flags & bit[8] & bit & Various useful flags. \\
 \end{schema}
@@ -1529,7 +1536,6 @@ document \citeds{LDM-151}.
 
 
 Unresolved topics:
-- maggies
 - magnitudes for negative fluxes (and the issue of flux priors)
 - how does Alert stream get its QA info? Where are metadata described?
      E.g. the # per CCD, CCD-to-CCD variance, xy cross-correlation
@@ -1537,7 +1543,6 @@ Unresolved topics:
 - how do we know centroids where forced photometry was performed
 - do we really need 11 params for PSF model in Source? How about psfFlux and error,
    at the position of centroid (that is, don't refit for the position)
-
 
 Large edits:
 XXX - add dipole fit for DIASources
@@ -1582,7 +1587,6 @@ Leftovers from Colin's Minutes for 2016-03-23:
 - ZI: science case for moving variable stars: how do we get LCs and pm/parallax?
 - sophisticated matching of DIAObjects to 3 nearest Objects: might want to do
           the nearest star and the nearest galaxy, and the most probable object
-- ZI: maggies
 - ZI: negative fluxes
 
 Studies for Colissa:
@@ -1602,8 +1606,6 @@ https://confluence.lsstcorp.org/pages/viewpage.action?pageId=45580703
 
 Tentatively implemented in DPDD.
 
-
-
 2) Proposal to perform forced photometry on both difference images
 and direct images when Multifit is run in DR Processing.
 
@@ -1620,8 +1622,6 @@ See Jim's note:
 https://community.lsst.org/t/unifying-diaobject-and-object-in-drp/716
 
 Also, KT will report about various LL1db vs. DR association issues.
-
-
 
 4)  proposal to abolish independent fits of BD galaxy model across bands
         and instead only vary the components’ flux vs. band
