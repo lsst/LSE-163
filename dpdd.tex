@@ -93,7 +93,7 @@ In other project and requirements documentation, the old terminology will likely
 \addtohist{3.0}{2017-07-03}{Implementation of LCR-962. Reference LSE-61 requirements. Minor clean ups.}{Tim Jenness}
 \addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
 \addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
-\addtohist{3.3}{2018-02-28}{Implemented adoption of nano-jansky flux unit, added point estimates for photo-z, and a few minor edits.}{\v{Z}.~Ivezi\'{c}}
+\addtohist{3.3}{2018-02-28}{Implemented adoption of nanojansky flux unit, added point estimates for photo-z, and a few minor edits.}{\v{Z}.~Ivezi\'{c}}
 }
 
 \begin{document}
@@ -259,7 +259,7 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 Because flux measurements on difference images (Prompt data products; \S~\ref{sec:level1}) are performed against a template
 and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
-LSST fluxes are quoted in units of nano-jansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{−35}$ Wm$^{−2}$Hz$^{−1}$). We will provide estimates of the relative and absolute photometric calibration errors, and the
+LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{−35}$ Wm$^{−2}$Hz$^{−1}$). We will provide estimates of the relative and absolute photometric calibration errors, and the
 the normalized system response (for details see Section 3.3.4 in the LSST Science Requirements Document). 
 
 We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns.}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
@@ -437,7 +437,7 @@ xy & float[2] & pixels & Column and row of the centroid. \\
 
 xyCov & float[3] & various & Centroid covariance matrix. \\
 
-apFlux & float & nJy\footnote{LSST fluxes are reported in nano-jansky (1 nJy = $10^{−35}$ Wm$^{−2}$Hz$^{−1}$). 
+apFlux & float & nJy\footnote{LSST fluxes are reported in nanojansky (1 nJy = $10^{−35}$ Wm$^{−2}$Hz$^{−1}$).
 See \S \ref{sec:fluxes} and LSST Document-27758 for details.} & Calibrated aperture flux. Note that this actually measures
 the flux \emph{difference} between the template and the visit image. \\
 
