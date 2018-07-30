@@ -54,7 +54,7 @@
 M. Juri\'c,
 T.~Axelrod, A.C.~Becker, J.~Becla, E.~Bellm, J.F.~Bosch, D.~Ciardi,
 A.J.~Connolly,  G.P.~Dubois-Felsmann, F.~Economou, M.~Freemon,
-M.~Gelman, R.~Gill, M.~Graham, L.P.~Guy, \v{Z}.~Ivezi\'c, T.~Jenness,  J.~Kantor, K.S.~Krughoff,
+M.~Gelman, R.~Gill, M.~Graham, \newtext{L.P.~Guy,} \v{Z}.~Ivezi\'c, T.~Jenness,  J.~Kantor, K.S.~Krughoff,
 K-T~Lim,  R.H.~Lupton, F.~Mueller, D.~Nidever, W.~O'Mullane, M.~Patterson,
 D.~Petravick, D. Shaw,
 C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-Vasey, and X.~Wu
@@ -63,7 +63,7 @@ C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-Vasey, and X.~Wu
 \date{\today}
 
 \setDocRef{LSE-163}
-\setDocCurator{Leanne Guy}
+\setDocCurator{\oldtext{Mario Juri\'c} \newtext{Leanne Guy}}
 \setDocUpstreamLocation{\url{https://github.com/lsst/LSE-163}}
 
 \setDocAbstract{%
@@ -259,16 +259,23 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 Because flux measurements on difference images (Prompt data products; \S~\ref{sec:level1}) are performed against a template
 and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
-LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{−35}$ Wm$^{−2}$Hz$^{−1}$). 
-%We will provide estimates of the relative and absolute photometric calibration errors, and the
-%normalized system response (for details see Section 3.3.4 in the LSST Science Requirements Document). 
+\oldtext{We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
+\begin{equation}
+    m_{AB} = -2.5 \log_{10}(f/\mathrm{maggie})
+\end{equation}
+
+We chose to use maggies (as opposed to, say, Jansky) to allow the user to differentiate between two distinct sources of photometric calibration error: the error in relative (internal) calibration of the survey, and the error in absolute calibration that depends on the knowledge of absolute flux of photometric standards.
+
+Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
+}
+
+\newtext{LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{?35}$ Wm$^{?2}$Hz$^{?1}$). 
 We will provide columns with flux and flux errors as well as estimates of the relative and absolute photometric calibration errors, and the normalized system response (for details see Section 3.3.4 in the LSST Science Requirements Document).
 
 We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan 
 in addition
-to provide columns with (Pogson) magnitudes and magnitude errors\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns.}, where values with negative flux will evaluate to \code{NULL}. 
-%Similarly, we will provide columns with flux expressed in Jy 
-%(and its error estimate that includes the relative and absolute calibration error contributions).
+to provide columns with (Pogson) magnitudes and magnitude errors\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns.}, where values with negative flux will evaluate to \code{NULL}.
+}
 
 \subsection{Uniqueness of IDs across database versions}
 
