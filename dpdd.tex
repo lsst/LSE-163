@@ -357,6 +357,7 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Prompt processing is
 rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
+\newtext{\item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or forced photometry records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.}
 \item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
 event alert (see below).\dmreq{0271}\dmreq{0002}
 \item An alert is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \SSObject ID or \DIAObject ID\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata (IDs and database names).}, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.), \emph{including all} \DIASources from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
@@ -750,7 +751,7 @@ Each alert (a \VOEvent packet) will at least include the following:
     \item \emph{\DB ID}   %: For example, \texttt{DR5L1}
     \item Science Data:
     \begin{itemize}
-        \item The \DIASource record that triggered the alert
+        \item The \DIASource record that triggered the alert\newtext{, as well as the \texttt{filterName} and \texttt{programId} of the corresponding \texttt{Visit}}
         \item The entire \DIAObject (or \SSObject) record
         \item Previous 12 months of \DIASource records\reqparam{diaCharacterizationCutoff}
         \item Matching \Object IDs from the latest Data Release, if they exist, and 12 months of their \DIASource records
