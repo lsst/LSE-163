@@ -93,6 +93,7 @@ In other project and requirements documentation, the old terminology will likely
 \addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
 \addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
 \addtohist{TBD}{2018-02-28}{Implemented DM-12129: adoption of nanojansky flux unit, added point estimates for photo-z, and a few minor edits, updated document maintainer, curator and author list}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
+\addtohist{TBD}{2018-10-03}{Implemented comment \#4222 from LCR 1459}{ Leanne Guy}
 }
 
 \begin{document}
@@ -183,7 +184,6 @@ The main LSST data products are illustrated in Figure~\ref{fig:Detail0} (see App
 a conceptual design of pipelines which will produce these data products).
 LSST Data Management will perform two, somewhat overlapping in scientific intent, types of image analyses:
 
-
 \begin{figure}[!t]
     \centering
     \vskip -0.7in
@@ -215,8 +215,6 @@ Most LSST data products will consist of images and/or catalogs. The catalogs wil
 Different data products will generally be stored in different databases. For example, Prompt data products will be stored in a \emph{Level 1 (Prompt) database}. Data Release ``universal cadence'' products will be stored in a \emph{Data Release database}. The products for special programs may be stored in many different databases, depending on the nature of the program.
 
 Nevertheless, all these databases will follow certain naming and other conventions. We discuss these in the subsections to follow.
-
-
 
 \subsection{Estimator and Naming Conventions}
 
@@ -289,10 +287,8 @@ For example, DR4 and DR5 (or any other) release will share no identical \Object,
 We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Prompt product catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
 
 The exact implementation of this requirement is left to the LSST Data Management database team. One possibility may be to make the key tables (nearly) append-only, with each row having two timestamps -- \texttt{createdTai} and \texttt{deletedTai}, so that queries may be limited by a \code{WHERE} clause:
-
-%
 \begin{quote}
-\begin{lstlisting}[language=SQL]
+\item \begin{lstlisting}[language=SQL]
 SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS'
     BETWEEN createdTAI and deletedTAI
 \end{lstlisting}
@@ -301,7 +297,7 @@ SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS'
 or, more generally:
 %
 \begin{quote}
-\begin{lstlisting}[language=SQL,showstringspaces=false]
+\item \begin{lstlisting}[language=SQL,showstringspaces=false]
 SELECT * FROM DIASource WHERE 'data is valid as of YYYY-MM-DD'
 \end{lstlisting}
 \end{quote}
@@ -309,14 +305,12 @@ SELECT * FROM DIASource WHERE 'data is valid as of YYYY-MM-DD'
 A perhaps less error-prone alternative, if technically feasible, may be to provide multiple virtual databases that the user would access as:
 %
 \begin{quote}
-\begin{lstlisting}[language=SQL]
-CONNECT lsst-dr5-yyyy-mm-dd
-SELECT * FROM DIASource
+\item \begin{lstlisting}[language=SQL]
+CONNECT lsst-dr5-yyyy-mm-dd SELECT * FROM DIASource
 \end{lstlisting}
 \end{quote}
 %
 The latter method would probably be limited to nightly granularity, unless there's a mechanism to create virtual databases/views on-demand.
-
 
 
 \clearpage
@@ -391,7 +385,8 @@ The following will occur during regular Solar System object processing (in dayti
 \subsection{Prompt Catalogs}
 \label{sec:level1db}
 
-The described alert processing design relies on the ``living'' \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing\footnote{The latter is also colloquially known as \emph{DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT}.\dmreq{0312}
+The described alert processing design relies on the ``living'' \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing\footnote{The latter is also colloquially known as \emph{DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
+
 
 This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \DB and the \Objects in the \DR database. There is no direct \DIASource-to-\Object match:
 in general, a time-domain object is not necessarily the same astrophysical object as a static-sky object, even if the two are
@@ -1601,7 +1596,7 @@ Leftovers from Colin's Minutes for 2016-03-23:
           the nearest star and the nearest galaxy, and the most probable object
 - ZI: negative fluxes
 
-Studies for Colissa:
+Studies for Colin and/or Melissa:
 - do we care about direction of NEO motion?
 - do we care about curved trails?
 - moving variable star: a bias in motion due to flux=const.?
@@ -1636,7 +1631,7 @@ https://community.lsst.org/t/unifying-diaobject-and-object-in-drp/716
 Also, KT will report about various LL1db vs. DR association issues.
 
 4)  proposal to abolish independent fits of BD galaxy model across bands
-        and instead only vary the componentsâ€™ flux vs. band
+        and instead only vary the components a€™ flux vs. band
 
 what's the plan for arriving to this decision (e.g. process HSC data, or
 LSST simulations, or degrade COSMOS data, etc; when?, by ComCam,
