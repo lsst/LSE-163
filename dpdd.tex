@@ -62,7 +62,7 @@ D.~Petravick, D. Shaw, C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-V
 \date{\today}
 
 \setDocRef{LSE-163}
-\setDocCurator{\oldtext{Mario Juri\'c} \newtext{Leanne Guy}}
+\setDocCurator{Leanne Guy}
 \setDocUpstreamLocation{\url{https://github.com/lsst/LSE-163}}
 
 \setDocAbstract{%
@@ -256,23 +256,12 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 Because flux measurements on difference images (Prompt data products; \S~\ref{sec:level1}) are performed against a template
 and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
-\oldtext{We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
-\begin{equation}
-    m_{AB} = -2.5 \log_{10}(f/\mathrm{maggie})
-\end{equation}
-
-We chose to use maggies (as opposed to, say, Jansky) to allow the user to differentiate between two distinct sources of photometric calibration error: the error in relative (internal) calibration of the survey, and the error in absolute calibration that depends on the knowledge of absolute flux of photometric standards.
-
-Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
-}
-
-\newtext{LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{?35}$ Wm$^{?2}$Hz$^{?1}$). 
+LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{?35}$ Wm$^{?2}$Hz$^{?1}$). 
 We will provide columns with flux and flux errors as well as estimates of the relative and absolute photometric calibration errors, and the normalized system response (for details see Section 3.3.4 in the LSST Science Requirements Document).
 
 We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan 
 in addition
 to provide columns with (Pogson) magnitudes and magnitude errors\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns.}, where values with negative flux will evaluate to \code{NULL}.
-}
 
 \subsection{Uniqueness of IDs across database versions}
 
@@ -351,7 +340,7 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Prompt processing is
 rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
-\newtext{\item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or forced photometry records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.}
+\item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or forced photometry records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.
 \item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
 event alert (see below).\dmreq{0271}\dmreq{0002}
 \item An alert is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \SSObject ID or \DIAObject ID\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata (IDs and database names).}, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.), \emph{including all} \DIASources from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
@@ -746,7 +735,7 @@ Each alert (a \VOEvent packet) will at least include the following:
     \item \emph{\DB ID}   %: For example, \texttt{DR5L1}
     \item Science Data:
     \begin{itemize}
-        \item The \DIASource record that triggered the alert\newtext{, as well as the \texttt{filterName} and \texttt{programId} of the corresponding \texttt{Visit}}
+        \item The \DIASource record that triggered the alert, as well as the \texttt{filterName} and \texttt{programId} of the corresponding \texttt{Visit}
         \item The entire \DIAObject (or \SSObject) record
         \item Previous 12 months of \DIASource records\reqparam{diaCharacterizationCutoff}
         \item Matching \Object IDs from the latest Data Release, if they exist, and 12 months of their \DIASource records
