@@ -255,10 +255,10 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 Because flux measurements on difference images (Prompt data products; \S~\ref{sec:level1}) are performed against a template
 and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
-LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{?35}$ Wm$^{?2}$Hz$^{?1}$). 
+LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{?35}$ Wm$^{?2}$Hz$^{?1}$).
 We will provide columns with flux and flux errors as well as estimates of the relative and absolute photometric calibration errors, and the normalized system response (for details see Section 3.3.4 in the LSST Science Requirements Document).
 
-We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan 
+We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan
 in addition
 to provide columns with (Pogson) magnitudes and magnitude errors\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns.}, where values with negative flux will evaluate to \code{NULL}.
 
@@ -1090,7 +1090,7 @@ photoZ & float[2~\x~95] & ~ & Photometric redshift likelihood samples -- pairs o
 
 photoZ\_pest & float[10] & ~ & Point estimates for photometric redshift\footnote{TBD but likely candidates
 are the mode, mean, standard deviation, skewness, kurtosis, and 1\%, 5\%, 25\%, 50\%, 75\%, and 99\% points
-from cumulative distribution.}, computed using photoZ. \\  
+from cumulative distribution.}, computed using photoZ. \\
 
 flags & bit[128] & bit & Various useful flags. \\
 \end{schema}
