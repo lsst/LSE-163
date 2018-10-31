@@ -62,7 +62,7 @@ D.~Petravick, D. Shaw, C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-V
 \date{\today}
 
 \setDocRef{LSE-163}
-\setDocCurator{\oldtext{Mario Juri\'c} \newtext{Leanne Guy}}
+\setDocCurator{Leanne Guy}
 \setDocUpstreamLocation{\url{https://github.com/lsst/LSE-163}}
 
 \setDocAbstract{%
@@ -92,7 +92,7 @@ In other project and requirements documentation, the old terminology will likely
 \addtohist{3.0}{2017-07-03}{Implementation of LCR-962. Reference LSE-61 requirements. Minor clean ups.}{Tim Jenness}
 \addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
 \addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
-\addtohist{TBD}{2018-02-28}{Implemented DM-12129: adoption of nanojansky flux unit, added point estimates for photo-z, and a few minor edits, updated document maintainer, curator and author list}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
+\addtohist{3.3}{2018-10-24}{Implementation of LCR-1459. DM-12129: Adoption of nanojansky flux unit. DM-11247: Add additional alert packet contents to DPDD. DM-15566: DPDD incorrectly states "immediate" access to PPDB products.  Updated document maintainer, curator and author list, added point estimates for photo-z and a few minor edits.}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
 }
 
 \begin{document}
@@ -183,7 +183,6 @@ The main LSST data products are illustrated in Figure~\ref{fig:Detail0} (see App
 a conceptual design of pipelines which will produce these data products).
 LSST Data Management will perform two, somewhat overlapping in scientific intent, types of image analyses:
 
-
 \begin{figure}[!t]
     \centering
     \vskip -0.7in
@@ -215,8 +214,6 @@ Most LSST data products will consist of images and/or catalogs. The catalogs wil
 Different data products will generally be stored in different databases. For example, Prompt data products will be stored in a \emph{Level 1 (Prompt) database}. Data Release ``universal cadence'' products will be stored in a \emph{Data Release database}. The products for special programs may be stored in many different databases, depending on the nature of the program.
 
 Nevertheless, all these databases will follow certain naming and other conventions. We discuss these in the subsections to follow.
-
-
 
 \subsection{Estimator and Naming Conventions}
 
@@ -258,23 +255,12 @@ This information will be per-pixel, and potentially unwieldy to use for certain 
 Because flux measurements on difference images (Prompt data products; \S~\ref{sec:level1}) are performed against a template
 and thus represent a flux difference, the measured flux of a source on the difference image can be negative. The flux can also go negative for faint sources in the presence of noise. Negative fluxes cannot be stored as (Pogson) magnitudes; $\log$ of a negative number is undefined. We therefore prefer to store fluxes, rather than magnitudes, in database tables\footnote{This is a good idea in general. E.g., given multi-epoch observations, one should always be averaging fluxes, rather than magnitudes.}.\dmreq{0347}
 
-\oldtext{We quote fluxes in units of ``maggie''. A maggie, as introduced by SDSS, is a linear measure of flux. It is defined so that an object having a flux of one maggie (integrated over the bandpass) has an AB magnitude of zero:
-\begin{equation}
-    m_{AB} = -2.5 \log_{10}(f/\mathrm{maggie})
-\end{equation}
-
-We chose to use maggies (as opposed to, say, Jansky) to allow the user to differentiate between two distinct sources of photometric calibration error: the error in relative (internal) calibration of the survey, and the error in absolute calibration that depends on the knowledge of absolute flux of photometric standards.
-
-Nevertheless, we acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan to provide columns with (Pogson) magnitudes\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns}, where values with negative flux will evaluate to \code{NULL}. Similarly, we will provide columns with flux expressed in Jy (and its error estimate that includes the relative and absolute calibration error contributions).
-}
-
-\newtext{LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{?35}$ Wm$^{?2}$Hz$^{?1}$). 
+LSST fluxes are quoted in units of nanojansky\footnote{For details, please see LSST \citeds{Document-27758}.} (1 nJy = $10^{?35}$ Wm$^{?2}$Hz$^{?1}$).
 We will provide columns with flux and flux errors as well as estimates of the relative and absolute photometric calibration errors, and the normalized system response (for details see Section 3.3.4 in the LSST Science Requirements Document).
 
-We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan 
+We acknowledge that the large majority of users will want to work with magnitudes. For convenience, we plan
 in addition
 to provide columns with (Pogson) magnitudes and magnitude errors\footnote{These will most likely be implemented as ``virtual'' or ``computed'' columns.}, where values with negative flux will evaluate to \code{NULL}.
-}
 
 \subsection{Uniqueness of IDs across database versions}
 
@@ -289,10 +275,8 @@ For example, DR4 and DR5 (or any other) release will share no identical \Object,
 We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Prompt product catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
 
 The exact implementation of this requirement is left to the LSST Data Management database team. One possibility may be to make the key tables (nearly) append-only, with each row having two timestamps -- \texttt{createdTai} and \texttt{deletedTai}, so that queries may be limited by a \code{WHERE} clause:
-
-%
 \begin{quote}
-\begin{lstlisting}[language=SQL]
+\item \begin{lstlisting}[language=SQL]
 SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS'
     BETWEEN createdTAI and deletedTAI
 \end{lstlisting}
@@ -301,7 +285,7 @@ SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS'
 or, more generally:
 %
 \begin{quote}
-\begin{lstlisting}[language=SQL,showstringspaces=false]
+\item \begin{lstlisting}[language=SQL,showstringspaces=false]
 SELECT * FROM DIASource WHERE 'data is valid as of YYYY-MM-DD'
 \end{lstlisting}
 \end{quote}
@@ -309,14 +293,12 @@ SELECT * FROM DIASource WHERE 'data is valid as of YYYY-MM-DD'
 A perhaps less error-prone alternative, if technically feasible, may be to provide multiple virtual databases that the user would access as:
 %
 \begin{quote}
-\begin{lstlisting}[language=SQL]
-CONNECT lsst-dr5-yyyy-mm-dd
-SELECT * FROM DIASource
+\item \begin{lstlisting}[language=SQL]
+CONNECT lsst-dr5-yyyy-mm-dd SELECT * FROM DIASource
 \end{lstlisting}
 \end{quote}
 %
 The latter method would probably be limited to nightly granularity, unless there's a mechanism to create virtual databases/views on-demand.
-
 
 
 \clearpage
@@ -357,7 +339,7 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Prompt processing is
 rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
-\newtext{\item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or \oldtext{forced photometry}\newtext{\DIAForcedSource} records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.}
+\item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or  \oldtext{forced photometry}\newtext{\DIAForcedSource} records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.
 \item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the issued
 event alert (see below).\dmreq{0271}\dmreq{0002}
 \item An alert is issued that includes: the name of the \DB, the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \SSObject ID or \DIAObject ID\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata (IDs and database names).}, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.), \emph{including all} \DIASources \newtext{and \DIAForcedSources} from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
@@ -391,7 +373,8 @@ The following will occur during regular Solar System object processing (in dayti
 \subsection{Prompt Catalogs}
 \label{sec:level1db}
 
-The described alert processing design relies on the ``living'' \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing\footnote{The latter is also colloquially known as \emph{DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT}.\dmreq{0312}
+The described alert processing design relies on the ``living'' \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing\footnote{The latter is also colloquially known as \emph{DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
+
 
 This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \DB and the \Objects in the \DR database. There is no direct \DIASource-to-\Object match:
 in general, a time-domain object is not necessarily the same astrophysical object as a static-sky object, even if the two are
@@ -567,7 +550,7 @@ psFlux & float & nJy & Calibrated flux for point source model. Note this actuall
 
 psFluxErr & float & nJy & Estimated uncertainty of \texttt{psFlux}. \\
 
-totFlux & float & nJy & Calibrated flux for point source model measured on the visit image centered at the \DIAObject centroid. \\ 
+totFlux & float & nJy & Calibrated flux for point source model measured on the visit image centered at the \DIAObject centroid. \\
 
 totFluxErr & float & nJy & Estimated uncertainty of \texttt{totFlux}. \\
 \end{schema}
@@ -775,7 +758,7 @@ Each alert (a \VOEvent packet) will at least include the following:
     \item \emph{\DB ID}   %: For example, \texttt{DR5L1}
     \item Science Data:
     \begin{itemize}
-        \item The \DIASource record that triggered the alert\newtext{, as well as the \texttt{filterName} and \texttt{programId} of the corresponding \texttt{Visit}}
+        \item The \DIASource record that triggered the alert, as well as the \texttt{filterName} and \texttt{programId} of the corresponding \texttt{Visit}
         \item The entire \DIAObject (or \SSObject) record
 	\item \oldtext{Previous 12 months of \DIASource records} \newtext{Any \DIASource and \DIAForcedSource records that exist, and difference image noise estimates where they do not, taken from the previous 12 months.} \reqparam{diaCharacterizationCutoff}
         \item Matching \Object IDs from the latest Data Release, if they exist, and 12 months of their \DIASource records
@@ -1131,7 +1114,7 @@ photoZ & float[2~\x~95] & ~ & Photometric redshift likelihood samples -- pairs o
 
 photoZ\_pest & float[10] & ~ & Point estimates for photometric redshift\footnote{TBD but likely candidates
 are the mode, mean, standard deviation, skewness, kurtosis, and 1\%, 5\%, 25\%, 50\%, 75\%, and 99\% points
-from cumulative distribution.}, computed using photoZ. \\  
+from cumulative distribution.}, computed using photoZ. \\
 
 flags & bit[128] & bit & Various useful flags. \\
 \end{schema}
@@ -1525,205 +1508,4 @@ document \citeds{LDM-151}.
     \caption{Illustration of the conceptual algorithm design for the Moving Object Processing Software pipeline. \label{fig:Pipe8}}
 \end{figure}
 
-
-
-
-
-
-
-
-\begin{todo}
-
-\clearpage
-
-\section{TODO}
-
-\begin{itemize}
-
-    \item Add Dipole model to DIASource table
-    \item References
-
-    \item Selection functions
-    \item Understand how to record photometric calibration
-    \item Add required accuracy to all tables
-
-    \item Zero-point deltas for different templates
-    \item Say more about the image retrieval service
-
-%    \item Mechanisms for updating the document
-%    \item Solar System objects in L2
-%    \item Solar system object merging with external catalogs
-%    \item Deblending, children, etc
-%    \item Implement K-T's comments
-%    \item Variability characterization
-%    \item Crowded field photometry
-%    \item Level 3
-%    \item Data availability policies
-%    \item Colors
-%    \item Add canonical band columns
-%    \item ID sizes
-
-\end{itemize}
-
-\end{todo}
-
 \end{document}
-
-
-
-Unresolved topics:
-- magnitudes for negative fluxes (and the issue of flux priors)
-- how does Alert stream get its QA info? Where are metadata described?
-     E.g. the # per CCD, CCD-to-CCD variance, xy cross-correlation
-- what about False Source injection?
-- how do we know centroids where forced photometry was performed
-- do we really need 11 params for PSF model in Source? How about psfFlux and error,
-   at the position of centroid (that is, don't refit for the position)
-
-Large edits:
-XXX - add dipole fit for DIASources
-XXX - redesign of nightly Level 1 db; in sec. 4.2.1 bullet 6 need to mention 12 months window; see also
-          bullet 8: the name of db? also, ``full'' light curves? ask Mario...
-XXX - redesign of nightly Level 1 db: the main section is 4.3.5 (add Colin's plot?) also, remove reference
-          to Level 1 db in 4.5.1
-XXX - decide whether to move model description up front, and whether to add anything
-XXX - make MOPS diagram and refer to it in Section 4.2.2
-XXX - missing DIAForcedSource table; also, can DIASource be DIAForcedSource and ExtendedTable?
-        ditto for Source and Forced Source  (look at models plus ``other'' data blocks)
-TBD - DIASource: add both light centroid and peak PSF centroid (i.e. mode and mean), trailed source needs centroid
-XXX - DIASource: add aperture mags
-XXX - fpSky is on direct template image and rename it to fpBkgd
-TBD - we need to bring back DIAForcedSource
-XXX - adaptive moments in DIASource table (switch to xy), add moments for PSF
-XXX - look for spuriousness in LSE-30 (OSS?), add to DIASource table?
-XXX - do we want curved trail?   -> footnote
-TBD - do we want to fit a gaussian convolved with PSF to each DIASource?
-
-Jim:
-- issue of adding Sources, like DIAObjects, to Object list  -> Tucson DMLT
-
-Discussion of DBs, with Andy Salnikov, after reading LDM-135
-- ``The LSST baseline database architecture for its real time Alert Production relies on horizontal
-time-based partitioning. To guarantee reproducibility, no-overwrite-update techniques combined
-with maintaining validity time for appropriate rows are employed.''
-      -> what about deleting DIAObjects during MOPS processing?  (for LDM-151, not DPDD)
-
-Mario:
-- footnote 45: where is positionMotionLnL?  why are covariances separated if simul fit? Talk to Mario
-- flags in DIAObject table: is there any info in other docs to add as a footnote? Talk to Mario
-- SSObject table: why two values of MOID? Ask Mario.
-- footnote 56: What Gbps WAN do we have now? Talk to Mario
-
-
-Leftovers from Colin's Minutes for 2016-03-23:
-- SAC: Alerts only include footprints for the detection band; is that enough?
-- SAC: do we need more than 30 days of precovery fluxes for new DIASources?
-        ZI: yes, 30 days is only about two data points in a given band and we don't
-                know colors for transients
-- ZI: science case for moving variable stars: how do we get LCs and pm/parallax?
-- sophisticated matching of DIAObjects to 3 nearest Objects: might want to do
-          the nearest star and the nearest galaxy, and the most probable object
-- ZI: negative fluxes
-
-Studies for Colissa:
-- do we care about direction of NEO motion?
-- do we care about curved trails?
-- moving variable star: a bias in motion due to flux=const.?
-  -- ** other?? **
-
-
-For Tucson DMLT:
-
-1) Proposal for Nightly Level 1 redesign.
-The current baseline is described in DPDD, Section 4.3.5. We will review the
-baseline and then discuss the redesign proposal using diagram (attached here):
-https://confluence.lsstcorp.org/pages/viewpage.action?pageId=45580703
-
-
-Tentatively implemented in DPDD.
-
-2) Proposal to perform forced photometry on both difference images
-and direct images when Multifit is run in DR Processing.
-
-Tentatively implemented in DPDD.
-
-FYI: the size of ForcedSource table now is 1/4 (=50 TB) of the Source
-table size at year 1 and 1/2 (=2 PB) of the Source table size at year 10.
-
-
-3) How DIAObjects interact with Level 2 DRP processing?  Do we need
-to add Sources?
-
-See Jim's note:
-https://community.lsst.org/t/unifying-diaobject-and-object-in-drp/716
-
-Also, KT will report about various LL1db vs. DR association issues.
-
-4)  proposal to abolish independent fits of BD galaxy model across bands
-        and instead only vary the components’ flux vs. band
-
-what's the plan for arriving to this decision (e.g. process HSC data, or
-LSST simulations, or degrade COSMOS data, etc; when?, by ComCam,
-DR1, DR11?)
-
-
-5)  iterative coupled processing of image coaddition and image differencing:
-  do we need it or not?
-
-
-Difference images help to make better coadds by masking moving and transient
-objects. But better coadds result in better difference images, which then make
-better coadds…
-
-
-The remaining work in Tucson is to
-- submit revised DPDD to CCB: we aim to have finalized DPDD circulated to DMLT
-  at least a few days before the f2f in Tucson; we hope to stamp it for CCB there
-
-- in Tucson, Thu/Fri, we will develop plans and diagrams for QA pipelines and for
-  calibration product pipelines. We’ll probably use scipi-wg time on Thu for QA pipeline
-  discussion, and Fri time for progress on calibration pipelines, as well as discussions
-  started by Jim today
-
-
-
-
-KT (from Tucson):
-p. 6: is called "calibrated exposure" -> is called a "calibrated exposure"
-
-Section 2.4: move entire section and diagrams to appendix, add forward
-reference to LDM-151 for further details on implementation
-
-(Mario) Need to define DIAForcedSource table
-
-Forced DIASources used to update summaries in DIAObjects? Yes
-
-p. 44: fit first to the coadds to initialize the more expensive multi-epoch
-fitting -> fit first to the coadds and stored
-
-p. 48: Remove "Two groups of" as well as blue sentence.  Consider saying
-explicitly that these variability parameters are per-band.
-
-p. 69: will consider rewriting -> may consider rewriting
-
-----
-We will also associate DIASources against the DIAObjects from the latest
-DRP and include any match plus its DRP DIASources (and their contents)
-in the Alert.  We will still associate against the Live L1 DB and
-include the DIAObject match (possibly just-created) from there along
-with its associated DIASources.
-
-We will include an extract of the measurements of (all three) Objects in
-the Alert as well.
-
-We can save space in L1DB by rolling *versions* of DIAObjects older than
-some date to tape (but never the most recent version of a DIAObject,
-even if that is old).
-
-DRP DIAObjects will look like L1 DIAObjects (although the exact code may
-differ from L1).
-
-Sources are an independent table, not fundamentally associated with
-Objects.  Remove Sources from bullet 5 on p. 44; add a footnote
-mentioning this.  Nearest Object may be recorded with the Source as a
-convenience.
