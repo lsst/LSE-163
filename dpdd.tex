@@ -133,15 +133,15 @@ Throughout this document margin notes are used to provide linkage to formal LSST
 \subsection{General Image Processing Concepts for LSST}
 
  A raw image (baselined as a pair of successive 15-second exposures, called snaps),
-delivered by the LSST camera, is processed by the Instrument Signature
-Removal (ISR) pipeline, to produce a single-visit image with, at least
+delivered by the LSST camera is processed by the \oldtext{Instrument Signature
+Removal (ISR)} \newtext{Single Frame Processing} Pipeline to produce a single-visit image with, at least
 conceptually, counts proportional to photon flux entering the
 telescope pupil (in reality, there are many additional optical, pixel and
 bandpass effects, including random counting noise and various subtle
 systematic errors, that are treated during subsequent processing).
-This single-visit image processed by the ISR is called a ``Processed Visit Image'' and its main data structures include counts, their variance and
-various masks, all defined on per pixel basis. After the ISR step is
-completed, the pixel values and their variance are not modified any more.
+This single-visit image processed by the \oldtext{ISR} \newtext{pipeline} is called a ``Processed Visit Image'' and its main data structures include counts, their variance and
+various masks, all defined on per pixel basis. \oldtext{After the ISR step is
+completed, the pixel values and their variance are not modified any more.}
 These single-visit images are used downstream to produce coadded and difference
 images. The rest of the processing is essentially a model-based interpretation
 of imaging observations that includes numerous astrophysical and other
@@ -162,8 +162,8 @@ component from a temporally changing component (``DC'' and ``AC'',
 respectively). Discrete DC sources are \textit{not} operationally nor astrophysically
 associated with discrete AC sources even when they are spatially coincident.
 
-Images (a series of Footprints, where Footprint is a set of connected pixels with
-counts above some threshold level set by noise properties) of discrete objects are
+Images \oldtext{(a series of Footprints, where Footprint is a set of connected pixels with
+counts above some threshold level set by noise properties)} of discrete objects are
 modeled using two models (\S\ref{sec:objchar}). A two-component galaxy model includes a linear
 combination of bulge and disk, with their radial intensity variation described using
 Sersic profiles.
