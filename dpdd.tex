@@ -69,20 +69,16 @@ D.~Petravick, D. Shaw, C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-V
 
 \setDocAbstract{%
 This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
-
+%
 LSST will deliver three levels of data products and services.
-\textbf{Prompt} (Level 1) data products are computed and released on a roughly nightly timescale, and include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects.
+\textbf{Prompt} (formerly Level 1) data products are computed and released on a roughly nightly timescale, and include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects.
 Their primary purpose is to enable rapid follow-up of time-domain events.
-\textbf{Data Release} (Level 2) data products are computed during annual processing
+\textbf{Data Release} (formerly Level 2) data products are computed during annual processing
 campaigns, and include well-calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science.
-The \textbf{Science Platform} will allow for the creation of  \textbf{User Generated} (Level 3) data products and will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center.
+The \textbf{Science Platform} will allow for the creation of  \textbf{User Generated} (formerly Level 3) data products and will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center.
 LSST will also devote 10\% of observing time to programs with special cadence.
-Their data products will be created using the same software and hardware as Prompt (Level 1) and Data Release (Level 2) products.
+Their data products will be created using the same software and hardware as Prompt and Data Release products.
 All data products will be made available using user-friendly databases and web services.\\
-
-Note, prior to 2018 Data products were referred to as Level 1, Level 2, and Level 3; this nomenclature was updated in 2018 to Prompt Products, Data Release Products and User Generated Products respectively \citedsp{LPM-231}.
-In the abstract of this document both nomenclatures are used but throughout the remainder of this document only the new terminology is used.
-In other project and requirements documentation, the old terminology will likely persist.
 }
 
 %
@@ -184,7 +180,7 @@ a point source model, a trailed point source model, and a point source dipole mo
 
 The main LSST data products are illustrated in Figure~\ref{fig:Detail0} (see Appendix for
 a conceptual design of pipelines which will produce these data products).
-LSST Data Management will perform \oldtext{two, somewhat overlapping in scientific intent, types of image analyses} \newtext{image analysis on two different timescales, with two corresponding categories of output data products}:
+LSST Data Management will perform \oldtext{two, somewhat overlapping in scientific intent, types of image analyses} \newtext{image analysis on two different timescales, with two corresponding categories of output data products}\footnote{\newtext{Note that prior to 2018 data products were referred to as Level 1, Level 2, and Level 3; this nomenclature was updated in 2018 to Prompt Products, Data Release Products and User Generated Products respectively \citedsp{LPM-231}.}}:
 
 \begin{figure}[!t]
     \centering
