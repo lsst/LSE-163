@@ -703,23 +703,22 @@ When a new \DIASource is detected, it's useful to perform \newtext{forced} PSF p
 
 The former should satisfy the most common use cases (eg., SNe), while the latter will provide an opportunity for more extensive yet timely precovery of targets of special interest.
 
-\subsubsection{Reprocessing the Prompt Data Set}
+\subsubsection{Image differencing during Data Release Production}
 \label{sec:l1dbreproc}
 
-In what we've described so far, the ``living'' \PPDB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
+In what we've described so far, the \oldtext{``living''} \PPDB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
 
-This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. This argues for periodic \emph{reprocessing} of the Prompt data set. \dmreq{0313}\dmreq{0325}
+This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. \oldtext{This argues for periodic \emph{reprocessing} of the Prompt data set}  \dmreq{0313}\dmreq{0325}
+\newtext{The annual Data Release productions will therefore also include a full reanalysis of the time-domain information in the collected dataset , by performing image differencing on all images collected by the survey.}  \oldtext{We plan to reprocess all image differencing-derived data (the \PPDB), at the same time we perform the annual Data Release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins.} The images will be processed using a single version of the image differencing and measurement software, resulting in a consistent \oldtext{data set} \newtext{set of \DIASources, \DIAObjects, \ForcedSources, and \SSObjects as part of a data release.}
 
-We plan to reprocess all image differencing-derived data (the \PPDB), at the same time we perform the annual Data Release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins. The images will be reprocessed using a single version of the image differencing and measurement software, resulting in a consistent data set.
-
-There will be three main advantages of \PPDB produced during Data Release processing, compared to
-``living'' \PPDB:
+There will be three main advantages of \oldtext{\PPDB } \newtext{time-domain data} produced during Data Release processing, compared to
+the \oldtext{``living''} \PPDB:
 i) even the oldest data will be processed with the latest software,
 ii) astrometric and photometric calibration will be better, and
 iii) there will be no 12-month limit on the width of data window used to computed associated \DIAObject
 measurements (proper motions, centroids, light curves, etc.). \reqparam{diaCharacterizationCutoff}
 
-Older versions of the \PPDB\ produced during Data Release processing will be archived following the same rules as for the \DR{}s. The most recent DR, and the penultimate data release will be kept on disk and loaded into the database.\dmreq{0077} Others will be archived to tape and made available as bulk downloads.\dmreq{0300} See \S~\ref{sec:retention} for more detail.
+\oldtext{Older versions of the \PPDB\ produced during Data Release processing will be archived following the same rules as for the \DR{}s. The most recent DR, and the penultimate data release will be kept on disk and loaded into the database.\dmreq{0077} Others will be archived to tape and made available as bulk downloads.\dmreq{0300} See \S~\ref{sec:retention} for more detail.}
 
 \subsection{Prompt Image Products}
 
