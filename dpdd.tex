@@ -277,28 +277,22 @@ For example, DR4 and DR5 (or any other) release will share no identical \Object,
 We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Prompt product catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
 
 The exact implementation of this requirement is left to the LSST Data Management database team. One possibility may be to make the key tables (nearly) append-only, with each row having two timestamps -- \texttt{createdTai} and \texttt{deletedTai}, so that queries may be limited by a \code{WHERE} clause:
-\begin{quote}
-\item \begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=SQL,basicstyle=\ttfamily]
 SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS'
     BETWEEN createdTAI and deletedTAI
 \end{lstlisting}
-\end{quote}
 %
 or, more generally:
 %
-\begin{quote}
-\item \begin{lstlisting}[language=SQL,showstringspaces=false]
+\begin{lstlisting}[language=SQL,basicstyle=\ttfamily,showstringspaces=false]
 SELECT * FROM DIASource WHERE 'data is valid as of YYYY-MM-DD'
 \end{lstlisting}
-\end{quote}
 %
 A perhaps less error-prone alternative, if technically feasible, may be to provide multiple virtual databases that the user would access as:
 %
-\begin{quote}
-\item \begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=SQL,basicstyle=\ttfamily]
 CONNECT lsst-dr5-yyyy-mm-dd SELECT * FROM DIASource
 \end{lstlisting}
-\end{quote}
 %
 The latter method would probably be limited to nightly granularity, unless there's a mechanism to create virtual databases/views on-demand.
 
