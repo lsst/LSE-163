@@ -270,6 +270,7 @@ To reduce the likelihood for confusion, all IDs shall be unique across databases
 For example, DR4 and DR5 (or any other) release will share no identical \Object, \Source, \DIAObject or \DIASource IDs (see \S~\ref{sec:level1}~and~\ref{sec:level2} for the definitions of \Objects, \DIAObjects, etc.).
 
 \subsection{Repeatability of Queries}
+\label{sec:repeatability}
 \dmreq{0291}
 
 We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Prompt product catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
@@ -365,7 +366,7 @@ The following will occur during regular Solar System object processing (in dayti
 \item All \DIASources detected on the previous night, that have \emph{not} been matched at a high confidence level to a known \Object,
 \DIAObject, \SSObject, or an artifact, are analyzed for potential pairs, forming \emph{tracklets}.
 \item The collection of tracklets collected over the past 30 days\footnote{The exact time period is a design and computational question discussed in \citeds{LDM-156}.} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
-\item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \SSObject record. \DIAObjects ``orphaned'' by this unlinking are deleted.\footnote{Some \DIAObjects may only be left with forced photometry measurements at their location (since all \DIAObjects are force-photometered on previous and subsequent visits);  these will be kept but flagged as such.}.
+\item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \SSObject record. \DIAObjects ``orphaned'' by this unlinking are \oldtext{deleted} \newtext{marked as expired (as per Section \ref{sec:repeatability})}\footnote{\oldtext{Some \DIAObjects may only be left with forced photometry measurements at their location (since all \DIAObjects are force-photometered on previous and subsequent visits);  these will be kept but flagged as such.}}.
 \item Precovery linking is attempted for all \SSObjects whose orbits were updated in this process.\dmreq{0286} Where successful, \SSObjects (orbits) are recomputed as needed.
 \end{enumerate}
 
