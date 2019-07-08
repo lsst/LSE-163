@@ -16,6 +16,8 @@
 
 \newcommand{\annotate}[1]{{\color{magenta}\large\textbf{\emph{#1}}}}
 
+\renewcommand{\DR}{{Data Release database}\xspace}
+
 % Environment for displaying the schema tables in
 % a consistent manner. Two arguments are the
 % caption and short caption that differ for each table.
@@ -67,19 +69,15 @@ D.~Petravick, D. Shaw, C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-V
 
 \setDocAbstract{%
 This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
-
+%
 LSST will deliver three levels of data products and services.
-\textbf{Prompt} (Level 1) data products will include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects.
+\textbf{Prompt} data products are computed and released within 24 hours of observation, and include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects.
 Their primary purpose is to enable rapid follow-up of time-domain events.
-\textbf{Data Release} (Level 2) data products will include well calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science.
-The \textbf{Science Platform} will allow for the creation of  \textbf{User Generated} (Level 3) data products and will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center.
+\textbf{Data Release} data products are computed during annual processing campaigns, and include well-calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science.
+The \textbf{Science Platform} will allow for the creation of  \textbf{User Generated} data products and will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center.
 LSST will also devote 10\% of observing time to programs with special cadence.
-Their data products will be created using the same software and hardware as Prompt (Level 1) and Data Release (Level 2) products.
+Their data products will be created using the same software and hardware as Prompt and Data Release products.
 All data products will be made available using user-friendly databases and web services.\\
-
-Note, prior to 2018 Data products were referred to as Level 1, Level 2, and Level 3; this nomenclature was updated in 2018 to Prompt Products, Data Release Products and User Generated Products respectively \citedsp{LPM-231}.
-In the abstract of this document both nomenclatures are used but throughout the remainder of this document only the new terminology is used.
-In other project and requirements documentation, the old terminology will likely persist.
 }
 
 %
@@ -181,7 +179,7 @@ a point source model, a trailed point source model, and a point source dipole mo
 
 The main LSST data products are illustrated in Figure~\ref{fig:Detail0} (see Appendix for
 a conceptual design of pipelines which will produce these data products).
-LSST Data Management will perform two, somewhat overlapping in scientific intent, types of image analyses:
+LSST Data Management will perform \oldtext{two, somewhat overlapping in scientific intent, types of image analyses} \newtext{image analysis on two different timescales, with two corresponding categories of output data products}\footnote{\newtext{Note that prior to 2018 data products were referred to as Level 1, Level 2, and Level 3; this nomenclature was updated in 2018 to Prompt Products, Data Release Products and User Generated Products respectively \citedsp{LPM-231}.}}:
 
 \begin{figure}[!t]
     \centering
@@ -193,14 +191,16 @@ LSST Data Management will perform two, somewhat overlapping in scientific intent
 
 
 \begin{enumerate}
-\item Analysis of difference images, with the goal of detecting and characterizing astrophysical phenomena revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis. The processing will be done on nightly or daily basis and result in \textbf{Prompt} data products. Prompt products will include difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical \emph{objects} are called \emph{sources}. The reader is cautioned that this nomenclature is not universal: some surveys call \emph{detections} what LSST calls \emph{sources}, and use the term \emph{sources} for what LSST calls \emph{objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects \emph{inside} and \emph{outside} of the Solar System.}). The catalogs will be entered into the \textbf{\DB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted
+    \item \newtext{\textbf{Prompt Processing}, which is performed on a nightly or daily basis and results in \textbf{Prompt Data Products}. The goal of this processing is the detection and characterization astrophysical phenomena that are revealed by their time-dependent nature.} The detection of supernovae superimposed on bright extended galaxies is an example of this analysis.  Prompt products will include \newtext{single visit images,} difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical \emph{objects} are called \emph{sources}. The reader is cautioned that this nomenclature is not universal: some surveys call \emph{detections} what LSST calls \emph{sources}, and use the term \emph{sources} for what LSST calls \emph{objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects \emph{inside} and \emph{outside} of the Solar System.}). The catalogs will be entered into the \textbf{\PPDB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted
 standards\footnote{For example, VOEvent, see \url{http://ls.st/4tt}} within 60 seconds of observation. Prompt data products are discussed in \S~\ref{sec:level1}.
 
-\item Analysis of direct images, with the goal of detecting and characterizing astrophysical objects. Detection of faint galaxies on deep coadds and their subsequent characterization is an example of this analysis. The results are \textbf{Data Release} data products. These products, generated and released annually\footnote{Except for the first two data releases, which will be created six months apart.}, will include the single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called \emph{snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a \emph{visit}.}), \Sources\footnote{When written in bold monospace type (i.e., \texttt{\textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Data Release processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include fully reprocessed Prompt data products (see \S \ref{sec:l1dbreproc}). In contrast to the ``living'' \DB, which is updated in real-time, the \DR{}s are static and will not change after release. Data Release data products are discussed in \S~\ref{sec:level2}.
+\item \newtext{\textbf{Data Release Processing}, which is performed annually\footnote{Except for the first two data releases, which will be created six months apart.} and produces \textbf{Data Release} data products. These processing campaigns use all data collected by the survey to-date in order to perform a comprehensive analysis, including measurement of both faint static objects through the construction of deep coadds, and light curve characterization through image differencing across all available epochs.}
+    The data products produced will include the calibrated single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called \emph{snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a \emph{visit}.}), \Sources\footnote{When written in bold monospace type (i.e., \texttt{\textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Data Release processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). \newtext{It will also include difference image analysis tables similar to those produced during Prompt Processing} (see \S \ref{sec:l1dbreproc}). In contrast to the \oldtext{``living''} \PPDB, which is updated \oldtext{in real-time} \newtext{continuously during observing}, the \DR is static and will not change after release. Data Release data products are discussed in \S~\ref{sec:level2}.
+
 \end{enumerate}
 
 
-The two types of analyses have different requirements on timeliness. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
+\oldtext{The two types of analyses have different requirements on timeliness} \newtext{The two processing timescales are driven by differing scientific requirements}. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
 
 Recognizing the diversity of astronomical community needs, and the need for specialized processing not part of the automatically generated Prompt and Data Release products, LSST plans to devote 10\% of its data management system capabilities to enabling the creation, use, and federation of \textbf{User Generated} data products. The \textbf{Science Platform}  will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for this is established in \S~3.5 of the LSST \SRD. Some  details are discussed in \S~\ref{sec:level3} of this document.
 
@@ -211,7 +211,8 @@ Finally, LSST Survey Specifications (\S~3.4 of LSST \SRD) prescribe that 90\% of
 
 Most LSST data products will consist of images and/or catalogs. The catalogs will be stored and offered to the users as \emph{relational databases} which they will be able to query. This approach was shown to work well by prior large surveys, for example the Sloan Digital Sky Survey (SDSS).
 
-Different data products will generally be stored in different databases. For example, Prompt data products will be stored in a \emph{Level 1 (Prompt) database}. Data Release ``universal cadence'' products will be stored in a \emph{Data Release database}. The products for special programs may be stored in many different databases, depending on the nature of the program.
+\newtext{Catalogs may be stored in different databases to meet the operational requirements particular to each dataset. The \PPDB will hold catalogs from Prompt Processing, to enable rapid access to recent measurements.}
+Data Release ``universal cadence'' \oldtext{products} \newtext{catalogs} will be stored in a \DR. The products for special programs may be stored in many different databases, depending on the nature of the program.
 
 Nevertheless, all these databases will follow certain naming and other conventions. We discuss these in the subsections to follow.
 
@@ -276,28 +277,22 @@ For example, DR4 and DR5 (or any other) release will share no identical \Object,
 We require that queries executed at a known point in time against any LSST-delivered database be repeatable at a later date. This promotes the reproducibility of science derived from LSST data. It is of special importance for Prompt product catalogs (\S~\ref{sec:level1}) that will change on a nightly basis as new time domain data is being processed and added to the catalogs.
 
 The exact implementation of this requirement is left to the LSST Data Management database team. One possibility may be to make the key tables (nearly) append-only, with each row having two timestamps -- \texttt{createdTai} and \texttt{deletedTai}, so that queries may be limited by a \code{WHERE} clause:
-\begin{quote}
-\item \begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=SQL,basicstyle=\ttfamily]
 SELECT * FROM DIASource WHERE 'YYYY-MM-DD-HH-mm-SS'
     BETWEEN createdTAI and deletedTAI
 \end{lstlisting}
-\end{quote}
 %
 or, more generally:
 %
-\begin{quote}
-\item \begin{lstlisting}[language=SQL,showstringspaces=false]
+\begin{lstlisting}[language=SQL,basicstyle=\ttfamily,showstringspaces=false]
 SELECT * FROM DIASource WHERE 'data is valid as of YYYY-MM-DD'
 \end{lstlisting}
-\end{quote}
 %
 A perhaps less error-prone alternative, if technically feasible, may be to provide multiple virtual databases that the user would access as:
 %
-\begin{quote}
-\item \begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=SQL,basicstyle=\ttfamily]
 CONNECT lsst-dr5-yyyy-mm-dd SELECT * FROM DIASource
 \end{lstlisting}
-\end{quote}
 %
 The latter method would probably be limited to nightly granularity, unless there's a mechanism to create virtual databases/views on-demand.
 
@@ -309,7 +304,7 @@ The latter method would probably be limited to nightly granularity, unless there
 
 \subsection{Overview}
 
-Prompt data products are a result of difference image analysis (DIA; \S \ref{sec:dia}). They include the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Data Release data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Prompt products.} (\SSObject), and related, broadly defined, metadata (including eg., cut-outs\footnote{Small, $30 \times 30$, sub-images at the position of a detected source. Also known as \emph{postage stamps.}}).
+\newtext{Prompt data products are the result nightly processing.} \oldtext{Prompt data products are a result of difference image analysis (DIA; \S \ref{sec:dia})} \newtext{These data products are single visit images, difference images, and the results of difference image analysis (DIA; \S \ref{sec:dia}). DIA outputs consist of} the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Data Release data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Prompt products.} (\SSObject) \oldtext{, and related, broadly defined, metadata (including e.g. cut-outs).} \newtext{Various metadata products are also produced during nightly processing and made available to users.}
 
 \DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\reqparam{transSNR} defined in the \SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Detections with high probability of being instrumental non-astrophysical artifacts may be excluded. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim$deg/day, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
@@ -335,14 +330,14 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item A visit is acquired and reduced to a single \emph{Processed Visit Image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).\dmreq{0069}
 \item The Processed Visit Image is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
 \item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^\mathrm{nd}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. PSF photometry is performed on the Processed Visit Image at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
-\item The \DB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.\dmreq{0273}\dmreq{0271}\dmreq{0285}
+\item The \PPDB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.\dmreq{0273}\dmreq{0271}\dmreq{0285}
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).\dmreq{0274}
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Prompt processing is
 rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
 \item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or  \oldtext{forced photometry}\newtext{\DIAForcedSource} records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.
 \item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in \newtext{the complete \DIAObject record issued with} the issued event alert (see below).\dmreq{0271}\dmreq{0002}
-\item An alert is issued that includes: \oldtext{the name of the \DB,} the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \newtext{complete} \SSObject \oldtext{ID} or \DIAObject \oldtext{ID} \newtext{record}\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata\oldtext{ (IDs and database names)}.} \oldtext{, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.)}, \emph{including all} \DIASources \newtext{and \DIAForcedSources} from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
+\item An alert is issued that includes: \oldtext{the name of the \PPDB,} the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \newtext{complete} \SSObject \oldtext{ID} or \DIAObject \oldtext{ID} \newtext{record}\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata\oldtext{ (IDs and database names)}.} \oldtext{, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.)}, \emph{including all} \DIASources \newtext{and \DIAForcedSources} from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
 \dmreq{0274}
 \item For all \DIAObjects overlapping the field of view, including those that have an associated
 new \DIASource from this visit, forced photometry will be performed on \newtext{the} difference image (point source photometry only). Those measurements will be stored as \oldtext{appropriately flagged \DIASources\footnote{\oldtext{For the purposes of this document, we're treating the \DIASources generated by forced photometry or precovery measurements to be the same as \DIASources detected in difference images (but flagged appropriately). In the logical schema, these may be divided into two separate tables.}}}\newtext{\DIAForcedSources}.  No alerts will be issued for these \oldtext{\DIASources}\newtext{\DIAForcedSources, but the \DIAForcedSource measurements will be included in any future alerts triggered by a new \DIASource at that location}.\dmreq{0317}
@@ -373,10 +368,10 @@ The following will occur during regular Solar System object processing (in dayti
 \subsection{Prompt Catalogs}
 \label{sec:level1db}
 
-The described alert processing design relies on the ``living'' \DB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing\footnote{The latter is also colloquially known as \emph{DayMOPS}.}. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
+The \oldtext{described} alert processing design relies on the \oldtext{``living''} \PPDB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object \newtext{association} \oldtext{processing}\footnote{\oldtext{The latter is also colloquially known as \emph{DayMOPS}.}}. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
 
 
-This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \DB and the \Objects in the \DR database. There is no direct \DIASource-to-\Object match:
+This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \PPDB and the \Objects in the \DR \oldtext{database}. There is no direct \DIASource-to-\Object match:
 in general, a time-domain object is not necessarily the same astrophysical object as a static-sky object, even if the two are
 positionally coincident (eg. an asteroid overlapping a galaxy).
 Therefore, adopted data model emphasizes that \emph{having a \DIASource be positionally coincident with an \Object does not imply it is physically related to it}. Absent other information, the least presumptuous data model relationship is one of \emph{positional association}, not \emph{physical identity}.
@@ -390,9 +385,9 @@ This may seem odd at first: for example, in a simple case of a variable star, ma
 
 \DIASource-to-\Object matches can still be emulated via a two-step relation (\DIASource-\DIAObject-\Object). For ease of use, views or pre-built table with these matches will be offered to the end-users.\dmreq{0324}
 
-% There are three ``core'' tables in the \DB: the \DIASource table, with information about detected and/or measured \DIASources, \DIAObject table, with summary information about \DIAObjects derived from the associated \DIASources, and the \SSObject table (short for \textbf{Solar System Object}\footnote{This is what we used to call a ``Moving Object''. This name is potentially confusing, as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects in an out of the Solar System.}) holding derived orbits and associated Solar System Object-specific information.
+% There are three ``core'' tables in the \PPDB: the \DIASource table, with information about detected and/or measured \DIASources, \DIAObject table, with summary information about \DIAObjects derived from the associated \DIASources, and the \SSObject table (short for \textbf{Solar System Object}\footnote{This is what we used to call a ``Moving Object''. This name is potentially confusing, as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects in an out of the Solar System.}) holding derived orbits and associated Solar System Object-specific information.
 
-In the sections to follow, we present the \emph{conceptual schemas} for the most important \DB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema is defined in the \texttt{cat} package and documented in \citeds{LDM-153} and can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
+In the sections to follow, we present the \emph{conceptual schemas} for the most important \PPDB tables. These convey \emph{what} data will be recorded in each table, rather than the details of \emph{how}. For example, columns whose type is an array (eg., \texttt{radec}) may be expanded to one table column per element of the array (eg., \texttt{ra}, \texttt{decl}) once this schema is translated to SQL\footnote{The SQL realization of this schema is defined in the \texttt{cat} package and documented in \citeds{LDM-153} and can be browsed at \url{http://ls.st/8g4}}. Secondly, the tables to be presented are largely normalized (i.e., contain no redundant information). For example, since the band of observation can be found by joining a \DIASource table to the table with exposure metadata, there's no column named \texttt{band} in the \DIASource table. In the as-built database, the views presented to the users will be appropriately denormalized for ease of use.
 
 \subsubsection{\DIASource Table}
 
@@ -702,23 +697,22 @@ When a new \DIASource is detected, it's useful to perform \newtext{forced} PSF p
 
 The former should satisfy the most common use cases (eg., SNe), while the latter will provide an opportunity for more extensive yet timely precovery of targets of special interest.
 
-\subsubsection{Reprocessing the Prompt Data Set}
+\subsubsection{Image differencing during Data Release Production}
 \label{sec:l1dbreproc}
 
-In what we've described so far, the ``living'' \DB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
+In what we've described so far, the \oldtext{``living''} \PPDB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
 
-This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. This argues for periodic \emph{reprocessing} of the Prompt data set. \dmreq{0313}\dmreq{0325}
+This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. \oldtext{This argues for periodic \emph{reprocessing} of the Prompt data set}  \dmreq{0313}\dmreq{0325}
+\newtext{The annual Data Release productions will therefore also include a full reanalysis of the time-domain information in the collected dataset , by performing image differencing on all images collected by the survey.}  \oldtext{We plan to reprocess all image differencing-derived data (the \PPDB), at the same time we perform the annual Data Release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins.} The images will be processed using a single version of the image differencing and measurement software, resulting in a consistent \oldtext{data set} \newtext{set of \DIASources, \DIAObjects, \ForcedSources, and \SSObjects as part of a data release.}
 
-We plan to reprocess all image differencing-derived data (the \DB), at the same time we perform the annual Data Release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins. The images will be reprocessed using a single version of the image differencing and measurement software, resulting in a consistent data set.
-
-There will be three main advantages of \DB produced during Data Release processing, compared to
-``living'' \DB:
+There will be three main advantages of \oldtext{\PPDB } \newtext{time-domain data} produced during Data Release processing, compared to
+the \oldtext{``living''} \PPDB:
 i) even the oldest data will be processed with the latest software,
 ii) astrometric and photometric calibration will be better, and
 iii) there will be no 12-month limit on the width of data window used to computed associated \DIAObject
 measurements (proper motions, centroids, light curves, etc.). \reqparam{diaCharacterizationCutoff}
 
-Older versions of the \DB\ produced during Data Release processing will be archived following the same rules as for the \DR{}s. The most recent DR, and the penultimate data release will be kept on disk and loaded into the database.\dmreq{0077} Others will be archived to tape and made available as bulk downloads.\dmreq{0300} See \S~\ref{sec:retention} for more detail.
+\oldtext{Older versions of the \PPDB\ produced during Data Release processing will be archived following the same rules as for the \DR{}s. The most recent DR, and the penultimate data release will be kept on disk and loaded into the database.\dmreq{0077} Others will be archived to tape and made available as bulk downloads.\dmreq{0300} See \S~\ref{sec:retention} for more detail.}
 
 \subsection{Prompt Image Products}
 
@@ -754,8 +748,8 @@ For each detected \DIASource, LSST will emit an ``Event Alert'' within 60 second
 Each alert (a \VOEvent packet) will at least include the following:
 
 \begin{itemize}
-    \item \emph{alertID}: An ID uniquely identifying this alert. It can also be used to execute a query against the \DB as it existed when this alert was issued.\dmreq{0274}
-    \oldtext{\item \emph{\DB ID}}   %: For example, \texttt{DR5L1}
+    \item \emph{alertID}: An ID uniquely identifying this alert. It can also be used to execute a query against the \PPDB as it existed when this alert was issued.\dmreq{0274}
+    \oldtext{\item \emph{\PPDB ID}}   %: For example, \texttt{DR5L1}
     \item Science Data:
     \begin{itemize}
         \item The \DIASource record that triggered the alert, as well as the \texttt{filterName} and \texttt{programId} of the corresponding \texttt{Visit}
@@ -813,7 +807,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 
 \begin{itemize}
     \item \emph{Should we measure on individual snaps (or their difference)?} Is there a demonstrable science case requiring immediate followup that would be triggered by the flux change over a $\sim$15 second period? Is it technically feasible? (FDR)
-    \item \emph{Is \DB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Prompt database will \emph{not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.). (FDR)
+    \item \emph{Is \PPDB required to be relational?}. A no-SQL solution may be more appropriate given the followup-driven use cases. Even if it is relational, the Prompt database will \emph{not} be sized or architected to perform well on large or complex queries (eg. complex joins, full table scans, etc.). (FDR)
     \item \emph{Should we associate alerts with external catalogs?}. LSST will have a copy of many external catalogs (or parts thereof), and could in principle provide limited positional association. Right now, it's up to the downstream brokers to perform such associations. (CONSTRUCTION)
     \item \emph{Can we, should we, and how will we measure proper motions on difference images?} This is a non-trivial task (need to distinguish between dipoles that are artifacts, and those due to proper motions), without a clear science driver (since high proper motion stars will be discoverable using Data Release catalogs). (CONSTRUCTION)
     \item \emph{What light-curve metric should we compute and provide with alerts?} We strive to compute general purpose metrics which will facilitate classification. We have currently baselined the \citet{2011ApJ...733...10R} feature set. (COMMISSIONING)
@@ -841,7 +835,7 @@ We will also build a series of \emph{short-period} (eg. yearly, or multi-year) c
 The flux limit in deep coadds will be significantly fainter than in individual visits, and the best seeing coadds will help with deblending the detected sources. The short-period coadds are necessary to avoid missing faint objects showing long-term variability. These coadds will be built for all bands, as well as some combining multiple bands (\emph{``multi-color coadds''}).\dmreq{0281} \textbf{\emph{Not all of these will be preserved}} after sources are detected and measured (see \S~\ref{sec:coadds} for details). We will provide a facility to regenerate their subsections as pipeline tasks in the Science Platform (\S~\ref{sec:level3}).\dmreq{0311}
 
 \dmreq{0275}
-The deblender will be run simultaneously on the catalog of peaks\footnote{The source detection algorithm we plan to employ finds regions of connected pixels above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit (or coadd). These regions are called \emph{footprints}. Each footprint may have one or more \emph{peaks}, and it is these peaks that the deblender will use to infer the number and positions of objects blended in each footprint.} detected in the coadds, the \DIAObject catalog from the \DB, and one or more external catalogs.  It will use the knowledge of peak positions, bands, time, time variability (from Prompt products and the single-epoch \Source detections), inferred motion, Galactic longitude and latitude, and other available information to produce a master list of deblended \Objects. Metadata on why and how a particular \Object was deblended will be kept.
+The deblender will be run simultaneously on the catalog of peaks\footnote{The source detection algorithm we plan to employ finds regions of connected pixels above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit (or coadd). These regions are called \emph{footprints}. Each footprint may have one or more \emph{peaks}, and it is these peaks that the deblender will use to infer the number and positions of objects blended in each footprint.} detected in the coadds, the \DIAObject catalog from the \PPDB, and one or more external catalogs.  It will use the knowledge of peak positions, bands, time, time variability (from Prompt products and the single-epoch \Source detections), inferred motion, Galactic longitude and latitude, and other available information to produce a master list of deblended \Objects. Metadata on why and how a particular \Object was deblended will be kept.
 
 \dmreq{0276}
 The properties of \Objects, including their exact positions, motions, parallaxes, and shapes, will be characterized by MultiFit-type algorithms\footnote{``MultiFit algorithms'' are those that fit a PSF-convolved model (so-called ``forward modeling'')  to all multi-epoch observations of an object. This approach is in contrast to measurement techniques where multi-epoch images are coadded first, and the properties are measured from the coadded pixels.}.
