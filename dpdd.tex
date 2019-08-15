@@ -91,6 +91,7 @@ All data products will be made available using user-friendly databases and web s
 \addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
 \addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
 \addtohist{3.3}{2018-10-24}{Implementation of LCR-1459. DM-12129: Adoption of nanojansky flux unit. DM-11247: Add additional alert packet contents to DPDD. DM-15566: DPDD incorrectly states "immediate" access to PPDB products.  Updated document maintainer, curator and author list, added point estimates for photo-z and a few minor edits.}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
+\addtohist{3.4}{2018-07-29}{Add DIAForcedSource table. Clarify handling of force photometry, Prompt vs. Data Release products distinction, other minor fixes. (LCR-1916: RFC-517, DM-10540, DM-15671, DM-16688, DM-15784)}{C. Slater, E. Bellm}
 }
 
 \begin{document}
@@ -131,15 +132,13 @@ Throughout this document margin notes are used to provide linkage to formal LSST
 \subsection{General Image Processing Concepts for LSST}
 
  A raw image (baselined as a pair of successive 15-second exposures, called snaps),
-delivered by the LSST camera is processed by the \oldtext{Instrument Signature
-Removal (ISR)} \newtext{Single Frame Processing} Pipeline to produce a single-visit image with, at least
+delivered by the LSST camera is processed by the Single Frame Processing Pipeline to produce a single-visit image with, at least
 conceptually, counts proportional to photon flux entering the
 telescope pupil (in reality, there are many additional optical, pixel and
 bandpass effects, including random counting noise and various subtle
 systematic errors, that are treated during subsequent processing).
-This single-visit image processed by the \oldtext{ISR} \newtext{pipeline} is called a ``Processed Visit Image'' and its main data structures include counts, their variance and
-various masks, all defined on per pixel basis. \oldtext{After the ISR step is
-completed, the pixel values and their variance are not modified any more.}
+This single-visit image processed by the pipeline is called a ``Processed Visit Image'' and its main data structures include counts, their variance and
+various masks, all defined on per pixel basis. 
 These single-visit images are used downstream to produce coadded and difference
 images. The rest of the processing is essentially a model-based interpretation
 of imaging observations that includes numerous astrophysical and other
@@ -160,8 +159,7 @@ component from a temporally changing component (``DC'' and ``AC'',
 respectively). Discrete DC sources are \textit{not} operationally nor astrophysically
 associated with discrete AC sources even when they are spatially coincident.
 
-Images \oldtext{(a series of Footprints, where Footprint is a set of connected pixels with
-counts above some threshold level set by noise properties)} of discrete objects are
+Images of discrete objects are
 modeled using two models (\S\ref{sec:objchar}). A two-component galaxy model includes a linear
 combination of bulge and disk, with their radial intensity variation described using
 Sersic profiles.
@@ -179,7 +177,7 @@ a point source model, a trailed point source model, and a point source dipole mo
 
 The main LSST data products are illustrated in Figure~\ref{fig:Detail0} (see Appendix for
 a conceptual design of pipelines which will produce these data products).
-LSST Data Management will perform \oldtext{two, somewhat overlapping in scientific intent, types of image analyses} \newtext{image analysis on two different timescales, with two corresponding categories of output data products}\footnote{\newtext{Note that prior to 2018 data products were referred to as Level 1, Level 2, and Level 3; this nomenclature was updated in 2018 to Prompt Products, Data Release Products and User Generated Products respectively \citedsp{LPM-231}.}}:
+LSST Data Management will perform image analysis on two different timescales, with two corresponding categories of output data products\footnote{Note that prior to 2018 data products were referred to as Level 1, Level 2, and Level 3; this nomenclature was updated in 2018 to Prompt Products, Data Release Products and User Generated Products respectively \citedsp{LPM-231}.}:
 
 \begin{figure}[!t]
     \centering
@@ -191,16 +189,16 @@ LSST Data Management will perform \oldtext{two, somewhat overlapping in scientif
 
 
 \begin{enumerate}
-    \item \newtext{\textbf{Prompt Processing}, which is performed on a nightly or daily basis and results in \textbf{Prompt Data Products}. The goal of this processing is the detection and characterization of astrophysical phenomena that are revealed by their time-dependent nature.} The detection of supernovae superimposed on bright extended galaxies is an example of this analysis.  Prompt products will include \newtext{single visit images,} difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical \emph{objects} are called \emph{sources}. The reader is cautioned that this nomenclature is not universal: some surveys call \emph{detections} what LSST calls \emph{sources}, and use the term \emph{sources} for what LSST calls \emph{objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects \emph{inside} and \emph{outside} of the Solar System.}). The catalogs will be entered into the \textbf{\PPDB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted
+    \item \textbf{Prompt Processing}, which is performed on a nightly or daily basis and results in \textbf{Prompt Data Products}. The goal of this processing is the detection and characterization of astrophysical phenomena that are revealed by their time-dependent nature. The detection of supernovae superimposed on bright extended galaxies is an example of this analysis.  Prompt products will include single visit images, difference images, catalogs of sources detected in difference images (\DIASources), astrophysical objects\footnote{The LSST has adopted the nomenclature by which single-epoch detections of astrophysical \emph{objects} are called \emph{sources}. The reader is cautioned that this nomenclature is not universal: some surveys call \emph{detections} what LSST calls \emph{sources}, and use the term \emph{sources} for what LSST calls \emph{objects}.} these are associated to (\DIAObjects), and Solar System objects (\SSObjects\footnote{\SSObjects used to be called ``Moving Objects'' in previous versions of the LSST Data Products baseline. The name is potentially confusing as high-proper motion stars are moving objects as well. A more accurate distinction is the one between objects \emph{inside} and \emph{outside} of the Solar System.}). The catalogs will be entered into the \textbf{\PPDB} and made available in near real time. Notifications (``alerts'') about new \DIASources will be issued using community-accepted
 standards\footnote{For example, VOEvent, see \url{http://ls.st/4tt}} within 60 seconds of observation. Prompt data products are discussed in \S~\ref{sec:level1}.
 
-\item \newtext{\textbf{Data Release Processing}, which is performed annually\footnote{Except for the first two data releases, which will be created six months apart.} and produces \textbf{Data Release} data products. These processing campaigns use all data collected by the survey to date in order to perform a comprehensive analysis, including measurement of both faint static objects through the construction of deep coadds, and light curve characterization through image differencing across all available epochs.}
-    The data products produced will include the calibrated single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called \emph{snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a \emph{visit}.}), \Sources\footnote{When written in bold monospace type (i.e., \texttt{\textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Data Release processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). \newtext{It will also include difference image analysis tables similar to those produced during Prompt Processing} (see \S \ref{sec:l1dbreproc}). In contrast to the \oldtext{``living''} \PPDB, which is updated \oldtext{in real-time} \newtext{continuously during observing}, the \DR is static and will not change after release. Data Release data products are discussed in \S~\ref{sec:level2}.
+\item \textbf{Data Release Processing}, which is performed annually\footnote{Except for the first two data releases, which will be created six months apart.} and produces \textbf{Data Release} data products. These processing campaigns use all data collected by the survey to date in order to perform a comprehensive analysis, including measurement of both faint static objects through the construction of deep coadds, and light curve characterization through image differencing across all available epochs.
+    The data products produced will include the calibrated single-epoch images, deep coadds, catalogs of characterized \Objects (detected on deep coadds as well as individual visits\footnote{The LSST takes two exposures per pointing, nominally 15 seconds in duration each, called \emph{snaps}. For the purpose of data processing, that pair of exposures will typically be coadded and treated as a single exposure, called a \emph{visit}.}), \Sources\footnote{When written in bold monospace type (i.e., \texttt{\textbackslash{}tt}), \Objects and \Sources refer to objects and sources detected and measured as a part of Data Release processing.} (detections and measurements on individual visits), and \ForcedSources (constrained measurement of flux on individual visits). It will also include difference image analysis tables similar to those produced during Prompt Processing (see \S \ref{sec:l1dbreproc}). In contrast to the \PPDB, which is updated continuously during observing, the \DR is static and will not change after release. Data Release data products are discussed in \S~\ref{sec:level2}.
 
 \end{enumerate}
 
 
-\oldtext{The two types of analyses have different requirements on timeliness} \newtext{The two processing timescales are driven by differing scientific requirements}. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
+The two processing timescales are driven by differing scientific requirements. Changes in flux or position of objects may need to be immediately followed up, lest interesting information be lost. Thus the primary results of analysis of difference images -- discovered and characterized \DIASources{} -- generally need to be broadcast as \emph{event alerts} within 60 seconds\reqparam{OTT1} of end of visit acquisition.\dmreq{0004} The analysis of science (direct) images is less time sensitive, and will be done as a part of annual data release process.
 
 Recognizing the diversity of astronomical community needs, and the need for specialized processing not part of the automatically generated Prompt and Data Release products, LSST plans to devote 10\% of its data management system capabilities to enabling the creation, use, and federation of \textbf{User Generated} data products. The \textbf{Science Platform}  will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for this is established in \S~3.5 of the LSST \SRD. Some  details are discussed in \S~\ref{sec:level3} of this document.
 
@@ -211,8 +209,8 @@ Finally, LSST Survey Specifications (\S~3.4 of LSST \SRD) prescribe that 90\% of
 
 Most LSST data products will consist of images and/or catalogs. The catalogs will be stored and offered to the users as \emph{relational databases} which they will be able to query. This approach was shown to work well by prior large surveys, for example the Sloan Digital Sky Survey (SDSS).
 
-\newtext{Catalogs may be stored in different databases to meet the operational requirements particular to each dataset. The \PPDB will hold catalogs from Prompt Processing, to enable rapid access to recent measurements.}
-Data Release ``universal cadence'' \oldtext{products} \newtext{catalogs} will be stored in a \DR. The products for special programs may be stored in many different databases, depending on the nature of the program.
+Catalogs may be stored in different databases to meet the operational requirements particular to each dataset. The \PPDB will hold catalogs from Prompt Processing, to enable rapid access to recent measurements.
+Data Release ``universal cadence'' catalogs will be stored in a \DR. The products for special programs may be stored in many different databases, depending on the nature of the program.
 
 Nevertheless, all these databases will follow certain naming and other conventions. We discuss these in the subsections to follow.
 
@@ -304,7 +302,7 @@ The latter method would probably be limited to nightly granularity, unless there
 
 \subsection{Overview}
 
-\newtext{Prompt data products are the result nightly processing.} \oldtext{Prompt data products are a result of difference image analysis (DIA; \S \ref{sec:dia})} \newtext{These data products are single visit images, difference images, and the results of difference image analysis (DIA; \S \ref{sec:dia}). DIA outputs consist of} the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Data Release data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Prompt products.} (\SSObject) \oldtext{, and related, broadly defined, metadata (including e.g. cut-outs).} \newtext{Various metadata products are also produced during nightly processing and made available to users.}
+Prompt data products are the result of nightly processing. These data products are single visit images, difference images, and the results of difference image analysis (DIA; \S \ref{sec:dia}). DIA outputs consist of the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Data Release data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Prompt products.} (\SSObject) Various metadata products are also produced during nightly processing and made available to users.
 
 \DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\reqparam{transSNR} defined in the \SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Detections with high probability of being instrumental non-astrophysical artifacts may be excluded. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim$deg/day, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
@@ -335,13 +333,13 @@ difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Prompt processing is
 rerun during Data Release production, see \S~\ref{sec:l1dbreproc}.}. All affected columns will be recomputed, including proper motions, centroids, light curves, etc.\dmreq{0319}\reqparam{diaCharacterizationCutoff}
-\item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or  \oldtext{forced photometry}\newtext{\DIAForcedSource} records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.
-\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in \newtext{the complete \DIAObject record issued with} the issued event alert (see below).\dmreq{0271}\dmreq{0002}
-\item An alert is issued that includes: \oldtext{the name of the \PPDB,} the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the \newtext{complete} \SSObject \oldtext{ID} or \DIAObject \oldtext{ID} \newtext{record}\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata\oldtext{ (IDs and database names)}.} \oldtext{, name of the \DR and the IDs of nearby \Objects, and the associated science content (centroid, fluxes, low-order lightcurve moments, periods, etc.)}, \emph{including all} \DIASources \newtext{and \DIAForcedSources} from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
+\item To aid in rapid prioritization of new \DIAObjects in the latency interval before the precovery forced photometry is run\reqparam{L1PublicT} (see below), a table with the median noise in the difference image per visit is queried.  For each visit in the last twelve months at the position of the \DIAObject, if there are no \DIASource or \DIAForcedSource records for that visit,  the time of that visit, the filter, and the difference image noise are included in the alert packet. These data allow computation of appropriate upper limits in the difference image light curve.
+\item The \DR\footnote{\DR is a database resulting from annual data release processing. See \S~\ref{sec:level2} for details.} is searched for the three nearest stars and three nearest galaxies to the \DIAObject in \Objects\reqparam{diaNearbyObjMaxStar}\reqparam{diaNearbyObjMaxGalaxy} out to some maximum radius.\reqparam{diaNearbyObjRadius} The IDs of these nearest-neighbor \Objects are recorded in the \DIAObject record and provided in the complete \DIAObject record issued with the issued event alert (see below).\dmreq{0271}\dmreq{0002}
+\item An alert is issued that includes: the timestamp of when this database has been queried to issue this alert, the \DIASource ID, the complete \SSObject or \DIAObject record\footnote{We guarantee that a receiver will always be able to regenerate the alert contents at any later date using the included timestamps and metadata.}, \emph{including all} \DIASources and \DIAForcedSources from the last 12 months\reqparam{diaCharacterizationCutoff} that are linked with the \SSObject or \DIAObject. The science content associated with the \DR \Objects will not be included. See Section \ref{sec:voEventContents} for a more complete enumeration.
 \dmreq{0274}
 \item For all \DIAObjects overlapping the field of view, including those that have an associated
-new \DIASource from this visit, forced photometry will be performed on \newtext{the} difference image (point source photometry only). Those measurements will be stored as \oldtext{appropriately flagged \DIASources\footnote{\oldtext{For the purposes of this document, we're treating the \DIASources generated by forced photometry or precovery measurements to be the same as \DIASources detected in difference images (but flagged appropriately). In the logical schema, these may be divided into two separate tables.}}}\newtext{\DIAForcedSources}.  No alerts will be issued for these \oldtext{\DIASources}\newtext{\DIAForcedSources, but the \DIAForcedSource measurements will be included in any future alerts triggered by a new \DIASource at that location}.\dmreq{0317}
-\item Within 24 hours of discovery\reqparam{L1PublicT}, \emph{precovery} PSF forced photometry will be performed on any difference image overlapping the position of new \DIAObjects taken within the past 30 days\reqparam{precoveryWindow}, and added to the \oldtext{database}\newtext{\DIAForcedSource table}. Alerts will not be issued with precovery photometry information\newtext{ but the resulting \DIAForcedSource measurements will be included in future alerts from this \DIAObject}.\dmreq{0287}
+new \DIASource from this visit, forced photometry will be performed on the difference image (point source photometry only). Those measurements will be stored as \DIAForcedSources.  No alerts will be issued for these \DIAForcedSources, but the \DIAForcedSource measurements will be included in any future alerts triggered by a new \DIASource at that location.\dmreq{0317}
+\item Within 24 hours of discovery\reqparam{L1PublicT}, \emph{precovery} PSF forced photometry will be performed on any difference image overlapping the position of new \DIAObjects taken within the past 30 days\reqparam{precoveryWindow}, and added to the \DIAForcedSource table. Alerts will not be issued with precovery photometry information but the resulting \DIAForcedSource measurements will be included in future alerts from this \DIAObject.\dmreq{0287}
 \end{enumerate}
 
 In addition to the processing described above, a smaller sample of sources detected on difference images \emph{below} the nominal $transSNR = \transSNR$ \reqparam{transSNR} threshold will be measured and stored, in order to enable monitoring of difference image analysis quality.\dmreq{0270}
@@ -361,17 +359,17 @@ The following will occur during regular Solar System object processing (in dayti
 \item All \DIASources detected on the previous night, that have \emph{not} been matched at a high confidence level to a known \Object,
 \DIAObject, \SSObject, or an artifact, are analyzed for potential pairs, forming \emph{tracklets}.
 \item The collection of tracklets collected over the past 30 days\footnote{The exact time period is a design and computational question discussed in \citeds{LDM-156}.} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
-\item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \SSObject record. \DIAObjects ``orphaned'' by this unlinking are \oldtext{deleted} \newtext{marked as expired (as per Section \ref{sec:repeatability})}\footnote{\oldtext{Some \DIAObjects may only be left with forced photometry measurements at their location (since all \DIAObjects are force-photometered on previous and subsequent visits);  these will be kept but flagged as such.}}.
+\item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \SSObject record. \DIAObjects ``orphaned'' by this unlinking are marked as expired (as per Section \ref{sec:repeatability}).
 \item Precovery linking is attempted for all \SSObjects whose orbits were updated in this process.\dmreq{0286} Where successful, \SSObjects (orbits) are recomputed as needed.
 \end{enumerate}
 
 \subsection{Prompt Catalogs}
 \label{sec:level1db}
 
-The \oldtext{described} alert processing design relies on the \oldtext{``living''} \PPDB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object \newtext{association} \oldtext{processing}\footnote{\oldtext{The latter is also colloquially known as \emph{DayMOPS}.}}. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
+The alert processing design relies on the \PPDB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object association. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
 
 
-This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \PPDB and the \Objects in the \DR \oldtext{database}. There is no direct \DIASource-to-\Object match:
+This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \PPDB and the \Objects in the \DR. There is no direct \DIASource-to-\Object match:
 in general, a time-domain object is not necessarily the same astrophysical object as a static-sky object, even if the two are
 positionally coincident (eg. an asteroid overlapping a galaxy).
 Therefore, adopted data model emphasizes that \emph{having a \DIASource be positionally coincident with an \Object does not imply it is physically related to it}. Absent other information, the least presumptuous data model relationship is one of \emph{positional association}, not \emph{physical identity}.
@@ -437,7 +435,7 @@ SNR & float & ~ & The signal-to-noise ratio at which this source was detected in
 
 psFlux & float & nJy & Calibrated flux for point source model. Note this actually measures the flux \emph{difference} between the template and the visit image. \\
 
-\newtext{psFluxErr} & \newtext{float} & \newtext{nJy} & \newtext{Estimated uncertainty of \texttt{psFlux}.} \\
+psFluxErr & float & nJy & Estimated uncertainty of \texttt{psFlux}. \\
 
 psRadec & double[2] & degrees & Centroid for point source model. \\
 
@@ -530,7 +528,6 @@ flags & bit[64] & bit & Various useful flags.  \\
 \end{schema}
 
 
-\newtext{
 \begin{schema}{\DIAForcedSource Table}{\DIAForcedSource Table}{tbl:diaforcedsourceTable}
 
 diaForcedSourceId & uint64 & ~ & Unique source identifier \\
@@ -549,7 +546,7 @@ totFlux & float & nJy & Calibrated flux for point source model measured on the v
 
 totFluxErr & float & nJy & Estimated uncertainty of \texttt{totFlux}. \\
 \end{schema}
-}
+
 
 Some fast-moving, trailed, sources may be due to passages of nearby asteroids. Their trails may exhibit significant curvature.
 While we do not measure the curvature directly, it can be inferred by examining the length of the trail, the trailed model covariance matrices, and the adaptive shape measures. Once curvature is suspected, the users may fit curved trail models to the cutout provided with the alert.
@@ -617,9 +614,9 @@ totFluxSigma & float[ugrizy] & nJy & Standard deviation of the distribution of \
 
 % lcChar   & float[$6\times{}M$] & ~ & Light-curve characterization summary statistics (eg., 2nd moments, etc.). The exact contents, and an appropriate value of M, are to be determined in consultation with time-domain experts. \\
 
-lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from \newtext{\DIASource} light-curves using generalized Lomb-Scargle periodogram \citep[Table~4,][]{2011ApJ...733...10R}\footnote{The exact features in use when LSST begins operations are likely to be different compared to the baseline described here. This is to be expected given the rapid pace of research in time domain astronomy. However, the \emph{number} of computed features is unlikely to grow beyond the present estimate.}. \\
+lcPeriodic & float[6~\x~32] & ~ & Periodic features extracted from \DIASource light-curves using generalized Lomb-Scargle periodogram \citep[Table~4,][]{2011ApJ...733...10R}\footnote{The exact features in use when LSST begins operations are likely to be different compared to the baseline described here. This is to be expected given the rapid pace of research in time domain astronomy. However, the \emph{number} of computed features is unlikely to grow beyond the present estimate.}. \\
 
-lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from \newtext{\DIASource} light-curves \citep[Table~5,][]{2011ApJ...733...10R}. \\
+lcNonPeriodic & float[6~\x~20] & ~ & Non-periodic features extracted from \DIASource light-curves \citep[Table~5,][]{2011ApJ...733...10R}. \\
 
 nearbyObj   & uint64[6] & ~ & Closest \Objects\ (3 stars and 3 galaxies) in \DR.\\
 
@@ -689,9 +686,9 @@ Notes about changes with respect to the previous baseline:
 
 \subsubsection{Precovery Measurements}
 
-When a new \DIASource is detected, it's useful to perform \newtext{forced} PSF photometry at the location of the new source on images taken prior to discovery. These are colloquially known as \emph{precovery measurements}\footnote{When Solar System objects are concerned, precovery has a slightly different meaning: predicting the positions of newly identified \SSObjects on previously acquired visits, and associating with them the \DIASources consistent with these predictions.}.\dmreq{0287}\dmreq{0286} Performing precovery in real time over all previously acquired visits is too I/O intensive to be feasible. We therefore plan the following:
+When a new \DIASource is detected, it's useful to perform forced PSF photometry at the location of the new source on images taken prior to discovery. These are colloquially known as \emph{precovery measurements}\footnote{When Solar System objects are concerned, precovery has a slightly different meaning: predicting the positions of newly identified \SSObjects on previously acquired visits, and associating with them the \DIASources consistent with these predictions.}.\dmreq{0287}\dmreq{0286} Performing precovery in real time over all previously acquired visits is too I/O intensive to be feasible. We therefore plan the following:
 \begin{enumerate}
-\item For all newly discovered objects, perform precovery PSF photometry on visits taken over the previous 30 days\reqparam{precoveryWindow}\footnote{We will be maintaining a cache of $30$ days of processed images to support this feature.}.  \newtext{These measurements will be stored in the \DIAForcedSource table.}
+\item For all newly discovered objects, perform precovery PSF photometry on visits taken over the previous 30 days\reqparam{precoveryWindow}\footnote{We will be maintaining a cache of $30$ days of processed images to support this feature.}. These measurements will be stored in the \DIAForcedSource table.
 \item Make available a ``precovery service'' to request precovery for a limited number of \DIASources across all previous visits, and make it available within 24 hours of the request. Web interface and machine-accessible APIs will be provided.\dmreq{0341}
 \end{enumerate}
 
@@ -700,19 +697,17 @@ The former should satisfy the most common use cases (eg., SNe), while the latter
 \subsubsection{Image differencing during Data Release Production}
 \label{sec:l1dbreproc}
 
-In what we've described so far, the \oldtext{``living''} \PPDB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
+In what we've described so far, the \PPDB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
 
-This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. \oldtext{This argues for periodic \emph{reprocessing} of the Prompt data set}  \dmreq{0313}\dmreq{0325}
-\newtext{The annual Data Release productions will therefore also include a full reanalysis of the time-domain information in the collected dataset , by performing image differencing on all images collected by the survey.}  \oldtext{We plan to reprocess all image differencing-derived data (the \PPDB), at the same time we perform the annual Data Release productions. This will include all images taken since the start of survey operations, to the time when the data release production begins.} The images will be processed using a single version of the image differencing and measurement software, resulting in a consistent \oldtext{data set} \newtext{set of \DIASources, \DIAObjects, \ForcedSources, and \SSObjects as part of a data release.}
+This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. 
+The annual Data Release productions will therefore also include a full reanalysis of the time-domain information in the collected dataset , by performing image differencing on all images collected by the survey \dmreq{0313}\dmreq{0325}. The images will be processed using a single version of the image differencing and measurement software, resulting in a consistent set of \DIASources, \DIAObjects, \ForcedSources, and \SSObjects as part of a data release.
 
-There will be three main advantages of \oldtext{\PPDB } \newtext{time-domain data} produced during Data Release processing, compared to
-the \oldtext{``living''} \PPDB:
+There will be three main advantages of time-domain data produced during Data Release processing, compared to
+the \PPDB:
 i) even the oldest data will be processed with the latest software,
 ii) astrometric and photometric calibration will be better, and
 iii) there will be no 12-month limit on the width of data window used to computed associated \DIAObject
 measurements (proper motions, centroids, light curves, etc.). \reqparam{diaCharacterizationCutoff}
-
-\oldtext{Older versions of the \PPDB\ produced during Data Release processing will be archived following the same rules as for the \DR{}s. The most recent DR, and the penultimate data release will be kept on disk and loaded into the database.\dmreq{0077} Others will be archived to tape and made available as bulk downloads.\dmreq{0300} See \S~\ref{sec:retention} for more detail.}
 
 \subsection{Prompt Image Products}
 
@@ -749,13 +744,11 @@ Each alert (a \VOEvent packet) will at least include the following:
 
 \begin{itemize}
     \item \emph{alertID}: An ID uniquely identifying this alert. It can also be used to execute a query against the \PPDB as it existed when this alert was issued.\dmreq{0274}
-    \oldtext{\item \emph{\PPDB ID}}   %: For example, \texttt{DR5L1}
     \item Science Data:
     \begin{itemize}
         \item The \DIASource record that triggered the alert, as well as the \texttt{filterName} and \texttt{programId} of the corresponding \texttt{Visit}
-	\item The entire \DIAObject (or \SSObject) record\newtext{.  \DIAObject records include matching \Object IDs from the latest Data Release, if they exist.}
-	\item \oldtext{Previous 12 months of \DIASource records} \newtext{Any \DIASource and \DIAForcedSource records that exist, and difference image noise estimates where they do not, taken from the previous 12 months.} \reqparam{diaCharacterizationCutoff}
-	\oldtext{\item Matching \Object IDs from the latest Data Release, if they exist, and 12 months of their \DIASource records}
+	\item The entire \DIAObject (or \SSObject) record. \DIAObject records include matching \Object IDs from the latest Data Release, if they exist.
+	\item Any \DIASource and \DIAForcedSource records that exist, and difference image noise estimates where they do not, taken from the previous 12 months. \reqparam{diaCharacterizationCutoff}
     \end{itemize}
     % \item Flags (isSolarSystemObject, isArtefact, etc.)
     \item Cut-out of the difference image centered on the \DIASource (10 bytes/pixel, FITS MEF)
