@@ -138,7 +138,7 @@ telescope pupil (in reality, there are many additional optical, pixel and
 bandpass effects, including random counting noise and various subtle
 systematic errors, that are treated during subsequent processing).
 This single-visit image processed by the pipeline is called a ``Processed Visit Image'' and its main data structures include counts, their variance and
-various masks, all defined on per pixel basis. 
+various masks, all defined on per pixel basis.
 These single-visit images are used downstream to produce coadded and difference
 images. The rest of the processing is essentially a model-based interpretation
 of imaging observations that includes numerous astrophysical and other
@@ -699,7 +699,7 @@ The former should satisfy the most common use cases (eg., SNe), while the latter
 
 In what we've described so far, the \PPDB is continually being added to as new images are taken and \DIASources identified.\dmreq{0312} Every time a new \DIASource is associated to an existing \DIAObject, the \DIAObject record is updated to incorporate new information brought in by the \DIASource. Once discovered and measured, the \DIASources would never be re-discovered and re-measured at the pixel level.
 
-This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few. 
+This would be far from optimal. The instrument will be better understood with time. Newer versions of LSST pipelines will improve detection and measurements on older data. Also, precovery photometry should optimally be performed for \emph{all} objects, and not just a select few.
 The annual Data Release productions will therefore also include a full reanalysis of the time-domain information in the collected dataset , by performing image differencing on all images collected by the survey \dmreq{0313}\dmreq{0325}. The images will be processed using a single version of the image differencing and measurement software, resulting in a consistent set of \DIASources, \DIAObjects, \ForcedSources, and \SSObjects as part of a data release.
 
 There will be three main advantages of time-domain data produced during Data Release processing, compared to
