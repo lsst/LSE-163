@@ -1,0 +1,36 @@
+% generated with https://github.com/mjuric/lsst-schema-converter; DO NOT EDIT BY HAND !!
+\begin{schema}{{\tt SSSource} Table}{{\tt SSSource} Table}{tbl:SSSource}
+ssObjectId & BIGINT & ~ & Unique identifier of the object. \\
+diaSourceId & BIGINT & ~ & Unique identifier of the observation \\
+mpcUniqueId & BIGINT & ~ & MPC unique identifier of the observation \\
+nearbyObj & BIGINT[6] & ~ & Closest Objects (3 stars and 3 galaxies) in Level 2 database. \\
+nearbyObjDist & FLOAT[6] & ~ & Distances to nearbyObj \\
+nearbyObjLnP & FLOAT[6] & ~ & Natural log of the probability that the observed DIAObject is the same as the nearby Object \\
+eclipticLambda & DOUBLE & deg & Ecliptic longitude \\
+eclipticBeta & DOUBLE & deg & Ecliptic latitude \\
+galacticL & DOUBLE & deg & Galactic longitude \\
+galacticB & DOUBLE & deg & Galactic latitute \\
+phaseAngle & FLOAT & deg & Phase angle \\
+heliocentricDist & FLOAT & AU & Heliocentric distance \\
+topocentricDist & FLOAT & AU & Topocentric distace \\
+predictedMagnitude & FLOAT & mag & Predicted magnitude \\
+predictedMagnitudeSigma & FLOAT & mag & Prediction uncertainty (1-sigma) \\
+residualRa & DOUBLE & deg & Residual R.A. vs. ephemeris \\
+residualDec & DOUBLE & deg & Residual Dec vs. ephemeris \\
+predictedRaSigma & FLOAT & deg & Predicted R.A. uncertainty \\
+predictedDecSigma & FLOAT & deg & Predicted Dec uncertainty \\
+predictedRaDecCov & FLOAT & deg$^{\rm ^2}$ & Predicted R.A./Dec covariance \\
+heliocentricX & FLOAT & AU & Cartesian heliocentric coordinates (at the emit time) \\
+heliocentricY & FLOAT & AU &  \\
+heliocentricZ & FLOAT & AU &  \\
+heliocentricVX & FLOAT & AU & Cartesian heliocentric velocities (at the emit time) \\
+heliocentricVY & FLOAT & AU &  \\
+heliocentricVZ & FLOAT & AU &  \\
+topocentricX & FLOAT & AU & Cartesian topocentric coordinates (at the emit time) \\
+topocentricY & FLOAT & AU &  \\
+topocentricZ & FLOAT & AU &  \\
+topocentricVX & FLOAT & AU & Cartesian topocentric velocities (at the emit time) \\
+topocentricVY & FLOAT & AU &  \\
+topocentricVZ & FLOAT & AU &  \\
+\end{schema}
+% generated with https://github.com/mjuric/lsst-schema-converter; DO NOT EDIT BY HAND !!

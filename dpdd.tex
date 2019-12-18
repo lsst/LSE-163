@@ -632,49 +632,21 @@ flags & bit[64] & bit & Various useful flags. \\
 
 \subsubsection{{\tt MPCORB}, \SSObject and \SSSource Tables}
 
-The three tables presented below capture the high-level information that will be available in the database for each Solar System Object (\SSObject) and for each observation of a Solar System Object (\SSSource). They are primarily meant as {\bf guidance} to the LSST team when developing the actual schema. {\bf The details and the schema realization are nearly certain to differ from what's given below}. The implementation will be maintained in the catalog repository at \url{https://github.com/lsst/cat}, as well as linked at \url{http://ls.st/ssp}.
+The three tables presented below capture the information that will be available in the database for each Solar System Object (\SSObject) and for each observation of a Solar System Object (\SSSource). {\bf The details of the schema will evolve as the implementation progresses, maintaining the high-level content}. The implementation will be maintained in the catalog repository at \url{https://github.com/lsst/cat}, as well as linked at \url{http://ls.st/ssp}.
 
 \dmreq{0273}
 
-\begin{schema}{{\tt MPCORB} Table}{{\tt MPCORB} Table}{tbl:mpcorbTable}
-	
-	ssObjectId & uint64 & ~ & Unique identifier (internal). \\
-	
-	mpcDesignation & string[8] & ~ & Unique MPC designation. \\
-	
-	oe & double[7] & various & Osculating orbital elements at epoch ($q$, $e$, $i$, $\Omega$, $\omega$, $M_0$, epoch). \\
-	
-	oeCov & double[28] & various & Covariance matrix for \texttt{oe}. \\
-	
-	arc & float & days & Arc of observation. \\
-	
-\end{schema}
+\input{schemas/MPCORB.tex}
 
 The {\tt MPCORB} table will be ingested, at least daily, from the Minor Planet Center. Its exact contents will mirror the columns available in the MPCORB at the time the LSST is operations. While MPCORB does not contain orbital element covarances at this point, it is expected these will become available in time for LSST operations.
 
-\begin{schema}{\SSObject Table}{\SSObject Table}{tbl:ssobjectTable}
-
-ssObjectId & uint64 & ~ & Unique identifier (internal). \\
-
-MOID & float[2] & AU & Minimum orbit intersection distance with Earth\footnote{\url{http://www2.lowell.edu/users/elgb/moid.html}} \\
-
-moidLon & double & degrees & MOID longitude. \\
-
-H & float[6] & mag & Mean absolute magnitude, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
-
-$\mathrm{G_{12}}$ & float[6] & mag & $G_{12}$ slope parameter, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
-
-hErr & float[6] & mag & Uncertainty of H estimate.\\
-
-g12Err & float[6] & mag & Uncertainty of $G_{12}$ estimate. \\
-
-flags & bit[64] & bit & Various useful flags. \\
-
-\end{schema}
+\input{schemas/SSObject.tex}
 
 The $G_{12}$ parameter for a large fraction of asteroids may not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs and add it later in Operations. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data. The design of the data management system is insensitive to this decision, making it possible to postpone it to Commissioning to ensure it follows the standard community practice at that time.
 
 {\bf Per-observation quantities:} The LSST database will provide an auxiliary table (\SSSource) or equivalent functions to compute the phase (Sun-Asteroid-Earth) angle $\alpha$ for every observation, the reduced, $H(\alpha)$, and absolute, $H$, asteroid magnitudes in LSST bands, as well as any other quantities defined in the realized schema.\dmreq{0323}
+
+\input{schemas/SSSource.tex}
 
 \subsubsection{Precovery Measurements}
 
