@@ -831,7 +831,7 @@ The flux limit in deep coadds will be significantly fainter than in individual v
 The deblender will be run simultaneously on the catalog of peaks\footnote{The source detection algorithm we plan to employ finds regions of connected pixels above the nominal $S/N$ threshold in the \emph{PSF-likelihood image} of the visit (or coadd). These regions are called \emph{footprints}. Each footprint may have one or more \emph{peaks}, and it is these peaks that the deblender will use to infer the number and positions of objects blended in each footprint.} detected in the coadds, the \DIAObject catalog from the \PPDB, and one or more external catalogs.  It will use the knowledge of peak positions, bands, time, time variability (from Prompt products and the single-epoch \Source detections), inferred motion, Galactic longitude and latitude, and other available information to produce a master list of deblended \Objects. Metadata on why and how a particular \Object was deblended will be kept.
 
 \dmreq{0276}
-The properties of \Objects, including their exact positions, motions, parallaxes, and shapes, will be characterized by MultiFit-type algorithms\footnote{``MultiFit algorithms'' are those that fit a PSF-convolved model (so-called ``forward modeling'')  to all multi-epoch observations of an object. This approach is in contrast to measurement techniques where multi-epoch images are coadded first, and the properties are measured from the coadded pixels.}.
+The properties of \Objects, including their exact positions, motions, parallaxes, photometry, and shapes, will be characterized via a broad suite of algorithms (see \S~\ref{sec:objchar}, mostly (but not entirely) performed on coadds.
 
 Finally, to enable studies of variability, the fluxes of all \Objects will be measured on individual visits (using both
 direct and difference images), with their shape parameters and deblending resolutions kept constant. This process is known as \emph{forced photometry} (see \S~\ref{sec:forcedPhotL2}), and the flux measurements will be stored in the \ForcedSource table.\dmreq{0268}
@@ -852,7 +852,7 @@ present a high-level overview of the Data Release data processing workflow\footn
 The following is a high-level description of steps which will occur during regular Data Release data processing
 (bullets 1 and 2 below map to pipeline 1, \emph{Single Visit Processing}, in Figure~\ref{fig:Pipe1}, bullet 3 is
 pipeline 2, \emph{Image Coaddition}, bullets 4-6 map to pipeline 3, \emph{Coadded Image Analysis}, and
-bullet 7 is pipeline 4, \emph{Multi-epoch Object Characterization}):
+bullets 7-8 map to pipeline 4, \emph{Multi-epoch Object Characterization}):
 \begin{enumerate}
     \item \emph{Single Visit Processing}: Raw exposures are reduced to Processed Visit Images, and \Sources are independently detected, deblended, and measured on all visits. Their measurements (instrumental fluxes and shapes) are stored in the \Source table.\dmreq{0267}
     \item \emph{Relative calibration}: The survey is internally calibrated, both photometrically and astrometrically. Relative zero-point and astrometric corrections are computed for every visit.\dmreq{0029} \dmreq{0030} Sufficient data is kept to reconstruct the normalized system response function $\phi_b(\lambda)$ (see Eq.~5, \SRD) at every position in the focal plane at the time of each visit as required by \S~3.3.4 of the \SRD.
@@ -864,14 +864,14 @@ catalogs\footnote{Note that \Sources are not considered when generating the \Obj
 number of visits in each band, the false positives close to the faint end would increase the complexity of
 association and deblending algorithms). It is possible for intermittent sources that are detected just above
 the faint detection limit of single visits to be undetected in coaddds, and thus to not have a matching \Object.
-To enable easy identification of such \Sources, the nearest \Object associated with each \Source, if any, will be recorded.}.\dmreq{0034}
+To enable easy identification of such \Sources, the nearest \Object associated with each \Source, if any, will be recorded,
+and some \Object measurements (e.g. stellar motion parameters) \emph{may} utilize positions from securely-matched \Sources.}.\dmreq{0034}
 
     The deblender will make use of all information available at this stage, including the knowledge of peak positions, bands, time, time variability (from Prompt products), Galactic longitude and latitude, etc. The output of this stage is a list of uncharacterized \Objects\footnote{Depending on the exact implementation of the deblender, this stage may also attach significant metadata (eg, deblended footprints and pixel-weight maps) to each deblended \Object record.}.
-    \item \emph{Coadd object characterization}.  Object properties such as adaptive moments and aperture fluxes will be measured on the coadds.  These will be stored in additional columns in the \Object table.  Models fit in multi-epoch object characterization will also be fit first to the coadds and stored. \dmreq{0276}
-    \item \emph{Multi-epoch object characterization}. A set of predefined model fits and measurements will be performed on each of the \Objects identified in the previous step, \textit{taking all available multi-epoch data into account}. Model fits will be performed using \emph{MultiFit}-type algorithms. Rather than coadding a set of images and measuring object characteristics on the coadd, MultiFit simultaneously fits PSF-convolved models to the objects multiple observations. This reduces systematic errors, improves the overall $S/N$, and allows for fitting of time-dependent quantities degenerate with shape on the coadds (for example, the proper motion). The models we plan to fit will \emph{not} allow for flux variability (see the next item). \dmreq{0275}
-    \item \emph{Forced Photometry}. Source fluxes will be measured on every visit, with the position, motion, shape, and the deblending parameters characterized in the previous step kept fixed.
-Measurements will be performed on both direct images and difference images.
-This process of \emph{forced photometry}, will result in the characterization of the light-curve for each object in the survey. The fluxes will be stored in the \ForcedSource table.\dmreq{0268}
+    \item \emph{Coadd object characterization}.  The vast majority of columns in the \Object table will be measured on one or more coadds.  These include positions, shapes, and photometry.  For the most part, these are static-sky measurements, but short-period coadds may be used (especially in later data releases) for some measurements with long but finite time scales, such as proper motions. \dmreq{0276} \dmreq{0275}
+    \item \emph{Forced Photometry}. Source fluxes will be measured on every visit, with the position and motion derived from previous steps held fixed, producing our best estimates of the light-curve for each object in the survey. The fluxes will be stored in the \ForcedSource table.\dmreq{0268}
+    Measurements will be performed on both direct images and difference images.
+    \item \emph{Object Postprocessing}.  Measurements from all previous steps are combined in catalog-space algorithms.  This includes computing photometric redshifts, fitting proper motion and parallax, and characterizing variability.  These are also used to populate the \Object table.
 \end{enumerate}
 
 \subsubsection{Object Characterization Measures}
@@ -879,13 +879,13 @@ This process of \emph{forced photometry}, will result in the characterization of
 
 Properties of detected objects will be measured as a part of the object characterization step described in the previous section and stored in the \Object table. These measurements are designed to enable LSST ``static sky'' science. This section discusses at a high level which properties will be measured and how those measurements will be performed. For a detailed list of quantities being fit/measured, see the table in \S~\ref{sec:objectTable}.
 
-All measurements discussed in this section deal with properties of \emph{objects}, and will be performed on multi-epoch coadds, or by simultaneously fitting to all epochs. Measurements of sources in individual visits, independent of all others, are described in \S~\ref{sec:sourceMeas}.
+All measurements discussed in this section deal with properties of \emph{objects}, and will be performed primarily on a suite of multi-epoch coadds. Measurements of sources in individual visits, independent of all others, are described in \S~\ref{sec:sourceMeas}, though in rare cases those \Source measurements and/or the forced measurements described in \S~\ref{sec:forcedPhotL2} may be used in addition to coadds for \Object measurements.
 
-To enable science cases depending on observations of non-variable objects in the LSST-observed sky, we plan to measure the following using the MultiFit approach:
+The measurements performed on \Objects include:
 %
 \begin{itemize}
-    \item \emph{Point source model fit}. The observed object is modeled as a point source with finite proper motion and parallax and constant flux (allowed to be different in each band). \dmreq{0276} This model is a good description for non-variable stars and other unresolved sources. Its 11 parameters will be simultaneously constrained using information from all available observations in all bands\footnote{The fitting procedure will account for differential chromatic refraction.}.
-    \item \emph{Bulge-disk model fit}. \dmreq{0276} The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies\footnote{We may reconsider this choice if a better suited parametrization is discovered while LSST is in Construction.}. The object is assumed not to move\footnote{I.e., have zero proper motion and trigonometric parallax.}. The components share the same ellipticity and center. The model is independently fit to each band. There are a total of 8 free parameters, which will be simultaneously constrained using information from all available epochs for each band. Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted to limit the range of its sampling.
+    \item \emph{Point source model fit}. The observed object is modeled as a point source with finite proper motion and parallax and constant flux (allowed to be different in each band). \dmreq{0276} This model is a good description for non-variable stars and other unresolved sources. Its 11 parameters will be constrained using some combination of matched \Source positions, centroids measured on short-period coadds, and dipole moments measured during difference-image forced photometry\footnote{The fitting procedure will account for differential chromatic refraction.}.
+    \item \emph{Bulge-disk model fit}. \dmreq{0276} The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies\footnote{We may reconsider this choice if a better suited parametrization is discovered while LSST is in Construction.}. The object is assumed not to move\footnote{I.e., have zero proper motion and trigonometric parallax.}. The components share the same ellipticity and center. The model is independently fit to each band. There are a total of 8 free parameters, which will be constrained via forward modeling (including PSF convolution) to coadd images.  Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), priors will be adopted to limit the range of its sampling.
 
 We will also explore fitting the galaxy model simultaneously to all bands, with some parameters constrained to be the same or related via a hierarchical model across bands.  As this reduces the number of overall model parameters significantly, we could then consider freeing up other parameters. One likely scenario is that we would allow the bulge and disk ellipticities to differ; another possibility is allowing the Sersic indices of one or both components to vary.  The ultimate determination of which model to use will be driven by empirical tests of the robustness and quality of the fits on both low- and high-redshift galaxies.
 
@@ -937,9 +937,9 @@ The following \Source properties are planned to be measured:
 
 \end{itemize}
 
-Note that we do \emph{not} plan to fit extended source Bulge+Disk models to individual \Sources, nor measure per-visit Petrosian or Kron fluxes. These are object properties that are not expected to vary in time\footnote{Objects that \emph{do} change shape with time would, obviously, be of particular interest. Aperture fluxes provided in the \Source table should suffice to detect these. Further per-visit shape characterization can be performed using the Science Platform.}, and will be better characterized by MultiFit (in the \Object table).
+Note that we do \emph{not} plan to fit extended source Bulge+Disk models to individual \Sources, nor measure per-visit Petrosian or Kron fluxes. These are object properties that are not expected to vary in time\footnote{Objects that \emph{do} change shape with time would, obviously, be of particular interest. Aperture fluxes provided in the \Source table should suffice to detect these. Further per-visit shape characterization can be performed using the Science Platform.}, and will be better characterized by coadd-based measurements (in the \Object table).
 %including the so-called star-galaxy separation (estimation of the probability that a source is resolved, given the PSF).
-For example, although a simple extendedness characterization is present in the Source table, star-galaxy separation (an estimate of the probability that a source is resolved, given the PSF) will be better characterized by MultiFit.
+For example, although a simple extendedness characterization is present in the Source table, star-galaxy separation (an estimate of the probability that a source is resolved, given the PSF) will be better characterized by a combination of \Object measurements.
 
 
 \subsubsection{Forced Photometry}
@@ -1422,12 +1422,9 @@ point spread function estimation, and astrometric and photometric calibration.
 \item \textit{Image Coaddition} pipeline (Figure~\ref{fig:Pipes234}) produces coadded images
 of different flavors (optimized for depth, seeing, etc.) from an ensemble of single-visit images.
 \item \textit{Coadded Image Analysis} pipeline (Figure~\ref{fig:Pipes234}) defines the \Object list
-and performs initial measurements on coadded images.
-\item \textit{Multi-epoch Object Characterization} pipeline (Figure~\ref{fig:Pipes234}) fits a library
-of image models to a set of Footprints of an \Object family, measures additional quantities (e.g.,
-the profile surface brightness in a series of annuli) not captured by those models, and performs
-Forced Photometry. All these measurements are performed on single-visit images (direct and
-difference images) and for all \Objects.
+and performs (mostly) static-sky measurements on coadded images.
+\item \textit{Multi-epoch Object Characterization} pipeline (Figure~\ref{fig:Pipes234}) performs
+Forced Photometry on single-visit images (both direct and differences) at the positions of all \Objects, and then runs a series of primarily catalog-space algorithms that combine information from all previous stages; this includes measuring proper motions and parallax from a combination of \Source and \Object measurements, summarizing variability from forced photometry, and computing photometric redshifts.
 \item \textit{Image Differencing} pipeline (Figure~\ref{fig:Pipes567}) produces difference images
 from a single-visit and coadded (template) images.
 \item \textit{Difference Image Analysis} pipeline (Figure~\ref{fig:Pipes567}) updates
