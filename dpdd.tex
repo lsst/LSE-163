@@ -885,9 +885,11 @@ The measurements performed on \Objects include:
 %
 \begin{itemize}
     \item \emph{Point source model fit}. The observed object is modeled as a point source with finite proper motion and parallax and constant flux (allowed to be different in each band). \dmreq{0276} This model is a good description for non-variable stars and other unresolved sources. Its 11 parameters will be constrained using some combination of matched \Source positions, centroids measured on short-period coadds, and dipole moments measured during difference-image forced photometry\footnote{The fitting procedure will account for differential chromatic refraction.}.
-    \item \emph{Bulge-disk model fit}. \dmreq{0276} The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component. This model is intended to be a reasonable description of galaxies\footnote{We may reconsider this choice if a better suited parametrization is discovered while LSST is in Construction.}. The object is assumed not to move\footnote{I.e., have zero proper motion and trigonometric parallax.}. The components share the same ellipticity and center. The model is independently fit to each band. There are a total of 8 free parameters, which will be constrained via forward modeling (including PSF convolution) to coadd images.  Where there's insufficient data to constrain the likelihood (eg., small, poorly resolved, galaxies, or very few epochs), Bayesian priors or another form of regularization will be adopted.
 
-We will also explore fitting the galaxy model simultaneously to all bands, with some parameters constrained to be the same or related via a hierarchical model across bands.  As this reduces the number of overall model parameters significantly, we could then consider freeing up other parameters. One likely scenario is that we would allow the bulge and disk ellipticities to differ; another possibility is allowing the Sersic indices of one or both components to vary.  The ultimate determination of which model to use will be driven by empirical tests of the robustness and quality of the fits on both low- and high-redshift galaxies.
+    \item \emph{Bulge-disk model fit}. \dmreq{0276} The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component, but with some parameters constrained across the two components (the model described in the Table~\ref{tbl:objectTable} fixes the ellipticity to be the same and the radii to have a constant ratio while allowing the fluxes to vary independently for example, but it should be emphasized that this just one of several possible models).
+    The object is assumed not to move, and we will probably use the general-purpose centroid for the position rather than include the position as a model parameter.  The model will be fit first to the coadds for all bands simultaneously (with only fluxes allowed to vary) and then to each band independently.
+    In all cases the fitting is done via forward modeling -- the model is convolved with the PSF before being compared to the image.
+    Our primary goal for this model is to provide robust photometry of most galaxies detected by LSST, with shapes and other morphology information (and particularly bright and/or well-resolved galaxies) secondary goal, and we will tune the model parameterization accordingly.
 
     \item \emph{Standard colors}. \dmreq{0276} Colors of the object in ``standard seeing'' (for example, the third quartile expected survey seeing in the $i$ band, $\sim$0.9\,arcsec) will be measured. These colors are guaranteed to be seeing-insensitive,  suitable for estimation of photometric redshifts\footnote{The problem of optimal determination of photometric redshift is the subject of intense research. The approach we're taking here is conservative, following contemporary practices. As new insights develop, we will revisit the issue.}.
 
@@ -999,26 +1001,25 @@ psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
+bdEllip & float[2][ugrizyM] & ~ & B+D model: Ellipticity $(e_1, e_2)$ of the object. \\
 
-bdRadec & double[2][ugrizy] & ~ & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk'', we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object, in each band. \\
+bdFluxB & float[2][ugrizy] & nJy & B+D model\footnote{Though we refer to this model as ``Bulge plus Disk'', we caution the reader that the decomposition, while physically motivated, should not be taken too literally.}: $(\alpha, \delta)$ position of the object, in each band.: Integrated flux of the de Vaucouleurs component, in both the multi-band fit and the per-band fit. \\
 
-bdEllip & float[2][ugrizy] & ~ & B+D model: Ellipticity $(e_1, e_2)$ of the object. \\
+bdFluxD & float[2][ugrizy] & nJy & B+D model: Integrated flux of the exponential component, in both the multi-band fit and the per-band fit. \\
 
-bdFluxB & float[ugrizy] & nJy & B+D model: Integrated flux of the de Vaucouleurs component. \\
+bdReB & float[ugrizyM] & arcsec & B+D model: Effective radius of the de Vaucouleurs profile component. \\
 
-bdFluxD & float[ugrizy] & nJy & B+D model: Integrated flux of the exponential component. \\
+bdReD & float[ugrizyM] & arcsec & B+D model: Effective radius of the exponential profile component. \\
 
-bdReB & float[ugrizy] & arcsec & B+D model: Effective radius of the de Vaucouleurs profile component. \\
+bdCovM & float[136] & ~ & B+D model covariance matrix for the multi-band fit\footnote{See \texttt{psCov} for notes on precision of variances/covariances.}. \\
 
-bdReD & float[ugrizy] & arcsec & B+D model: Effective radius of the exponential profile component. \\
+bdCovM & float[21][ugrizy] & ~ & B+D model covariance matrices for the independent per-band fits. \\
 
-bdCov & float[36][ugrizy] & ~ & B+D model covariance matrix\footnote{See \texttt{psCov} for notes on precision of variances/covariances.}. \\
+bdLnL & float[ugrizyM] & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\
 
-bdLnL & float[ugrizy] & ~ & Natural $log$ likelihood of the observed data given the bulge+disk model. \\
+bdChi2 & float[ugrizyM] & ~ & $\chi^2$ statistic of the model fit. \\
 
-bdChi2 & float[ugrizy] & ~ & $\chi^2$ statistic of the model fit. \\
-
-bdNdata & int[ugrizy] & ~ & The number of data points (pixels) used to fit the model. \\
+bdNdata & int[ugrizyM] & ~ & The number of data points (pixels) used to fit the model. \\
 
 stdColor & float[5] & mag & Color of the object measured in ``standard seeing''. While the exact algorithm is yet to be determined, this color is guaranteed to be seeing-independent and suitable for photo-z determinations.\\
 
