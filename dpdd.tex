@@ -936,9 +936,9 @@ Sources will be detected on individual visits as well as the coadds. Sources det
 The following \Source properties are planned to be measured:
 %
 \begin{itemize}
-    \item \emph{Static point source model fit}. The source is modeled as a static point source. There are a total of 3 free parameters ($\alpha$, $\delta$, flux). This model is a good description of stars and other unresolved sources. \dmreq{0267}
+    \item \emph{Centroids}. Centroids are currently planned to be computed using an algorithm similar to that employed by SDSS, which uses an approximation to the PSF model as a weight function. These centroids will be used for PSF photometry, adaptive moments, and aperture magnitude measurements. \dmreq{0267}
 
-    \item \emph{Centroids}. Centroids are currently planned to be computed using an algorithm similar to that employed by SDSS. These centroids will be used for adaptive moment and aperture magnitude measurements. \dmreq{0267}
+    \item \emph{Point source photometry}. Fluxes are measured using the PSF model as a weight function, with aperture corrections applied to account for flux beyond the PSF model's extend and put this measurement on the same system as other flux measurements.\dmreq{0267}
 
     \item \emph{Adaptive moments}. Adaptive moments will be computed. The moments of the PSF realized at the position of the object will be provided as well. \dmreq{0267}
 
@@ -1150,11 +1150,9 @@ sky & float & nJy/arcsec$^{2}$ & Estimated background (sky) surface brightness a
 
 skyErr & float & nJy/arcsec$^{2}$ & Estimated uncertainty of \texttt{sky}. \\
 
-psRadec & double[2] & degrees & Point source model: $(\alpha, \delta)$ position of the object. \\
-
 psFlux & float & nJy & Calibrated point source model flux.\\
 
-psCov & float[6] & various & Point-source model covariance matrix\footnote{Not all elements of the covariance matrix will be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim$1\% ).}. \\
+psCov & float[6] & various & Point-source model covariance matrix, including dependence on the centoid\footnote{Not all elements of the covariance matrix will be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim$1\% ).}. \\
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\
 
