@@ -92,7 +92,7 @@ All data products will be made available using user-friendly databases and web s
 \addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
 \addtohist{3.3}{2018-10-24}{Implementation of LCR-1459. DM-12129: Adoption of nanojansky flux unit. DM-11247: Add additional alert packet contents to DPDD. DM-15566: DPDD incorrectly states "immediate" access to PPDB products.  Updated document maintainer, curator and author list, added point estimates for photo-z and a few minor edits.}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
 \addtohist{3.4}{2018-07-29}{Add DIAForcedSource table. Clarify handling of force photometry, Prompt vs. Data Release products distinction, other minor fixes. (LCR-1916: RFC-517, DM-10540, DM-15671, DM-16688, DM-15784)}{C. Slater, E. Bellm}
-\addtohist{X.X}{2020-07-14}{Remove mentions of multifit and multi-epoch fitting. Clarification of DM plans for making and serving coadds. (LCR-XXXX: RFC-XXX, DM-23248)}{J. Bosch, L.Guy, E.Bellm}
+\addtohist{X.X}{2020-07-14}{Remove mentions of multifit and multi-epoch fitting. Clarification of DM plans for making and serving coadds. Clarification of current status of computing photometric redshifts (LCR-XXXX: RFC-XXX, DM-23248)}{J. Bosch, L.Guy, E.Bellm}
 }
 
 \begin{document}
@@ -873,8 +873,12 @@ and some \Object measurements (e.g. stellar motion parameters) \emph{may} utiliz
     \item \emph{Coadd object characterization}.  The vast majority of columns in the \Object table will be measured on one or more coadds.  These include positions, shapes, and photometry.  For the most part, these are static-sky measurements, but short-period coadds may be used (especially in later data releases) for some measurements with long but finite time scales, such as proper motions. \dmreq{0276} \dmreq{0275}
     \item \emph{Forced Photometry}. Source fluxes will be measured on every visit, with the position and motion derived from previous steps held fixed, producing our best estimates of the light-curve for each object in the survey. The fluxes will be stored in the \ForcedSource table.\dmreq{0268}
     Measurements will be performed on both direct images and difference images.
-    \item \emph{Object Postprocessing}.  Measurements from all previous steps are combined in catalog-space algorithms.  This includes computing photometric redshifts, fitting proper motion and parallax, and characterizing variability.  These are also used to populate the \Object table.
+    \item \emph{Object Postprocessing}.  Measurements from all previous steps are combined in catalog-space algorithms.  This includes fitting proper motion and parallax, and characterizing variability.  These are also used to populate the \Object table.
 \end{enumerate}
+
+Data Release data processing will include the computation of photometric redshifts for all detected \Objects. \dmreq{0046}
+We are still investigating the best approach to take; the DM Science team is working with the community to decide on the most appropriate algorithm and the format for the results.  
+When an algorithm and data product format has been choosen,  the exact manner in which it will be incorporated into the Data Release data processing will be described here.  
 
 \subsubsection{Object Characterization Measures}
 \label{sec:objchar}
