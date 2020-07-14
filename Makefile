@@ -1,3 +1,5 @@
+export TEXMFHOME ?= lsst-texmf/texmf
+
 dpdd.pdf:  dpdd.tex gliffy/*.pdf
 	latexmk -bibtex -pdf -f dpdd.tex
 
