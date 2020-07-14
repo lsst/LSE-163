@@ -732,16 +732,8 @@ The images will remain accessible with low-latency (seconds from request to star
 
 Coadded images will be used as templates for difference image analysis.
 The coaddition process will take care to remove transient or fast moving objects (eg., asteroids) from the templates.
-The time range of the epochs included in a template is TBD, and will be chosen to balance our analysis of high-proper-motion stars (favoring shorter ranges) with the need to correct for DCR and maximize depth (favoring longer ranges).
+The time range of the epochs included in a template is TBD, and will be chosen to minimize false positives due to high proper-motion stars (favoring shorter ranges) with the need to correct for DCR and maximize depth (favoring longer ranges).
 The numbers and types of coadds used for templates are also TBD.
-
-\begin{draftnote}
-Changes on DM-23248 above intentionally do not conform to DMS-REQ-0280, which puts an upper bound of 1 year on the time range of epochs included in templates.
-I believe this requirement represents only one way to ensure high-proper-motion stars are dealt with correctly, but utilizing longer time ranges of inputs may be the *only* way to deal with other problems in image subtraction (especially DCR), because those problems are fundamentally limited by available information, not (just) the model used.
-
-We don't seem to say anything about the availability window of templates.
-Should we?
-\end{draftnote}
 
 \subsection{Alerts to \DIASources}
 \label{sec:voEventContents}
@@ -1243,20 +1235,13 @@ Much of Data Release processing relies on coadded images.  These will include at
 
     \item A set of \emph{template coadds}.  These will be used for image differencing in that data release and in the following season's Prompt Processing (approaches for image differencing prior to DR1 are still under investigation).  They will be retained and made available at least during the period in which they are used by Prompt Processing.  See also \S~\ref{sec:templates}.
 
-    \item RGB color images derived from coadds (utilizing any three of \textit{ugrizy}), intended for visual inspection and EPO \dmreq{0103}.  These will may be stored using lossy compression (e.g. JPEG) and are not intended to be used as an input to algorithmic code
+    \item RGB color images derived from coadds (utilizing any three of \textit{ugrizy}), intended for visual inspection and EPO \dmreq{0103}.  
+    These may be stored using lossy compression (e.g. JPEG) and are not intended to be used as an input to algorithmic code
 \end{itemize}
 
 DM will also provide software and configuration that will allow users to create additional coadds using the Science Platform or other resources. \dmreq{0311}\dmreq{0298}
 These will include at least PSF-matched coadds, multi-band detection coadds, yearly or other short-period coadds, and direct coadds built from images with only the visits with the best seeing. \dmreq{0330}\dmreq{0281}\dmreq{0335}\dmreq{0330}.
 The exact configurations for all coadds actually used in data release processing will be made available, even if the images themselves are not retained.
-
-\begin{draftnote}
-Changes on DM-23248 explicitly violates DMS-REQ-0334 (which coadds are retained), removing "Best Seeing Coadds", because DRP isn't actually planning to build or use them internally.
-We could produce and serve them anyway to meet the requiement, but I suspect there are much more scientifically productive uses (e.g. postage-stamp coadds) for that part of the storage budget, and I think it's irresponsible to promise to devote resources to something we're not sure will be useful.
-
-Ideally, we would also update the text of DMS-REQ-{0281,0330,0334} to state that DM "will deliver software to produce" these coadds rather than actually producing them.
-At least right now, DM has no need to produce them for its internal use, and it's silly to promise to produce something that we are also promising to throw away.
-\end{draftnote}
 
 The exact details of which coadds to build, and which ones to keep, can change during Construction without affecting the processing system design as the most expensive operations (raw image input and warping) are constant in the number of coadds produced. The data management system design \emph{is} sensitive to the total \emph{number and size} of coadds to be \emph{kept} -- these are the relevant constraining variables.
 
