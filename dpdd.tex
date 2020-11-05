@@ -13,6 +13,7 @@
 \excludecomment{openissues}
 
 \newcommand\x         {\hbox{$\times$}}
+\newcommand\SSSource  {{\tt SSSource}}
 
 \newcommand{\annotate}[1]{{\color{magenta}\large\textbf{\emph{#1}}}}
 
@@ -304,7 +305,7 @@ The latter method would probably be limited to nightly granularity, unless there
 
 \subsection{Overview}
 
-Prompt data products are the result of nightly processing. These data products are single visit images, difference images, and the results of difference image analysis (DIA; \S \ref{sec:dia}). DIA outputs consist of the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), identified Solar System objects\footnote{The \SRD considers Solar System object orbit catalog to be a Data Release data product (LSST \SRD, Sec 3.5). Nevertheless, to successfully differentiate between apparitions of known Solar System objects and other types \DIASources we consider it functionally a part of Prompt products.} (\SSObject) Various metadata products are also produced during nightly processing and made available to users.
+Prompt data products are the result of nightly processing. These data products are single visit images, difference images, and the results of difference image analysis (DIA; \S \ref{sec:dia}). DIA outputs consist of the sources detected in difference images (\DIASources), astrophysical objects that these are associated to (\DIAObjects), characterizations of hitherto identified Solar System objects (\SSObject), and discoveries of new Solar System objects. Various metadata products are also produced during nightly processing and made available to users.
 
 \DIASources are sources detected on difference images (those with the signal-to-noise ratio $S/N>transSNR$ after correlation with the PSF profile, with $transSNR$\reqparam{transSNR} defined in the \SRD and presently set to \transSNR). They represent changes in flux with respect to a deep template. Detections with high probability of being instrumental non-astrophysical artifacts may be excluded. Physically, a \DIASource may be an observation of new astrophysical object that was not present at that position in the template image (for example, an asteroid), or an observation of flux change in an existing source (for example, a variable star). Their flux can be negative (eg., if a source present in the template image reduced its brightness, or moved away). Their shape can be complex (eg., trailed, for a source with proper motion approaching $\sim$deg/day, or ``dipole-like'', if an object's observed position exhibits an offset -- true or apparent -- compared to its position on the template).
 Some \DIASources will be caused by background fluctuations; with $transSNR = \transSNR$,
@@ -313,7 +314,7 @@ positives due to background fluctuations is a very strong function of adopted $t
 results in a variation of an order of magnitude, and a change of $transSNR$ by unity changes the number of false
 positives by about two orders of magnitude.
 
-Clusters of \DIASources detected on visits taken at different times are associated with either a \DIAObject or an \SSObject,\dmreq{0285} to represent the underlying astrophysical phenomenon. The association can be made in two different ways: by assuming the underlying phenomenon is an object within the Solar System moving on an orbit around the Sun\footnote{We don't plan to fit for motion around other Solar System bodies; eg., identifying new satellites of Jupiter is left to the community.}, or by assuming it to be distant enough to only exhibit small parallactic and proper motion\footnote{Where 'small' is small enough to unambiguously positionally associate together individual apparitions of the object.}. The latter type of association is performed during difference image analysis right after the image has been acquired. \dmreq{0089}The former is done at daytime by the Moving Objects Processing Software (\code{MOPS}), unless the \DIASource is an apparition of an already known \SSObject. In that case, it will be flagged as such during difference image analysis.
+Clusters of \DIASources detected on visits taken at different times are associated with either a \DIAObject or an \SSObject,\dmreq{0285} to represent the underlying astrophysical phenomenon. The association can be made in two different ways: by assuming the underlying phenomenon is an object within the Solar System moving on an orbit around the Sun\footnote{We don't plan to fit for motion around other Solar System bodies; eg., identifying new satellites of Jupiter is left to the community.}, or by assuming it to be distant enough to only exhibit small parallactic and proper motion\footnote{Where 'small' is small enough to unambiguously positionally associate together individual apparitions of the object.}. The latter type of association is performed during difference image analysis right after the image has been acquired. \dmreq{0089}The former is done at daytime by the object linking element of the Solar System Processing Pipeline, unless the \DIASource is an apparition of an already known \SSObject. In that case, it will be flagged as such during difference image analysis.
 
 \dmreq{0002}
 At the end of the difference image analysis of each visit, we will issue time domain event alerts for all newly %discovered
@@ -355,21 +356,22 @@ The initial set of criteria will be defined by the start of LSST operations.
 \subsubsection{Solar System Object Processing}
 \label{sec:ssProcessing}
 
-The following will occur during regular Solar System object processing (in daytime\footnote{Note that there \emph{is no strict bound on when daytime Solar System processing must finish}, just that, averaged over some reasonable timescale (eg., a month), a night's worth of observing is processed within 24 hours. Nights rich in moving objects may take longer to process, while nights with less will finish more quickly. In other words, the requirement is on \emph{throughput}, not latency.}, after a night of observing; see Figure~\ref{fig:Pipe8}) \dmreq{0004}\dmreq{0089}:
+The Solar System Processing described in this section occurs in daytime, after a night of observing \dmreq{0004}\dmreq{0089}. Its goal is to link (identify) previously unknown \SSObjects, given the additional night of observing and report the discoveries to the Minor Planet Center, as well as compute physical (e.g., absolute magnitudes) and other auxiliary properties (e.g., predicted apparent magnitudes and coordinates in various coordinate systems) for known Solar System objects and their LSST observations. The process is graphically illustrated in Figure~\ref{fig:Pipe8}.
+
+The pipeline consists of the following conceptual steps:
 \begin{enumerate}
-\item The orbits and physical properties of all \SSObjects re-observed on the previous night are recomputed. External orbit catalogs (or observations) are also used to improve orbit estimates.\dmreq{0288} Updated data are entered to the \SSObjects table.\dmreq{0273}
-\item All \DIASources detected on the previous night, that have \emph{not} been matched at a high confidence level to a known \Object,
-\DIAObject, \SSObject, or an artifact, are analyzed for potential pairs, forming \emph{tracklets}.
-\item The collection of tracklets collected over the past 30 days\footnote{The exact time period is a design and computational question discussed in \citeds{LDM-156}.} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
-\item For those that are, an orbit is fitted and a new \SSObject table entry created. \DIASource records are updated to point to the new \SSObject record. \DIAObjects ``orphaned'' by this unlinking are marked as expired (as per Section \ref{sec:repeatability}).
-\item Precovery linking is attempted for all \SSObjects whose orbits were updated in this process.\dmreq{0286} Where successful, \SSObjects (orbits) are recomputed as needed.
+\item {\bf Linking:} All \DIASources detected on the previous night, that have \emph{not} been matched at a high confidence level to a known \Object,
+\DIAObject, \SSObject, or an artifact, are analyzed for potential pairs, forming \emph{tracklets}. The collection of tracklets collected over no fewer than past 14 days\footnote{The exact time window is largely computationally limited; longer windows increase the discovery rates and are preferable.} is searched for subsets forming \emph{tracks} consistent with being on the same Keplerian orbit around the Sun.
+\item {\bf Reporting:} These newly discovered Solar System objects are reported to the MPC, using the standard data-exchange protocols (e.g., the ADES format). The measurements of all \DIASources detected on the previous night that have been matched at a high level of confidence to a known \SSObject are also submitted to the MPC.
+\item {\bf Catalog Update:} An updated orbit catalog, incorporating previously submitted LSST discoveries as well as discoveries by other contemporaneous programs, is downloaded from the MPC and ingested into the Prompt Products database. \DIASource records are updated to point to the relevant \SSObject records. \DIAObjects ``orphaned'' by this unlinking are deleted.\footnote{Some \DIAObjects may only be left with forced photometry measurements at their location (since all \DIAObjects are force-photometered on previous and subsequent visits);  these will be kept but flagged as such.}.
+\item {\bf Physical Characterization:} The physical properties of all known \SSObjects, as defined by the orbit catalog, are recomputed. \dmreq{0288} Updated data are entered into the relevant tables.\dmreq{0273}
+\item {\bf Precovery:} Precovery linking is attempted for all \SSObjects whose orbits were updated in this process (or are new).\dmreq{0286} Where successful, newly discovered observations are queued up for submission to the MPC.
 \end{enumerate}
 
 \subsection{Prompt Catalogs}
 \label{sec:level1db}
 
-The alert processing design relies on the \PPDB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, MOPS-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object association. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
-
+The alert processing design relies on the \PPDB that contains the objects and sources detected on difference images. At the very least\footnote{It will also contain exposure and visit metadata, SSP-specific tables, etc. These are either standard/uncontroversial, implementation-dependent, or less directly relevant for science and therefore not discussed in this document.}, this database will have tables of \DIASources,\dmreq{0269} \DIAObjects,\dmreq{0271} and \SSObjects,\dmreq{0273} populated in the course of nightly and daily difference image and Solar System object processing. As these get updated and added to, their updated contents becomes visible (query-able) to users within 24 hours\reqparam{L1PublicT} of the corresponding observation times. In the case of SSObjects, this means 24 hours after orbits have been determined or updated.\dmreq{0312}
 
 This database is \emph{only loosely coupled to the \DR}. All of the coupling is through positional matches between the \DIAObjects entries in the \PPDB and the \Objects in the \DR. There is no direct \DIASource-to-\Object match:
 in general, a time-domain object is not necessarily the same astrophysical object as a static-sky object, even if the two are
@@ -449,7 +451,7 @@ psChi2 & float & ~ & $\chi^2$ statistic of the model fit. \\
 
 psNdata & int & ~ & The number of data points (pixels) used to fit the model. \\
 
-trailFlux & float & nJy & Calibrated flux for a trailed source model\footnote{A \emph{Trailed Source Model} attempts to fit a (PSF-convolved) model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). Roughly, it's a fit to a PSF-convolved line. The primary use case is to characterize fast-moving Solar System objects.}$^,$\footnote{This model does not fit for the \emph{direction} of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity, and is not clearly justified by increased MOPS performance given the added information.}. Note this actually measures the flux \emph{difference} between the template and the visit image. \\
+trailFlux & float & nJy & Calibrated flux for a trailed source model\footnote{A \emph{Trailed Source Model} attempts to fit a (PSF-convolved) model of a point source that was trailed by a certain amount in some direction (taking into account the two-snap nature of the visit, which may lead to a dip in flux around the mid-point of the trail). Roughly, it's a fit to a PSF-convolved line. The primary use case is to characterize fast-moving Solar System objects.}$^,$\footnote{This model does not fit for the \emph{direction} of motion; to recover it, we would need to fit the model to separately to individual snaps of a visit. This adds to system complexity, and is not clearly justified by increased Solar System object linking performance given the added information.}. Note this actually measures the flux \emph{difference} between the template and the visit image. \\
 
 trailRadec & double[2] & degrees & Centroid for trailed source model. \\
 
@@ -630,61 +632,23 @@ flags & bit[64] & bit & Various useful flags. \\
 
 \end{schema}
 
-\subsubsection{\SSObject Table}
+\subsubsection{{\tt MPCORB}, \SSObject and \SSSource Tables}
+
+The three tables presented below capture the information that will be available in the database for each Solar System Object (\SSObject) and for each observation of a Solar System Object (\SSSource). {\bf The details of the schema will evolve as the implementation progresses, maintaining the high-level content}. The implementation will be maintained in the catalog repository at \url{https://github.com/lsst/cat}, as well as linked at \url{http://ls.st/ssp}.
 
 \dmreq{0273}
 
-\begin{schema}{\SSObject Table}{\SSObject Table}{tbl:ssobjectTable}
+\input{schemas/MPCORB.tex}
 
-ssObjectId & uint64 & ~ & Unique identifier. \\
+The {\tt MPCORB} table will be ingested, at least daily, from the Minor Planet Center. Its exact contents will mirror the columns available in the MPCORB at the time the LSST is operations. While MPCORB does not contain orbital element covarances at this point, it is expected these will become available in time for LSST operations.
 
-oe & double[7] & various & Osculating orbital elements at epoch ($q$, $e$, $i$, $\Omega$, $\omega$, $M_0$, epoch). \\
+\input{schemas/SSObject.tex}
 
-oeCov & double[28] & various & Covariance matrix for \texttt{oe}. \\
+The $G_{12}$ parameter for a large fraction of asteroids may not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs and add it later in Operations. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data. The design of the data management system is insensitive to this decision, making it possible to postpone it to Commissioning to ensure it follows the standard community practice at that time.
 
-arc & float & days & Arc of observation. \\
+{\bf Per-observation quantities:} The LSST database will provide an auxiliary table (\SSSource) or equivalent functions to compute the phase (Sun-Asteroid-Earth) angle $\alpha$ for every observation, the reduced, $H(\alpha)$, and absolute, $H$, asteroid magnitudes in LSST bands, as well as any other quantities defined in the realized schema.\dmreq{0323}
 
-orbFitLnL & float & ~ & Natural log of the likelihood of the orbital elements fit. \\
-
-orbFitChi2 & float & ~ & $\chi^2$ statistic of the orbital elements fit. \\
-
-orbFitNdata & int & ~ & The number of data points (observations) used to fit the orbital elements. \\
-
-MOID & float[2] & AU & Minimum orbit intersection distances\footnote{\url{http://www2.lowell.edu/users/elgb/moid.html}} \\
-
-moidLon & double[2] & degrees & MOID longitudes. \\
-
-H & float[6] & mag & Mean absolute magnitude, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
-
-$\mathrm{G_1}$ & float[6] & mag & $G_1$ slope parameter, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
-
-$\mathrm{G_2}$ & float[6] & mag & $G_2$ slope parameter, per band \citep[][magnitude-phase system]{2010Icar..209..542M}. \\
-
-hErr & float[6] & mag & Uncertainty of H estimate.\\
-
-g1Err & float[6] & mag & Uncertainty of $G_1$ estimate. \\
-
-g2Err & float[6] & mag & Uncertainty of $G_2$ estimate. \\
-
-flags & bit[64] & bit & Various useful flags. \\
-
-\end{schema}
-
-The $G_1$ and $G_2$ parameters for the large majority of asteroids will not be well constrained until later in the survey. We may decide not to fit for it at all over the first few DRs and add it later in Operations, or provide two-parameter $G_{12}$ fits. Alternatively, we may fit it using strong priors on slopes poorly constrained by the data. The design of the data management system is insensitive to this decision, making it possible to postpone it to Commissioning to ensure it follows the standard community practice at that time.
-
-The LSST database will provide functions to compute the phase (Sun-Asteroid-Earth) angle $\alpha$ for every observation, as well as the reduced, $H(\alpha)$, and absolute, $H$, asteroid magnitudes in LSST bands.\dmreq{0323}
-
-\begin{changelog}
-Notes about changes with respect to the previous baseline:
-\begin{itemize}
-    \item Though many columns have been removed, we should maintain roughly the equivalent extra columns in the sizing model as some may re-appear internally (eg., MOPS-specific columns). This is true in general for all tables.
-    \item Removed all asteroid shape-related columns; determining these is outside of the scope of the Project.
-    \item Removed taxonomy related columns; determining these is outside of the scope of the Project.
-    \item Removed \texttt{albedo} -- I don't believe albedo can be determined solely from LSST data. More likely, we will need to assume a particular value. If this value is not universal, this column will need to be put back in.
-    \item Removed \texttt{xMag, xMagErr, xAmplitude, xPeriod} columns as they were not clearly defined (eg., w/o phase correction, do they make sense?). These can be recovered by querying the \DIASource table for magnitudes. Deriving phase-corrected light curves should now be done in the Science Platform.
-    \item Removed a number of other MOPS-specific columns. These are algorithm-specific and should not be a part of the baseline, outward-facing, schema\footnote{Because we may change the algorithm and they may disappear; the scientists should not be relying on them being there.}. They will need to be documented and added back into the physical schema, for sizing purposes.
-\end{itemize}
-\end{changelog}
+\input{schemas/SSSource.tex}
 
 \subsubsection{Precovery Measurements}
 
@@ -1445,10 +1409,9 @@ for all new \DIAObjects on difference images from the last 30 days\reqparam{prec
 \item \textit{Alert Generation and Distribution} pipeline (Figure~\ref{fig:Pipes567}) uses updated
 \DIAObjects and \DIASources to generate and distribute \Alerts (which also include postage stamp
 images of the \DIASource in difference image and coadded template image).
-\item \textit{Moving Object Processing} pipeline (MOPS, Figure~\ref{fig:Pipe8})) combines all
-un-associated \DIASources into plausible \SSObjects and estimates their orbital parameters.
-The three main pipeline stages include associating new \DIASources with known \SSObjects,
-discovering new \SSObjects, and orbit refinement and management.
+\item \textit{Solar System Processing} pipeline (SSP, Figure~\ref{fig:Pipe8})) combines all
+un-associated \DIASources into plausible linkages, reports the discoveries to the Minor Planet Center, and computes the physical characteristics of observed objects.
+The three main pipeline stages include associating new \DIASources with known \SSObjects (attribution), discovering new \SSObjects (linking), and the computation of physical characteristics and auxiliary quantities useful for Solar System science.
 \end{enumerate}
 
 Further details about the pipeline design and implementation are available from the LSST
@@ -1457,7 +1420,7 @@ document \citeds{LDM-151}.
 \begin{figure}[!t]
     \centering
     \vskip -0.1in
-    \includegraphics[scale=0.515, angle=270]{gliffy/LSSTimageProcessingDetail1}
+    \includegraphics[scale=0.30]{gliffy/LSSTimageProcessingDetail1-v36}
     \vskip -0.1in
     \caption{Illustration of the conceptual design of LSST science pipelines for imaging processing.\label{fig:Detail1}}
 \end{figure}
@@ -1494,11 +1457,10 @@ document \citeds{LDM-151}.
 
 \begin{figure}[!t]
     \centering
-    \vskip -2.3in
-%    \hskip -0.2in
-    \includegraphics[scale=0.50, angle=270]{gliffy/MOPS-Level0}
+    \vskip -0.2in
+    \includegraphics[scale=0.30]{gliffy/SSP-Level0-v22}
     \vskip -0.1in
-    \caption{Illustration of the conceptual algorithm design for the Moving Object Processing Software pipeline. \label{fig:Pipe8}}
+    \caption{Illustration of the conceptual algorithm design for the Solar System Processing pipeline. The elements in blue denote ingestion of data from external sources.\label{fig:Pipe8}}
 \end{figure}
 
 \end{document}

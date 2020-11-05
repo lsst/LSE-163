@@ -1,0 +1,31 @@
+% generated with https://github.com/mjuric/lsst-schema-converter; DO NOT EDIT BY HAND !!
+\begin{schema}{{\tt MPCORB} Table}{{\tt MPCORB} Table}{tbl:MPCORB}
+mpcDesignation & VARCHAR(8) & ~ & MPCORB: Number or provisional designation (in packed form) \\
+mpcNumber & INTEGER & ~ & MPC number (if the asteroid has been numbered; NULL otherwise). Provided for convenience. \\
+ssObjectId & BIGINT & ~ & LSST unique identifier (if observed by LSST) \\
+mpcH & FLOAT & mag & MPCORB: Absolute magnitude, H \\
+mpcG & FLOAT & ~ & MPCORB: Slope parameter, G \\
+epoch & DOUBLE & MJD & MPCORB: Epoch (in MJD, .0 TT) \\
+M & DOUBLE & degrees & MPCORB: Mean anomaly at the epoch, in degrees \\
+peri & DOUBLE & degrees & MPCORB: Argument of perihelion, J2000.0 (degrees) \\
+node & DOUBLE & degrees & MPCORB: Longitude of the ascending node, J2000.0 (degrees) \\
+incl & DOUBLE & degrees & MPCORB: Inclination to the ecliptic, J2000.0 (degrees) \\
+e & DOUBLE & ~ & MPCORB: Orbital eccentricity \\
+n & DOUBLE & degrees/day & MPCORB: Mean daily motion (degrees per day) \\
+a & DOUBLE & AU & MPCORB: Semimajor axis (AU) \\
+uncertaintyParameter & VARCHAR(1) & ~ & MPCORB: Uncertainty parameter, U \\
+reference & VARCHAR(9) & ~ & MPCORB: Reference \\
+nobs & INTEGER & ~ & MPCORB: Number of observations \\
+nopp & INTEGER & ~ & MPCORB: Number of oppositions \\
+arc & FLOAT & days & MPCORB: Arc (days), for single-opposition objects \\
+arcStart & DATETIME & ~ & MPCORB: Year of first observation (for multi-opposition objects) \\
+arcEnd & DATETIME & ~ & MPCORB: Year of last observation (for multi-opposition objects) \\
+rms & FLOAT & arcsec & MPCORB: r.m.s residual (") \\
+pertsShort & VARCHAR(3) & ~ & MPCORB: Coarse indicator of perturbers (blank if unperturbed one-opposition object) \\
+pertsLong & VARCHAR(3) & ~ & MPCORB: Precise indicator of perturbers (blank if unperturbed one-opposition object) \\
+computer & VARCHAR(10) & ~ & MPCORB: Computer name \\
+flags & INTEGER & ~ & MPCORB: 4-hexdigit flags. See https://minorplanetcenter.net//iau/info/MPOrbitFormat.html for details \\
+fullDesignation & VARCHAR(26) & ~ & MPCORB: Readable designation \\
+lastIncludedObservation & FLOAT & MJD & MPCORB: Date of last observation included in orbit solution \\
+\end{schema}
+% generated with https://github.com/mjuric/lsst-schema-converter; DO NOT EDIT BY HAND !!
