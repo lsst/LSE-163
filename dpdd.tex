@@ -3,7 +3,7 @@
 %
 % Maintained by Leanne Guy <leanne.guy@lsst.org>
 %
-\documentclass[SE,lsstdraft,toc]{lsstdoc}
+\documentclass[SE,toc]{lsstdoc}
 
 \usepackage{comment}
 \usepackage{listings}
@@ -92,7 +92,7 @@ All data products will be made available using user-friendly databases and web s
 \addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
 \addtohist{3.3}{2018-10-24}{Implementation of LCR-1459. DM-12129: Adoption of nanojansky flux unit. DM-11247: Add additional alert packet contents to DPDD. DM-15566: DPDD incorrectly states "immediate" access to PPDB products.  Updated document maintainer, curator and author list, added point estimates for photo-z and a few minor edits.}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
 \addtohist{3.4}{2018-07-29}{Add DIAForcedSource table. Clarify handling of force photometry, Prompt vs. Data Release products distinction, other minor fixes. (LCR-1916: RFC-517, DM-10540, DM-15671, DM-16688, DM-15784)}{C. Slater, E. Bellm}
-\addtohist{X.X}{2020-07-14}{Remove mentions of multifit and multi-epoch fitting. Clarification of DM plans for making and serving coadds. Clarification of current status of computing photometric redshifts (LCR-XXXX: RFC-XXX, DM-23248)}{J. Bosch, L.Guy, E.Bellm}
+\addtohist{3.5}{2020-11-04}{Implementation of LCR-2463 (RFC-710, DM-23248): Remove mentions of multifit and multi-epoch fitting. Clarification of DM plans for making and serving coadds. Clarification of current status of computing photometric redshifts.}{J. Bosch, L.Guy, E.Bellm}
 }
 
 \begin{document}
@@ -1233,10 +1233,10 @@ Much of Data Release processing relies on coadded images.  These will include at
 \begin{itemize}
     \item A set of \emph{deep coadds}.\dmreq{0279} One deep coadd will be created for each of the $ugrizy$ bands.\dmreq{0281} These coadds will be optimized for a reasonable combination of depth (i.e., employ no PSF matching) and resolution (i.e., visits with significantly degraded seeing may be omitted). Transient sources (including Solar System objects, explosive transients, etc), will be removed. Care will be taken to preserve the astrophysical backgrounds\footnote{For example, using ``background matching'' techniques \citep{DMTN-035}}.
 
-    The PSF model on these coadds will be propagated from the PSF models of their constituent visit-level images, and is thus expected to be discontinuous where the set of input images varies (e.g. due to CCD boundaries or rejected pixels).
-    To mitigate this effect, we are considering both building per-object postage-stamp coadds or by discretizing the inclusion or rejection of an epoch into the coadd over small predefined (and hence ensuring PSF discontinuities appear only at the well-defined boundaries between these regions).
+The PSF model on these coadds will be propagated from the PSF models of their constituent visit-level images, and is thus expected to be discontinuous where the set of input images varies (e.g. due to CCD boundaries or rejected pixels).
+To mitigate this effect, we are considering both building per-object postage-stamp coadds or by discretizing the inclusion or rejection of an epoch into the coadd over small predefined regions (and hence ensuring PSF discontinuities appear only at the well-defined boundaries between these regions).
 
-    The six per-band coadds will be kept indefinitely and made available to the users.\dmreq{0334} \emph{Their primary purpose (after data release production is complete) is to enable the end-users to apply alternative object characterization algorithms, perform studies of diffuse structures, and for visualization}.
+The six per-band coadds will be kept indefinitely and made available to the users.\dmreq{0334} \emph{Their primary purpose (after data release production is complete) is to enable the end-users to apply alternative object characterization algorithms, perform studies of diffuse structures, and for visualization}.
 
     \item A set of \emph{template coadds}.  These will be used for image differencing in that data release and in the following season's Prompt Processing (approaches for image differencing prior to DR1 are still under investigation).  They will be retained and made available at least during the period in which they are used by Prompt Processing.  See also \S~\ref{sec:templates}.
 
