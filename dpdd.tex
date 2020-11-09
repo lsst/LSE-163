@@ -1,120 +1,3 @@
-%
-% LSST Data Products Definition Document
-%
-% Maintained by Leanne Guy <leanne.guy@lsst.org>
-%
-\documentclass[SE,toc]{lsstdoc}
-
-\usepackage{comment}
-\usepackage{listings}
-
-\excludecomment{changelog}
-\excludecomment{todo}
-\excludecomment{openissues}
-
-\newcommand\x         {\hbox{$\times$}}
-\newcommand\SSSource  {{\tt SSSource}}
-
-\newcommand{\annotate}[1]{{\color{magenta}\large\textbf{\emph{#1}}}}
-
-\renewcommand{\DR}{{Data Release database}\xspace}
-
-% Environment for displaying the schema tables in
-% a consistent manner. Two arguments are the
-% caption and short caption that differ for each table.
-% The third argument is the label to use for the table
-\newenvironment{schema}[3]{%
-\setlength\LTleft{0pt}
-\setlength\LTright{\fill}
-\begin{longtable}{p{0.2\textwidth}p{0.14\textwidth}p{0.14\textwidth}p{0.41\textwidth}}
-
-% First header has a caption with a label
-\caption[#1]{#2\label{#3}}\\
-
-\hline \textbf{Name} & \textbf{Type} & \textbf{Unit} & \textbf{Description}\\ \hline
-\endfirsthead
-
-% Subsequent headers have the caption but no label
-\caption[#1]{#2}\\
-
-\hline \textbf{Name} & \textbf{Type} & \textbf{Unit} & \textbf{Description}\\ \hline
-\endhead
-
-\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
-\endfoot
-
-\hline\hline
-\endlastfoot
-}{%
-\hline
-\end{longtable}
-}
-
-
-\title[DPDD]{Data Products Definition Document}
-
-\author{
-M. Juri\'c,
-T.~Axelrod, A.C.~Becker, J.~Becla, E.~Bellm, J.F.~Bosch, D.~Ciardi,
-A.J.~Connolly,  G.P.~Dubois-Felsmann, F.~Economou, M.~Freemon,
-M.~Gelman, R.~Gill, M.~Graham, L.P.~Guy, \v{Z}.~Ivezi\'c, T.~Jenness,  J.~Kantor, K.S.~Krughoff,
-K-T~Lim,  R.H.~Lupton, F.~Mueller, D.~Nidever, W.~O'Mullane, M.~Patterson,
-D.~Petravick, D. Shaw, C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-Vasey, and X.~Wu
-}
-
-\date{\today}
-
-\setDocRef{LSE-163}
-\setDocCurator{Leanne Guy}
-\setDocUpstreamLocation{\url{https://github.com/lsst/LSE-163}}
-
-\setDocAbstract{%
-This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
-%
-LSST will deliver three levels of data products and services.
-\textbf{Prompt} data products are computed and released within 24 hours of observation, and include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects.
-Their primary purpose is to enable rapid follow-up of time-domain events.
-\textbf{Data Release} data products are computed during annual processing campaigns, and include well-calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science.
-The \textbf{Science Platform} will allow for the creation of  \textbf{User Generated} data products and will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center.
-LSST will also devote 10\% of observing time to programs with special cadence.
-Their data products will be created using the same software and hardware as Prompt and Data Release products.
-All data products will be made available using user-friendly databases and web services.\\
-}
-
-%
-%   Revision history
-%
-% OLDEST FIRST: VERSION, DATE, DESCRIPTION, OWNER NAME
-\setDocChangeRecord{%
-\addtohist{1}{2013-10-07}{Initial release}{Mario Juric}
-\addtohist{2}{2016-09-26}{Implementation of LCR-758 Update Data Products Definition Document, LSE-163}{Gregory Dubois-Felsmann (LCR), Tim Jenness (document), Robert McKercher (Docushare)}
-\addtohist{3.0}{2017-07-03}{Implementation of LCR-962. Reference LSE-61 requirements. Minor clean ups.}{Tim Jenness}
-\addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
-\addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
-\addtohist{3.3}{2018-10-24}{Implementation of LCR-1459. DM-12129: Adoption of nanojansky flux unit. DM-11247: Add additional alert packet contents to DPDD. DM-15566: DPDD incorrectly states "immediate" access to PPDB products.  Updated document maintainer, curator and author list, added point estimates for photo-z and a few minor edits.}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
-\addtohist{3.4}{2018-07-29}{Add DIAForcedSource table. Clarify handling of force photometry, Prompt vs. Data Release products distinction, other minor fixes. (LCR-1916: RFC-517, DM-10540, DM-15671, DM-16688, DM-15784)}{C. Slater, E. Bellm}
-\addtohist{3.5}{2020-11-04}{Implementation of LCR-2463 (RFC-710, DM-23248): Remove mentions of multifit and multi-epoch fitting. Clarification of DM plans for making and serving coadds. Clarification of current status of computing photometric redshifts.}{J. Bosch, L.Guy, E.Bellm}
-\addtohist{3.5}{2020-11-04}{Implementation of LCR-22376 (RFC-620, DM-24710) Update of the Solar System Products and Processing baseline}{M. Juri\'c, L.Guy}
-}
-
-\begin{document}
-\maketitle
-% Turn off page numbering for the preface
-\pagenumbering{gobble}
-
-\section*{Preface}
-
-The purpose of this document is to describe the data products produced by the Large Synoptic Survey Telescope (LSST).
-
-To a future LSST user, it should clarify what catalogs, image data, software, and services they can expect from LSST. To LSST builders, it provides direction on how to flow down the LSST System Requirements Document to system design, sizing, budget and schedule as they pertain to the data products.
-
-Though under strict change control, this is a \textbf{\emph{living document}}. LSST will undergo a period of construction  and commissioning lasting no less than seven years, followed by a decade of survey operations. To ensure their continued scientific adequacy, the designs and plans for LSST Data Products will be periodically reviewed and updated.
-
-\clearpage
-
-% Force page numbering to restart with the introduction
-\pagenumbering{arabic}
-
 \section{Introduction}
 
 \subsection{The Large Synoptic Survey Telescope}
@@ -325,13 +208,16 @@ detected \DIASources\footnote{For observations on the Ecliptic near the oppositi
 \subsubsection{Difference Image Analysis}
 \label{sec:dia}
 
-The following is a high-level description of steps which will occur during regular \emph{nightly}
-difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
+The following is a high-level description of steps which will occur during regular \emph{nightly} difference image analysis (see Figures~\ref{fig:Pipe1} and \ref{fig:Pipes567}):
 \begin{enumerate}
+
 \item A visit is acquired and reduced to a single \emph{Processed Visit Image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).\dmreq{0069}
-\item The Processed Visit Image is differenced against the appropriate template and \DIASources are detected. If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
-\item The flux and shape\footnote{The ``shape'' in this context consists of weighted 2$^\mathrm{nd}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. PSF photometry is performed on the Processed Visit Image at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
+\item The Processed Visit Image is differenced against the appropriate template and \DIASources are detected. 
+If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
+\item The flux and shape\footnote{The "shape" in this context consists of weighted 2$^{\rm{nd}}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. 
+PSF photometry is performed on the Processed Visit Image at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
 \item The \PPDB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.\dmreq{0273}\dmreq{0271}\dmreq{0285}
+
 \item If the \DIASource has been associated with an \SSObject (a known Solar System object), it will be flagged as such and an alert will be issued. Further processing will occur in daytime (see section \ref{sec:ssProcessing}).\dmreq{0274}
 \item Otherwise, the associated \DIAObject measurements will be updated with new data
 collected during previous 12 months. Hence, the computed parameters for \DIAObjects have a ``memory'' of past data that does not extend beyond this cutoff\footnote{This restriction is removed when Prompt processing is
@@ -1370,97 +1256,3 @@ For simplicity of use and consistency, the data products for special programs wi
 As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Prompt -like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim$24 hours\reqparam{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
 
 Note that the data rights and access rules apply just as they would for Prompt/Data Release/User Generated. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
-
-\bibliography{dpdd,lsst,refs_ads}
-
-
-\clearpage
-\appendix
-\section{Appendix: Conceptual Pipeline Design \label{sec:scipi}}
-
-A high-level conceptual overview of the LSST image processing science pipelines is illustrated
-in Figure~\ref{fig:Detail1}. The pipeline definitions presented here are driven by their inputs,
-outputs and processing steps; they do \textit{not} describe exact boundaries in the actual implementation
-code, execution, or development responsibilities within the Project.
-Processing from pipelines marked with 1, 2, and 5-8 is executed every day when new data are taken
-to produce Prompt Data Products. Annual Data Release processing includes pipelines 1-6 and 8
-(everything except Alert production). These main conceptual steps in LSST image processing
-include the following pipelines (enumeration in this list corresponds to enumeration in Figure~\ref{fig:Detail1}
-but note that these steps can be interleaved in the actual processing flow):
-\begin{enumerate}
-\item \textit{Single Visit Processing} pipeline (Figure~\ref{fig:Pipe1}) produces calibrated and
-characterized single-visit images from raw snaps. The main processing steps include instrumental
-signature removal, background estimation, source detection, deblending and measurements,
-point spread function estimation, and astrometric and photometric calibration.
-\item \textit{Image Coaddition} pipeline (Figure~\ref{fig:Pipes234}) produces coadded images
-of different flavors (optimized for depth, seeing, etc.) from an ensemble of single-visit images.
-\item \textit{Coadded Image Analysis} pipeline (Figure~\ref{fig:Pipes234}) defines the \Object list
-and performs (mostly) static-sky measurements on coadded images.
-\item \textit{Multi-epoch Object Characterization} pipeline (Figure~\ref{fig:Pipes234}) performs
-Forced Photometry on single-visit images (both direct and differences) at the positions of all \Objects, and then runs a series of primarily catalog-space algorithms that combine information from all previous stages; this includes measuring proper motions and parallax from a combination of \Source and \Object measurements, summarizing variability from forced photometry, and computing photometric redshifts.
-\item \textit{Image Differencing} pipeline (Figure~\ref{fig:Pipes567}) produces difference images
-from a single-visit and coadded (template) images.
-\item \textit{Difference Image Analysis} pipeline (Figure~\ref{fig:Pipes567}) updates
-\DIAObject and \SSObject lists with new \DIASources detected on processed difference image,
-fits a library of image models to Footprints of these \DIASources, and for all \DIAObjects
-overlapping the difference image it performs Forced Photometry and recomputes summary quantities.
-During nightly Prompt processing, this pipeline also performs Forced Photometry
-for all new \DIAObjects on difference images from the last 30 days\reqparam{precoveryWindow}.
-\item \textit{Alert Generation and Distribution} pipeline (Figure~\ref{fig:Pipes567}) uses updated
-\DIAObjects and \DIASources to generate and distribute \Alerts (which also include postage stamp
-images of the \DIASource in difference image and coadded template image).
-\item \textit{Solar System Processing} pipeline (SSP, Figure~\ref{fig:Pipe8})) combines all
-un-associated \DIASources into plausible linkages, reports the discoveries to the Minor Planet Center, and computes the physical characteristics of observed objects.
-The three main pipeline stages include associating new \DIASources with known \SSObjects (attribution), discovering new \SSObjects (linking), and the computation of physical characteristics and auxiliary quantities useful for Solar System science.
-\end{enumerate}
-
-Further details about the pipeline design and implementation are available from the LSST
-document \citeds{LDM-151}.
-
-\begin{figure}[!t]
-    \centering
-    \vskip -0.1in
-    \includegraphics[scale=0.30]{gliffy/LSSTimageProcessingDetail1-v36}
-    \vskip -0.1in
-    \caption{Illustration of the conceptual design of LSST science pipelines for imaging processing.\label{fig:Detail1}}
-\end{figure}
-
-
-\begin{figure}[!t]
-    \centering
-    \vskip -1.1in
-    \includegraphics[scale=0.505, angle=270]{gliffy/SingleVisitProcessing}
-    \vskip -1.1in
-    \caption{Illustration of the conceptual algorithm design for Single Visit Processing pipeline.\label{fig:Pipe1}}
-\end{figure}
-
-\begin{figure}[!th]
-    \centering
-    \vskip -0.2in
-    \includegraphics[scale=0.535]{gliffy/CoaddedImageProcessing}
-    \vskip -0.2in
-    \caption{Illustration of the conceptual algorithm design for Image Coaddition, Coadded Image Analysis,
-     and Multi-epoch Object Characterization pipelines.\label{fig:Pipes234}}
-\end{figure}
-
-
-
-\begin{figure}[!th]
-    \centering
-    \vskip -0.3in
-%    \hskip -0.8in
-    \includegraphics[scale=0.555, angle=0]{gliffy/DifferenceImageProcessing}
-    \vskip -0.1in
-    \caption{Illustration of the conceptual algorithm  design for Image Differencing, Difference Image
-                      Analysis, and Alert Generation and Distribution pipelines. \label{fig:Pipes567}}
-\end{figure}
-
-\begin{figure}[!t]
-    \centering
-    \vskip -0.2in
-    \includegraphics[scale=0.30]{gliffy/SSP-Level0-v22}
-    \vskip -0.1in
-    \caption{Illustration of the conceptual algorithm design for the Solar System Processing pipeline. The elements in blue denote ingestion of data from external sources.\label{fig:Pipe8}}
-\end{figure}
-
-\end{document}

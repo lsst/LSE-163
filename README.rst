@@ -1,5 +1,5 @@
 .. image:: https://img.shields.io/badge/lse--163-lsst.io-brightgreen.svg
-   :target: https://lse-163.lsst.io
+   :target: https://dmtn-163.lsst.io
 .. image:: https://github.com/lsst/lse-163/workflows/CI/badge.svg
    :target: https://github.com/lsst/lse-163/actions/
 
@@ -12,8 +12,53 @@ LSE-163
 
 This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
 
-**Links**
+Links
+=====
 
-- Accepted version on DocuShare: http://ls.st/LSE-163
+- Accepted version on DocuShare: http://ls.st/lse-163
 - Live drafts: https://lse-163.lsst.io
-- GitHub: https://github.com/lsst/LSE-163
+- GitHub: https://github.com/lsst/lse-163
+
+Build
+=====
+
+This repository includes lsst-texmf_ as a Git submodule.
+Clone this repository::
+
+    git clone --recurse-submodules https://github.com/lsst-dm/dmtn-165
+
+Compile the PDF::
+
+    make
+
+Clean built files::
+
+    make clean
+
+Updating acronyms
+-----------------
+
+A table of the technote's acronyms and their definitions are maintained in the ``acronyms.tex`` file, which is committed as part of this repository.
+To update the acronyms table in ``acronyms.tex``::
+
+    make acronyms.tex
+
+*Note: this command requires that this repository was cloned as a submodule.*
+
+The acronyms discovery code scans the LaTeX source for probable acronyms.
+You can ensure that certain strings aren't treated as acronyms by adding them to the `skipacronyms.txt <./skipacronyms.txt>`_ file.
+
+The lsst-texmf_ repository centrally maintains definitions for LSST acronyms.
+You can also add new acronym definitions, or override the definitions of acronyms, by editing the `myacronyms.txt <./myacronyms.txt>`_ file.
+
+Updating lsst-texmf
+-------------------
+
+`lsst-texmf`_ includes BibTeX files, the ``lsstdoc`` class file, and acronym definitions, among other essential tooling for LSST's LaTeX documentation projects.
+To update to a newer version of `lsst-texmf`_, you can update the submodule in this repository::
+
+   git submodule update --init --recursive
+
+Commit, then push, the updated submodule.
+
+.. _lsst-texmf: https://github.com/lsst/lsst-texmf

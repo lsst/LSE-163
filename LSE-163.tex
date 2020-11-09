@@ -1,0 +1,137 @@
+%
+% LSST Data Products Definition Document
+%
+% Maintained by Leanne Guy <leanne.guy@lsst.org>
+%
+\documentclass[SE,toc]{lsstdoc}
+
+\usepackage{comment}
+\usepackage{listings}
+
+\excludecomment{changelog}
+\excludecomment{todo}
+\excludecomment{openissues}
+
+\newcommand\x         {\hbox{$\times$}}
+\newcommand\SSSource  {{\tt SSSource}}
+
+\newcommand{\annotate}[1]{{\color{magenta}\large\textbf{\emph{#1}}}}
+
+\renewcommand{\DR}{{Data Release database}\xspace}
+
+% Environment for displaying the schema tables in
+% a consistent manner. Two arguments are the
+% caption and short caption that differ for each table.
+% The third argument is the label to use for the table
+\newenvironment{schema}[3]{%
+\setlength\LTleft{0pt}
+\setlength\LTright{\fill}
+\begin{longtable}{p{0.2\textwidth}p{0.14\textwidth}p{0.14\textwidth}p{0.41\textwidth}}
+
+% First header has a caption with a label
+\caption[#1]{#2\label{#3}}\\
+
+\hline \textbf{Name} & \textbf{Type} & \textbf{Unit} & \textbf{Description}\\ \hline
+\endfirsthead
+
+% Subsequent headers have the caption but no label
+\caption[#1]{#2}\\
+
+\hline \textbf{Name} & \textbf{Type} & \textbf{Unit} & \textbf{Description}\\ \hline
+\endhead
+
+\hline \multicolumn{4}{r}{\emph{Continued on next page}} \\
+\endfoot
+
+\hline\hline
+\endlastfoot
+}{%
+\hline
+\end{longtable}
+}
+
+
+\title[DPDD]{Data Products Definition Document}
+
+\author{
+M. Juri\'c,
+T.~Axelrod, A.C.~Becker, J.~Becla, E.~Bellm, J.F.~Bosch, D.~Ciardi,
+A.J.~Connolly,  G.P.~Dubois-Felsmann, F.~Economou, M.~Freemon,
+M.~Gelman, R.~Gill, M.~Graham, L.P.~Guy, \v{Z}.~Ivezi\'c, T.~Jenness,  J.~Kantor, K.S.~Krughoff,
+K-T~Lim,  R.H.~Lupton, F.~Mueller, D.~Nidever, W.~O'Mullane, M.~Patterson,
+D.~Petravick, D. Shaw, C.~Slater, M.~Strauss, J.~Swinbank, J.A.~Tyson, M.~Wood-Vasey, and X.~Wu
+}
+
+\date{\today}
+
+\setDocRef{LSE-163}
+\setDocCurator{Leanne Guy}
+\setDocUpstreamLocation{\url{https://github.com/lsst/LSE-163}}
+
+\setDocAbstract{%
+This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
+%
+LSST will deliver three levels of data products and services.
+\textbf{Prompt} data products are computed and released within 24 hours of observation, and include images, difference images, catalogs of sources and objects detected in difference images, and catalogs of Solar System objects.
+Their primary purpose is to enable rapid follow-up of time-domain events.
+\textbf{Data Release} data products are computed during annual processing campaigns, and include well-calibrated single-epoch images, deep coadds, and catalogs of objects, sources, and forced sources, enabling static sky and precision time-domain science.
+The \textbf{Science Platform} will allow for the creation of  \textbf{User Generated} data products and will enable science cases that greatly benefit from co-location of user processing and/or data within the LSST Archive Center.
+LSST will also devote 10\% of observing time to programs with special cadence.
+Their data products will be created using the same software and hardware as Prompt and Data Release products.
+All data products will be made available using user-friendly databases and web services.\\
+}
+
+%
+%   Revision history
+%
+% OLDEST FIRST: VERSION, DATE, DESCRIPTION, OWNER NAME
+\setDocChangeRecord{%
+\addtohist{1}{2013-10-07}{Initial release}{Mario Juric}
+\addtohist{2}{2016-09-26}{Implementation of LCR-758 Update Data Products Definition Document, LSE-163}{Gregory Dubois-Felsmann (LCR), Tim Jenness (document), Robert McKercher (Docushare)}
+\addtohist{3.0}{2017-07-03}{Implementation of LCR-962. Reference LSE-61 requirements. Minor clean ups.}{Tim Jenness}
+\addtohist{3.1}{2018-01-04}{Implementation of LCR-1024. Mention relevant OSS requirements.}{Tim Jenness}
+\addtohist{3.2}{2018-02-09}{Implementation of LCR-1214. Update Level 1, Level 2 and Level 3 nomenclature as defined in \citeds{LPM-231}. Shrink section Level 3 section and refer to Science Platform.}{R.~Gill, W.~O'Mullane}
+\addtohist{3.3}{2018-10-24}{Implementation of LCR-1459. DM-12129: Adoption of nanojansky flux unit. DM-11247: Add additional alert packet contents to DPDD. DM-15566: DPDD incorrectly states "immediate" access to PPDB products.  Updated document maintainer, curator and author list, added point estimates for photo-z and a few minor edits.}{\v{Z}.~Ivezi\'{c}, Leanne Guy}
+\addtohist{3.4}{2018-07-29}{Add DIAForcedSource table. Clarify handling of force photometry, Prompt vs. Data Release products distinction, other minor fixes. (LCR-1916: RFC-517, DM-10540, DM-15671, DM-16688, DM-15784)}{C. Slater, E. Bellm}
+\addtohist{3.5}{2020-11-04}{Implementation of LCR-2463 (RFC-710, DM-23248): Remove mentions of multifit and multi-epoch fitting. Clarification of DM plans for making and serving coadds. Clarification of current status of computing photometric redshifts.}{J. Bosch, L.Guy, E.Bellm}
+\addtohist{3.5}{2020-11-04}{Implementation of LCR-22376 (RFC-620, DM-24710) Update of the Solar System Products and Processing baseline}{M. Juri\'c, L.Guy}
+}
+
+\begin{document}
+\maketitle
+% Turn off page numbering for the preface
+\pagenumbering{gobble}
+
+\section*{Preface}
+
+The purpose of this document is to describe the data products produced by the Large Synoptic Survey Telescope (LSST).
+
+To a future LSST user, it should clarify what catalogs, image data, software, and services they can expect from LSST. To LSST builders, it provides direction on how to flow down the LSST System Requirements Document to system design, sizing, budget and schedule as they pertain to the data products.
+
+Though under strict change control, this is a \textbf{\emph{living document}}. LSST will undergo a period of construction  and commissioning lasting no less than seven years, followed by a decade of survey operations. To ensure their continued scientific adequacy, the designs and plans for LSST Data Products will be periodically reviewed and updated.
+
+\clearpage
+
+% Force page numbering to restart with the introduction
+\pagenumbering{arabic}
+
+\input{dpdd}
+
+\clearpage
+
+\appendix
+\input{pipeline-design}
+
+% Include all the relevant bib files.
+% https://lsst-texmf.lsst.io/lsstdoc.html#bibliographies
+\section{References} \label{sec:bib}
+\renewcommand{\refname}{} % Suppress default Bibliography section
+\bibliography{local,lsst,lsst-dm,refs_ads,refs,books}
+
+% Make sure lsst-texmf/bin/generateAcronyms.py is in your path
+\section{Acronyms} \label{sec:acronyms}
+\input{acronyms.tex}
+% If you want glossary uncomment below -- comment out the two lines above
+%\printglossaries
+
+\end{document}
