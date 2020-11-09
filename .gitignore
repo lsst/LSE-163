@@ -21,6 +21,7 @@ one.*
 
 ## Intermediate documents:
 *.dvi
+*.xdv
 *-converted-to.*
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
