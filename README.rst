@@ -1,7 +1,7 @@
-.. image:: https://img.shields.io/badgelse--163-lsst.io-brightgreen.svg
-   :target: https://lse-163.lsst.io
-.. image:: https://github.com/rubin-observatory/lse-163/workflows/CI/badge.svg
-   :target: https://github.com/rubin-observatory/lse-163/actions/
+.. image:: https://img.shields.io/badge/lse--163-lsst.io-brightgreen.svg
+   :target: https://lse-165.lsst.io
+.. image:: https://github.com/lsst/lse-163/workflows/CI/badge.svg
+   :target: https://github.com/lsst/lse-163/actions/
 
 #################################
 Data Products Definition Document
