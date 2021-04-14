@@ -516,11 +516,11 @@ nearbyObjLnP   & float[6] & ~ &  Natural $\log$ of the probability that the obse
 
 nearbyExtObj & unit64[3] & ~ & Three extended Objects with lowest separations in Data Release database\footnote{Separations should be calculated with respect to the transient location using the second moments of each Object's luminosity profile, as described in DMTN-151.}. \\
 
-nearbyExtObjSep & float[3]  & ~ & Separations of potentialHost. \\
+nearbyExtObjSep & float[3]  & ~ & Separations of nearbyExtObj. \\
 
-nearbyLowzGal & str[1]    & ~ & External catalog name of the nearest low-z potential host\footnote{External catalog will be, e.g., the NGC/IC, unless the community provides one that they deem to be more scientifically useful, as described in DMTN-151.}. \\
+nearbyLowzGal & str[1]    & ~ & External catalog name of the nearest low-redshift galaxy\footnote{External catalog will be, e.g., the NGC/IC, unless the community provides one that they deem to be more scientifically useful, as described in DMTN-151.}. \\
 
-nearbyLowzGalSep & float[1]  & ~ & Separation of potentialLowzHost\footnote{Separations will be radial offset in arcseconds unless a community-provided catalog includes galaxy characteristics that would enable an alternative, as described in DMTN-151.}. \\
+nearbyLowzGalSep & float[1]  & ~ & Separation of nearbyLowzGal\footnote{Separations will be radial offset in arcseconds unless a community-provided catalog includes galaxy characteristics that would enable an alternative, as described in DMTN-151.}. \\
 
 flags & bit[64] & bit & Various useful flags. \\
 
