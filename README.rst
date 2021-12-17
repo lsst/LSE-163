@@ -10,7 +10,7 @@ Data Products Definition Document
 LSE-163
 =======
 
-This document describes the data products and processing services to be delivered by the Large Synoptic Survey Telescope (LSST).
+This document describes the data products and processing services to be delivered by the Vera C. Rubin Observatory Legacy Survey of Space and Time (LSST).
 
 Links
 =====

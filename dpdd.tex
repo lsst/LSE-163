@@ -1,15 +1,16 @@
 \section{Introduction}
 
-\subsection{The Large Synoptic Survey Telescope}
+\subsection{The Vera C. Rubin Observatory}
 
 % Note: paragraph lifted from Zeljko's overview paper
-LSST will be a large, wide-field ground-based optical telescope system
-designed to obtain multiple images covering the sky that is visible from Cerro Pach\'{o}n in Northern Chile. The current baseline design, with an 8.4m (6.7m effective) primary mirror, a 9.6 deg$^2$ field of view, and a 3.2 Gigapixel camera, will allow about 10,000 square degrees of sky to be covered every night using pairs of 15-second exposures, with typical 5$\sigma$ depth for point sources of $r\sim24.5$ (AB). The system is designed to yield high image quality as well as superb astrometric  and photometric accuracy. The total survey area will include $\sim$30,000 deg$^2$ with $\delta<+34.5^\circ$, and will be imaged multiple times in six bands, $ugrizy$, covering the wavelength range 320--1050 nm. For a more detailed, but still concise,
-summary of LSST, please see the LSST Overview paper \citep{2008arXiv0805.2366I}\footnote{\url{http://ls.st/2m9}}.
+The Rubin Observatory will host the LSST Camera,  a large, wide-field ground-based optical telescope system
+designed to obtain multiple images covering the sky that is visible from Cerro Pach\'{o}n in Northern Chile. The current baseline design, with an 8.4m (6.7m effective) primary mirror, a 9.6 deg$^2$ field of view, and a 3.2 Gigapixel camera, will allow about 10,000 square degrees of sky to be covered every night using pairs of 15-second exposures, with typical 5$\sigma$ depth for point sources of $r\sim24.5$ (AB). The system is designed to yield high image quality as well as superb astrometric  and photometric accuracy. The total survey area will include $\sim$30,000 deg$^2$ with $\delta<+34.5^\circ$, and will be imaged multiple times in six bands, $ugrizy$, covering the wavelength range 320--1050 nm. This is referred to as the Legacy Survey of Space and Time (LSST).
+For a more detailed, but still concise,
+summary of Rubin, please see the overview paper \citep{2008arXiv0805.2366I}\footnote{\url{http://ls.st/2m9}}.
 
 The project is scheduled to  begin the regular survey operations at the start of next decade. About 90\% of the observing time will be devoted to a deep-wide-fast survey mode which will uniformly observe a 18,000 deg$^2$ region about 1000 times (summed over all six bands) during the anticipated 10 years of operations, and yield a coadded map to $r\sim27.5$. These data will result in catalogs including over $38$ billion stars and galaxies, that will serve the majority of the primary science programs. The remaining 10\% of the observing time will be allocated to special projects such as a Very Deep and Fast time domain survey\footnote{Informally known as ``Deep Drilling Fields''.}.
 
-LSST will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction (\emph{templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
+Rubin will be operated in fully automated survey mode. The images acquired by the LSST Camera will be processed by LSST Data Management software to a) detect and characterize imaged astrophysical sources and b) detect and characterize temporal changes in the LSST-observed universe. The results of that processing will be reduced images, catalogs of detected objects and the measurements of their properties, and prompt alerts to ``events'' -- changes in astrophysical scenery discovered by differencing incoming images against older, deeper, images of the sky in the same direction (\emph{templates}, see \S \ref{sec:templates}). Measurements will be internally and absolutely calibrated.
 
 The \emph{broad}, \emph{high-level}, requirements for LSST Data Products are given by the \emph{LSST Science Requirements Document} (\SRD; \citeds{LPM-17}). This document lays out the \emph{specifics} of what the data products will comprise, how those data will be generated, and when. It serves to inform the flow-down from the LSST \SRD through the \emph{LSST System Requirements Document} (the \LSR; \citeds{LSE-29}) and the \emph{LSST Observatory System Specifications} (\OSS; \citeds{LSE-30}), to the \emph{LSST Data Management System Requirements} (\DMSR; \citeds{LSE-61}), the UML model (\appsUMLdomain), and the database schema (\citeds{LDM-153}).
 The \OSS explicitly ties this document to the requirements flow down through requirements OSS-REQ-0126 Prompt, OSS-REQ-0133 Data Release, OSS-REQ-0139 User Generated, OSS-REQ-0391 (general conventions), and OSS-REQ-0392 (special programs).
@@ -212,9 +213,9 @@ The following is a high-level description of steps which will occur during regul
 \begin{enumerate}
 
 \item A visit is acquired and reduced to a single \emph{Processed Visit Image} (cosmic ray rejection, instrumental signature removal\footnote{Eg., subtraction of bias and dark frames, flat fielding, bad pixel/column interpolation, etc.}, combining of snaps, etc.).\dmreq{0069}
-\item The Processed Visit Image is differenced against the appropriate template and \DIASources are detected. 
+\item The Processed Visit Image is differenced against the appropriate template and \DIASources are detected.
 If necessary, deblending will be performed at this stage. Both the parent blend and the deblended children will be measured and stored as \DIASources (see next item), but only the children will be matched against \DIAObjects and alerted on. Deblended objects will be flagged as such.\dmreq{0010}
-\item The flux and shape\footnote{The "shape" in this context consists of weighted 2$^{\rm{nd}}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image. 
+\item The flux and shape\footnote{The "shape" in this context consists of weighted 2$^{\rm{nd}}$ moments, as well as fits to a trailed source model and a dipole model.} of the DIASource are measured on the difference image.
 PSF photometry is performed on the Processed Visit Image at the position of the \DIASource to obtain a measure of the total flux.\dmreq{0269}
 \item The \PPDB (see \S \ref{sec:level1db}) is searched for a \DIAObject or an \SSObject with which to positionally associate the newly discovered \DIASource\footnote{The association algorithm will guarantee that a \DIASource is associated with not more than one existing \DIAObject or \SSObject. The algorithm will take into account the parallax and proper (or Keplerian) motions, as well as the errors in estimated positions of \DIAObject, \SSObject, and \DIASource, to find the maximally likely match. Multiple \DIASources in the same visit will not be matched to the same \DIAObject.}. If no match is found, a new \DIAObject is created and the observed \DIASource is associated to it.\dmreq{0273}\dmreq{0271}\dmreq{0285}
 
@@ -514,6 +515,14 @@ nearbyObjDist   & float[6] & arcsec & Distances to \texttt{nearbyObj}. \\
 
 nearbyObjLnP   & float[6] & ~ &  Natural $\log$ of the probability that the observed \DIAObject is the same as the nearby \Object\footnote{This quantity will be computed by marginalizing over the product of position and proper motion error ellipses of the \Object and \DIAObject, assuming an appropriate prior.}. \\
 
+nearbyExtObj & unit64[3] & ~ & Three extended Objects with lowest separations in Data Release database\footnote{Separations should be calculated with respect to the transient location using the second moments of each Object's luminosity profile, as described in DMTN-151.}. \\
+
+nearbyExtObjSep & float[3]  & ~ & Separations of nearbyExtObj. \\
+
+nearbyLowzGal & str[1]    & ~ & External catalog name of the nearest low-redshift galaxy\footnote{External catalog will be, e.g., the NGC/IC, unless the community provides one that they deem to be more scientifically useful, as described in DMTN-151.}. \\
+
+nearbyLowzGalSep & float[1]  & ~ & Separation of nearbyLowzGal\footnote{Separations will be radial offset in arcseconds unless a community-provided catalog includes galaxy characteristics that would enable an alternative, as described in DMTN-151.}. \\
+
 flags & bit[64] & bit & Various useful flags. \\
 
 \end{schema}
@@ -526,7 +535,7 @@ The three tables presented below capture the information that will be available 
 
 \input{schemas/MPCORB.tex}
 
-The {\tt MPCORB} table will be ingested, at least daily, from the Minor Planet Center. Its exact contents will mirror the columns available in the MPCORB at the time the LSST is operations. While MPCORB does not contain orbital element covarances at this point, it is expected these will become available in time for LSST operations.
+The {\tt MPCORB} table will be ingested, at least daily, from the Minor Planet Center. Its exact contents will mirror the columns available in the MPCORB at the time the LSST is operations. While MPCORB does not contain orbital element covariances at this point, it is expected these will become available in time for LSST operations.
 
 \input{schemas/SSObject.tex}
 
@@ -728,8 +737,8 @@ and some \Object measurements (e.g. stellar motion parameters) \emph{may} utiliz
 \end{enumerate}
 
 Data Release data processing will include the computation of photometric redshifts for all detected \Objects. \dmreq{0046}
-We are still investigating the best approach to take; the DM Science team is working with the community to decide on the most appropriate algorithm and the format for the results.  
-When an algorithm and data product format has been choosen,  the exact manner in which it will be incorporated into the Data Release data processing will be described here.  
+We are still investigating the best approach to take; the DM Science team is working with the community to decide on the most appropriate algorithm and the format for the results.
+When an algorithm and data product format has been chosen,  the exact manner in which it will be incorporated into the Data Release data processing will be described here.
 
 \subsubsection{Object Characterization Measures}
 \label{sec:objchar}
@@ -746,7 +755,7 @@ The measurements performed on \Objects include:
     \item \emph{Bulge-disk model fit}. \dmreq{0276} The object is modeled as a sum of a de Vaucouleurs (Sersic $n=4$) and an exponential (Sersic $n=1$) component, but with some parameters constrained across the two components (the model described in the Table~\ref{tbl:objectTable} fixes the ellipticity to be the same and the radii to have a constant ratio while allowing the fluxes to vary independently for example, but it should be emphasized that this just one of several possible models).
     The object is assumed not to move, and we will probably use the general-purpose centroid for the position rather than include the position as a model parameter.  The model will be fit first to the coadds for all bands simultaneously (with only fluxes allowed to vary) and then to each band independently.
     In all cases the fitting is done via forward modeling -- the model is convolved with the PSF before being compared to the image.
-    Our primary goal for this model is to provide robust photometry of most galaxies detected by LSST, with shapes and other morphology information (and particularly bright and/or well-resolved galaxies) secondary goal, and we will tune the model parameterization accordingly.
+    Our primary goal for this model is to provide robust photometry of most galaxies detected by LSST, with shapes and other morphology information (and particularly bright and/or well-resolved galaxies) secondary goal, and we will tune the model parametrization accordingly.
 
     \item \emph{Standard colors}. \dmreq{0276} Colors of the object in ``standard seeing'' (for example, the third quartile expected survey seeing in the $i$ band, $\sim$0.9\,arcsec) will be measured. These colors are guaranteed to be seeing-insensitive,  suitable for estimation of photometric redshifts\footnote{The problem of optimal determination of photometric redshift is the subject of intense research. The approach we're taking here is conservative, following contemporary practices. As new insights develop, we will revisit the issue.}.
 
@@ -754,7 +763,7 @@ The measurements performed on \Objects include:
 
     \item \emph{Adaptive moments}. Adaptive moments will be computed using information from all epochs, independently for each band. The moments of the PSF realized at the position of the object will be provided as well. \dmreq{0276}
 
-    \item \emph{Local shear estimation measures}. Per-object quantities that can be used to construct de-biased estimates of the average shear of a population of galaxies (i.e. for weak gravitional lensing) will be provided.  Algorithms being considered for this role include \texttt{Metacalibration} \citep{2017arXiv170202600H,2017ApJ...841...24S} and the ``Bayesian Fourier-Domain'' approach of \citet{2016MNRAS.459.4467B}, and implementations are expected to rely heavily on existing third-party code.  The actual algorithm selection will be made in consultation with LSST science collaborations and will favor mature algorithms that have been used successfully on precursor surveys, but may also be constrained by compute resources and costs.  The exact nature of the quantities produced is algorithm-dependent, and hence is not included in Table~\ref{tbl:objectTable}.
+    \item \emph{Local shear estimation measures}. Per-object quantities that can be used to construct de-biased estimates of the average shear of a population of galaxies (i.e. for weak gravitational lensing) will be provided.  Algorithms being considered for this role include \texttt{Metacalibration} \citep{2017arXiv170202600H,2017ApJ...841...24S} and the ``Bayesian Fourier-Domain'' approach of \citet{2016MNRAS.459.4467B}, and implementations are expected to rely heavily on existing third-party code.  The actual algorithm selection will be made in consultation with LSST science collaborations and will favor mature algorithms that have been used successfully on precursor surveys, but may also be constrained by compute resources and costs.  The exact nature of the quantities produced is algorithm-dependent, and hence is not included in Table~\ref{tbl:objectTable}.
 
     \item \emph{Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured in standard seeing using self-similar elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and \emph{homogenized}, convolved to a canonical circular PSF\footnote{This is an attempt to derive a definition of elliptical apertures that does not depend on seeing. For example, for a large galaxy, the correction to standard seeing will introduce little change to measured ellipticity. Corrected apertures for small galaxies will tend to be circular (due to smearing by the PSF). In the intermediate regime, this method results in derived apertures that are relatively seeing-independent. Note that this is only the case for \emph{apertures}; the measured flux will still be seeing dependent and it is up to the user to take this into account.}. The radii will be computed independently for each band. Fluxes will be computed in each band, by integrating the light within some multiple of \emph{the radius measured in the canonical band}\footnote{The shape of the aperture in all bands will be set by the profile of the galaxy in the canonical band alone. This procedure ensures that the color measured by comparing the flux in different bands is measured through a consistent aperture. See \url{http://www.sdss.org/dr7/algorithms/photometry.html} for details.} (most likely the $i$ band). Radii enclosing 50\% and 90\% of light will be provided. \dmreq{0276}
 
@@ -997,7 +1006,7 @@ skyErr & float & nJy/arcsec$^{2}$ & Estimated uncertainty of \texttt{sky}. \\
 
 psFlux & float & nJy & Calibrated point source model flux.\\
 
-psCov & float[6] & various & Point-source model covariance matrix, including dependence on the centoid\footnote{Not all elements of the covariance matrix will be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim$1\% ).}. \\
+psCov & float[6] & various & Point-source model covariance matrix, including dependence on the centroid\footnote{Not all elements of the covariance matrix will be stored with same precision. While the variances will be stored as 32 bit floats ($\sim$ seven significant digits), the covariances may be stored to $\sim$ three significant digits ($\sim$1\% ).}. \\
 
 psLnL & float & ~ & Natural $log$ likelihood of the observed data given the point source model. \\
 
@@ -1091,7 +1100,7 @@ The six per-band coadds will be kept indefinitely and made available to the user
 
     \item A set of \emph{template coadds}.  These will be used for image differencing in that data release and in the following season's Prompt Processing (approaches for image differencing prior to DR1 are still under investigation).  They will be retained and made available at least during the period in which they are used by Prompt Processing.  See also \S~\ref{sec:templates}.
 
-    \item RGB color images derived from coadds (utilizing any three of \textit{ugrizy}), intended for visual inspection and EPO \dmreq{0103}.  
+    \item RGB color images derived from coadds (utilizing any three of \textit{ugrizy}), intended for visual inspection and EPO \dmreq{0103}.
     These may be stored using lossy compression (e.g. JPEG) and are not intended to be used as an input to algorithmic code
 \end{itemize}
 
@@ -1101,14 +1110,14 @@ The exact configurations for all coadds actually used in data release processing
 
 The exact details of which coadds to build, and which ones to keep, can change during Construction without affecting the processing system design as the most expensive operations (raw image input and warping) are constant in the number of coadds produced. The data management system design \emph{is} sensitive to the total \emph{number and size} of coadds to be \emph{kept} -- these are the relevant constraining variables.
 
-We reiterate that \textbf{not all coadds will be kept and served to the public}\footnote{The coadds are a major cost driver for storage. LSST Data Management system is currently sized to keep and serve seven coadds, \emph{ugrizyM}, over the full footprint of the survey.}, though sufficient metadata will be provided to users to recreate them on their own. Some coadds may be entirely ``virtual'': for example, the PSF-matched coadds could be implemented as ad-hoc convolutions of postage stamps when the colors are measured.\dmreq{0311}
+We reiterate that \textbf{not all coadds will be kept and served to the public}\footnote{The coadds are a major cost driver for storage. Rubin Data Management system is currently sized to keep and serve seven coadds, \emph{ugrizyM}, over the full footprint of the survey.}, though sufficient metadata will be provided to users to recreate them on their own. Some coadds may be entirely ``virtual'': for example, the PSF-matched coadds could be implemented as ad-hoc convolutions of postage stamps when the colors are measured.\dmreq{0311}
 
 We \emph\textbf{will} retain smaller sections of all generated coadds, to support quality assessment and targeted science.\dmreq{0338} Retained sections may be positioned to cover areas of the sky of special interest such as overlaps with other surveys, nearby galaxies, large clusters, etc.
 
 \subsection{Data Release Availability and Retention Policies}
 \label{sec:retention}
 
-Over 10 years of operations, LSST will produce eleven data releases: two for the first year of survey operations, and one every subsequent year. Each data release will include reprocessing of all data from the start of the survey, up to the cutoff date for that release.
+Over 10 years of operations, Rubin will produce eleven data releases: two for the first year of survey operations, and one every subsequent year. Each data release will include reprocessing of all data from the start of the survey, up to the cutoff date for that release.
 
 The contents of data releases are expected to range from a few PB (DR1) to $\sim$70\,PB for DR11 (this includes the raw images, retained coadds, and catalogs). Given that scale, it is not feasible to keep all data releases loaded and accessible at all times.
 
@@ -1129,7 +1138,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 \begin{itemize}
     \item \emph{Is our approach to crowded field photometry satisfactory?} Is there another, given the budget and schedule constraints? (FDR)
 
-    \item \emph{What is the definition of a crowded field?} This is related to the question of when is LSST photometry allowed to deviate from \SRD specs due to crowding. (FDR)
+    \item \emph{What is the definition of a crowded field?} This is related to the question of when photometry is allowed to deviate from \SRD specs due to crowding. (FDR)
 
     \item \emph{Are we going to provide additional characterization for large galaxies (isophote twists, bars, etc)?} How far should (and can) we go with ``large'' galaxy characterization. Measures like isophote twists, Gini coefficients, etc. These are now considered to be  user generated products, but it's likely at least a portion of it belongs to Data Release -- assuming we're given a set of well-defined morphology measures. Input from the galaxies (and strong lensing?) Collaborations would be useful. (CONSTRUCTION)
 
@@ -1149,7 +1158,7 @@ What follows is a (non-exhaustive) list of issues, technical and scientific, tha
 \section{User Generated Data Products and the Science Platform}
 \label{sec:level3}
 
-\emph{The Science Platform} is  envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the LSST Archive Center. The high-level requirement for this is established in \S~3.5 of the LSST \SRD.
+\emph{The Science Platform} is  envisioned to enable science cases that would greatly benefit from co-location of user processing and/or data within the  Archive Center. The high-level requirement for this is established in \S~3.5 of the \SRD.
 \ossreq{0140}
 \dmreq{0125}
 \dmreq{0128}
@@ -1179,11 +1188,11 @@ The platform  is intended, when put to fullest use, to allow users to run their 
 %
 
 
-The storage resources for User Generated data products come out of the \SRD requirement for 10\% of LSST data management capabilities to be devoted to user processing. In general, they are likely to be controlled by some form of a ``resource allocation committee''.  Users will probably have some small baseline automatic allocation, beyond which a SAC proposal is needed. The SAC may take into account scientific merit, length of time for which the storage is requested, and openness of the data to others, in setting its priorities.
+The storage resources for User Generated data products come out of the \SRD requirement for 10\% of Rubin data management capabilities to be devoted to user processing. In general, they are likely to be controlled by some form of a ``resource allocation committee''.  Users will probably have some small baseline automatic allocation, beyond which a SAC proposal is needed. The SAC may take into account scientific merit, length of time for which the storage is requested, and openness of the data to others, in setting its priorities.
 \dmreq{0119}
 
 
-The details of access rights and transitive rights for user generated products are dealt with in \citeds{LDO-13}.
+The details of access rights and transitive rights for user generated products are dealt with in \citeds{RDO-13}.
 
 
 
@@ -1227,13 +1236,13 @@ The details of access rights and transitive rights for user generated products a
 
 \subsection{Migration of User Generated data products to Data Release products}
 User Generated data products that are found to be generally useful can be migrated to Data Release products.
-This is a fairly complex process that ultimately involves the project taking responsibility for supporting and running LSST-style code that implements the algorithm necessary to produce the data product (it's not just relabeling an existing User Generated data product as a Data Release data product).  The project will provide necessary support for such migrations.
+This is a fairly complex process that ultimately involves the project taking responsibility for supporting and running Rubin-style code that implements the algorithm necessary to produce the data product (it's not just relabeling an existing User Generated data product as a Data Release data product).  The project will provide necessary support for such migrations.
 
 
 \begin{itemize}
-    \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire LSST data-rights community, along with supporting documentation and code. The code at first need not be in the LSST framework or even in an LSST-supported language.
-    \item If the original proponent wrote her/his code in the C++/Python LSST stack environment (the ``Science Platform''), it will be easier to migrate it to a Data Release product (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
-    \item If the original code was written in another language or another data processing framework, the project may consider rewriting it to required LSST standards.
+    \item For the migration to be considered, the creator of the L3DP will need to agree to make their data product public to the entire Rubin data-rights community, along with supporting documentation and code. The code at first need not be in the Rubin framework or even in a Rubin-supported language.
+    \item If the original proponent wrote her/his code in the C++/Python Rubin stack environment (the ``Science Platform''), it will be easier to migrate it to a Data Release product (though, obviously, using the same languages/frameworks does not guarantee that the code is of production quality).
+    \item If the original code was written in another language or another data processing framework, the project may consider rewriting it to required Rubin standards.
     \item Taking on a new Data Release data product means that the project is committing to code maintenance, data quality review, space allocation, and continuing production of the new Data Release data product through DR11.
 \end{itemize}
 
@@ -1243,16 +1252,16 @@ This is a fairly complex process that ultimately involves the project taking res
 \label{sec:specialProgs}
 
 \lsrreq{0075}
-The LSST Survey Specifications (LSST \SRD, \S~3.4) specify that 90\% of LSST observing time will be spent executing the so-called ``universal cadence''. These observations will result in Prompt and Data Release data products described earlier in this document.
+The LSST Survey Specifications (\SRD, \S~3.4) specify that 90\% of LSST observing time will be spent executing the so-called ``universal cadence''. These observations will result in Prompt and Data Release data products described earlier in this document.
 
 The remaining 10\% of observing time will be devoted to special programs, obtaining improved coverage of interesting regions of observational parameter space. Examples include very deep ($r\sim26$, per exposure) observations, observations with very short revisit times ($\sim$1 minute), and observations of ``special'' regions such as the Ecliptic, Galactic plane, and the Large and Small Magellanic Clouds. A third type of survey, micro-surveys, that would use about 1\% of the time, may also be considered.
 
 The details of these special programs or micro surveys are not yet defined\footnote{The initial complement is expected to be defined and selected no later than Science Verification.}. Consequently, the specifics of their data products are left undefined at this time. Instead, we just specify the \emph{constraints} on these data products, given the adopted Prompt/Data Release/User Generated architecture. It is understood that no special program will be selected that does not fit these constraints\footnote{Or will come with additional, external, funding, capabilities, and/or expertise.}. This allows us to size and construct the data management system, without knowing the exact definition of these programs this far in advance.
 
-Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence.\dmreq{0320} The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the LSST data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Prompt data products.\dmreq{0321}\dmreq{0344}\reqparam{OTT1}
+Processing for special programs will make use of the same software stack and computing capabilities as the processing for universal cadence.\dmreq{0320} The programs are expected to use no more than $\sim$10\% of computational and storage capacity of the Rubin data processing cluster. When special products include time domain event alerts, their processing shall generally be subject to the same latency requirements as Prompt data products.\dmreq{0321}\dmreq{0344}\reqparam{OTT1}
 
 For simplicity of use and consistency, the data products for special programs will be stored in databases separate from the ``main'' (Prompt and Data Release) databases. The system will, however, allow for simple federation with Prompt/Data Release/User Generated data products (i.e., cross-queries and joins).\dmreq{0322}
 
 As a concrete example, a data product complement for a ``deep drilling'' field designed for supernova discovery and characterization may consist of: i) alerts to events discovered by differencing the science images against a special deep drilling template, ii) a Prompt -like database iii) one or more ``nightly co-adds'' (co-adds built using the data from the entire night), produced and made available within $\sim$24 hours\reqparam{L1PublicT}, and iv) special deep templates, built using the best recently acquired seeing data, produced on a fortnightly cadence.
 
-Note that the data rights and access rules apply just as they would for Prompt/Data Release/User Generated. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with LSST data rights.
+Note that the data rights and access rules apply just as they would for Prompt/Data Release/User Generated. For example, while generated event alerts (if any) will be accessible world-wide, the image and catalog products will be restricted to users with Rubin data rights.
