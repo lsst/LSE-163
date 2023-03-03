@@ -833,12 +833,12 @@ Cosmology is one of the major pillars of LSST science, and a substantial fractio
 
 For our pixel-level measurements of galaxy shapes to be usable for shear estimation, the responses of the algorithms we apply to shear must be carefully controlled and/or measured.
 While the state of the art for these algorithms continues to evolve, our plan for at least DR1 and DR2 is to use the \texttt{Metadetection} algorithm of \citet{2020ApJ...902..138S}.
-Additional algorithms may be run as well, as long as their processing time and catalog storage costs are negligible (which is actually the case for a some promising but still unproven methods, e.g. \citet{2016MNRAS.459.4467B}).
+Additional algorithms may be run as well, as long as their processing time and catalog storage costs are negligible (which is actually the case for some promising but still unproven methods, e.g. \citet{2016MNRAS.459.4467B}).
 
 This is a variant of the \texttt{Metacalibration} \citep{2017arXiv170202600H,2017ApJ...841...24S} approach, in which the response to shear is measured by applying the same algorithms to sheared versions of the original (coadd) images and their PSF models, and then using finite differences to compute the derivative of those measurements with respect to shear.
 \texttt{Metadetection} requires the algorithms run on these images to include detection and deblending, and like all variants of \texttt{Metacalibration}, it requires all algorithms run on the modified images to be simple enough for finite differences to work well.
 In practice this means measurements must be as close as possible to linear in the pixel values.
-This is incompatible with our usual desire for algorithms to produce catalogs that map as well as possible to astrophysical reality, especially since theway in which the coadd images are modified represents a slight degredation in signal-to-noise.
+This is incompatible with our usual desire for algorithms to produce catalogs that map as well as possible to astrophysical reality, especially since the way in which the coadd images are modified represents a slight degredation in signal-to-noise and image quality.
 
 As a result, the measurements from \texttt{Metadetection} are best structured as a separate \texttt{ShearObject} table representing a completely distinct set of detections and measurements, with many fewer columns than the main \Object table and $3-5\times$ as many rows (for the modified versions of the original coadds).
 A match table from the main \Object table to \texttt{ShearObject} will not be provided, as actually using any such matches would void the carefully measured responses in \texttt{ShearObject}, rendering it useless.
