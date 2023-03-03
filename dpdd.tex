@@ -1128,35 +1128,35 @@ radec & double[2] & degrees & Position of the object (centroid), measured jointl
 
 maskFractionObj & float & ~ & Weighted fraction of this object's pixels that were masked, over all visit images input to the coadd. \\
 
-maskFractionCell & float & ~ & Weighted fraction the coadd cell's that were masked, over all visit images input to the coadd.\footnote{This and \texttt{nEpochCell} are the same for all rows with the same \texttt{cellId}, but are expected to be access per-object; they may or may not be normalized into a separate table in the physical schema.}. \\
+maskFractionCell & float & ~ & Weighted fraction of the coadd cell's that were masked, over all visit images input to the coadd.\footnote{This and \texttt{nEpochCell} are the same for all rows with the same \texttt{cellId}, but are expected to be access per-object; they may or may not be normalized into a separate table in the physical schema.}. \\
 
 nEpochCell & int32[ugrizy] & ~ & Number of input visits that contributed to this coadd cell. \\
 
-g1 & float & ~ & Ellipticity from Gaussian-weighted moments, on-axis, measured consistently over central\footnote{Probably $riz$} bands. \\
+g1 & float & ~ & Ellipticity, e.g. from image moments, measured consistently over the subset of bands \footnote{Probably $riz$} that are considered to be sufficiently well-characterized (survey-wide) for lensing. \\
 
-g2 & float & ~ & Ellipticity from Gaussian-weighted moments, off-axis. \\
+g2 & float & ~ & Ellipticity; see g1. \\
 
 gCov & float[3] & ~ & Covariance matrix for (\texttt{g1}, \texttt{g2}). \\
 
-T & float & arcsec$^{2}$ & Gaussian-weighted moments trace (Ixx + Ixy) \\
+T & float & arcsec$^{2}$ & Moments trace (Ixx + Ixy) or other size estimated consistently with \texttt{g1} and \texttt{g2}. \\
 
-SNR & float & ~ & Gaussian weighted signal-to-noise ratio. \\
+SNR & float & ~ & Signal-to-noise ratio measured consistently with \texttt{g1} and \texttt{g2}. \\
 
 TErr & float & arcsec$^{2}$ & Uncertainty on \texttt{T}.\\
 
-g1PSFMeta & float & ~ & PSF model ellipticity from Gaussian-weighted moments, on-axis, computed from the central-band-averaged metacalibration-modified PSF models.\footnote{This and other PSF quantities are not constant over a cell only because the PSF may depend on the SED of the object.} \\
+g1PSFMeta & float & ~ & Ellipticity measured on the metacalibration-modified PSF models.\footnote{This and other PSF quantities are not constant over a cell only because the PSF may depend on the SED of the object.} \\
 
-g2PSFMeta & float & ~ & PSF model ellipticity from Gaussian-weighted moments, off-axis, computed from the central-band-averaged metacalibration-modified PSF models. \\
+g2PSFMeta & float & ~ & Ellipticity measured on the metacalibration-modified PSF models. \\
 
-TPSFMeta & float & arcsec$^{2}$ & Gaussian-weighted moments trace (Ixx + Ixy) of the central-band-averaged metacalibration-modified PSF models. \\
+TPSFMeta & float & arcsec$^{2}$ & Moments trace (Ixx + Ixy) or other size measured on the metacalibration-modified PSF models. \\
 
-g1PSFOrig & float & ~ & PSF model ellipticity from Gaussian-weighted moments, on-axis, computed from the central-band-averaged original PSF models. \\
+g1PSFOrig & float & ~ & Ellipticity measured on the original PSF models. \\
 
-g2PSFOrig & float & ~ & PSF model ellipticity from Gaussian-weighted moments, off-axis, computed from the central-band-averaged original PSF models. \\
+g2PSFOrig & float & ~ & Ellipticity measured on the original PSF models. \\
 
-TPSFOrig & float & arcsec$^{2}$ & Gaussian-weighted moments trace (Ixx + Ixy) of the central-band-averaged original PSF models. \\
+TPSFOrig & float & arcsec$^{2}$ & Moments trace (Ixx + Ixy) or other size measured on the original PSF models. \\
 
-stdFlux & float[ugrizy] & nJy & PSF-corrected aperture fluxes, measured using an approach similar to the ``standard color'' in the main \Object table.\footnote{This is not expected to be a good estimate of total flux, but \emph{some} estimate of total flux is useful, so this is still reported as fluxes, as opposed to the colors in \Object's \texttt{stdColor}.} \\
+stdFlux & float[ugrizy] & nJy & PSF-corrected aperture fluxes, measured using an approach similar to the ``standard color'' in the main \Object table.\footnote{This is not necessarily expected to provide good estimates of total flux, but \emph{some} estimate of total flux is useful, so this is still reported as fluxes, as opposed to the colors in \Object's \texttt{stdColor}.} \\
 
 stdFluxErr & float[ugrizy] & nJy & Uncertainty on \texttt{stdFlux}. \\
 
