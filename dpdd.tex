@@ -840,7 +840,7 @@ This is a variant of the \texttt{Metacalibration} \citep{2017arXiv170202600H,201
 In practice this means measurements must be as close as possible to linear in the pixel values.
 This is incompatible with our usual desire for algorithms to produce catalogs that map as well as possible to astrophysical reality, especially since theway in which the coadd images are modified represents a slight degredation in signal-to-noise.
 
-As a result, the measurements from \texttt{Metadetection} are best structured as a separate \texttt{ShearObject} table representing a completely distinct set of detections and measurements, with many fewer columns than the main \Object table and approximately 5$\times$ as many rows (for the modified versions of the original coadds).
+As a result, the measurements from \texttt{Metadetection} are best structured as a separate \texttt{ShearObject} table representing a completely distinct set of detections and measurements, with many fewer columns than the main \Object table and $3-5\times$ as many rows (for the modified versions of the original coadds).
 A match table from the main \Object table to \texttt{ShearObject} will not be provided, as actually using any such matches would void the carefully measured responses in \texttt{ShearObject}, rendering it useless.
 
 \texttt{Metadetection} measurements will be performed on small coadd cells, over which the PSF can be considered spatially constant and the set of input visits is constant.
@@ -1122,7 +1122,7 @@ shearObjectId & uint64 & ~ & Unique object identifier. \\
 
 cellId & uint64 & ~ & Unique identifier for the coadd cell in which this object was detected and measured. \\
 
-metaStep & int8 & ~ & Enumeration value for which of the five \texttt{Metacalibration} modifications was applied to images prior to all measurements. \\
+metaStep & int8 & ~ & Enumeration value for which of the \texttt{Metacalibration} modifications was applied to images prior to all measurements. \\
 
 radec & double[2] & degrees & Position of the object (centroid), measured jointly across all bands. \\
 
