@@ -832,7 +832,7 @@ Note that this discussion only pertains to processing of \emph{direct images}. C
 Cosmology is one of the major pillars of LSST science, and a substantial fraction of the survey's cosmological constraining power will come from weak gravitational lensing, which involves estimating the shear field applied to a population of galaxies by foreground matter.
 
 For our pixel-level measurements of galaxy shapes to be usable for shear estimation, the responses of the algorithms we apply to shear must be carefully controlled and/or measured.
-While the state of the art for these algorithms continues to evolve, our plan for at least DR1 and DR2 is to use the \texttt{Metadetection} algorithm of \citet{2020ApJ...902..138S}.
+While the state of the art for these algorithms continues to evolve, our plan for at least DR1 and DR2 is to use the \texttt{Metadetection} algorithm of \citet{2023arXiv230303947S,2020ApJ...902..138S}.
 Additional algorithms may be run as well, as long as their processing time and catalog storage costs are negligible (which is actually the case for some promising but still unproven methods, e.g. \citet{2016MNRAS.459.4467B}).
 
 This is a variant of the \texttt{Metacalibration} \citep{2017arXiv170202600H,2017ApJ...841...24S} approach, in which the response to shear is measured by applying the same algorithms to sheared versions of the original (coadd) images and their PSF models, and then using finite differences to compute the derivative of those measurements with respect to shear.
