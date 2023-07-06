@@ -763,8 +763,6 @@ The measurements performed on \Objects include:
 
     \item \emph{Adaptive moments}. Adaptive moments will be computed using information from all epochs, independently for each band. The moments of the PSF realized at the position of the object will be provided as well. \dmreq{0276}
 
-    \item \emph{Local shear estimation measures}. Per-object quantities that can be used to construct de-biased estimates of the average shear of a population of galaxies (i.e. for weak gravitational lensing) will be provided.  Algorithms being considered for this role include \texttt{Metacalibration} \citep{2017arXiv170202600H,2017ApJ...841...24S} and the ``Bayesian Fourier-Domain'' approach of \citet{2016MNRAS.459.4467B}, and implementations are expected to rely heavily on existing third-party code.  The actual algorithm selection will be made in consultation with LSST science collaborations and will favor mature algorithms that have been used successfully on precursor surveys, but may also be constrained by compute resources and costs.  The exact nature of the quantities produced is algorithm-dependent, and hence is not included in Table~\ref{tbl:objectTable}.
-
     \item \emph{Petrosian and Kron fluxes}. Petrosian and Kron radii and fluxes will be measured in standard seeing using self-similar elliptical apertures computed from adaptive moments. The apertures will be PSF-corrected and \emph{homogenized}, convolved to a canonical circular PSF\footnote{This is an attempt to derive a definition of elliptical apertures that does not depend on seeing. For example, for a large galaxy, the correction to standard seeing will introduce little change to measured ellipticity. Corrected apertures for small galaxies will tend to be circular (due to smearing by the PSF). In the intermediate regime, this method results in derived apertures that are relatively seeing-independent. Note that this is only the case for \emph{apertures}; the measured flux will still be seeing dependent and it is up to the user to take this into account.}. The radii will be computed independently for each band. Fluxes will be computed in each band, by integrating the light within some multiple of \emph{the radius measured in the canonical band}\footnote{The shape of the aperture in all bands will be set by the profile of the galaxy in the canonical band alone. This procedure ensures that the color measured by comparing the flux in different bands is measured through a consistent aperture. See \url{http://www.sdss.org/dr7/algorithms/photometry.html} for details.} (most likely the $i$ band). Radii enclosing 50\% and 90\% of light will be provided. \dmreq{0276}
 
     \item \emph{Aperture surface brightness}. Aperture surface brightness will be computed in a variable number\footnote{The number will depend on the size of the source.} of concentric, logarithmically spaced, PSF-homogenized, elliptical apertures, in standard seeing. \dmreq{0276}
@@ -827,6 +825,31 @@ A fraction of LSST imaging will cover areas of high object (mostly stellar) dens
 LSST image processing and measurement software, although primarily designed to operate in non-crowded regions, is expected to perform well in areas of crowding. The current LSST applications development plan envisions making the deblender aware of Galactic longitude and latitude, and permitting it to use that information as a prior when deciding how to deblend objects. While not guaranteed to reach the accuracy or completeness of purpose-built crowded field photometry codes, we expect this approach will yield acceptable results even in areas of moderately high crowding.
 
 Note that this discussion only pertains to processing of \emph{direct images}. Crowding is not expected to significantly impact the quality of data products derived from \emph{difference images} (i.e., Prompt products).
+
+\subsubsection{Shear Measurement}
+\label{sec:shearMeasurement}
+
+Cosmology is one of the major pillars of LSST science, and a substantial fraction of the survey's cosmological constraining power will come from weak gravitational lensing, which involves estimating the shear field applied to a population of galaxies by foreground matter.
+
+For our pixel-level measurements of galaxy shapes to be usable for shear estimation, the responses of the algorithms we apply to shear must be carefully controlled and/or measured.
+While the state of the art for these algorithms continues to evolve, our plan for at least DR1 and DR2 is to use the \texttt{Metadetection} algorithm of \citet{2023arXiv230303947S,2020ApJ...902..138S}.
+Additional algorithms may be run as well, as long as their processing time and catalog storage costs are negligible (which is actually the case for some promising but still unproven methods, e.g. \citet{2016MNRAS.459.4467B}).
+
+This is a variant of the \texttt{Metacalibration} \citep{2017arXiv170202600H,2017ApJ...841...24S} approach, in which the response to shear is measured by applying the same algorithms to sheared versions of the original (coadd) images and their PSF models, and then using finite differences to compute the derivative of those measurements with respect to shear.
+\texttt{Metadetection} requires the algorithms run on these images to include detection and deblending, and like all variants of \texttt{Metacalibration}, it requires all algorithms run on the modified images to be simple enough for finite differences to work well.
+In practice this means measurements must be as close as possible to linear in the pixel values.
+This is incompatible with our usual desire for algorithms to produce catalogs that map as well as possible to astrophysical reality, especially since the way in which the coadd images are modified represents a slight degredation in signal-to-noise and image quality.
+
+As a result, the measurements from \texttt{Metadetection} are best structured as a separate \texttt{ShearObject} table representing a completely distinct set of detections and measurements, with many fewer columns than the main \Object table and $3-5\times$ as many rows (for the modified versions of the original coadds).
+A match table from the main \Object table to \texttt{ShearObject} will not be provided, as actually using any such matches would void the carefully measured responses in \texttt{ShearObject}, rendering it useless.
+
+\texttt{Metadetection} measurements will be performed on small coadd cells, over which the PSF can be considered spatially constant and the set of input visits is constant.
+This will also be true of some regular \Object measurements, but the cell-based nature of those measurements will be less important; some key \texttt{Metadetection} measurements are actually reported per cell rather than per Object.
+
+% TODO: Citation for tests of metadetection on LSST-like sims should be
+% available very soon and should be included; the paper has just completed its
+% DESC collaboration-wide review.  DES Y6 shear catalog paper is also worth
+% referencing when it is available (not sure of the timescale).
 
 \subsection{The Data Release Catalogs}
 
@@ -1067,6 +1090,84 @@ psDiffFluxErr & float & nJy & Point source model flux error,  stored to 1\% prec
 
 flags & bit[8] & bit & Various useful flags. \\
 \end{schema}
+
+\subsubsection{\texttt{ShearObject} Table}
+\label{sec:shearObjectTable}
+
+% ShearObject table is a conventions-translation and generalization of a schema
+% of the DES metadetect catalog schema from Matt Becker; differences include:
+%
+% x,y: dropped as redundant with ra/dec
+%
+% gauss_*: prefixes dropped as irrelevant in this context.
+%
+% gauss_T_ratio: dropped as redundant with T/TPSFMeta.  We might want to
+% restore it in the physical schema so we can index it separately.
+%
+% pgauss_*: prefixes replaced with "std[Flux]" to emphasize conceptual
+% relationship with Object's "stdColors".
+%
+% PSF moment measurements: I've assumed full (g1, g2, T) measurements on both
+% the metacalibration-modified PSFs and the originals, but dropped pgauss_psf_T
+% as too algorithmic-specific for the logical schema.
+%
+% I've expanded the pgauss_T field and its uncertainty into per-band
+% measurements, as the apparent cross-band average in the original schema also
+% seems too algorithm-specific, and I'd like to err on the side of predicting a
+% larger table than we might need.
+
+\begin{schema}{\texttt{ShearObject} Table}{Data Release Catalog \texttt{ShearObject} Table}{tbl:shearObjectTable}
+
+shearObjectId & uint64 & ~ & Unique object identifier. \\
+
+cellId & uint64 & ~ & Unique identifier for the coadd cell in which this object was detected and measured. \\
+
+metaStep & int8 & ~ & Enumeration value for which of the \texttt{Metacalibration} modifications was applied to images prior to all measurements. \\
+
+radec & double[2] & degrees & Position of the object (centroid), measured jointly across all bands. \\
+
+maskFractionObj & float & ~ & Weighted fraction of this object's pixels that were masked, over all visit images input to the coadd. \\
+
+maskFractionCell & float & ~ & Weighted fraction of the coadd cell's that were masked, over all visit images input to the coadd.\footnote{This and \texttt{nEpochCell} are the same for all rows with the same \texttt{cellId}, but are expected to be access per-object; they may or may not be normalized into a separate table in the physical schema.}. \\
+
+nEpochCell & int32[ugrizy] & ~ & Number of input visits that contributed to this coadd cell. \\
+
+g1 & float & ~ & Ellipticity, e.g. from image moments, measured consistently over the subset of bands \footnote{Probably $riz$} that are considered to be sufficiently well-characterized (survey-wide) for lensing. \\
+
+g2 & float & ~ & Ellipticity; see g1. \\
+
+gCov & float[3] & ~ & Covariance matrix for (\texttt{g1}, \texttt{g2}). \\
+
+T & float & arcsec$^{2}$ & Moments trace (Ixx + Ixy) or other size estimated consistently with \texttt{g1} and \texttt{g2}. \\
+
+SNR & float & ~ & Signal-to-noise ratio measured consistently with \texttt{g1} and \texttt{g2}. \\
+
+TErr & float & arcsec$^{2}$ & Uncertainty on \texttt{T}.\\
+
+g1PSFMeta & float & ~ & Ellipticity measured on the metacalibration-modified PSF models.\footnote{This and other PSF quantities are not constant over a cell only because the PSF may depend on the SED of the object.} \\
+
+g2PSFMeta & float & ~ & Ellipticity measured on the metacalibration-modified PSF models. \\
+
+TPSFMeta & float & arcsec$^{2}$ & Moments trace (Ixx + Ixy) or other size measured on the metacalibration-modified PSF models. \\
+
+g1PSFOrig & float & ~ & Ellipticity measured on the original PSF models. \\
+
+g2PSFOrig & float & ~ & Ellipticity measured on the original PSF models. \\
+
+TPSFOrig & float & arcsec$^{2}$ & Moments trace (Ixx + Ixy) or other size measured on the original PSF models. \\
+
+stdFlux & float[ugrizy] & nJy & PSF-corrected aperture fluxes, measured using an approach similar to the ``standard color'' in the main \Object table.\footnote{This is not necessarily expected to provide good estimates of total flux, but \emph{some} estimate of total flux is useful, so this is still reported as fluxes, as opposed to the colors in \Object's \texttt{stdColor}.} \\
+
+stdFluxErr & float[ugrizy] & nJy & Uncertainty on \texttt{stdFlux}. \\
+
+stdFluxT & float[ugrizy] & arcsec$^{2}$ & Moments trace (Ixx + Ixy) computed with the same weights as \texttt{stdFlux}. \\
+
+stdFluxTErr & float[ugrizy] & arcsec$^{2}$ & Uncertainty on \texttt{stdFluxT}. \\
+
+flags & bit[8] & bit & Various useful flags. \\
+
+\end{schema}
+
 
 
 \subsection{Data Release Image Products}
