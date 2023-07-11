@@ -37,6 +37,9 @@ clean:
 	rm -f $(DOCNAME).pdf
 	rm -f meta.tex
 
+install-dep:
+	pip install -r requirements.txt
+
 .FORCE:
 
 meta.tex: Makefile .FORCE
